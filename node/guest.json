@@ -1,0 +1,12 @@
+{
+    "hostname": "guest",
+    "ip": "23.56.59.102",
+    "root": "admin",
+    "users": {
+        "admin": "root",
+        "thom855j": "c.m.lange"
+    },
+    "blocked": {
+        "root": "admin"
+    }
+}

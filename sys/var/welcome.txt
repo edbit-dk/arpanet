@@ -1,0 +1,7 @@
+Connected to DATANET.
+
+Any malicious and/or unauthorized activity is strictly forbidden.
+Disconnect IMMEDIATELY if you are not an authorized user!
+
+Type LOGIN to login. 
+Type NEWUSER to create an account.
