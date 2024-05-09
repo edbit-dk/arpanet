@@ -4,7 +4,9 @@
     "root": "admin",
     "users": {
         "admin": "root",
-        "thom855j": "c.m.lange"
+        "thom855j": "c.m.lange",
+        "john": "2343",
+        "boytoy": "peter"
     },
     "blocked": {
         "root": "admin"

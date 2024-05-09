@@ -6,6 +6,8 @@ define('HOME_DIRECTORY', getcwd() . "/home/");
 
 define('DEFAULT_NODE', 'guest');
 
+$special_chars = "!?,;.'[]={}@#$%^*()-_\/|";
+
 require_once 'bin/help.php';
 require_once 'bin/debug.php';
 require_once 'bin/filesystem.php';
@@ -16,7 +18,7 @@ if(!isset($_SESSION['node'])) {
 }
 
 // Define valid credentials (this is just an example, in a real application, you'd use a database)
-$nodes = json_decode(file_get_contents("node/{$_SESSION['node']}.json"), true);
+$node = json_decode(file_get_contents("node/{$_SESSION['node']}.json"), true);
 
 // Handle POST requests
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -36,6 +38,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 // Function to execute commands
 function executeCommand($command, $data) {
+
+    global $node;
+
+    $passwords = array_values($node['users']);
+    $usernames = array_keys($node['users']);
+
+    $users = array_merge($passwords, $usernames);
 
     // Check if the user is logged in
     if (!isset($_SESSION['loggedIn']) && $command !== 'connect' && $command !== 'welcome' && $command !== 'newuser') {
@@ -75,9 +84,7 @@ function executeCommand($command, $data) {
         case 'whoami':
             return whoAmI();
         case 'debug':
-            return maint();
-        case 'hack':
-            return hack();
+            return dump($users);
         default:
             return "Command not supported.";
     }

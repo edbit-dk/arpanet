@@ -57,25 +57,6 @@ function newUser($data) {
 function loginUser($data) {
     global $nodes;
 
-    if(strpos($data, '@') !== false) {
-        $_SESSION['node'] = explode('@', $data)[0];
-
-        if (!file_exists("node/{$_SESSION['node']}.json")) {
-            file_put_contents("node/{$_SESSION['node']}.json", json_encode(
-                [
-                    'hostname' => $_SESSION['node'],
-                    'ip' => long2ip(mt_rand()),
-                    'root' => $username,
-                    'users' => [$username => $password],
-                    'blocked' => []
-                ]
-                ));
-        } 
-
-    }else {
-        $params = explode(' ', $data);
-    }
-
     // If no parameters provided, prompt for username
     if (empty($params)) {
         return "Please provide username. ";
@@ -94,11 +75,31 @@ function loginUser($data) {
             return "Invalid username.";
         }
     }
+    
 
     // If both username and password provided, complete login process
     if (count($params) === 2) {
         $username = $_SESSION['loginUser'];
         $password = $params[1];
+
+        if(strpos($data, '@') !== false) {
+            $_SESSION['node'] = explode('@', $data)[0];
+    
+            if (!file_exists("node/{$_SESSION['node']}.json")) {
+                file_put_contents("node/{$_SESSION['node']}.json", json_encode(
+                    [
+                        'hostname' => $_SESSION['node'],
+                        'ip' => long2ip(mt_rand()),
+                        'root' => $username,
+                        'users' => [$username => $password],
+                        'blocked' => []
+                    ]
+                    ));
+            } 
+    
+        }else {
+            $params = explode(' ', $data);
+        }
 
         // Validate password
         if (isset($nodes['users'][$username]) && $nodes['users'][$username] === $password) {
