@@ -11,12 +11,12 @@ require_once 'bin/debug.php';
 require_once 'bin/filesystem.php';
 require_once 'bin/auth.php';
 
-// Define valid credentials (this is just an example, in a real application, you'd use a database)
-$validCredentials = json_decode(file_get_contents('node/guest.json'), true);
-
 if(!isset($_SESSION['node'])) {
     $_SESSION['node'] = DEFAULT_NODE;
 }
+
+// Define valid credentials (this is just an example, in a real application, you'd use a database)
+$nodes = json_decode(file_get_contents("node/{$_SESSION['node']}.json"), true);
 
 // Handle POST requests
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -38,12 +38,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 function executeCommand($command, $data) {
 
     // Check if the user is logged in
-    if (!isset($_SESSION['loggedIn']) && $command !== 'login' && $command !== 'welcome' && $command !== 'newuser') {
+    if (!isset($_SESSION['loggedIn']) && $command !== 'connect' && $command !== 'welcome' && $command !== 'newuser') {
         return "You must be logged in to execute commands.";
     }
 
     // Handle the LOGON command separately
-    if ($command === 'login') {
+    if ($command === 'connect') {
         return loginUser($data);
     }
 
@@ -54,10 +54,6 @@ function executeCommand($command, $data) {
             return newUser($data);
         case 'ls':
             return listFiles();
-        case 'pwd':
-            return getCurrentDirectory(true);
-        case 'touch':
-            return createFile($data);
         case 'mkdir':
             return createFolder($data);
         case 'echo': // Handle echo command here
@@ -70,9 +66,9 @@ function executeCommand($command, $data) {
             return readFileContent($data);
         case 'rm':
             return deleteFileOrFolder($data);
-        case 'login':
+        case 'connect':
             return loginUser($data);
-        case 'logout':
+        case 'dc':
             return logoutUser();
         case 'help':
             return getHelpInfo($data);

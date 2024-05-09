@@ -2,7 +2,7 @@
 
 // Function to handle new user creation
 function newUser($data) {
-    global $validCredentials;
+    global $nodes;
 
     $node = $_SESSION['node'];
 
@@ -14,7 +14,7 @@ function newUser($data) {
     }
 
     // Check if username already exists
-    if (isset($validCredentials['users'][$params[0]])) {
+    if (isset($nodes['users'][$params[0]])) {
         unset($_SESSION['newuser']); // Clear session data
         return "Username already exists";
     }
@@ -40,7 +40,7 @@ function newUser($data) {
         // Store the new user credentials
         $validCredentials['users'][$username] = $password;
         // Save the updated user data to the file
-        file_put_contents("node/{$node}.json", json_encode($validCredentials));
+        file_put_contents("node/{$node}.json", json_encode($nodes));
         // Create a folder for the new user
         $userFolder = HOME_DIRECTORY . $username;
         if (!file_exists($userFolder)) {
@@ -55,19 +55,21 @@ function newUser($data) {
 
 // Function to handle user login
 function loginUser($data) {
-    global $validCredentials;
+    global $nodes;
+
     $params = explode(' ', $data);
 
     // If no parameters provided, prompt for username
     if (empty($params)) {
         return "Please provide username. ";
+    } else {
+        $username = $params[0];
     }
 
     // If only username provided, prompt for password
-    if (count($params) === 1) {
-        $username = $params[0];
+    if (count($params) === 1 AND strpos($data, '@') !== false) {
         // Check if username exists
-        if (isset($validCredentials['users'][$username])) {
+        if (isset($nodes['users'][$username])) {
             $_SESSION['loginUser'] = $username;
             return "Enter password for $username: ";
         } else {
@@ -79,11 +81,36 @@ function loginUser($data) {
     if (count($params) === 2) {
         $username = $_SESSION['loginUser'];
         $password = $params[1];
+
+        if (strpos($data, '@') !== false) { 
+            $_SESSION['node'] = explode('@', $data)[0];
+    
+            if (!file_exists("node/{$_SESSION['node']}.json")) {
+                file_put_contents("node/{$_SESSION['node']}.json", json_encode(
+                    [
+                        'hostname' => $_SESSION['node'],
+                        'ip' => long2ip(mt_rand()),
+                        'root' => $username,
+                        'users' => [$username => $password],
+                        'blocked' => []
+                    ]
+                    ));
+            } 
+            
+        }
+
         // Validate password
-        if (isset($validCredentials['users'][$username]) && $validCredentials['users'][$username] === $password) {
+        if (isset($nodes['users'][$username]) && $nodes['users'][$username] === $password) {
             $_SESSION['loggedIn'] = true;
             $_SESSION['username'] = $username;
-            $_SESSION['pwd'] = realpath(HOME_DIRECTORY) . DIRECTORY_SEPARATOR . $username; // Set user's directory
+            $_SESSION['home'] = realpath(HOME_DIRECTORY) . DIRECTORY_SEPARATOR . $username; // Set user's directory
+            $_SESSION['pwd'] = HOME_DIRECTORY . DIRECTORY_SEPARATOR . $username; // Set user's directory
+            
+            $userFolder = HOME_DIRECTORY . $username;
+            if (!file_exists($userFolder)) {
+                mkdir($userFolder, 0777, true);
+            }
+            
             unset($_SESSION['loginUser']); // Remove temporary session variable
             return "Welcome, $username!"; // Successful login message
         } else {
@@ -108,5 +135,5 @@ function whoAmI() {
 function logoutUser() {
     $_SESSION = array();
     session_destroy();
-    return "Logged out successfully.";
+    return "Disconnected successfully.";
 }
