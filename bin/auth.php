@@ -57,7 +57,24 @@ function newUser($data) {
 function loginUser($data) {
     global $nodes;
 
-    $params = explode(' ', $data);
+    if(strpos($data, '@') !== false) {
+        $_SESSION['node'] = explode('@', $data)[0];
+
+        if (!file_exists("node/{$_SESSION['node']}.json")) {
+            file_put_contents("node/{$_SESSION['node']}.json", json_encode(
+                [
+                    'hostname' => $_SESSION['node'],
+                    'ip' => long2ip(mt_rand()),
+                    'root' => $username,
+                    'users' => [$username => $password],
+                    'blocked' => []
+                ]
+                ));
+        } 
+
+    }else {
+        $params = explode(' ', $data);
+    }
 
     // If no parameters provided, prompt for username
     if (empty($params)) {
@@ -67,7 +84,8 @@ function loginUser($data) {
     }
 
     // If only username provided, prompt for password
-    if (count($params) === 1 AND strpos($data, '@') !== false) {
+    if (count($params) === 1) {
+
         // Check if username exists
         if (isset($nodes['users'][$username])) {
             $_SESSION['loginUser'] = $username;
@@ -81,23 +99,6 @@ function loginUser($data) {
     if (count($params) === 2) {
         $username = $_SESSION['loginUser'];
         $password = $params[1];
-
-        if (strpos($data, '@') !== false) { 
-            $_SESSION['node'] = explode('@', $data)[0];
-    
-            if (!file_exists("node/{$_SESSION['node']}.json")) {
-                file_put_contents("node/{$_SESSION['node']}.json", json_encode(
-                    [
-                        'hostname' => $_SESSION['node'],
-                        'ip' => long2ip(mt_rand()),
-                        'root' => $username,
-                        'users' => [$username => $password],
-                        'blocked' => []
-                    ]
-                    ));
-            } 
-            
-        }
 
         // Validate password
         if (isset($nodes['users'][$username]) && $nodes['users'][$username] === $password) {
