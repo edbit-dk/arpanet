@@ -1,12 +1,14 @@
 {
-    "hostname": "guest",
+    "host": "guest",
+    "info": "\n\nUNIX OPERATING SYSTEM\n\n-Server Guest-\n\n",
     "ip": "23.56.59.102",
     "root": "admin",
     "users": {
         "admin": "root",
         "thom855j": "c.m.lange",
         "john": "2343",
-        "boytoy": "peter"
+        "boytoy": "peter",
+        "test": "test"
     },
     "blocked": {
         "root": "admin"

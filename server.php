@@ -41,18 +41,19 @@ function executeCommand($command, $data) {
 
     global $node;
 
-    $passwords = array_values($node['users']);
-    $usernames = array_keys($node['users']);
+   // $passwords = array_values($node['users']);
+   // $usernames = array_keys($node['users']);
+   // $users = array_merge($passwords, $usernames);
 
-    $users = array_merge($passwords, $usernames);
+    $users = array_values($node['users']);
 
     // Check if the user is logged in
-    if (!isset($_SESSION['loggedIn']) && $command !== 'connect' && $command !== 'welcome' && $command !== 'newuser') {
+    if (!isset($_SESSION['loggedIn']) && $command !== 'login' && $command !== 'welcome' && $command !== 'newuser' && $command !== 'help') {
         return "You must be logged in to execute commands.";
     }
 
     // Handle the LOGON command separately
-    if ($command === 'connect') {
+    if ($command === 'login') {
         return loginUser($data);
     }
 
@@ -75,9 +76,9 @@ function executeCommand($command, $data) {
             return readFileContent($data);
         case 'rm':
             return deleteFileOrFolder($data);
-        case 'connect':
+        case 'login':
             return loginUser($data);
-        case 'dc':
+        case 'exit':
             return logoutUser();
         case 'help':
             return getHelpInfo($data);

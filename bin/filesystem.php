@@ -13,6 +13,10 @@ function getCurrentDirectory($showFullPath = false) {
 // Function to handle the 'echo' command to write content to a file
 function echoToFile($data) {
     // Separate the content and filename
+    if(!strpos($data, '>')) {
+        return $data;
+    }
+
     $parts = explode('>', $data, 2);
     $content = trim($parts[0]);
     $filename = trim($parts[1]);

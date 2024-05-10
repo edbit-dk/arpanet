@@ -3,7 +3,7 @@
 function dump($data) {
     // Number of rows and columns in the memory dump
     $rows = 17;
-    $columns = 6;
+    $columns = 4;
 
     // Specific words to include in the memory dump
     $specialWords = $data;
@@ -75,7 +75,7 @@ function format_dump($memoryDump) {
         $memoryAddress = "0x" . dechex(rand(4096, 65535));
         $formattedDump .= $memoryAddress . " ";
         foreach ($row as $cell) {
-            $formattedDump .= "" . $cell;
+            $formattedDump .= " " . $cell;
         }
         $formattedDump .= "\n";
     }

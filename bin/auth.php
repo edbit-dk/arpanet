@@ -55,7 +55,9 @@ function newUser($data) {
 
 // Function to handle user login
 function loginUser($data) {
-    global $nodes;
+    global $node;
+
+    $params = explode(' ', $data);
 
     // If no parameters provided, prompt for username
     if (empty($params)) {
@@ -68,9 +70,9 @@ function loginUser($data) {
     if (count($params) === 1) {
 
         // Check if username exists
-        if (isset($nodes['users'][$username])) {
+        if (isset($node['users'][$username])) {
             $_SESSION['loginUser'] = $username;
-            return "Enter password for $username: ";
+            return "{$username}@{$node['host']}'s password: ";
         } else {
             return "Invalid username.";
         }
@@ -97,12 +99,10 @@ function loginUser($data) {
                     ));
             } 
     
-        }else {
-            $params = explode(' ', $data);
         }
 
         // Validate password
-        if (isset($nodes['users'][$username]) && $nodes['users'][$username] === $password) {
+        if (isset($node['users'][$username]) && $node['users'][$username] === $password) {
             $_SESSION['loggedIn'] = true;
             $_SESSION['username'] = $username;
             $_SESSION['home'] = realpath(HOME_DIRECTORY) . DIRECTORY_SEPARATOR . $username; // Set user's directory

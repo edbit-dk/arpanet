@@ -1,7 +1,4 @@
-Connected to DATANET.
+WELCOME TO DATANET TERMLINK.
 
-Any malicious and/or unauthorized activity is strictly forbidden.
-Disconnect IMMEDIATELY if you are not an authorized user!
-
-Type CONNECT to login. 
+Type LOGIN to login. 
 Type NEWUSER to create an account.

@@ -84,7 +84,7 @@ function handleUserInput() {
     const args = parts.slice(1).join(' ');
     if (command === 'clear') {
         clearTerminal(); // Clear the terminal
-    } else if (command === 'connect') {
+    } else if (command === 'login') {
         clearTerminal(); // Clear the terminal
         handleLogon(args); // Handle logon command
     } else if (command === 'dc') {
@@ -119,7 +119,7 @@ function handleLogon(username) {
     isPasswordPrompt = true;
     document.getElementById('command-input').type = 'password'; // Change input type to password
     usernameForLogon = username; // Store the username for logon
-    sendCommand('connect', username);
+    sendCommand('login', username);
 }
 
 // Function to handle password prompt
@@ -134,7 +134,7 @@ function handlePasswordPrompt() {
     if (usernameForNewUser) {
         sendCommand('newuser', usernameForNewUser + ' ' + password);
     } else {
-        sendCommand('connect', usernameForLogon + ' ' + password);
+        sendCommand('login', usernameForLogon + ' ' + password);
     }
 }
 
