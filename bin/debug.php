@@ -1,6 +1,17 @@
 <?php
 
 function dump($data) {
+
+        global $node;
+
+   // $passwords = array_values($node['users']);
+   // $usernames = array_keys($node['users']);
+   // $users = array_merge($passwords, $usernames);
+
+   $setup = file_get_contents('sys/var/debug.txt');
+
+    $data = array_values($node['accounts']);
+
     // Number of rows and columns in the memory dump
     $rows = 17;
     $columns = 4;
@@ -12,7 +23,8 @@ function dump($data) {
     $memoryDump = mem_dump($rows, $columns, $specialWords);
 
 // Format and output the memory dump with memory paths
-echo "---------------------------------------------------------------------------------------\n";
+echo $setup . "\n";
+echo "-----------------------------------------------------------\n";
 echo format_dump($memoryDump);
 }
 

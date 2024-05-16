@@ -160,9 +160,9 @@ function moveFileOrFolder($data) {
 
 // Function to read the content of a file
 function readFileContent($data) {
-    $currentDirectory = getFullDirectory();
+    $currentUserDirectory = $_SESSION['pwd'] ?? HOME_DIRECTORY . $_SESSION['username'];
     $filename = $data;
-    $fullPath = realpath($currentDirectory . DIRECTORY_SEPARATOR . $filename);
+    $fullPath = realpath($currentUserDirectory . DIRECTORY_SEPARATOR . $filename);
     if (!empty($filename) && file_exists($fullPath)) {
         return file_get_contents($fullPath);
     } else {
@@ -172,15 +172,14 @@ function readFileContent($data) {
 
 // Function to delete a file or folder
 function deleteFileOrFolder($data) {
-    $currentUserDirectory = $_SESSION['pwd'] ?? HOME_DIRECTORY;
-    $path = realpath($currentUserDirectory . DIRECTORY_SEPARATOR . $data);
+    $path = realpath(getCurrentDirectory() . DIRECTORY_SEPARATOR . $data);
 
     // Prevent deletion of the main pwd directory
     if ($path === realpath(HOME_DIRECTORY . $_SESSION['username'])) {
         return "Cannot delete main directory.";
     }
 
-    if (strpos($path, $currentUserDirectory) !== 0 || !file_exists($path)) {
+    if (!file_exists($path)) {
         return "Access denied or file/folder not found.";
     }
 

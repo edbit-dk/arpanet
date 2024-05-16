@@ -7,7 +7,7 @@ return [
     'mv' => 'Move or rename a file or directory. Usage: mv <source> <destination>',
     'cat' => 'Display the contents of a file. Usage: cat <filename>',
     'rm' => 'Remove a file or directory. Usage: rm <file/directory>',
-    'connect' => 'Log in to the system. Usage: login <username>:<password>',
-    'dc' => 'Log out from the system. Usage: logout',
+    'login' => 'Log in to the system. Usage: login <username>:<password>',
+    'exit' => 'Log out from the system. Usage: exit',
     'help' => 'Display help information for commands. Usage: help [command]',
 ];

@@ -14,7 +14,7 @@ function newUser($data) {
     }
 
     // Check if username already exists
-    if (isset($nodes['users'][$params[0]])) {
+    if (isset($nodes['accounts'][$params[0]])) {
         unset($_SESSION['newuser']); // Clear session data
         return "Username already exists";
     }
@@ -38,7 +38,7 @@ function newUser($data) {
         $password = $params[1];
         
         // Store the new user credentials
-        $validCredentials['users'][$username] = $password;
+        $validCredentials['accounts'][$username] = $password;
         // Save the updated user data to the file
         file_put_contents("node/{$node}.json", json_encode($nodes));
         // Create a folder for the new user
@@ -70,7 +70,7 @@ function loginUser($data) {
     if (count($params) === 1) {
 
         // Check if username exists
-        if (isset($node['users'][$username])) {
+        if (isset($node['accounts'][$username])) {
             $_SESSION['loginUser'] = $username;
             return "{$username}@{$node['host']}'s password: ";
         } else {
@@ -93,7 +93,7 @@ function loginUser($data) {
                         'hostname' => $_SESSION['node'],
                         'ip' => long2ip(mt_rand()),
                         'root' => $username,
-                        'users' => [$username => $password],
+                        'accounts' => [$username => $password],
                         'blocked' => []
                     ]
                     ));
@@ -102,7 +102,7 @@ function loginUser($data) {
         }
 
         // Validate password
-        if (isset($node['users'][$username]) && $node['users'][$username] === $password) {
+        if (isset($node['accounts'][$username]) && $node['accounts'][$username] === $password) {
             $_SESSION['loggedIn'] = true;
             $_SESSION['username'] = $username;
             $_SESSION['home'] = realpath(HOME_DIRECTORY) . DIRECTORY_SEPARATOR . $username; // Set user's directory

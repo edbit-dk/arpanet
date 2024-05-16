@@ -23,7 +23,7 @@ $node = json_decode(file_get_contents("node/{$_SESSION['node']}.json"), true);
 // Handle POST requests
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Get the command and data from POST data
-    $command = $_POST['command'];
+    $command = strtolower($_POST['command']);
     $data = $_POST['data'];
 
     // Execute the appropriate command
@@ -39,20 +39,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 // Function to execute commands
 function executeCommand($command, $data) {
 
-    global $node;
-
-   // $passwords = array_values($node['users']);
-   // $usernames = array_keys($node['users']);
-   // $users = array_merge($passwords, $usernames);
-
-    $users = array_values($node['users']);
-
     // Check if the user is logged in
-    if (!isset($_SESSION['loggedIn']) && $command !== 'login' && $command !== 'welcome' && $command !== 'newuser' && $command !== 'help') {
+    if (!isset($_SESSION['loggedIn']) 
+    && $command !== 'login' 
+    && $command !== 'welcome' 
+    && $command !== 'register' 
+    && $command !== 'help'
+    && $command !== 'debug') {
         return "You must be logged in to execute commands.";
     }
 
-    // Handle the LOGON command separately
+    // Handle the LOGIN command separately
     if ($command === 'login') {
         return loginUser($data);
     }
@@ -60,7 +57,7 @@ function executeCommand($command, $data) {
     switch ($command) {
         case 'welcome':
             return motd();
-        case 'newuser':
+        case 'register':
             return newUser($data);
         case 'ls':
             return listFiles();
@@ -85,7 +82,7 @@ function executeCommand($command, $data) {
         case 'whoami':
             return whoAmI();
         case 'debug':
-            return dump($users);
+            return dump($data);
         default:
             return "Command not supported.";
     }

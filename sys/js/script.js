@@ -87,10 +87,10 @@ function handleUserInput() {
     } else if (command === 'login') {
         clearTerminal(); // Clear the terminal
         handleLogon(args); // Handle logon command
-    } else if (command === 'dc') {
+    } else if (command === 'exit') {
         sendCommand(command, args); // Otherwise, send the command to the server
         clearTerminal(); // Clear the terminal
-    } else if (command === 'newuser') {
+    } else if (command === 'register') {
         clearTerminal(); // Clear the terminal
         handleNewUser(args); // Handle new user creation
     } else {
@@ -107,7 +107,7 @@ function handleNewUser(username) {
     isPasswordPrompt = true;
     document.getElementById('command-input').type = 'password'; // Change input type to password
     usernameForNewUser = username; // Store the username for new user
-    sendCommand('newuser', username);
+    sendCommand('register', username);
 }
 
 // Function to handle the LOGON command
@@ -132,7 +132,7 @@ function handlePasswordPrompt() {
     document.getElementById('command-input').value = '';
     clearTerminal(); // Clear the terminal
     if (usernameForNewUser) {
-        sendCommand('newuser', usernameForNewUser + ' ' + password);
+        sendCommand('register', usernameForNewUser + ' ' + password);
     } else {
         sendCommand('login', usernameForLogon + ' ' + password);
     }
