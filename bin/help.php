@@ -3,7 +3,7 @@
 // Function to display Message of the Day
 function motd() {
     if (!isset($_SESSION['welcomed'])) {
-        include('sys/var/welcome.txt');
+        include('sys/var/boot.txt');
         $_SESSION['welcomed'] = true; // Set the welcomed flag
         exit;
     }
@@ -16,9 +16,9 @@ function getHelpInfo($command) {
     if (!empty($command)) {
         return isset($helpInfo[$command]) ? $helpInfo[$command] : "Command not found.";
     }
-    $helpText = "Available commands:\n";
+    $helpText = "HELP:\n";
     foreach ($helpInfo as $cmd => $description) {
-        $helpText .= "$cmd: $description\n";
+        $helpText .= " $cmd $description\n";
     }
     return $helpText;
 }

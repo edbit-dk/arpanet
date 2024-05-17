@@ -1,8 +1,8 @@
 @import url(https://fonts.googleapis.com/css?family=VT323);
 
 body, input {
-  background: #000000;
-  color:  #00DB00;
+  background: #061F10;
+  color:  #4AFF52;
   font-family: 'VT323', Arial, Helvetica, sans-serif;;
   font-size: 24px;
   -webkit-font-smoothing: none;
@@ -13,34 +13,33 @@ body, input {
 #terminal-wrapper {
     margin: 0 auto;
     padding: 25px;
-    background: #000000;
     width: 100%;
     border: none; 
 }
 
 #terminal {
-    text-align:left;
     margin:0 auto;
-    background: #000000;
-    padding-bottom: 25px;
+    margin-bottom: 10px;
     width: 100%;
-    border: 1px solid #000000;
     overflow:auto;
-    color: #00DB00;
+    white-space: pre; /* Preserve whitespace */
+}
+
+#prompt {
+    display: flex;
+    align-items: center;
+    position: relative; /* Add relative positioning to parent */
 }
 
 #command-input {
-    width: 50%;
-    border: 1px solid #000000;
-    background-color: #000000;
-    color: #00DB00;
-    font-size: 24px;
-}
-
-textarea:focus, input:focus{
+    background: none;
+    border: none;
+    font-size: 24px; /* Adjust font size as needed */
+    width: 100%; /* Set width to 100% to make it full-width */
     outline: none;
+    position: relative; /* Use relative positioning */
+    margin-left: 2px; /* Add margin for spacing */
 }
-
 
 /*
  *  Scrollbar style
@@ -49,14 +48,12 @@ textarea:focus, input:focus{
  #terminal::-webkit-scrollbar-track, #terminal::-webkit-scrollbar-corner
  {
      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
-     background-color: #000000;
      border-radius: 10px;
  }
  
  #terminal::-webkit-scrollbar
  {
      width: 10px;
-     background-color: #000000;
  }
  
  #terminal::-webkit-scrollbar-thumb

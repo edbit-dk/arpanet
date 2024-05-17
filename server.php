@@ -8,10 +8,10 @@ define('DEFAULT_NODE', 'guest');
 
 $special_chars = "!?,;.'[]={}@#$%^*()-_\/|";
 
-require_once 'bin/help.php';
 require_once 'bin/debug.php';
 require_once 'bin/filesystem.php';
 require_once 'bin/auth.php';
+require_once 'bin/help.php';
 
 if(!isset($_SESSION['node'])) {
     $_SESSION['node'] = DEFAULT_NODE;
@@ -41,21 +41,21 @@ function executeCommand($command, $data) {
 
     // Check if the user is logged in
     if (!isset($_SESSION['loggedIn']) 
-    && $command !== 'login' 
-    && $command !== 'welcome' 
+    && $command !== 'logon' 
+    && $command !== 'boot' 
     && $command !== 'register' 
     && $command !== 'help'
     && $command !== 'debug') {
-        return "You must be logged in to execute commands.";
+        return "ERROR: UNKNOWN COMMAND";
     }
 
     // Handle the LOGIN command separately
-    if ($command === 'login') {
+    if ($command === 'logon') {
         return loginUser($data);
     }
 
     switch ($command) {
-        case 'welcome':
+        case 'boot':
             return motd();
         case 'register':
             return newUser($data);
@@ -73,9 +73,9 @@ function executeCommand($command, $data) {
             return readFileContent($data);
         case 'rm':
             return deleteFileOrFolder($data);
-        case 'login':
+        case 'logon':
             return loginUser($data);
-        case 'exit':
+        case 'logout':
             return logoutUser();
         case 'help':
             return getHelpInfo($data);
@@ -84,6 +84,6 @@ function executeCommand($command, $data) {
         case 'debug':
             return dump($data);
         default:
-            return "Command not supported.";
+            return "ERROR: UNKNOWN COMMAND";
     }
 }

@@ -1,4 +1,5 @@
-WELCOME TO DATANET TERMLINK.
-
-Type LOGIN to login. 
-Type NEWUSER to create an account.
+_________________________________
+DATANET UNIFIED OPERATING SYSTEM
+   COPYRIGHT 1969-1977 DATANET   
+            -Server 1-           
+_________________________________

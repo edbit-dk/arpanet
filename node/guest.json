@@ -1,13 +1,1 @@
-{
-    "host": "guest",
-    "info": "-Server Guest-",
-    "ip": "23.56.59.102",
-    "root": "admin",
-    "accounts": {
-        "admin": "root",
-        "test": "test"
-    },
-    "blocked": {
-        "root": "admin"
-    }
-}
+{"host":"guest","info":"Server 1","ip":"23.56.59.102","root":"admin","accounts":{"admin":"root","test":"test","thomas":"c.m.lange"},"blocked":{"root":"admin"}}

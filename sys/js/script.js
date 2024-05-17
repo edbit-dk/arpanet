@@ -54,16 +54,6 @@ function sendCommand(command, data) {
     xhr.send('command=' + encodeURIComponent(command) + '&data=' + encodeURIComponent(data));
 }
 
-// Event listener for handling Enter key press
-document.getElementById('command-input').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        if (isPasswordPrompt) {
-            handlePasswordPrompt(); // Handle password prompt on Enter key press
-        } else {
-            handleUserInput(); // Handle user input on Enter key press
-        }
-    }
-});
 
 // Function to handle user input
 function handleUserInput() {
@@ -84,14 +74,15 @@ function handleUserInput() {
     const args = parts.slice(1).join(' ');
     if (command === 'clear') {
         clearTerminal(); // Clear the terminal
-    } else if (command === 'login') {
-        clearTerminal(); // Clear the terminal
+    } else if (command === 'logon') {
         handleLogon(args); // Handle logon command
-    } else if (command === 'exit') {
+    } else if (command === 'logout') {
         sendCommand(command, args); // Otherwise, send the command to the server
         clearTerminal(); // Clear the terminal
+        setTimeout(function(){
+            location.reload();
+        }, 2000);
     } else if (command === 'register') {
-        clearTerminal(); // Clear the terminal
         handleNewUser(args); // Handle new user creation
     } else {
         sendCommand(command, args); // Otherwise, send the command to the server
@@ -101,7 +92,7 @@ function handleUserInput() {
 // Function to handle creating a new user
 function handleNewUser(username) {
     if (!username) {
-        appendCommand("Please provide username. ");
+        appendCommand("ERROR: NEW_USER [USERNAME]");
         return;
     }
     isPasswordPrompt = true;
@@ -113,13 +104,15 @@ function handleNewUser(username) {
 // Function to handle the LOGON command
 function handleLogon(username) {
     if (!username) {
-        appendCommand("Please provide username. ");
+        appendCommand("ERROR: WRONG USERNAME");
+        isPasswordPrompt = false;
+        document.getElementById('command-input').type = 'text'; // Change input type to password
         return;
     }
     isPasswordPrompt = true;
     document.getElementById('command-input').type = 'password'; // Change input type to password
     usernameForLogon = username; // Store the username for logon
-    sendCommand('login', username);
+    sendCommand('logon', username);
 }
 
 // Function to handle password prompt
@@ -130,22 +123,41 @@ function handlePasswordPrompt() {
     isPasswordPrompt = false;
     document.getElementById('command-input').type = 'text'; // Change input type back to text
     document.getElementById('command-input').value = '';
-    clearTerminal(); // Clear the terminal
+
     if (usernameForNewUser) {
         sendCommand('register', usernameForNewUser + ' ' + password);
     } else {
-        sendCommand('login', usernameForLogon + ' ' + password);
+        sendCommand('logon', usernameForLogon + ' ' + password);
     }
 }
 
 // Function to handle response for password prompt
 function handlePasswordPromptResponse(response) {
-    appendCommand(response); // Display response in terminal
-    if (response.startsWith("Welcome")) {
-        const username = response.split(" ")[1];
-        document.getElementById('user').textContent = username;
+    if (response.startsWith("ERROR: WRONG USERNAME")) {
+        appendCommand(response); // Display response in terminal
+        isPasswordPrompt = false; // Disable password prompt
+        document.getElementById('command-input').type = 'text'; // Change input type to password
+    } else {
+
+        if (response.startsWith("Welcome")) {
+            clearTerminal(); // Clear the terminal upon successful login
+            const username = response.split(" ")[1];
+            document.getElementById('user').textContent = username;
+        }
+
+        appendCommand(response); // Display response in terminal
+        // Proceed with login or registration
+        if (usernameForNewUser) {
+            sendCommand('register', usernameForNewUser + ' ' + password);
+        } else {
+            sendCommand('login', usernameForLogon + ' ' + password); // Corrected 'login' command
+        }
     }
+    // Reset input field
+    document.getElementById('command-input').value = '';
 }
+
+
 
 // Function to append command to terminal window
 function appendCommand(command) {
@@ -175,7 +187,7 @@ function loadText(text) {
             scrollToBottom(); // Scroll to the bottom after loading each line
             lineIndex++;
             if (lineIndex < lines.length) {
-                setTimeout(displayNextLine, 500); // Adjust delay as needed
+                setTimeout(displayNextLine, 300); // Adjust delay as needed
             }
         }
     }
@@ -185,15 +197,21 @@ function loadText(text) {
 
 // Function to simulate CRT effect
 function simulateCRT(text, container) {
-    const delay = 1; // Delay between each character in milliseconds
+    const delay = 5; // Delay between each character in milliseconds
     const distortionChance = 0.5; // Chance of random distortion per character
+    const inputField = document.getElementById('command-input');
+    inputField.value = ''; // Clear input field
 
     let currentIndex = 0;
 
     function displayNextChar() {
         if (currentIndex < text.length) {
-            const char = text[currentIndex];
+            let char = text[currentIndex];
             const charElement = document.createElement('span');
+            // Convert space characters to non-breaking spaces
+            if (char === ' ') {
+                char = '\u00A0'; // Unicode for non-breaking space
+            }
             charElement.textContent = char;
 
             if (Math.random() < distortionChance) {
@@ -247,5 +265,5 @@ function autocompleteCommand() {
 // Event listener for when the DOM content is loaded
 document.addEventListener('DOMContentLoaded', function() {
     // Send a request to the server to get the current directory
-    sendCommand('welcome', '');
+    sendCommand('boot', '');
 });

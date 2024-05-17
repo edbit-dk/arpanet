@@ -2,21 +2,19 @@
 
 // Function to handle new user creation
 function newUser($data) {
-    global $nodes;
-
-    $node = $_SESSION['node'];
+    global $node;
 
     $params = explode(' ', $data);
 
     // If no parameters provided, prompt for username
     if (empty($params)) {
-        return "Please provide username. ";
+        return "ERROR: USERNAME REQUIRED";
     }
 
     // Check if username already exists
-    if (isset($nodes['accounts'][$params[0]])) {
+    if (isset($node['accounts'][$params[0]])) {
         unset($_SESSION['newuser']); // Clear session data
-        return "Username already exists";
+        return "ERROR: USERNAME IN USE";
     }
 
     // If only username provided, store it in session and prompt for password
@@ -24,11 +22,11 @@ function newUser($data) {
         $username = $params[0];
         // Check if username is already set in session
         if (isset($_SESSION['newuser'])) {
-            return "Enter password for $username: ";
+            return "ENTER PASSWORD NOW: $username: ";
         } else {
             // Store username in session
             $_SESSION['newuser'] = $username;
-            return "Enter password for $username: ";
+            return "ENTER PASSWORD NOW: $username: ";
         }
     }
 
@@ -38,19 +36,19 @@ function newUser($data) {
         $password = $params[1];
         
         // Store the new user credentials
-        $validCredentials['accounts'][$username] = $password;
+        $node['accounts'][$username] = $password;
         // Save the updated user data to the file
-        file_put_contents("node/{$node}.json", json_encode($nodes));
+        file_put_contents("node/{$_SESSION['node']}.json", json_encode($node));
         // Create a folder for the new user
         $userFolder = HOME_DIRECTORY . $username;
         if (!file_exists($userFolder)) {
             mkdir($userFolder, 0777, true);
         }
         unset($_SESSION['newuser']); // Clear session data
-        return "User created successfully. You can logon now!";
+        return "Welcome new user, {$username}";
     }
 
-    return "Invalid new user parameters.";
+    return "ERROR: NEW_USER";
 }
 
 // Function to handle user login
@@ -61,7 +59,7 @@ function loginUser($data) {
 
     // If no parameters provided, prompt for username
     if (empty($params)) {
-        return "Please provide username. ";
+        return "ERROR: WRONG USERNAME";
     } else {
         $username = $params[0];
     }
@@ -72,9 +70,9 @@ function loginUser($data) {
         // Check if username exists
         if (isset($node['accounts'][$username])) {
             $_SESSION['loginUser'] = $username;
-            return "{$username}@{$node['host']}'s password: ";
+            return "ENTER PASSWORD:";
         } else {
-            return "Invalid username.";
+            return "ERROR: WRONG USERNAME";
         }
     }
     
@@ -114,14 +112,15 @@ function loginUser($data) {
             }
             
             unset($_SESSION['loginUser']); // Remove temporary session variable
-            return "Welcome, $username!"; // Successful login message
+            include('sys/var/welcome.txt');
+            return "\nWelcome, $username!"; // Successful login message
         } else {
             unset($_SESSION['loginUser']); // Remove temporary session variable
-            return "Invalid password."; // Invalid password message
+            return "ERROR: WRONG PASSWORD"; // Invalid password message
         }
     }
 
-    return "Invalid login parameters."; // Invalid login parameters message
+    return "ERROR: WRONG INPUT"; // Invalid login parameters message
 }
 
 // Function to handle whoami command
@@ -129,7 +128,7 @@ function whoAmI() {
     if (isset($_SESSION['username'])) {
         return $_SESSION['username']; // Return the logged-in user's username
     } else {
-        return "You are not logged in"; // Return a message indicating not logged in
+        return "ERROR: LOGON REQUIRED"; // Return a message indicating not logged in
     }
 }
 
@@ -137,5 +136,5 @@ function whoAmI() {
 function logoutUser() {
     $_SESSION = array();
     session_destroy();
-    return "Disconnected successfully.";
+    return "LOGGING OUT...";
 }
