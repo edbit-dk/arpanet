@@ -23,7 +23,7 @@ function echoToFile($data) {
 
     // Check if the filename is empty
     if (empty($filename)) {
-        return "Filename not provided.";
+        return "ERROR: FILENAME MISSING";
     }
 
     // Construct the full path
@@ -32,19 +32,19 @@ function echoToFile($data) {
     // Check if the file exists, if not, create it
     if (!file_exists($path)) {
         if (touch($path)) {
-            $message = "File created successfully: $filename\n";
+            $message = "$filename\n";
         } else {
-            return "Failed to create file.";
+            return "ERROR: ACTION FAILED";
         }
     } else {
-        $message = "File exists. ";
+        $message = "ERROR: {$filename} EXISTS";
     }
 
     // Write content to the file
     if (file_put_contents($path, $content) !== false) {
-        return $message . "Content written to file successfully: $filename";
+        return $message . "SAVING: $filename";
     } else {
-        return "Failed to write content to file.";
+        return "ERROR: ACTION FAILED";
     }
 }
 
@@ -53,14 +53,14 @@ function createFile($data) {
     $filename = strtok($data, ' ');
     $path = getFullDirectory();
     if (strpos($path . $filename, getFullDirectory()) !== 0) {
-        return "Access denied.";
+        return "ERROR: ACCESS DENIED";
     }
     if (file_exists($path . $filename)) {
-        return "File already exists.";
+        return "ERROR: {$filename} EXISTS";
     } elseif (touch($path . $filename)) {
-        return "File created successfully: $filename";
+        return "SAVED: $filename";
     } else {
-        return "Failed to create file.";
+        return "ERROR: ACTION FAILED";
     }
 }
 
@@ -70,14 +70,14 @@ function createFolder($data) {
     $currentUserDirectory = $_SESSION['pwd'] ?? HOME_DIRECTORY;
     $newFolder = $currentUserDirectory . DIRECTORY_SEPARATOR . $foldername;
     if (strpos($newFolder, $currentUserDirectory) !== 0) {
-        return "Access denied.";
+        return "ERROR: ACCESS DENIED";
     }
     if (file_exists($newFolder)) {
-        return "Folder already exists.";
+        return "{$newFolder} EXISTS";
     } elseif (mkdir($newFolder)) {
-        return "Folder created successfully: $foldername";
+        return "SAVED: $newFolder";
     } else {
-        return "Failed to create folder.";
+        return "ERROR: FAILED";
     }
 }
 
@@ -86,12 +86,12 @@ function writeFile($data) {
     list($filename, $content) = explode('>', $data, 2);
     $file = getCurrentDirectory() . DIRECTORY_SEPARATOR . $filename;
     if (!file_exists($file)) {
-        return "File does not exist.";
+        return "ERROR: {$filename} MISSING";
     }
     if (file_put_contents($file, $content) !== false) {
-        return "Content written to file successfully: $filename";
+        return "SAVING: $filename";
     } else {
-        return "Failed to write content to file.";
+        return "ERROR: ACTION FAILED";
     }
 }
 
@@ -104,13 +104,13 @@ function changeDirectory($data) {
             $_SESSION['pwd'] = $parentDirectory;
             return basename(getCurrentDirectory());
         } else {
-            return "Already at the top level directory.";
+            return ".";
         }
     }
     $currentUserDirectory = $_SESSION['pwd'] ?? HOME_DIRECTORY;
     $requestedDirectory = realpath($currentUserDirectory . DIRECTORY_SEPARATOR . $data);
     if (strpos($requestedDirectory, realpath($currentUserDirectory)) !== 0) {
-        return "Access denied or folder not found.";
+        return "ERROR: ACCESS DENIED";
     }
     if (empty($data)) {
         $_SESSION['pwd'] = HOME_DIRECTORY . $_SESSION['username'];
@@ -119,7 +119,7 @@ function changeDirectory($data) {
         $_SESSION['pwd'] = $requestedDirectory;
         return basename(getCurrentDirectory());
     } else {
-        return "Directory does not exist.";
+        return "ERROR: {$requestedDirectory} MISSING";
     }
 }
 
@@ -137,24 +137,24 @@ function moveFileOrFolder($data) {
 
     // Check if both source and destination are within the user's directory
     if (strpos($sourceFullPath, $currentUserDirectory) !== 0 || strpos($destinationFullPath, $currentUserDirectory) !== 0) {
-        return "Access denied.";
+        return "ERROR: ACCESS DENIED";
     }
 
     // Check if the source file or folder exists
     if (!file_exists($sourceFullPath)) {
-        return "Source file or folder does not exist.";
+        return "ERROR: {$sourceFullPath} MISSING";
     }
 
     // Check if the destination directory exists
     if (!is_dir(dirname($destinationFullPath))) {
-        return "Destination directory does not exist.";
+        return "ERROR: {$destinationFullPath} MISSING";
     }
 
     // Attempt to move the file or folder
     if (rename($sourceFullPath, $destinationFullPath)) {
-        return "File or folder moved successfully.";
+        return "ERROR: FOLDER OR FILE MISSING";
     } else {
-        return "Failed to move file or folder.";
+        return "ERROR: ACTION FAILED";
     }
 }
 
@@ -166,7 +166,7 @@ function readFileContent($data) {
     if (!empty($filename) && file_exists($fullPath)) {
         return file_get_contents($fullPath);
     } else {
-        return "File not found or access denied.";
+        return "ERROR: ACCESS DENIED";
     }
 }
 
@@ -176,27 +176,27 @@ function deleteFileOrFolder($data) {
 
     // Prevent deletion of the main pwd directory
     if ($path === realpath(HOME_DIRECTORY . $_SESSION['username'])) {
-        return "Cannot delete main directory.";
+        return "ERROR: ACCESS DENIED";
     }
 
     if (!file_exists($path)) {
-        return "Access denied or file/folder not found.";
+        return "ERROR: ACCESS DENIED";
     }
 
     if (is_file($path)) {
         if (unlink($path)) {
-            return "File deleted successfully.";
+            return "DELETED";
         } else {
-            return "Failed to delete file.";
+            return "ERROR: ACTION FAILED";
         }
     } elseif (is_dir($path)) {
         if (rrmdir($path)) {
-            return "Folder deleted successfully.";
+            return "DELETED";
         } else {
-            return "Failed to delete folder.";
+            return "ERROR: ACTION FAILED";
         }
     }
-    return "Path does not exist or is not a file/folder.";
+    return "ERROR: ACCESS DENIED";
 }
 
 // Recursive function to delete a folder and its contents

@@ -3,6 +3,7 @@ let commandHistory = [];
 let historyIndex = -1;
 let currentDirectory = ''; // Variable to store the current directory
 let isPasswordPrompt = false; // Flag to track if password prompt is active
+let userPassword = ''; // Variable to store the password
 let usernameForLogon = ''; // Variable to store the username for logon
 let usernameForNewUser = ''; // Variable to store the username for new user
 
@@ -37,9 +38,10 @@ document.getElementById('command-input').addEventListener('keydown', function(e)
 });
 
 // Function to send command to server
-function sendCommand(command, data) {
+function sendCommand(command, data, queryString = '') {
+    const query = window.location.search; // Get the current URL query string
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'server.php', true);
+    xhr.open('POST', 'server.php' + queryString, true); // Include the query string in the URL
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4 && xhr.status === 200) {
@@ -48,11 +50,33 @@ function sendCommand(command, data) {
                 handlePasswordPromptResponse(response); // Handle password prompt response
             } else {
                 loadText(response); // Load response text into terminal
+                handleRedirect(response); // Handle redirect if needed
             }
         }
     };
-    xhr.send('command=' + encodeURIComponent(command) + '&data=' + encodeURIComponent(data));
+    xhr.send('command=' + encodeURIComponent(command) + '&data=' + encodeURIComponent(data) + '&query=' + encodeURIComponent(query));
 }
+
+// Function to handle redirect
+function handleRedirect(response) {
+    if (response.startsWith("CONNECTING TO")) {
+        const regex = /\d+/; // Regular expression to match any sequence of digits
+        const match = response.match(regex); // Match the regular expression in the response
+        if (match) {
+            const server_id = match[0]; // Extract the first matched number
+            redirectTo('?server=' + server_id); // Redirect to a specific query string using the server number
+        }
+    }
+}
+
+// Function to redirect to a specific query string
+function redirectTo(url) {
+    // Replace 'your_redirect_url?specific_query_string' with the URL you want to redirect to along with the specific query string you want to include
+    setTimeout(function() {
+        window.location.href = url;
+    }, 1000); // Delay of 1000 milliseconds (1 second) before reloading
+}
+
 
 
 // Function to handle user input
@@ -78,10 +102,10 @@ function handleUserInput() {
         handleLogon(args); // Handle logon command
     } else if (command === 'logout') {
         sendCommand(command, args); // Otherwise, send the command to the server
-        clearTerminal(); // Clear the terminal
-        setTimeout(function(){
+        setTimeout(function() {
             location.reload();
-        }, 2000);
+        }, 1000); // Delay of 100 milliseconds
+        return; // Exit function after reload is scheduled
     } else if (command === 'register') {
         handleNewUser(args); // Handle new user creation
     } else {
@@ -89,16 +113,18 @@ function handleUserInput() {
     }
 }
 
+
 // Function to handle creating a new user
 function handleNewUser(username) {
     if (!username) {
         appendCommand("ERROR: NEW_USER [USERNAME]");
         return;
     }
+    if (isPasswordPrompt) return; // Prevent re-triggering the password prompt
     isPasswordPrompt = true;
     document.getElementById('command-input').type = 'password'; // Change input type to password
     usernameForNewUser = username; // Store the username for new user
-    sendCommand('register', username);
+    appendCommand("ENTER PASSWORD NOW:"); // Prompt for password
 }
 
 // Function to handle the LOGON command
@@ -106,13 +132,14 @@ function handleLogon(username) {
     if (!username) {
         appendCommand("ERROR: WRONG USERNAME");
         isPasswordPrompt = false;
-        document.getElementById('command-input').type = 'text'; // Change input type to password
+        document.getElementById('command-input').type = 'text'; // Change input type to text
         return;
     }
+    if (isPasswordPrompt) return; // Prevent re-triggering the password prompt
     isPasswordPrompt = true;
     document.getElementById('command-input').type = 'password'; // Change input type to password
     usernameForLogon = username; // Store the username for logon
-    sendCommand('logon', username);
+    appendCommand("ENTER PASSWORD:"); // Prompt for password
 }
 
 // Function to handle password prompt
@@ -120,44 +147,45 @@ function handlePasswordPrompt() {
     const password = document.getElementById('command-input').value.trim();
     if (password === '') return; // Ignore empty password
 
-    isPasswordPrompt = false;
-    document.getElementById('command-input').type = 'text'; // Change input type back to text
-    document.getElementById('command-input').value = '';
+    userPassword = password; // Store the password
 
     if (usernameForNewUser) {
         sendCommand('register', usernameForNewUser + ' ' + password);
-    } else {
+        usernameForNewUser = ''; // Reset the username for new user
+    } else if (usernameForLogon) {
         sendCommand('logon', usernameForLogon + ' ' + password);
+        usernameForLogon = ''; // Reset the username for logon
     }
-}
 
-// Function to handle response for password prompt
-function handlePasswordPromptResponse(response) {
-    if (response.startsWith("ERROR: WRONG USERNAME")) {
-        appendCommand(response); // Display response in terminal
-        isPasswordPrompt = false; // Disable password prompt
-        document.getElementById('command-input').type = 'text'; // Change input type to password
-    } else {
-
-        if (response.startsWith("Welcome")) {
-            clearTerminal(); // Clear the terminal upon successful login
-            const username = response.split(" ")[1];
-            document.getElementById('user').textContent = username;
-        }
-
-        appendCommand(response); // Display response in terminal
-        // Proceed with login or registration
-        if (usernameForNewUser) {
-            sendCommand('register', usernameForNewUser + ' ' + password);
-        } else {
-            sendCommand('login', usernameForLogon + ' ' + password); // Corrected 'login' command
-        }
-    }
-    // Reset input field
+    // Reset input field and disable password prompt after sending the password
+    isPasswordPrompt = true;
+    document.getElementById('command-input').type = 'text'; // Change input type back to text
     document.getElementById('command-input').value = '';
 }
 
 
+function handlePasswordPromptResponse(response) {
+    if (response.startsWith("ERROR: WRONG USERNAME") || response.startsWith("ERROR: WRONG PASSWORD")) {
+        appendCommand(response); // Display response in terminal
+        isPasswordPrompt = false; // Disable password prompt
+        document.getElementById('command-input').type = 'text'; // Change input type to text
+    } else if (response.startsWith("LOGGING IN...")) {
+        appendCommand(response); // Display "LOGGING IN..." message
+        setTimeout(function() {
+            location.reload();
+        }, 1000); // Delay of 1000 milliseconds (1 second) before reloading
+    } else {
+        // Only resend the command if it's not "LOGGING IN..." or an error
+        if (usernameForNewUser) {
+            sendCommand('register', usernameForNewUser + ' ' + userPassword);
+        } else if (usernameForLogon) {
+            sendCommand('logon', usernameForLogon + ' ' + userPassword);
+        }
+    }
+
+    // Reset input field
+    document.getElementById('command-input').value = '';
+}
 
 // Function to append command to terminal window
 function appendCommand(command) {
@@ -170,7 +198,8 @@ function appendCommand(command) {
 
 // Function to clear terminal
 function clearTerminal() {
-    document.getElementById('terminal').innerHTML = '';
+    const terminal = document.getElementById('terminal');
+    terminal.innerHTML = ''; // Clear the content of the terminal
 }
 
 // Function to load text into terminal one line at a time
@@ -187,7 +216,7 @@ function loadText(text) {
             scrollToBottom(); // Scroll to the bottom after loading each line
             lineIndex++;
             if (lineIndex < lines.length) {
-                setTimeout(displayNextLine, 300); // Adjust delay as needed
+                setTimeout(displayNextLine, 250); // Adjust delay as needed
             }
         }
     }

@@ -4,7 +4,7 @@ session_start(); // Start the session
 // Define the home directory
 define('HOME_DIRECTORY', getcwd() . "/home/");
 
-define('DEFAULT_NODE', 'guest');
+define('DEFAULT_NODE', '1');
 
 $special_chars = "!?,;.'[]={}@#$%^*()-_\/|";
 
@@ -12,13 +12,18 @@ require_once 'bin/debug.php';
 require_once 'bin/filesystem.php';
 require_once 'bin/auth.php';
 require_once 'bin/help.php';
+require_once 'bin/url.php';
 
-if(!isset($_SESSION['node'])) {
-    $_SESSION['node'] = DEFAULT_NODE;
+$request = parse_get('query');
+
+$server_id = isset($request['server']) ? $request['server'] : 1;
+
+if (!file_exists("server/{$server_id}.json")) { 
+    $server_id = 1;
 }
 
 // Define valid credentials (this is just an example, in a real application, you'd use a database)
-$node = json_decode(file_get_contents("node/{$_SESSION['node']}.json"), true);
+$server = json_decode(file_get_contents("server/{$server_id}.json"), true);
 
 // Handle POST requests
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -43,7 +48,8 @@ function executeCommand($command, $data) {
     if (!isset($_SESSION['loggedIn']) 
     && $command !== 'logon' 
     && $command !== 'boot' 
-    && $command !== 'register' 
+    && $command !== 'register'
+    && $command !== 'connect'  
     && $command !== 'help'
     && $command !== 'debug') {
         return "ERROR: UNKNOWN COMMAND";
@@ -83,6 +89,8 @@ function executeCommand($command, $data) {
             return whoAmI();
         case 'debug':
             return dump($data);
+        case 'connect':
+            return connectServer($data);
         default:
             return "ERROR: UNKNOWN COMMAND";
     }

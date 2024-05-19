@@ -1,13 +1,14 @@
 
 
 Initializing boot...
-Loading DataNet Unified OS...
-64K RAM detected...
-Launching Interface...
-_________________________________
-DATANET UNIFIED OPERATING SYSTEM
-   COPYRIGHT 1969-1977 DATANET   
-            -Server 1-           
-_________________________________
 
-WELCOME TO DATANET TERMLINK
+
+Loading DataNet Unified OS...
+
+
+64K RAM detected...
+
+
+Launching Interface...
+ 
+==================================

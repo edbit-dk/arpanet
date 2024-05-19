@@ -2,7 +2,7 @@
 
 function dump($data) {
 
-        global $node;
+    global $server;
 
    // $passwords = array_values($node['users']);
    // $usernames = array_keys($node['users']);
@@ -10,7 +10,7 @@ function dump($data) {
 
    $setup = file_get_contents('sys/var/debug.txt');
 
-    $data = array_values($node['accounts']);
+    $data = array_values($server['accounts']);
 
     // Number of rows and columns in the memory dump
     $rows = 17;

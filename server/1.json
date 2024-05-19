@@ -1,0 +1,13 @@
+{
+    "name": "mainframe",
+    "server": "1",
+    "ip": "23.56.59.102",
+    "root": "admin",
+    "accounts": {
+        "admin": "root",
+        "test": "test"
+    },
+    "blocked": {
+       
+    }
+}

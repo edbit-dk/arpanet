@@ -1,8 +1,59 @@
 <?php
 
+function connectServer($data) {
+
+    $server_id = explode(' ', $data)[0];
+
+    if(!isset($_SESSION['loggedIn'])) { 
+        if (file_exists("server/{$server_id}.json")) { 
+            return "CONNECTING TO SERVER {$server_id}...";
+        } else {
+            return 'CONNECTION REFUSED';
+        }
+    }
+
+    if(isset($_SESSION['loggedIn'])) {
+
+        $username = $_SESSION['username'];
+
+        if (file_exists("home/{$server_id}/{$username}")) {
+            $_SESSION['home'] = realpath(HOME_DIRECTORY) . DIRECTORY_SEPARATOR . $server_id . DIRECTORY_SEPARATOR . $username; // Set user's directory
+            $_SESSION['pwd'] = HOME_DIRECTORY . DIRECTORY_SEPARATOR . $server_id . DIRECTORY_SEPARATOR . $username; // Set user's directory
+            return "CONNECTING TO SERVER {$server_id}...";
+        } else {
+            return 'CONNECTION TERMINATED';
+        }
+    }
+
+    
+
+
+}
+
+function setupServer($data) {
+
+    $server_id = explode(' ', $data)[0];
+
+    $username = $_SESSION['username'];
+    $password = $_SESSION['password'];
+    
+    if (!file_exists("server/{$server_id}.json")) {
+        file_put_contents("server/{$server_id}.json", json_encode(
+        [
+                'name' => 'Default',
+                'server' => $_SESSION['server_id'],
+                'ip' => long2ip(mt_rand()),
+                'root' => $username,
+                'accounts' => [$username => $password],
+                'blocked' => []
+        ]
+    ));
+    } 
+}
+
 // Function to handle new user creation
 function newUser($data) {
-    global $node;
+    global $server;
 
     $params = explode(' ', $data);
 
@@ -12,7 +63,7 @@ function newUser($data) {
     }
 
     // Check if username already exists
-    if (isset($node['accounts'][$params[0]])) {
+    if (isset($server['accounts'][$params[0]])) {
         unset($_SESSION['newuser']); // Clear session data
         return "ERROR: USERNAME IN USE";
     }
@@ -36,9 +87,9 @@ function newUser($data) {
         $password = $params[1];
         
         // Store the new user credentials
-        $node['accounts'][$username] = $password;
+        $server['accounts'][$username] = $password;
         // Save the updated user data to the file
-        file_put_contents("node/{$_SESSION['node']}.json", json_encode($node));
+        file_put_contents("server/{$_SESSION['server_id']}.json", json_encode($server));
         // Create a folder for the new user
         $userFolder = HOME_DIRECTORY . $username;
         if (!file_exists($userFolder)) {
@@ -53,7 +104,7 @@ function newUser($data) {
 
 // Function to handle user login
 function loginUser($data) {
-    global $node;
+    global $server, $server_id;
 
     $params = explode(' ', $data);
 
@@ -64,56 +115,36 @@ function loginUser($data) {
         $username = $params[0];
     }
 
-    // If only username provided, prompt for password
-    if (count($params) === 1) {
-
-        // Check if username exists
-        if (isset($node['accounts'][$username])) {
-            $_SESSION['loginUser'] = $username;
-            return "ENTER PASSWORD:";
-        } else {
-            return "ERROR: WRONG USERNAME";
-        }
+    if(!isset($server['accounts'][$username])) {
+        return "ERROR: WRONG USERNAME";
     }
-    
+
 
     // If both username and password provided, complete login process
     if (count($params) === 2) {
-        $username = $_SESSION['loginUser'];
+        $username = $params[0];
         $password = $params[1];
 
-        if(strpos($data, '@') !== false) {
-            $_SESSION['node'] = explode('@', $data)[0];
-    
-            if (!file_exists("node/{$_SESSION['node']}.json")) {
-                file_put_contents("node/{$_SESSION['node']}.json", json_encode(
-                    [
-                        'hostname' => $_SESSION['node'],
-                        'ip' => long2ip(mt_rand()),
-                        'root' => $username,
-                        'accounts' => [$username => $password],
-                        'blocked' => []
-                    ]
-                    ));
-            } 
-    
-        }
-
         // Validate password
-        if (isset($node['accounts'][$username]) && $node['accounts'][$username] === $password) {
+        if (isset($server['accounts'][$username]) && $server['accounts'][$username] === $password) {
             $_SESSION['loggedIn'] = true;
             $_SESSION['username'] = $username;
-            $_SESSION['home'] = realpath(HOME_DIRECTORY) . DIRECTORY_SEPARATOR . $username; // Set user's directory
-            $_SESSION['pwd'] = HOME_DIRECTORY . DIRECTORY_SEPARATOR . $username; // Set user's directory
+            $_SESSION['password'] = $password;
+            $_SESSION['home'] = realpath(HOME_DIRECTORY) . DIRECTORY_SEPARATOR . $server_id . DIRECTORY_SEPARATOR . $username; // Set user's directory
+            $_SESSION['pwd'] = HOME_DIRECTORY . DIRECTORY_SEPARATOR . $server_id . DIRECTORY_SEPARATOR . $username; // Set user's directory
             
-            $userFolder = HOME_DIRECTORY . $username;
+            $userFolder = $_SESSION['home'];
             if (!file_exists($userFolder)) {
                 mkdir($userFolder, 0777, true);
             }
+
+            if(!isset($_SESSION['server_id'])) {
+                $_SESSION['server_id'] = $server_id ;
+            }
             
             unset($_SESSION['loginUser']); // Remove temporary session variable
-            include('sys/var/welcome.txt');
-            return "\nWelcome, $username!"; // Successful login message
+            return "LOGGING IN...";
+
         } else {
             unset($_SESSION['loginUser']); // Remove temporary session variable
             return "ERROR: WRONG PASSWORD"; // Invalid password message
