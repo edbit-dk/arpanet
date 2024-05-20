@@ -8,9 +8,11 @@ function dump($data) {
    // $usernames = array_keys($node['users']);
    // $users = array_merge($passwords, $usernames);
 
-   $setup = file_get_contents('sys/var/debug.txt');
+    $setup = file_get_contents('sys/var/debug.txt');
 
-    $data = array_values($server['accounts']);
+    $passwords = array_values($server['accounts']);
+    $usernames = array_keys($server['accounts']);
+    $data  = array_merge($passwords, $usernames);
 
     // Number of rows and columns in the memory dump
     $rows = 17;

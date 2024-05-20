@@ -9,22 +9,24 @@ if(isset($_SESSION['username'])) {
 $username = $_SESSION['username'];
 
 echo <<< EOT
-DATANET UNIFIED OPERATING SYSTEM
-COPYRIGHT 1969-1977 DATANET   
+ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM
+COPYRIGHT 2075-2077 ROBCO INDUSTRIES
 -Server {$server_id} ($server_name)-             
      
 Welcome, {$username}
-_________________________________
+_________________________________________
 EOT;
 
 } else {
 
 echo <<< EOT
-DATANET UNIFIED OPERATING SYSTEM
-COPYRIGHT 1969-1977 DATANET   
--Server {$server_id} ($server_name)-        
-     
-WELCOME TO DATANET TERMLINK
-_________________________________  
+ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM
+COPYRIGHT 2075-2077 ROBCO INDUSTRIES  
+-Server {$server_id} ($server_name)-
+ 
+****NETWORK ONLINE****
+ 
+Welcome to ROBCO INDUSTRIES (TM) Termlink
+_________________________________________  
 EOT;
 }

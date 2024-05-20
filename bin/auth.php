@@ -107,6 +107,17 @@ function loginUser($data) {
     global $server, $server_id;
 
     $params = explode(' ', $data);
+    $max_attempts = 4; // Maximum number of allowed attempts
+
+    // Initialize login attempts if not set
+    if (!isset($_SESSION['login_attempts'])) {
+        $_SESSION['login_attempts'] = [];
+    }
+
+    // Check if the user is already blocked
+    if (isset($_SESSION['blocked']) && $_SESSION['blocked'] === true) {
+        return "ERROR: TERMINAL LOCKED. PLEASE CONTACT AN AMINSTRATOR";
+    }
 
     // If no parameters provided, prompt for username
     if (empty($params)) {
@@ -115,10 +126,14 @@ function loginUser($data) {
         $username = $params[0];
     }
 
-    if(!isset($server['accounts'][$username])) {
-        return "ERROR: WRONG USERNAME";
+    // Initialize attempts for this user if not set
+    if (!isset($_SESSION['login_attempts'][$username])) {
+        $_SESSION['login_attempts'][$username] = 0;
     }
 
+    if (!isset($server['accounts'][$username])) {
+        return "ERROR: WRONG USERNAME";
+    }
 
     // If both username and password provided, complete login process
     if (count($params) === 2) {
@@ -138,21 +153,38 @@ function loginUser($data) {
                 mkdir($userFolder, 0777, true);
             }
 
-            if(!isset($_SESSION['server_id'])) {
-                $_SESSION['server_id'] = $server_id ;
+            if (!isset($_SESSION['server_id'])) {
+                $_SESSION['server_id'] = $server_id;
             }
-            
-            unset($_SESSION['loginUser']); // Remove temporary session variable
-            return "LOGGING IN...";
 
+            // Reset login attempts on successful login
+            unset($_SESSION['login_attempts'][$username]);
+            unset($_SESSION['blocked']);
+            return "LOGGING IN...";
         } else {
-            unset($_SESSION['loginUser']); // Remove temporary session variable
-            return "ERROR: WRONG PASSWORD"; // Invalid password message
+            $_SESSION['login_attempts'][$username] += 1;
+
+            // Calculate remaining attempts
+            $attempts_left = $max_attempts - $_SESSION['login_attempts'][$username];
+
+            if ($_SESSION['login_attempts'][$username] === 3) {
+                echo "!!! WARNING: LOCKOUT IMMINENT !!!\n";
+            }
+
+            // Block the user after 4 failed attempts
+            if ($_SESSION['login_attempts'][$username] >= 4) {
+                $_SESSION['blocked'] = true;
+                $server['blocked'][$username] = 1;
+                return "TERMINAL LOCKED. PLEASE CONTACT AN AMINSTRATOR";
+            }
+
+            return "ERROR: WRONG PASSWORD. {$attempts_left}/{$max_attempts} ATTEMPT(S) LEFT";
         }
     }
 
     return "ERROR: WRONG INPUT"; // Invalid login parameters message
 }
+
 
 // Function to handle whoami command
 function whoAmI() {

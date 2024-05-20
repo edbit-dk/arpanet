@@ -52,7 +52,7 @@ function executeCommand($command, $data) {
     && $command !== 'connect'  
     && $command !== 'help'
     && $command !== 'debug') {
-        return "ERROR: UNKNOWN COMMAND";
+        return "Password Required";
     }
 
     // Handle the LOGIN command separately
