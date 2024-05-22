@@ -100,7 +100,7 @@ function handleUserInput() {
         clearTerminal(); // Clear the terminal
     } else if (command === 'logon') {
         handleLogon(args); // Handle logon command
-    } else if (command === 'logout') {
+    } else if (command === 'logout' || command === 'restart') {
         sendCommand(command, args); // Otherwise, send the command to the server
         setTimeout(function() {
             location.reload();
@@ -165,7 +165,7 @@ function handlePasswordPrompt() {
 
 
 function handlePasswordPromptResponse(response) {
-    if (response.startsWith("ERROR: WRONG USERNAME") || response.startsWith("ERROR: WRONG PASSWORD")) {
+    if (response.startsWith("ERROR") || response.startsWith("WARNING")) {
         appendCommand(response); // Display response in terminal
         isPasswordPrompt = false; // Disable password prompt
         document.getElementById('command-input').type = 'text'; // Change input type to text
@@ -259,7 +259,7 @@ function simulateCRT(text, container) {
 
 // Function to scroll the terminal window to the bottom
 function scrollToBottom() {
-    const terminal = document.getElementById('terminal');
+    const terminal = document.getElementById('terminal-wrapper');
     terminal.scrollTop = terminal.scrollHeight;
 }
 

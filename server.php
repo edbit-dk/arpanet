@@ -47,7 +47,8 @@ function executeCommand($command, $data) {
     // Check if the user is logged in
     if (!isset($_SESSION['loggedIn']) 
     && $command !== 'logon' 
-    && $command !== 'boot' 
+    && $command !== 'boot'
+    && $command !== 'restart'  
     && $command !== 'register'
     && $command !== 'connect'  
     && $command !== 'help'
@@ -83,6 +84,8 @@ function executeCommand($command, $data) {
             return loginUser($data);
         case 'logout':
             return logoutUser();
+        case 'restart':
+            return restartServer();
         case 'help':
             return getHelpInfo($data);
         case 'whoami':

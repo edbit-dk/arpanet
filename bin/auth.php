@@ -168,14 +168,14 @@ function loginUser($data) {
             $attempts_left = $max_attempts - $_SESSION['login_attempts'][$username];
 
             if ($_SESSION['login_attempts'][$username] === 3) {
-                echo "!!! WARNING: LOCKOUT IMMINENT !!!\n";
+                echo "WARNING: LOCKOUT IMMINENT !!!\n";
             }
 
             // Block the user after 4 failed attempts
             if ($_SESSION['login_attempts'][$username] >= 4) {
                 $_SESSION['blocked'] = true;
                 $server['blocked'][$username] = 1;
-                return "TERMINAL LOCKED. PLEASE CONTACT AN AMINSTRATOR";
+                return "ERROR: TERMINAL LOCKED. PLEASE CONTACT AN AMINSTRATOR";
             }
 
             return "ERROR: WRONG PASSWORD. {$attempts_left}/{$max_attempts} ATTEMPT(S) LEFT";
@@ -200,4 +200,11 @@ function logoutUser() {
     $_SESSION = array();
     session_destroy();
     return "LOGGING OUT...";
+}
+
+// Function to handle user logout
+function restartServer() {
+    $_SESSION = array();
+    session_destroy();
+    return "RESTARTING...";
 }
