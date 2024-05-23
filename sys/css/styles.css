@@ -1,18 +1,17 @@
 @import url(https://fonts.googleapis.com/css?family=VT323);
 
 body, input {
-  background: #061F10;
-  color:  #4AFF52;
   font-family: 'VT323', Arial, Helvetica, sans-serif;;
   font-size: 24px;
   -webkit-font-smoothing: none;
   line-height: 1.2;
   text-shadow: 0 0 5px #C8C8C8;
+  background: #020202;
 }
 
 #terminal-wrapper {
     margin: 0 auto;
-    padding: 25px;
+    padding: 5px;
     width: 100%;
     border: none; 
 }
@@ -40,31 +39,4 @@ body, input {
     position: relative; /* Use relative positioning */
     margin-left: 2px; /* Add margin for spacing */
 }
-
-/*
- *  Scrollbar style
- */
-
- #terminal::-webkit-scrollbar-track, #terminal::-webkit-scrollbar-corner
- {
-     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
-     border-radius: 10px;
- }
- 
- #terminal::-webkit-scrollbar
- {
-     width: 10px;
- }
- 
- #terminal::-webkit-scrollbar-thumb
- {
-     border-radius: 10px;
-     background-color: #FFF;
-     background-image: -webkit-gradient(linear,
-                                        40% 0%,
-                                        75% 84%,
-                                        from(#4D9C41),
-                                        to(#19911D),
-                                        color-stop(.6,#54DE5D))
- }
 

@@ -1,4 +1,5 @@
 // Array to store command history
+let stylesheets = 'sys/css/';
 let commandHistory = [];
 let historyIndex = -1;
 let currentDirectory = ''; // Variable to store the current directory
@@ -77,8 +78,6 @@ function redirectTo(url) {
     }, 1000); // Delay of 1000 milliseconds (1 second) before reloading
 }
 
-
-
 // Function to handle user input
 function handleUserInput() {
     const input = document.getElementById('command-input').value.trim();
@@ -108,11 +107,20 @@ function handleUserInput() {
         return; // Exit function after reload is scheduled
     } else if (command === 'register') {
         handleNewUser(args); // Handle new user creation
+    } else if (command === 'theme') {
+        setTheme(args); // Handle color setting
     } else {
         sendCommand(command, args); // Otherwise, send the command to the server
     }
 }
 
+ // Function to set text and background color
+ function setTheme(color) {
+    const stylesheetLink = document.getElementById('theme-color');
+    stylesheetLink.href = stylesheets + color + '-crt.css';
+    localStorage.setItem('theme', color); // Save the theme to localStorage
+    // appendCommand(`Changed theme to ${color}`);
+}
 
 // Function to handle creating a new user
 function handleNewUser(username) {
@@ -130,7 +138,7 @@ function handleNewUser(username) {
 // Function to handle the LOGON command
 function handleLogon(username) {
     if (!username) {
-        appendCommand("ERROR: WRONG USERNAME");
+        appendCommand("ERROR: WRONG USERNAME!");
         isPasswordPrompt = false;
         document.getElementById('command-input').type = 'text'; // Change input type to text
         return;
@@ -169,7 +177,7 @@ function handlePasswordPromptResponse(response) {
         appendCommand(response); // Display response in terminal
         isPasswordPrompt = false; // Disable password prompt
         document.getElementById('command-input').type = 'text'; // Change input type to text
-    } else if (response.startsWith("LOGGING IN...")) {
+    } else if (response.startsWith("PASSWORD")) {
         appendCommand(response); // Display "LOGGING IN..." message
         setTimeout(function() {
             location.reload();
@@ -226,7 +234,7 @@ function loadText(text) {
 
 // Function to simulate CRT effect
 function simulateCRT(text, container) {
-    const delay = 5; // Delay between each character in milliseconds
+    const delay = 1; // Delay between each character in milliseconds
     const distortionChance = 0.5; // Chance of random distortion per character
     const inputField = document.getElementById('command-input');
     inputField.value = ''; // Clear input field
@@ -291,8 +299,18 @@ function autocompleteCommand() {
     xhr.send('input=' + encodeURIComponent(input));
 }
 
+// Function to load the saved theme from localStorage
+function loadSavedTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        setTheme(savedTheme);
+    }
+}
+
 // Event listener for when the DOM content is loaded
 document.addEventListener('DOMContentLoaded', function() {
     // Send a request to the server to get the current directory
+    loadSavedTheme();
+
     sendCommand('boot', '');
 });

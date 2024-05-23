@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vault-Tec Administration System</title>
 <link rel="stylesheet" href="sys/css/styles.css"> <!-- Link to the external CSS file -->
+<link id="theme-color" rel="stylesheet" href="sys/css/default-crt.css">
 </head>
 <body>
   <div id="terminal-wrapper">

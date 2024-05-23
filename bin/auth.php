@@ -160,7 +160,7 @@ function loginUser($data) {
             // Reset login attempts on successful login
             unset($_SESSION['login_attempts'][$username]);
             unset($_SESSION['blocked']);
-            return "LOGGING IN...";
+            return "PASSWORD ACCEPTED: Please wait while system is accessed.";
         } else {
             $_SESSION['login_attempts'][$username] += 1;
 
@@ -178,7 +178,7 @@ function loginUser($data) {
                 return "ERROR: TERMINAL LOCKED. PLEASE CONTACT AN AMINSTRATOR";
             }
 
-            return "ERROR: WRONG PASSWORD. {$attempts_left}/{$max_attempts} ATTEMPT(S) LEFT";
+            return "ERROR: WRONG PASSWORD! {$attempts_left} ATTEMPT(S) LEFT";
         }
     }
 

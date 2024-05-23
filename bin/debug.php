@@ -16,7 +16,7 @@ function dump($data) {
 
     // Number of rows and columns in the memory dump
     $rows = 17;
-    $columns = 4;
+    $columns = 3;
 
     // Specific words to include in the memory dump
     $specialWords = $data;
@@ -26,7 +26,6 @@ function dump($data) {
 
 // Format and output the memory dump with memory paths
 echo $setup . "\n";
-echo "-----------------------------------------------------------\n";
 echo format_dump($memoryDump);
 }
 

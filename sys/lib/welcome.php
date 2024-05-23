@@ -24,9 +24,9 @@ ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM
 COPYRIGHT 2075-2077 ROBCO INDUSTRIES  
 -Server {$server_id} ($server_name)-
  
-****NETWORK ONLINE****
+=== VAULT-TEC NETWORK ONLINE ===
  
-Welcome to ROBCO INDUSTRIES (TM) Termlink
+Welcome to ROBCO Industries (TM) Termlink
 _________________________________________  
 EOT;
 }
