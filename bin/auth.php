@@ -53,7 +53,7 @@ function setupServer($data) {
 
 // Function to handle new user creation
 function newUser($data) {
-    global $server;
+    global $server, $server_id;
 
     $params = explode(' ', $data);
 
@@ -90,11 +90,14 @@ function newUser($data) {
         $server['accounts'][$username] = $password;
         // Save the updated user data to the file
         file_put_contents("server/{$_SESSION['server_id']}.json", json_encode($server));
+
         // Create a folder for the new user
-        $userFolder = HOME_DIRECTORY . $username;
-        if (!file_exists($userFolder)) {
-            mkdir($userFolder, 0777, true);
-        }
+        $userFolder  = realpath(HOME_DIRECTORY) . DIRECTORY_SEPARATOR . $server_id . DIRECTORY_SEPARATOR . $username; // Set user's directory
+            
+            if (!file_exists($userFolder)) {
+                mkdir($userFolder, 0777, true);
+            }
+
         unset($_SESSION['newuser']); // Clear session data
         return "Welcome new user, {$username}";
     }
@@ -116,12 +119,12 @@ function loginUser($data) {
 
     // Check if the user is already blocked
     if (isset($_SESSION['blocked']) && $_SESSION['blocked'] === true) {
-        return "ERROR: TERMINAL LOCKED. PLEASE CONTACT AN AMINSTRATOR";
+        return "ERROR: TERMINAL LOCKED. PLEASE CONTACT AN AMINSTRATOR!";
     }
 
     // If no parameters provided, prompt for username
     if (empty($params)) {
-        return "ERROR: WRONG USERNAME";
+        return "ERROR: WRONG USERNAME!";
     } else {
         $username = $params[0];
     }
@@ -132,7 +135,7 @@ function loginUser($data) {
     }
 
     if (!isset($server['accounts'][$username])) {
-        return "ERROR: WRONG USERNAME";
+        return "ERROR: WRONG USERNAME!";
     }
 
     // If both username and password provided, complete login process
@@ -161,6 +164,7 @@ function loginUser($data) {
             unset($_SESSION['login_attempts'][$username]);
             unset($_SESSION['blocked']);
             return "PASSWORD ACCEPTED: Please wait while system is accessed.";
+
         } else {
             $_SESSION['login_attempts'][$username] += 1;
 
@@ -175,14 +179,14 @@ function loginUser($data) {
             if ($_SESSION['login_attempts'][$username] >= 4) {
                 $_SESSION['blocked'] = true;
                 $server['blocked'][$username] = 1;
-                return "ERROR: TERMINAL LOCKED. PLEASE CONTACT AN AMINSTRATOR";
+                return "ERROR: TERMINAL LOCKED. PLEASE CONTACT AN AMINSTRATOR!";
             }
 
             return "ERROR: WRONG PASSWORD! {$attempts_left} ATTEMPT(S) LEFT";
         }
     }
 
-    return "ERROR: WRONG INPUT"; // Invalid login parameters message
+    return "ERROR: WRONG INPUT!"; // Invalid login parameters message
 }
 
 
@@ -199,7 +203,12 @@ function whoAmI() {
 function logoutUser() {
     $_SESSION = array();
     session_destroy();
-    return "LOGGING OUT...";
+
+echo <<< EOT
+-------------
+ LOGGING OUT
+-------------
+EOT;
 }
 
 // Function to handle user logout

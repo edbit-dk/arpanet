@@ -97,23 +97,34 @@ function writeFile($data) {
 
 // Function to change the current working directory
 function changeDirectory($data) {
+    global $server, $server_id;
+    $homeDirectory = HOME_DIRECTORY . DIRECTORY_SEPARATOR . $server_id . DIRECTORY_SEPARATOR . $_SESSION['username'];
+
+    if (!isset($_SESSION['pwd'])) {
+        $_SESSION['pwd'] = $homeDirectory;
+    }
+
     if ($data === '..') {
         // Handle navigating up one level
-        $parentDirectory = realpath(dirname($_SESSION['pwd'] ?? HOME_DIRECTORY));
-        if ($parentDirectory !== HOME_DIRECTORY . $_SESSION['username']) {
+        $parentDirectory = realpath(dirname($_SESSION['pwd']));
+        if (strpos($parentDirectory, realpath($homeDirectory)) === 0) {
             $_SESSION['pwd'] = $parentDirectory;
             return basename(getCurrentDirectory());
         } else {
-            return ".";
+            return "ERROR: ACCESS DENIED";
         }
     }
-    $currentUserDirectory = $_SESSION['pwd'] ?? HOME_DIRECTORY;
+
+    $currentUserDirectory = $_SESSION['pwd'];
     $requestedDirectory = realpath($currentUserDirectory . DIRECTORY_SEPARATOR . $data);
-    if (strpos($requestedDirectory, realpath($currentUserDirectory)) !== 0) {
+
+    // Ensure the requested directory is within the user's home directory
+    if (strpos($requestedDirectory, realpath($homeDirectory)) !== 0) {
         return "ERROR: ACCESS DENIED";
     }
+
     if (empty($data)) {
-        $_SESSION['pwd'] = HOME_DIRECTORY . $_SESSION['username'];
+        $_SESSION['pwd'] = $homeDirectory;
         return basename(getCurrentDirectory());
     } elseif (is_dir($requestedDirectory)) {
         $_SESSION['pwd'] = $requestedDirectory;
@@ -122,6 +133,7 @@ function changeDirectory($data) {
         return "ERROR: {$requestedDirectory} MISSING";
     }
 }
+
 
 // Function to move a file or folder
 function moveFileOrFolder($data) {

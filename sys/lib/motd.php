@@ -11,7 +11,7 @@ $username = $_SESSION['username'];
 echo <<< EOT
 ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM
 COPYRIGHT 2075-2077 ROBCO INDUSTRIES
--Server {$server_id} ($server_name)-             
+-Vault {$server_id} ($server_name)-             
      
 Welcome, {$username}
 _________________________________________
@@ -20,13 +20,8 @@ EOT;
 } else {
 
 echo <<< EOT
-ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM
-COPYRIGHT 2075-2077 ROBCO INDUSTRIES  
--Server {$server_id} ($server_name)-
- 
-=== VAULT-TEC NETWORK ONLINE ===
- 
 Welcome to ROBCO Industries (TM) Termlink
+-Server {$server_id} ($server_name)-
 _________________________________________  
 EOT;
 }

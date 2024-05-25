@@ -8,6 +8,7 @@ define('DEFAULT_NODE', '1');
 
 $special_chars = "!?,;.'[]={}@#$%^*()-_\/|";
 
+require_once 'bin/system.php';
 require_once 'bin/debug.php';
 require_once 'bin/filesystem.php';
 require_once 'bin/auth.php';
@@ -48,6 +49,7 @@ function executeCommand($command, $data) {
     if (!isset($_SESSION['loggedIn']) 
     && $command !== 'logon' 
     && $command !== 'boot'
+    && $command !== 'motd'
     && $command !== 'restart'  
     && $command !== 'register'
     && $command !== 'connect'  
@@ -63,6 +65,8 @@ function executeCommand($command, $data) {
 
     switch ($command) {
         case 'boot':
+            return boot();
+        case 'motd':
             return motd();
         case 'register':
             return newUser($data);
@@ -88,12 +92,16 @@ function executeCommand($command, $data) {
             return restartServer();
         case 'help':
             return getHelpInfo($data);
+        case 'vault':
+            return getVaultInfo($data);
         case 'whoami':
             return whoAmI();
         case 'debug':
             return dump($data);
         case 'connect':
             return connectServer($data);
+        case 'pwd':
+            return getCurrentDirectory();
         default:
             return "ERROR: UNKNOWN COMMAND";
     }

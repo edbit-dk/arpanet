@@ -81,6 +81,9 @@ function redirectTo(url) {
 // Function to handle user input
 function handleUserInput() {
     const input = document.getElementById('command-input').value.trim();
+
+    localStorage.setItem('boot', true);
+
     if (input === '') return; // Ignore empty input
 
     // Append the command to the terminal and add it to history
@@ -103,7 +106,7 @@ function handleUserInput() {
         sendCommand(command, args); // Otherwise, send the command to the server
         setTimeout(function() {
             location.reload();
-        }, 1000); // Delay of 100 milliseconds
+        }, 2000); // Delay of 100 milliseconds
         return; // Exit function after reload is scheduled
     } else if (command === 'register') {
         handleNewUser(args); // Handle new user creation
@@ -224,7 +227,7 @@ function loadText(text) {
             scrollToBottom(); // Scroll to the bottom after loading each line
             lineIndex++;
             if (lineIndex < lines.length) {
-                setTimeout(displayNextLine, 250); // Adjust delay as needed
+                setTimeout(displayNextLine, 320); // Adjust delay as needed
             }
         }
     }
@@ -312,5 +315,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Send a request to the server to get the current directory
     loadSavedTheme();
 
-    sendCommand('boot', '');
+    // Check if 'boot' command has been sent during the current session
+    if (!sessionStorage.getItem('boot')) {
+        sendCommand('boot', '');
+        sessionStorage.setItem('boot', 'true'); // Set flag in sessionStorage
+    } else {
+        sendCommand('motd', '');
+    }
 });
+

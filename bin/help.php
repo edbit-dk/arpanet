@@ -1,18 +1,5 @@
 <?php
 
-// Function to display Message of the Day
-function motd() {
-    if (!isset($_SESSION['welcomed'])) {
-        include('sys/var/boot.txt');
-        $_SESSION['welcomed'] = true; // Set the welcomed flag
-        require('sys/lib/welcome.php');
-        exit;
-    } else {
-        require('sys/lib/welcome.php');
-        exit;
-    }
-}
-
 // Function to get help information for commands
 function getHelpInfo($command) {
     $helpInfo = include 'sys/lib/help.php';
@@ -25,6 +12,19 @@ function getHelpInfo($command) {
     $helpText = "HELP:\n";
     foreach ($helpInfo as $cmd => $description) {
         $helpText .= " $cmd $description\n";
+    }
+    return $helpText;
+}
+
+function getVaultInfo($number) {
+    $vaults = include 'sys/lib/vaults.php';
+    
+    if (!empty($number)) {
+        return isset($vaults[$number]) ? $vaults[$number] : "Vault not found.";
+    }
+    $helpText = "VAULT-TEC ACTIVE VAULTS:\n";
+    foreach ($vaults as $vault => $description) {
+        $helpText .= " $vault: $description\n";
     }
     return $helpText;
 }
