@@ -1,0 +1,13 @@
+{
+    "name": "Experiment Vault",
+    "location": "Springvale, Virginia",
+    "server": "3",
+    "root": "admin",
+    "pass": "amata",
+    "accounts": {
+        "admin": "robco"
+    },
+    "blocked": {
+       
+    }
+}

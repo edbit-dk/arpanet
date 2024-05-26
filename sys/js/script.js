@@ -60,7 +60,7 @@ function sendCommand(command, data, queryString = '') {
 
 // Function to handle redirect
 function handleRedirect(response) {
-    if (response.startsWith("Connecting to")) {
+    if (response.startsWith("Connecting")) {
         const regex = /\d+/; // Regular expression to match any sequence of digits
         const match = response.match(regex); // Match the regular expression in the response
         if (match) {
@@ -75,7 +75,7 @@ function redirectTo(url) {
     // Replace 'your_redirect_url?specific_query_string' with the URL you want to redirect to along with the specific query string you want to include
     setTimeout(function() {
         window.location.href = url;
-    }, 1000); // Delay of 1000 milliseconds (1 second) before reloading
+    }, 2000); // Delay of 1000 milliseconds (1 second) before reloading
 }
 
 // Function to handle user input
@@ -102,7 +102,7 @@ function handleUserInput() {
         clearTerminal(); // Clear the terminal
     } else if (command === 'logon') {
         handleLogon(args); // Handle logon command
-    } else if (command === 'logout' || command === 'restart') {
+    } else if (command === 'logout' || command === 'reboot') {
         sendCommand(command, args); // Otherwise, send the command to the server
         setTimeout(function() {
             location.reload();
@@ -228,7 +228,7 @@ function loadText(text) {
             scrollToBottom(); // Scroll to the bottom after loading each line
             lineIndex++;
             if (lineIndex < lines.length) {
-                setTimeout(displayNextLine, 200); // Adjust delay as needed
+                setTimeout(displayNextLine, 320); // Adjust delay as needed
             }
         }
     }
@@ -322,6 +322,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!sessionStorage.getItem('boot')) {
         sendCommand('boot', '');
         sessionStorage.setItem('boot', 'true'); // Set flag in sessionStorage
+        setTimeout(function() {
+            location.reload();
+        }, 5000);
     } else {
         sendCommand('motd', '');
     }

@@ -3,9 +3,9 @@
     "location": "Enclave Oil Rig",
     "server": "1",
     "root": "admin",
-    "pass": "president",
+    "pass": "robco",
     "accounts": {
-        "admin": "root"
+        "admin": "president"
     },
     "blocked": {
        

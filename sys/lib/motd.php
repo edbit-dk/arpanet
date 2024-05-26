@@ -5,18 +5,26 @@ global $server_id, $server;
 $server_name = $server['name'];
 
 if(isset($_SESSION['username'])) {
+    
+    $username = $_SESSION['username'];
 
-$username = strtoupper($_SESSION['username']);
+    if(isset($server['accounts'][$username])
+    && $server['accounts'][$username] === $_SESSION['password'] 
+    OR $server['pass'] === $_SESSION['password'] ) {
 
-echo <<< EOT
-ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM
-COPYRIGHT 2075-2077 ROBCO INDUSTRIES
--Server {$server_id}-             
-     
-Welcome, {$username}
-_________________________________________
-[ > $server_name]
-EOT;
+    $username = strtoupper($username);
+
+    echo <<< EOT
+    ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM
+    COPYRIGHT 2075-2077 ROBCO INDUSTRIES
+    -Vault {$server_id}-             
+        
+    Welcome, {$username}
+    _________________________________________
+    [ > $server_name]
+    EOT;
+
+    }
 
 } else {
 
@@ -26,6 +34,5 @@ Welcome to ROBCO Industries (TM) Termlink
  
 System Online
 _________________________________________
-Password Required
 EOT;
 }

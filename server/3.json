@@ -1,11 +1,11 @@
 {
-    "name": "Control",
+    "name": "Control Vault",
     "location": "Las Vegas, Nevada",
     "server": "3",
     "root": "admin",
     "pass": "desert",
     "accounts": {
-        "admin": "root"
+        "admin": "house"
     },
     "blocked": {
        

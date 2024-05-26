@@ -4,29 +4,25 @@ function connectServer($data) {
 
     $server_id = explode(' ', $data)[0];
 
+    if (!file_exists("server/{$server_id}.json")) { 
+        return 'ERROR: Connection Refused.';
+    }
+
+// Define valid credentials (this is just an example, in a real application, you'd use a database)
+    $server = json_decode(file_get_contents("server/{$server_id}.json"), true);
+
     if(!isset($_SESSION['loggedIn'])) { 
         if (file_exists("server/{$server_id}.json")) { 
-            return "Connecting to server: {$server_id}...";
+            return "Connecting to: Server {$server_id}...";
         } else {
-            return 'ERROR: Connection refused.';
+            return 'ERROR: Connection Refused.';
         }
     }
 
-    if(isset($_SESSION['loggedIn'])) {
+    if(isset($_SESSION['loggedIn']) && $_SESSION['server'] != $server_id) {
 
-        $username = $_SESSION['username'];
-
-        if (file_exists("home/{$server_id}/{$username}")) {
-            $_SESSION['home'] = realpath(HOME_DIRECTORY) . DIRECTORY_SEPARATOR . $server_id . DIRECTORY_SEPARATOR . $username; // Set user's directory
-            $_SESSION['pwd'] = HOME_DIRECTORY . DIRECTORY_SEPARATOR . $server_id . DIRECTORY_SEPARATOR . $username; // Set user's directory
-            return "Connecting to server: {$server_id}...";
-        } else {
-            return 'ERROR: Connection terminated.';
-        }
+        return "ERROR: Connection Terminated.";
     }
-
-    
-
 
 }
 
@@ -92,7 +88,7 @@ function newUser($data) {
         file_put_contents("server/{$_SESSION['server_id']}.json", json_encode($server));
 
         // Create a folder for the new user
-        $userFolder  = realpath(HOME_DIRECTORY) . DIRECTORY_SEPARATOR . $server_id . DIRECTORY_SEPARATOR . $username; // Set user's directory
+        $userFolder  = realpath(HOME_DIRECTORY) . DIRECTORY_SEPARATOR . $server_id; // Set user's directory
             
             if (!file_exists($userFolder)) {
                 mkdir($userFolder, 0777, true);
@@ -149,8 +145,9 @@ function loginUser($data) {
             $_SESSION['loggedIn'] = true;
             $_SESSION['username'] = $username;
             $_SESSION['password'] = $password;
-            $_SESSION['home'] = realpath(HOME_DIRECTORY) . DIRECTORY_SEPARATOR . $server_id . DIRECTORY_SEPARATOR . $username; // Set user's directory
-            $_SESSION['pwd'] = HOME_DIRECTORY . DIRECTORY_SEPARATOR . $server_id . DIRECTORY_SEPARATOR . $username; // Set user's directory
+            $_SESSION['server'] = $server_id;
+            $_SESSION['home'] = realpath(HOME_DIRECTORY) . DIRECTORY_SEPARATOR . $server_id; // Set user's directory
+            $_SESSION['pwd'] = HOME_DIRECTORY . DIRECTORY_SEPARATOR . $server_id; // Set user's directory
             
             $userFolder = $_SESSION['home'];
             if (!file_exists($userFolder)) {

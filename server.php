@@ -26,6 +26,11 @@ if (!file_exists("server/{$server_id}.json")) {
 // Define valid credentials (this is just an example, in a real application, you'd use a database)
 $server = json_decode(file_get_contents("server/{$server_id}.json"), true);
 
+if(isset($_SESSION['loggedIn']) && $_SESSION['server'] != $server_id) {
+
+    echo "ERROR: Connection Terminated.\n";
+}
+
 // Handle POST requests
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Get the command and data from POST data
@@ -63,17 +68,14 @@ function executeCommand($command, $data) {
         return loginUser($data);
     }
 
+
     switch ($command) {
         case 'boot':
             return boot();
         case 'motd':
             return motd();
-        case 'register':
-            return newUser($data);
         case 'ls':
             return listFiles();
-        case 'mkdir':
-            return createFolder($data);
         case 'echo': // Handle echo command here
             return echoToFile($data);
         case 'cd':
@@ -88,20 +90,16 @@ function executeCommand($command, $data) {
             return loginUser($data);
         case 'logout':
             return logoutUser();
-        case 'restart':
+        case 'reboot':
             return restartServer();
         case 'help':
             return getHelpInfo($data);
-        case 'vault':
+        case 'scan':
             return getVaultInfo($data);
-        case 'whoami':
-            return whoAmI();
         case 'debug':
             return dump($data);
         case 'connect':
             return connectServer($data);
-        case 'pwd':
-            return getCurrentDirectory();
         default:
             return "ERROR: UNKNOWN COMMAND";
     }
