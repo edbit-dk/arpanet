@@ -14,6 +14,8 @@ body, input {
     padding: 5px;
     width: 100%;
     border: none; 
+    height: 95dvh;
+    overflow-y: auto;
 }
 
 #terminal {

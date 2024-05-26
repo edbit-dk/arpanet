@@ -60,7 +60,7 @@ function sendCommand(command, data, queryString = '') {
 
 // Function to handle redirect
 function handleRedirect(response) {
-    if (response.startsWith("CONNECTING TO")) {
+    if (response.startsWith("Connecting to")) {
         const regex = /\d+/; // Regular expression to match any sequence of digits
         const match = response.match(regex); // Match the regular expression in the response
         if (match) {
@@ -106,7 +106,7 @@ function handleUserInput() {
         sendCommand(command, args); // Otherwise, send the command to the server
         setTimeout(function() {
             location.reload();
-        }, 2000); // Delay of 100 milliseconds
+        }, 1500); // Delay of 100 milliseconds
         return; // Exit function after reload is scheduled
     } else if (command === 'register') {
         handleNewUser(args); // Handle new user creation
@@ -141,7 +141,7 @@ function handleNewUser(username) {
 // Function to handle the LOGON command
 function handleLogon(username) {
     if (!username) {
-        appendCommand("ERROR: WRONG USERNAME!");
+        appendCommand("ERROR: Wrong username.");
         isPasswordPrompt = false;
         document.getElementById('command-input').type = 'text'; // Change input type to text
         return;
@@ -180,11 +180,11 @@ function handlePasswordPromptResponse(response) {
         appendCommand(response); // Display response in terminal
         isPasswordPrompt = false; // Disable password prompt
         document.getElementById('command-input').type = 'text'; // Change input type to text
-    } else if (response.startsWith("PASSWORD")) {
+    } else if (response.startsWith("EXCACT")) {
         appendCommand(response); // Display "LOGGING IN..." message
         setTimeout(function() {
             location.reload();
-        }, 1000); // Delay of 1000 milliseconds (1 second) before reloading
+        }, 2500); // Delay of 1000 milliseconds (1 second) before reloading
     } else {
         // Only resend the command if it's not "LOGGING IN..." or an error
         if (usernameForNewUser) {
@@ -205,6 +205,7 @@ function appendCommand(command) {
     commandElement.classList.add('command-prompt'); // Add command prompt class
     commandElement.textContent = command;
     terminal.appendChild(commandElement);
+    scrollToBottom(); // Ensure scrolling after appending
 }
 
 // Function to clear terminal
@@ -227,7 +228,7 @@ function loadText(text) {
             scrollToBottom(); // Scroll to the bottom after loading each line
             lineIndex++;
             if (lineIndex < lines.length) {
-                setTimeout(displayNextLine, 320); // Adjust delay as needed
+                setTimeout(displayNextLine, 200); // Adjust delay as needed
             }
         }
     }
@@ -237,7 +238,7 @@ function loadText(text) {
 
 // Function to simulate CRT effect
 function simulateCRT(text, container) {
-    const delay = 1; // Delay between each character in milliseconds
+    const delay = 2; // Delay between each character in milliseconds
     const distortionChance = 0.5; // Chance of random distortion per character
     const inputField = document.getElementById('command-input');
     inputField.value = ''; // Clear input field
@@ -262,6 +263,8 @@ function simulateCRT(text, container) {
 
             currentIndex++;
             setTimeout(displayNextChar, delay);
+        } else {
+            scrollToBottom(); // Ensure scrolling after simulating CRT effect
         }
     }
 

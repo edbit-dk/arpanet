@@ -6,9 +6,9 @@ function connectServer($data) {
 
     if(!isset($_SESSION['loggedIn'])) { 
         if (file_exists("server/{$server_id}.json")) { 
-            return "CONNECTING TO SERVER {$server_id}...";
+            return "Connecting to server: {$server_id}...";
         } else {
-            return 'CONNECTION REFUSED';
+            return 'ERROR: Connection refused.';
         }
     }
 
@@ -19,9 +19,9 @@ function connectServer($data) {
         if (file_exists("home/{$server_id}/{$username}")) {
             $_SESSION['home'] = realpath(HOME_DIRECTORY) . DIRECTORY_SEPARATOR . $server_id . DIRECTORY_SEPARATOR . $username; // Set user's directory
             $_SESSION['pwd'] = HOME_DIRECTORY . DIRECTORY_SEPARATOR . $server_id . DIRECTORY_SEPARATOR . $username; // Set user's directory
-            return "CONNECTING TO SERVER {$server_id}...";
+            return "Connecting to server: {$server_id}...";
         } else {
-            return 'CONNECTION TERMINATED';
+            return 'ERROR: Connection terminated.';
         }
     }
 
@@ -119,12 +119,12 @@ function loginUser($data) {
 
     // Check if the user is already blocked
     if (isset($_SESSION['blocked']) && $_SESSION['blocked'] === true) {
-        return "ERROR: TERMINAL LOCKED. PLEASE CONTACT AN AMINSTRATOR!";
+        return "ERROR: Terminal Locked. Please contact an administrator!";
     }
 
     // If no parameters provided, prompt for username
     if (empty($params)) {
-        return "ERROR: WRONG USERNAME!";
+        return "ERROR: Wrong Username.";
     } else {
         $username = $params[0];
     }
@@ -135,7 +135,7 @@ function loginUser($data) {
     }
 
     if (!isset($server['accounts'][$username])) {
-        return "ERROR: WRONG USERNAME!";
+        return "ERROR: Wrong Username.";
     }
 
     // If both username and password provided, complete login process
@@ -144,7 +144,8 @@ function loginUser($data) {
         $password = $params[1];
 
         // Validate password
-        if (isset($server['accounts'][$username]) && $server['accounts'][$username] === $password) {
+        if (isset($server['accounts'][$username]) && $server['accounts'][$username] === $password 
+        OR $server['pass'] === $password ) {
             $_SESSION['loggedIn'] = true;
             $_SESSION['username'] = $username;
             $_SESSION['password'] = $password;
@@ -163,7 +164,8 @@ function loginUser($data) {
             // Reset login attempts on successful login
             unset($_SESSION['login_attempts'][$username]);
             unset($_SESSION['blocked']);
-            return "PASSWORD ACCEPTED: Please wait while system is accessed.";
+            echo "EXCACT MATCH!\n";
+            return "Password Accepted. Please wait while system is accessed.";
 
         } else {
             $_SESSION['login_attempts'][$username] += 1;
@@ -172,21 +174,21 @@ function loginUser($data) {
             $attempts_left = $max_attempts - $_SESSION['login_attempts'][$username];
 
             if ($_SESSION['login_attempts'][$username] === 3) {
-                echo "WARNING: LOCKOUT IMMINENT !!!\n";
+                echo "WARNING: Lockout Imminent !!!\n";
             }
 
             // Block the user after 4 failed attempts
             if ($_SESSION['login_attempts'][$username] >= 4) {
                 $_SESSION['blocked'] = true;
                 $server['blocked'][$username] = 1;
-                return "ERROR: TERMINAL LOCKED. PLEASE CONTACT AN AMINSTRATOR!";
+                return "ERROR: Terminal Locked. Please contact an administrator!";
             }
 
-            return "ERROR: WRONG PASSWORD! {$attempts_left} ATTEMPT(S) LEFT";
+            return "ERROR: Wrong Password. Attempts Remaining: {$attempts_left}";
         }
     }
 
-    return "ERROR: WRONG INPUT!"; // Invalid login parameters message
+    return "ERROR: Wrong Input."; // Invalid login parameters message
 }
 
 
@@ -204,11 +206,7 @@ function logoutUser() {
     $_SESSION = array();
     session_destroy();
 
-echo <<< EOT
--------------
- LOGGING OUT
--------------
-EOT;
+return 'LOGGING OUT...';
 }
 
 // Function to handle user logout

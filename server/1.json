@@ -1,8 +1,9 @@
 {
     "name": "Records Database",
+    "location": "Enclave Oil Rig",
     "server": "1",
-    "ip": "23.56.59.102",
     "root": "admin",
+    "pass": "pizza",
     "accounts": {
         "admin": "root"
     },

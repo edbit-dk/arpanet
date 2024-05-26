@@ -1,40 +1,88 @@
 <?php
 
-function dump($data) {
+function wordlist($file, $word_length = 7) {
+    $words = file_get_contents($file);
+    
+    $words = explode(" ", $words);
+    $retwords = [];
+    $i=0;
+    $index=0;
+    $wordlen=0;
+    $length = $word_length;
+    $count =12;
+    $failsafe=0;
+    
+    do {
+        $index = rand(0,count($words));
+        $wordlen = strlen($words[$index]);
+        if ($wordlen == $length) {
+            $retwords[] = strtoupper($words[$index]);
+            $i++;
+        } else {
+            $failsafe++;
+        }
+        if ($failsafe > 1000) $i = $failsafe;
+    } while ($i < $count);
+    
+    //$retwords = substr($retwords,0,strlen($retwords)-1);
+    return $retwords;
+}
 
+function dump($data) {
     global $server;
 
-   // $passwords = array_values($node['users']);
-   // $usernames = array_keys($node['users']);
-   // $users = array_merge($passwords, $usernames);
+    $data = strtoupper($data);
+    $root_pass = $server['pass'];
+    $word_length = strlen($root_pass);
 
-    $setup = file_get_contents('sys/var/debug.txt');
+    if (!isset($_SESSION['dump'])) {
+        $setup = file_get_contents('sys/var/debug.txt');
 
-    $passwords = array_values($server['accounts']);
-    $usernames = array_keys($server['accounts']);
-    $data  = array_merge($passwords, $usernames);
+        $word_list = wordlist('sys/var/wordlist.txt', $word_length);
+        $passwords[] = $root_pass;
+        //$usernames = array_keys($server['accounts']);
+        $data = array_merge($passwords, $word_list);
 
-    // Number of rows and columns in the memory dump
-    $rows = 17;
-    $columns = 3;
+        // Number of rows and columns in the memory dump
+        $rows = 17;
+        $columns = 3;
 
-    // Specific words to include in the memory dump
-    $specialWords = $data;
+        // Specific words to include in the memory dump
+        $specialWords = $data;
 
-    // Generate the memory dump
-    $memoryDump = mem_dump($rows, $columns, $specialWords);
+        // Generate the memory dump
+        $memoryDump = mem_dump($rows, $columns, $specialWords, $word_length);
 
-// Format and output the memory dump with memory paths
-echo $setup . "\n";
-echo format_dump($memoryDump);
+        // Format and output the memory dump with memory paths
+        echo $setup . "\n";
+
+        $_SESSION['dump'] = format_dump($memoryDump);
+        return $_SESSION['dump'];
+    } else {
+
+        if($data != strtoupper($root_pass)) {
+            $_SESSION['dump'] = str_replace($data, replaceWithDots($data), $_SESSION['dump']);
+            return $_SESSION['dump'];
+        }
+
+        return $_SESSION['dump'];
+
+    }
 }
 
-function word_list() {
-    include('sys/lib/wordlist.php');
+function replaceWithDots($input) {
+    // Get the length of the input string
+    $length = strlen($input);
+    
+    // Create a string of dots with the same length as the input string
+    $dots = str_repeat('.', $length);
+    
+    return $dots;
 }
+
 
 // Function to generate a random string of characters
-function rand_str($length = 12) {
+function rand_str($length = 7) {
     global $special_chars;
     $randomString = '';
     for ($i = 0; $i < $length; $i++) {
@@ -45,7 +93,7 @@ function rand_str($length = 12) {
 
 
 // Function to generate a memory dump
-function mem_dump($rows, $columns, $specialWords = []) {
+function mem_dump($rows, $columns, $specialWords = [], $length = 7) {
     $memoryDump = array();
 
     // Insert special words into the specialPositions array
@@ -60,7 +108,7 @@ function mem_dump($rows, $columns, $specialWords = []) {
     for ($i = 0; $i < $rows; $i++) {
         $row = array();
         for ($j = 0; $j < $columns; $j++) {
-            $cell = rand_str();
+            $cell = rand_str($length);
             // Check if this cell is a special position
             foreach ($specialPositions as $index => $pos) {
                 if ($pos[0] === $i && $pos[1] === $j) {

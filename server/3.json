@@ -2,7 +2,6 @@
     "name": "Control",
     "location": "Las Vegas, Nevada",
     "server": "3",
-    "ip": "23.56.59.102",
     "root": "admin",
     "accounts": {
         "admin": "root"
