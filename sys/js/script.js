@@ -141,7 +141,7 @@ function handleNewUser(username) {
 // Function to handle the LOGON command
 function handleLogon(username) {
     if (!username) {
-        appendCommand("ERROR: Wrong username.");
+        appendCommand("ERROR: Wrong Username.");
         isPasswordPrompt = false;
         document.getElementById('command-input').type = 'text'; // Change input type to text
         return;

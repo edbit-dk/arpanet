@@ -5,7 +5,7 @@
     "root": "admin",
     "pass": "robco",
     "accounts": {
-        "admin": "president"
+        "overseer": "president"
     },
     "blocked": {
        

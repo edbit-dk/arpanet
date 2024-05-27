@@ -3,6 +3,7 @@
 global $server_id, $server;
 
 $server_name = $server['name'];
+$location = $server['location'];
 
 if(isset($_SESSION['username'])) {
     
@@ -17,7 +18,8 @@ if(isset($_SESSION['username'])) {
     echo <<< EOT
     ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM
     COPYRIGHT 2075-2077 ROBCO INDUSTRIES
-    -Vault {$server_id}-             
+    -Vault {$server_id} ({$location})-
+   
         
     Welcome, {$username}
     _________________________________________
@@ -34,5 +36,6 @@ Welcome to ROBCO Industries (TM) Termlink
  
 System Online
 _________________________________________
+Password Required
 EOT;
 }

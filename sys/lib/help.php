@@ -1,13 +1,15 @@
 <?php
 return [
-    'LS' => '',
-    'MKDIR' => '<dirname>',
-    'ECHO' => '<content> > <filename>',
-    'CD' => '<directory>',
-    'MV' => '<source> <destination>',
-    'CAT' => '<filename>',
-    'RM' => '<file/directory>',
-    'LOGON' => '<username>',
-    'LOGOUT' => '',
     'HELP' => '[command]',
+    'MOTD' => '',
+    'LOGON' => '[username]',
+    'LOGOUT' => '',
+    'DEBUG' => '[dump]',
+    'BOOT' => '',
+    'REBOOT' => '',
+    'SCAN' => '',
+    'CONNECT' => '[id]',
+    'LS' => '',
+    'CD' => '[directory]',
+    'CAT' => '[filename]'
 ];

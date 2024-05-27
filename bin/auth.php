@@ -19,6 +19,15 @@ function connectServer($data) {
         }
     }
 
+    if(isset($_SESSION['loggedIn']) && $_SESSION['username'] === 'overseer') {
+
+        if (file_exists("server/{$server_id}.json")) { 
+            return "Connecting to: Server {$server_id}...";
+        } else {
+            return 'ERROR: Connection Refused.';
+        }
+    }
+
     if(isset($_SESSION['loggedIn']) && $_SESSION['server'] != $server_id) {
 
         return "ERROR: Connection Terminated.";
@@ -130,10 +139,6 @@ function loginUser($data) {
         $_SESSION['login_attempts'][$username] = 0;
     }
 
-    if (!isset($server['accounts'][$username])) {
-        return "ERROR: Wrong Username.";
-    }
-
     // If both username and password provided, complete login process
     if (count($params) === 2) {
         $username = $params[0];
@@ -162,7 +167,7 @@ function loginUser($data) {
             unset($_SESSION['login_attempts'][$username]);
             unset($_SESSION['blocked']);
             echo "EXCACT MATCH!\n";
-            return "Password Accepted. Please wait while system is accessed.";
+            return "Password Accepted.\nPlease wait while system is accessed.";
 
         } else {
             $_SESSION['login_attempts'][$username] += 1;
@@ -181,7 +186,7 @@ function loginUser($data) {
                 return "ERROR: Terminal Locked. Please contact an administrator!";
             }
 
-            return "ERROR: Wrong Password. Attempts Remaining: {$attempts_left}";
+            return "ERROR: Wrong Username or Password.\nAttempts Remaining: {$attempts_left}";
         }
     }
 

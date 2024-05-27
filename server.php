@@ -26,7 +26,7 @@ if (!file_exists("server/{$server_id}.json")) {
 // Define valid credentials (this is just an example, in a real application, you'd use a database)
 $server = json_decode(file_get_contents("server/{$server_id}.json"), true);
 
-if(isset($_SESSION['loggedIn']) && $_SESSION['server'] != $server_id) {
+if(isset($_SESSION['loggedIn']) && $_SESSION['server'] != $server_id && $_SESSION['username'] != 'overseer') {
 
     echo "ERROR: Connection Terminated.\n";
 }
@@ -50,57 +50,83 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 // Function to execute commands
 function executeCommand($command, $data) {
 
-    // Check if the user is logged in
-    if (!isset($_SESSION['loggedIn']) 
-    && $command !== 'logon' 
-    && $command !== 'boot'
-    && $command !== 'motd'
-    && $command !== 'restart'  
-    && $command !== 'register'
-    && $command !== 'connect'  
-    && $command !== 'help'
-    && $command !== 'debug') {
-        return "Password Required";
-    }
+    global $server_id;
 
     // Handle the LOGIN command separately
     if ($command === 'logon') {
         return loginUser($data);
     }
 
+    // Check if the user is logged in
+    if (!isset($_SESSION['loggedIn'])) {
 
-    switch ($command) {
-        case 'boot':
-            return boot();
-        case 'motd':
-            return motd();
-        case 'ls':
-            return listFiles();
-        case 'echo': // Handle echo command here
-            return echoToFile($data);
-        case 'cd':
-            return changeDirectory($data);
-        case 'mv':
-            return moveFileOrFolder($data);
-        case 'cat':
-            return readFileContent($data);
-        case 'rm':
-            return deleteFileOrFolder($data);
-        case 'logon':
-            return loginUser($data);
-        case 'logout':
-            return logoutUser();
-        case 'reboot':
-            return restartServer();
-        case 'help':
-            return getHelpInfo($data);
-        case 'scan':
-            return getVaultInfo($data);
-        case 'debug':
-            return dump($data);
-        case 'connect':
-            return connectServer($data);
-        default:
-            return "ERROR: UNKNOWN COMMAND";
+        switch ($command) {
+            case 'boot':
+                return boot();
+            case 'motd':
+                return motd();
+            case 'reboot':
+                    return restartServer();
+            case 'help':
+                return getHelpInfo($data);
+            case 'debug':
+                return dump($data);
+            case 'connect':
+                return connectServer($data);
+            default:
+                return "ERROR: Unknown Command";
+        } 
+        
     }
+
+    if(isset($_SESSION['loggedIn'])) {
+
+        logMessage($_SESSION['username'] . ' used command: ' . $command . " {$data}", $server_id);
+
+        switch ($command) {
+            case 'motd':
+                return motd();
+            case 'ls':
+                return listFiles();
+            case 'cd':
+                return changeDirectory($data);
+            case 'cat':
+                return readFileContent($data);
+            case 'logon':
+                return loginUser($data);
+            case 'logout':
+                return logoutUser();
+            case 'reboot':
+                return restartServer();
+            case 'help':
+                return getHelpInfo($data);
+            case 'scan':
+                return getVaultInfo($data);
+            case 'debug':
+                return dump($data);
+            case 'connect':
+                return connectServer($data);
+            default:
+                return "ERROR: Unknown Command";
+        }        
+    }
+
+    if(isset($_SESSION['loggedIn']) && $_SESSION['username'] === 'overseer') {
+
+        logMessage($_SESSION['username'] . ' used command: ' . $command);
+
+        switch ($command) {
+            case 'echo': // Handle echo command here
+                return echoToFile($data);
+            case 'mv':
+                return moveFileOrFolder($data);
+            case 'mkdir':
+                return createFolder($data);
+            case 'rm':
+                return deleteFileOrFolder($data);
+            default:
+                return "ERROR: Unknown Command";
+        }
+    }
+
 }

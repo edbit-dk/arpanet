@@ -5,7 +5,7 @@
     "root": "admin",
     "pass": "desert",
     "accounts": {
-        "admin": "house"
+        "overseer": "house"
     },
     "blocked": {
        
