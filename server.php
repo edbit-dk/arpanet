@@ -81,7 +81,7 @@ function executeCommand($command, $data) {
 
     if(isset($_SESSION['loggedIn'])) {
 
-        logMessage($_SESSION['username'] . ' used command: ' . $command . " {$data}", $server_id);
+      //  logMessage($_SESSION['username'] . ' used command: ' . $command . " {$data}", $server_id);
 
         switch ($command) {
             case 'motd':
@@ -113,7 +113,7 @@ function executeCommand($command, $data) {
 
     if(isset($_SESSION['loggedIn']) && $_SESSION['username'] === 'overseer') {
 
-        logMessage($_SESSION['username'] . ' used command: ' . $command);
+       // logMessage($_SESSION['username'] . ' used command: ' . $command);
 
         switch ($command) {
             case 'echo': // Handle echo command here
