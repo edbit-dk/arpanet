@@ -1,4 +1,4 @@
- 
+.................................
 Initializing RobCo Industries(TM) 
 MF Boot Agent v2.3.0
  
@@ -8,6 +8,11 @@ Copyright 2201-2203 Robco Ind.
  
 Uppermem: 64 KB
  
-RobcOS v.85
-(C)2076 RobCo
-========================================
+Initializing boot...
+Loading RobCo Unified OS...
+64K RAM detected...
+Launching Interface...
+ 
+RobCo Unified Operating System v.85
+Copyright 2075-2077 RobCo Ind.
+=================================

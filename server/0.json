@@ -1,0 +1,12 @@
+{
+    "name": "The Central Command",
+    "location": "New York",
+    "server": "0",
+    "root": "enclave",
+    "accounts": {
+        "admin": "president"
+    },
+    "blocked": {
+       
+    }
+}

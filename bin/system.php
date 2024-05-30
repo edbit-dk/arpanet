@@ -1,5 +1,11 @@
 <?php
 
+// Function to handle user logout
+function restartServer() {
+    logoutUser();
+    return "RESTARTING...";
+}
+
 // Function to display Message of the Day
 function boot() {
     include('sys/var/boot.txt');

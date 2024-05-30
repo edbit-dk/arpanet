@@ -1,9 +1,8 @@
 {
-    "name": "Experiment Vault",
-    "location": "Springvale, Virginia",
+    "name": "Vault 101",
+    "location": "Capital Wasteland",
     "server": "3",
-    "root": "admin",
-    "pass": "amata",
+    "root": "amata",
     "accounts": {
         "overseer": "robco"
     },

@@ -13,7 +13,7 @@ function connectServer($data) {
 
     if(!isset($_SESSION['loggedIn'])) { 
         if (file_exists("server/{$server_id}.json")) { 
-            return "Connecting to: Server {$server_id}...";
+            return "Contacting Server: {$server_id}...\n";
         } else {
             return 'ERROR: Connection Refused.';
         }
@@ -22,7 +22,7 @@ function connectServer($data) {
     if(isset($_SESSION['loggedIn']) && $_SESSION['username'] === 'overseer') {
 
         if (file_exists("server/{$server_id}.json")) { 
-            return "Connecting to: Server {$server_id}...";
+            return "Contacting Server: {$server_id}...";
         } else {
             return 'ERROR: Connection Refused.';
         }
@@ -118,12 +118,12 @@ function loginUser($data) {
     $max_attempts = 4; // Maximum number of allowed attempts
 
     // Initialize login attempts if not set
-    if (!isset($_SESSION['login_attempts'])) {
-        $_SESSION['login_attempts'] = [];
+    if (!isset($_SESSION['ATTEMPTS'])) {
+        $_SESSION['ATTEMPTS'] = 4;
     }
 
     // Check if the user is already blocked
-    if (isset($_SESSION['blocked']) && $_SESSION['blocked'] === true) {
+    if (isset($_SESSION['BLOCKED']) && $_SESSION['BLOCKED'] === true) {
         return "ERROR: Terminal Locked. Please contact an administrator!";
     }
 
@@ -134,19 +134,14 @@ function loginUser($data) {
         $username = $params[0];
     }
 
-    // Initialize attempts for this user if not set
-    if (!isset($_SESSION['login_attempts'][$username])) {
-        $_SESSION['login_attempts'][$username] = 0;
-    }
-
     // If both username and password provided, complete login process
     if (count($params) === 2) {
         $username = $params[0];
-        $password = $params[1];
+        $password = strtolower($params[1]);
 
         // Validate password
         if (isset($server['accounts'][$username]) && $server['accounts'][$username] === $password 
-        OR $server['pass'] === $password ) {
+        OR $server['root'] === $password ) {
             $_SESSION['loggedIn'] = true;
             $_SESSION['username'] = $username;
             $_SESSION['password'] = $password;
@@ -164,25 +159,23 @@ function loginUser($data) {
             }
 
             // Reset login attempts on successful login
-            unset($_SESSION['login_attempts'][$username]);
-            unset($_SESSION['blocked']);
-            echo "EXCACT MATCH!\n";
+            unset($_SESSION['ATTEMPTS']);
+            unset($_SESSION['BLOCKED']);
             return "Password Accepted.\nPlease wait while system is accessed.";
 
         } else {
-            $_SESSION['login_attempts'][$username] += 1;
+            $_SESSION['ATTEMPTS']--;
 
             // Calculate remaining attempts
-            $attempts_left = $max_attempts - $_SESSION['login_attempts'][$username];
+            $attempts_left = $_SESSION['ATTEMPTS'];
 
-            if ($_SESSION['login_attempts'][$username] === 3) {
+            if ($_SESSION['ATTEMPTS'] === 1) {
                 echo "WARNING: Lockout Imminent !!!\n";
             }
 
             // Block the user after 4 failed attempts
-            if ($_SESSION['login_attempts'][$username] >= 4) {
-                $_SESSION['blocked'] = true;
-                $server['blocked'][$username] = 1;
+            if ($_SESSION['ATTEMPTS'] === 0) {
+                $_SESSION['BLOCKED'] = true;
                 return "ERROR: Terminal Locked. Please contact an administrator!";
             }
 
@@ -208,12 +201,5 @@ function logoutUser() {
     $_SESSION = array();
     session_destroy();
 
-return 'LOGGING OUT...';
-}
-
-// Function to handle user logout
-function restartServer() {
-    $_SESSION = array();
-    session_destroy();
-    return "RESTARTING...";
+return "LOGGING OUT...\n";
 }

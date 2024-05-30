@@ -1,6 +1,6 @@
 <?php
 
-function wordlist($file, $word_length = 7) {
+function wordlist($file, $word_length = 7, $max_count = 12) {
     $words = file_get_contents($file);
     
     $words = explode(" ", $words);
@@ -9,7 +9,7 @@ function wordlist($file, $word_length = 7) {
     $index=0;
     $wordlen=0;
     $length = $word_length;
-    $count =12;
+    $count =$max_count;
     $failsafe=0;
     
     do {
@@ -32,43 +32,71 @@ function dump($data) {
     global $server;
 
     $data = strtoupper($data);
-    $root_pass = $server['pass'];
+    $root_pass = strtoupper($server['root']);
     $word_length = strlen($root_pass);
 
-    if (!isset($_SESSION['dump'])) {
-        $setup = file_get_contents('sys/var/debug.txt');
+    // Initialize attempts if not already set
+    if (!isset($_SESSION['ATTEMPTS'])) {
+        $_SESSION['ATTEMPTS'] = 4;
+    }
 
-        $word_list = wordlist('sys/var/wordlist.txt', $word_length);
-        $passwords[] = $root_pass;
-        //$usernames = array_keys($server['accounts']);
-        $data = array_merge($passwords, $word_list);
+    if (!isset($_SESSION['DUMP'])) {
+        $max_words = rand(5, 17);
+        $word_list = wordlist('sys/var/wordlist.txt', $word_length, $max_words);
+        $data = array_merge([$root_pass], $word_list);
 
         // Number of rows and columns in the memory dump
         $rows = 17;
         $columns = 4;
 
-        // Specific words to include in the memory dump
-        $specialWords = $data;
-
         // Generate the memory dump
-        $memoryDump = mem_dump($rows, $columns, $specialWords, $word_length);
+        $memoryDump = mem_dump($rows, $columns, $data, $word_length);
 
         // Format and output the memory dump with memory paths
-        echo $setup . "\n";
-
-        $_SESSION['dump'] = format_dump($memoryDump);
-        return $_SESSION['dump'];
-    } else {
-
-        if($data != strtoupper($root_pass)) {
-            $_SESSION['dump'] = str_replace($data, replaceWithDots($data), $_SESSION['dump']);
-            return $_SESSION['dump'];
+        if (!isset($_SESSION['DEBUG_MODE'])) {
+            echo file_get_contents('sys/var/debug.txt') . "\n";
         }
 
-        return $_SESSION['dump'];
+        echo "{$_SESSION['ATTEMPTS']} ATTEMPT(S) LEFT: # # # # \n \n";
+
+        $_SESSION['DUMP'] = format_dump($memoryDump);
+        return $_SESSION['DUMP'];
+    } else {
+
+        if ($data != $root_pass) {
+            $match = count_match_chars($data, $root_pass);
+            $_SESSION['DUMP'] = str_replace($data, replaceWithDots($data), $_SESSION['DUMP']);
+
+            $_SESSION['ATTEMPTS']--; // Decrement attempts
+
+            echo "Entry Denied.\n";
+            echo "{$match}/{$word_length} correct.\n \n";
+
+            if ($_SESSION['ATTEMPTS'] === 1) {
+                echo "WARNING: Lockout Imminent !!!\n\n";
+            }
+
+           $attemps_left = str_char_repeat($_SESSION['ATTEMPTS']);
+
+            echo "{$_SESSION['ATTEMPTS']} ATTEMPT(S) LEFT: {$attemps_left} \n \n";
+
+            if ($_SESSION['ATTEMPTS'] <= 0) {
+                $_SESSION['BLOCKED'] = true;
+                return "ERROR: Terminal Locked. Please contact an administrator!\n";
+            }
+
+            return $_SESSION['DUMP'];
+        } else {
+            // Reset login attempts on successful login
+            unset($_SESSION['ATTEMPTS']);
+            unset($_SESSION['BLOCKED']);
+            echo "EXCACT MATCH!\n";
+            return "LOGON WITH PASSWORD: {$root_pass}\n";
+        }
 
     }
 }
+
 
 function replaceWithDots($input) {
     // Get the length of the input string
@@ -142,4 +170,44 @@ function format_dump($memoryDump) {
     }
 
     return $formattedDump;
+}
+
+
+function set($data) {
+
+    $command = strtoupper($data);
+
+    if(strpos('TERMINAL/INQUIRE', $command) !== false) {
+        return 'RIT-V300'. "\n";
+    }
+
+    if(strpos('FILE/PROTECTION=OWNER:RWED ACCOUNTS.F', $command) !== false) {
+        $_SESSION['ROOT_ACCOUNT'] = true;
+        return "Root (5A8) \n";
+    }
+
+    if(strpos('HALT RESTART/MAINT', $command) !== false) {
+        $_SESSION['MAINT_MODE'] = true;
+        return file_get_contents('sys/var/maint.txt') . "\n";
+    }
+
+}
+
+function run($data) { 
+
+    $command = strtoupper($data);
+
+    if(!isset($_SESSION['ROOT_ACCOUNT'])) {
+        return 'ERROR: Root Access Required!';
+    }
+    
+    if(!isset($_SESSION['MAINT_MODE'])) {
+        return 'ERROR: Maintenance Mode Required!';
+    }
+
+    if(strpos('DEBUG/ACCOUNTS.F', $command) !== false) {
+        $_SESSION['DEBUG_MODE'] = true;
+        echo file_get_contents('sys/var/attempts.txt') . "\n";
+        return dump($data);
+    }
 }

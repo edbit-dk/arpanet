@@ -1,9 +1,8 @@
 {
-    "name": "Control Vault",
-    "location": "Las Vegas, Nevada",
+    "name": "Vault 3",
+    "location": "New Las Vegas",
     "server": "3",
-    "root": "admin",
-    "pass": "desert",
+    "root": "desert",
     "accounts": {
         "overseer": "house"
     },

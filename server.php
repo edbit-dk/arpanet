@@ -4,7 +4,7 @@ session_start(); // Start the session
 // Define the home directory
 define('HOME_DIRECTORY', getcwd() . "/home/");
 
-define('DEFAULT_NODE', '1');
+define('DEFAULT_NODE', '0');
 
 $special_chars = "!?,;.'[]={}@#$%^*()-_\/|";
 
@@ -12,15 +12,15 @@ require_once 'bin/system.php';
 require_once 'bin/debug.php';
 require_once 'bin/filesystem.php';
 require_once 'bin/auth.php';
-require_once 'bin/help.php';
-require_once 'bin/url.php';
+require_once 'bin/info.php';
+require_once 'bin/helpers.php';
 
 $request = parse_get('query');
 
 $server_id = isset($request['server']) ? $request['server'] : 1;
 
 if (!file_exists("server/{$server_id}.json")) { 
-    $server_id = 1;
+    $server_id = 0;
 }
 
 // Define valid credentials (this is just an example, in a real application, you'd use a database)
@@ -57,16 +57,24 @@ function executeCommand($command, $data) {
         return loginUser($data);
     }
 
+    if ($command === 'version') {
+        return getVersionInfo();
+    }
+
     // Check if the user is logged in
     if (!isset($_SESSION['loggedIn'])) {
 
         switch ($command) {
+            case 'set':
+                return set($data);
+            case 'run':
+                return run($data);
             case 'boot':
                 return boot();
             case 'motd':
                 return motd();
             case 'reboot':
-                    return restartServer();
+                return restartServer();
             case 'help':
                 return getHelpInfo($data);
             case 'debug':
@@ -96,12 +104,14 @@ function executeCommand($command, $data) {
                 return loginUser($data);
             case 'logout':
                 return logoutUser();
+            case 'dc':
+                return logoutUser();
             case 'reboot':
                 return restartServer();
             case 'help':
                 return getHelpInfo($data);
             case 'scan':
-                return getVaultInfo($data);
+                return getTerminalInfo($data);
             case 'debug':
                 return dump($data);
             case 'connect':
@@ -111,7 +121,7 @@ function executeCommand($command, $data) {
         }        
     }
 
-    if(isset($_SESSION['loggedIn']) && $_SESSION['username'] === 'overseer') {
+    if(isset($_SESSION['loggedIn']) && $_SESSION['username'] === 'root') {
 
        // logMessage($_SESSION['username'] . ' used command: ' . $command);
 

@@ -60,11 +60,14 @@ function sendCommand(command, data, queryString = '') {
 
 // Function to handle redirect
 function handleRedirect(response) {
-    if (response.startsWith("Connecting")) {
+    if (response.startsWith("Contacting")) {
         const regex = /\d+/; // Regular expression to match any sequence of digits
         const match = response.match(regex); // Match the regular expression in the response
         if (match) {
             const server_id = match[0]; // Extract the first matched number
+            setTimeout(function() {
+                appendCommand('Connection Established!');
+            }, 2000);
             redirectTo('?server=' + server_id); // Redirect to a specific query string using the server number
         }
     }
@@ -75,7 +78,7 @@ function redirectTo(url) {
     // Replace 'your_redirect_url?specific_query_string' with the URL you want to redirect to along with the specific query string you want to include
     setTimeout(function() {
         window.location.href = url;
-    }, 2000); // Delay of 1000 milliseconds (1 second) before reloading
+    }, 3000); // Delay of 1000 milliseconds (1 second) before reloading
 }
 
 // Function to handle user input
@@ -102,7 +105,7 @@ function handleUserInput() {
         clearTerminal(); // Clear the terminal
     } else if (command === 'logon') {
         handleLogon(args); // Handle logon command
-    } else if (command === 'logout' || command === 'reboot') {
+    } else if (command === 'logout' || command === 'reboot' || command === 'dc') {
         sendCommand(command, args); // Otherwise, send the command to the server
         setTimeout(function() {
             location.reload();
@@ -156,7 +159,6 @@ function handleLogon(username) {
 // Function to handle password prompt
 function handlePasswordPrompt() {
     const password = document.getElementById('command-input').value.trim();
-    if (password === '') return; // Ignore empty password
 
     userPassword = password; // Store the password
 
@@ -175,12 +177,13 @@ function handlePasswordPrompt() {
 }
 
 
+
 function handlePasswordPromptResponse(response) {
     if (response.startsWith("ERROR") || response.startsWith("WARNING")) {
         appendCommand(response); // Display response in terminal
         isPasswordPrompt = false; // Disable password prompt
         document.getElementById('command-input').type = 'text'; // Change input type to text
-    } else if (response.startsWith("EXCACT")) {
+    } else if (response.startsWith("Password")) {
         appendCommand(response); // Display "LOGGING IN..." message
         setTimeout(function() {
             location.reload();
@@ -203,7 +206,7 @@ function appendCommand(command) {
     const terminal = document.getElementById('terminal');
     const commandElement = document.createElement('div');
     commandElement.classList.add('command-prompt'); // Add command prompt class
-    commandElement.textContent = command;
+    commandElement.innerHTML = command;
     terminal.appendChild(commandElement);
     scrollToBottom(); // Ensure scrolling after appending
 }
@@ -253,7 +256,7 @@ function simulateCRT(text, container) {
             if (char === ' ') {
                 char = '\u00A0'; // Unicode for non-breaking space
             }
-            charElement.textContent = char;
+            charElement.innerHTML = char;
 
             if (Math.random() < distortionChance) {
                 charElement.style.transform = `rotate(${Math.random() * 4 - 2}deg)`;
@@ -324,7 +327,7 @@ document.addEventListener('DOMContentLoaded', function() {
         sessionStorage.setItem('boot', 'true'); // Set flag in sessionStorage
         setTimeout(function() {
             location.reload();
-        }, 5000);
+        }, 7000);
     } else {
         sendCommand('motd', '');
     }
