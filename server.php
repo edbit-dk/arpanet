@@ -20,11 +20,12 @@ $request = parse_get('query');
 $server_id = isset($request['server']) ? $request['server'] : 1;
 
 if (!file_exists("server/{$server_id}.json")) { 
-    $server_id = 0;
+    $server_id = DEFAULT_NODE;
 }
 
 // Define valid credentials (this is just an example, in a real application, you'd use a database)
 $server = json_decode(file_get_contents("server/{$server_id}.json"), true);
+
 
 if(isset($_SESSION['loggedIn']) && $_SESSION['server'] != $server_id && $_SESSION['username'] != 'overseer') {
 
@@ -111,7 +112,7 @@ function executeCommand($command, $data) {
             case 'help':
                 return getHelpInfo($data);
             case 'scan':
-                return getTerminalInfo($data);
+                return scanNodes($data);
             case 'debug':
                 return dump($data);
             case 'connect':

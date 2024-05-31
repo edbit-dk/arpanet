@@ -1,6 +1,6 @@
 <?php
 return [
-    3 => 'Offline',
+    3 => 'Vautl ',
     8 => 'Online',
     13 => 'Offline',
     76 => 'Online',

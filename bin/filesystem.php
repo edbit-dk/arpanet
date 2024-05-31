@@ -173,7 +173,7 @@ function moveFileOrFolder($data) {
 // Function to read the content of a file
 function readFileContent($data) {
     $currentUserDirectory = $_SESSION['pwd'] ?? HOME_DIRECTORY . $_SESSION['username'];
-    $filename = $data;
+    $filename = $data . '.txt';
     $fullPath = realpath($currentUserDirectory . DIRECTORY_SEPARATOR . $filename);
     if (!empty($filename) && file_exists($fullPath)) {
         return file_get_contents($fullPath);
@@ -242,6 +242,13 @@ function listFiles() {
     $files = array_filter($files, function($file) {
         return !in_array($file, ['.', '..']); // Exclude "." and ".." from the result
     });
-    return implode(" ", $files);
+    
+    $formattedFiles = array_map(function($file) {
+        $fileNameWithoutExtension = pathinfo($file, PATHINFO_FILENAME);
+        return "[" . $fileNameWithoutExtension . "]";
+    }, $files);
+    
+    return implode("\n", $formattedFiles);
 }
+
 

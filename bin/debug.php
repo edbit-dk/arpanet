@@ -47,14 +47,14 @@ function dump($data) {
 
         // Number of rows and columns in the memory dump
         $rows = 17;
-        $columns = 4;
+        $columns = 2;
 
         // Generate the memory dump
         $memoryDump = mem_dump($rows, $columns, $data, $word_length);
 
         // Format and output the memory dump with memory paths
         if (!isset($_SESSION['DEBUG_MODE'])) {
-            echo file_get_contents('sys/var/debug.txt') . "\n";
+            echo file_get_contents('sys/var/debug.txt');
         }
 
         echo "{$_SESSION['ATTEMPTS']} ATTEMPT(S) LEFT: # # # # \n \n";
@@ -71,6 +71,7 @@ function dump($data) {
 
             echo "Entry Denied.\n";
             echo "{$match}/{$word_length} correct.\n \n";
+            echo "Likeness={$match}.\n \n";
 
             if ($_SESSION['ATTEMPTS'] === 1) {
                 echo "WARNING: Lockout Imminent !!!\n\n";
@@ -82,7 +83,7 @@ function dump($data) {
 
             if ($_SESSION['ATTEMPTS'] <= 0) {
                 $_SESSION['BLOCKED'] = true;
-                return "ERROR: Terminal Locked. Please contact an administrator!\n";
+                return "ERROR: Terminal Locked.\n\nPlease contact an administrator!\n";
             }
 
             return $_SESSION['DUMP'];

@@ -20,17 +20,19 @@ function getHelpInfo($command) {
     return $helpText;
 }
 
-function getTerminalInfo($number) {
-    $terminals = include 'sys/lib/terminals.php';
+function scanNodes($number) {
+    global $server;
+
+    $nodes = $server['nodes'];
     
     if (!empty($number)) {
-        return isset($terminals[$number]) ? $terminals[$number] : "Terminal not found.";
+        return isset($nodes[$number]) ? $nodes[$number] : "Terminal not found.";
     }
-    $helpText = "Searching PoseidoNet Comlinks Stations...\n";
+    $terminal = "Searching PoseidoNet for Comlinks Nodes...\n";
 
-    foreach ($terminals as $terminal => $description) {
-        $helpText .= " $terminal: $description\n";
+    foreach ($nodes as $node => $description) {
+        $terminal .= " $node: $description\n";
     }
-    return $helpText;
+    return $terminal;
 }
 

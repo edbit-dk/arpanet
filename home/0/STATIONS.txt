@@ -1,11 +1,14 @@
-Vault 3
-Vault 8
-Vault 13
-Vault 76
-NORAD
-Iron Mauntain
-SAC
-Atomic Powerplant #5
-Nevarro Refinnery
-Control Station ENCLAVE
-ENCLAVE Vault-Research Control
+Corporate
+* Poseidon Oil derrick (Control Station ENCLAVE)
+* Navarro Refinery
+* Atomic Powerplant No 5
+* PMV Valdez
+* HELIOS One
+* Poseidon Energy Plant WV-06
+* Thunder Mountain Power Powerplant
+
+Government and military
+* Enclave Vault-Research Control
+* Iron Mountain (offline)
+* NORAD (offline)
+* Strategic Air Command (offline)

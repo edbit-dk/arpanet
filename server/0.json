@@ -1,12 +1,17 @@
 {
-    "name": "The Central Command",
-    "location": "New York",
+    "name": "=== ENCLAVE Vault-Research Control ===",
+    "location": "Nebraska",
     "server": "0",
     "root": "enclave",
+    "status": "Online",
     "accounts": {
         "admin": "president"
     },
-    "blocked": {
-       
+    "nodes": {
+       "CSE": "Control Station ENCLAVE (Offline)",
+       "3": "Vault 3",
+       "8": "Vault 8",
+       "13": "Vault 13",
+       "76": "Vault 76"
     }
 }

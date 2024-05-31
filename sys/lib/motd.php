@@ -41,11 +41,11 @@ if(isset($_SESSION['username'])) {
     ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM
     COPYRIGHT 2075-2077 ROBCO INDUSTRIES
     -Server {$server_id} ({$location})-
-   
-        
+    
+    $server_name
+       
     Welcome, {$username}.
     _________________________________________
-    [ > $server_name]
     EOT;
     return;
     }
