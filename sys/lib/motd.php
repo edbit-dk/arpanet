@@ -4,8 +4,9 @@ global $server_id, $server;
 
 $server_name = $server['name'];
 $location = $server['location'];
+$status = $server['status'];
 
-if(!isset($_SESSION['username']) && $server_id === 0) {
+if(!isset($_SESSION['loggedIn']) && $server_id == 0) {
     echo <<< EOT
 Welcome to ROBCO Industries (TM) Termlink
 -Server {$server_id}-
@@ -27,30 +28,24 @@ EOT;
 return;
 }
 
-if(isset($_SESSION['username'])) {
+if(isset($_SESSION['loggedIn'])) {
     
-    $username = $_SESSION['username'];
-
-    if(isset($server['accounts'][$username])
-    && $server['accounts'][$username] === $_SESSION['password'] 
-    OR $server['root'] === $_SESSION['password'] ) {
-
-    $username = strtoupper($username);
+    $username = strtoupper($_SESSION['username']);
 
     echo <<< EOT
     ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM
     COPYRIGHT 2075-2077 ROBCO INDUSTRIES
-    -Server {$server_id} ({$location})-
+    -Server {$server_id} ({$status})-
     
-    $server_name
+    {$server_name}
+    [{$location}]
        
     Welcome, {$username}.
     _________________________________________
     EOT;
     return;
-    }
 
-} else {
+}
 
 echo <<< EOT
 Welcome to ROBCO Industries (TM) Termlink
@@ -58,5 +53,3 @@ Welcome to ROBCO Industries (TM) Termlink
  
 Password Required
 EOT;
-
-}

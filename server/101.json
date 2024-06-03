@@ -1,12 +1,13 @@
 {
     "name": "Vault 101",
     "location": "Capital Wasteland",
-    "server": "3",
-    "root": "amata",
+    "id": "101",
+    "admin": "robco",
+    "status": "online",
     "accounts": {
-        "overseer": "robco"
+        "overseer": "amata"
     },
-    "blocked": {
-       
-    }
+    "nodes": {
+
+     }
 }

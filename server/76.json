@@ -1,9 +1,9 @@
 {
-    "name": "Vault 3",
-    "location": "Las Vegas, Nevada",
-    "id": "3",
+    "name": "Vault 76",
+    "location": "The Forest, Appalachia",
+    "id": "76",
     "admin": "robco",
-    "status": "offline",
+    "status": "online",
     "accounts": {
         "overseer": "braun"
     },

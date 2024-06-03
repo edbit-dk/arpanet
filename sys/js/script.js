@@ -61,10 +61,10 @@ function sendCommand(command, data, queryString = '') {
 // Function to handle redirect
 function handleRedirect(response) {
     if (response.startsWith("Contacting")) {
-        const regex = /\d+/; // Regular expression to match any sequence of digits
+        const regex = /Server:\s*(\S+)/; // Regular expression to match "Server: " followed by any sequence of non-whitespace characters
         const match = response.match(regex); // Match the regular expression in the response
         if (match) {
-            const server_id = match[0]; // Extract the first matched number
+            const server_id = match[1]; // Extract the first capture group (the value after "Server:")
             setTimeout(function() {
                 appendCommand('Connection Established!');
             }, 2000);
@@ -72,6 +72,7 @@ function handleRedirect(response) {
         }
     }
 }
+
 
 // Function to redirect to a specific query string
 function redirectTo(url) {
@@ -101,11 +102,11 @@ function handleUserInput() {
     const parts = input.split(' ');
     const command = parts[0];
     const args = parts.slice(1).join(' ');
-    if (command === 'clear') {
+    if (command === 'clear' || command === 'cls') {
         clearTerminal(); // Clear the terminal
     } else if (command === 'logon') {
         handleLogon(args); // Handle logon command
-    } else if (command === 'logout' || command === 'reboot' || command === 'dc') {
+    } else if (command === 'logout' || command === 'reboot' || command === 'dc' || command === 'restart' || command === 'start' || command === 'autoexec ') {
         sendCommand(command, args); // Otherwise, send the command to the server
         setTimeout(function() {
             location.reload();

@@ -1,14 +1,13 @@
 {
     "name": "=== ENCLAVE Vault-Research Control ===",
     "location": "Nebraska",
-    "server": "0",
-    "root": "enclave",
-    "status": "Online",
+    "id": "0",
+    "admin": "robco",
+    "status": "online",
     "accounts": {
         "admin": "president"
     },
     "nodes": {
-       "CSE": "Control Station ENCLAVE (Offline)",
        "3": "Vault 3",
        "8": "Vault 8",
        "13": "Vault 13",

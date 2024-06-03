@@ -1,0 +1,15 @@
+{
+    "name": "Vault 33",
+    "location": "Los Angeles, California",
+    "id": "33",
+    "admin": "robco",
+    "status": "online",
+    "accounts": {
+        "overseer": "hank"
+    },
+    "nodes": {
+        "31": "Vault 31",
+        "32": "Vault 32",
+        "33": "Vault 33"
+     }
+}

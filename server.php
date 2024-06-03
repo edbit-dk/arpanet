@@ -23,6 +23,7 @@ if (!file_exists("server/{$server_id}.json")) {
     $server_id = DEFAULT_NODE;
 }
 
+
 // Define valid credentials (this is just an example, in a real application, you'd use a database)
 $server = json_decode(file_get_contents("server/{$server_id}.json"), true);
 
@@ -74,8 +75,6 @@ function executeCommand($command, $data) {
                 return boot();
             case 'motd':
                 return motd();
-            case 'reboot':
-                return restartServer();
             case 'help':
                 return getHelpInfo($data);
             case 'debug':
@@ -95,11 +94,11 @@ function executeCommand($command, $data) {
         switch ($command) {
             case 'motd':
                 return motd();
-            case 'ls':
+            case $command == 'ls' || $command == 'dir':
                 return listFiles();
             case 'cd':
                 return changeDirectory($data);
-            case 'cat':
+            case $command == 'cat' || $command == 'more':
                 return readFileContent($data);
             case 'logon':
                 return loginUser($data);
@@ -107,13 +106,13 @@ function executeCommand($command, $data) {
                 return logoutUser();
             case 'dc':
                 return logoutUser();
-            case 'reboot':
+            case $command == 'reboot' || $command == 'autoexec' || $command == 'restart' || $command == 'start':
                 return restartServer();
             case 'help':
                 return getHelpInfo($data);
-            case 'scan':
+            case $command == 'scan' || $command == 'find':
                 return scanNodes($data);
-            case 'debug':
+            case $command == 'debug' || $command == 'mem':
                 return dump($data);
             case 'connect':
                 return connectServer($data);
@@ -122,18 +121,18 @@ function executeCommand($command, $data) {
         }        
     }
 
-    if(isset($_SESSION['loggedIn']) && $_SESSION['username'] === 'root') {
+    if(isset($_SESSION['loggedIn']) && $_SESSION['username'] === 'admin') {
 
        // logMessage($_SESSION['username'] . ' used command: ' . $command);
 
         switch ($command) {
-            case 'echo': // Handle echo command here
+            case $command == 'echo' || $command == 'edit': // Handle echo command here
                 return echoToFile($data);
-            case 'mv':
+            case $command == 'mv' || $command == 'move':
                 return moveFileOrFolder($data);
             case 'mkdir':
                 return createFolder($data);
-            case 'rm':
+            case $command == 'rm' || $command == 'del':
                 return deleteFileOrFolder($data);
             default:
                 return "ERROR: Unknown Command";

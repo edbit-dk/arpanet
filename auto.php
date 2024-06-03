@@ -46,6 +46,7 @@ function getAutocompleteSuggestions($input) {
 
 // Function to get the current working directory
 function getCurrentDirectory() {
+    global $server_id;
     // Get the current directory from session or set it to the user's home directory
-    return $_SESSION['pwd'] ?? $_SESSION['username'];
+    return $_SESSION['pwd'] ?? HOME_DIRECTORY . DIRECTORY_SEPARATOR . $server_id;
 }

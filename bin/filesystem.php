@@ -2,7 +2,9 @@
 
 // Function to get the current working directory relative to HOME_DIRECTORY
 function getCurrentDirectory($showFullPath = false) {
-    $currentDirectory = $_SESSION['pwd'] ?? HOME_DIRECTORY;
+    global $server_id;
+
+    $currentDirectory = $_SESSION['pwd'] ?? HOME_DIRECTORY . DIRECTORY_SEPARATOR . $server_id;
     if ($showFullPath) {
         return str_replace(realpath(HOME_DIRECTORY), '', $currentDirectory);
     } else {
@@ -67,7 +69,7 @@ function createFile($data) {
 // Function to create a new folder
 function createFolder($data) {
     $foldername = $data;
-    $currentUserDirectory = $_SESSION['pwd'] ?? HOME_DIRECTORY;
+    $currentUserDirectory = getCurrentDirectory();
     $newFolder = $currentUserDirectory . DIRECTORY_SEPARATOR . $foldername;
     if (strpos($newFolder, $currentUserDirectory) !== 0) {
         return "ERROR: ACCESS DENIED";
@@ -98,7 +100,7 @@ function writeFile($data) {
 // Function to change the current working directory
 function changeDirectory($data) {
     global $server, $server_id;
-    $homeDirectory = HOME_DIRECTORY . DIRECTORY_SEPARATOR . $server_id . DIRECTORY_SEPARATOR . $_SESSION['username'];
+    $homeDirectory = getCurrentDirectory();
 
     if (!isset($_SESSION['pwd'])) {
         $_SESSION['pwd'] = $homeDirectory;
@@ -137,8 +139,10 @@ function changeDirectory($data) {
 
 // Function to move a file or folder
 function moveFileOrFolder($data) {
+    global $server_id;
+
     // Get the current user's directory from session
-    $currentUserDirectory = $_SESSION['pwd'] ?? HOME_DIRECTORY . $_SESSION['username'];
+    $currentUserDirectory = getCurrentDirectory();
 
     // Split the data into source and destination
     list($source, $destination) = explode(' ', $data, 2);
@@ -172,9 +176,14 @@ function moveFileOrFolder($data) {
 
 // Function to read the content of a file
 function readFileContent($data) {
-    $currentUserDirectory = $_SESSION['pwd'] ?? HOME_DIRECTORY . $_SESSION['username'];
-    $filename = $data . '.txt';
-    $fullPath = realpath($currentUserDirectory . DIRECTORY_SEPARATOR . $filename);
+
+    
+    // Get the current user's directory from session
+    $currentUserDirectory = getCurrentDirectory();
+
+    $filename = $data;
+    $fullPath = $currentUserDirectory . DIRECTORY_SEPARATOR . $filename;
+
     if (!empty($filename) && file_exists($fullPath)) {
         return file_get_contents($fullPath);
     } else {

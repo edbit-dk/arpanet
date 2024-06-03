@@ -32,22 +32,30 @@ function dump($data) {
     global $server;
 
     $data = strtoupper($data);
-    $root_pass = strtoupper($server['root']);
-    $word_length = strlen($root_pass);
+    $max_words = rand(5, 17);
+    $max_attempts = 4;
+
+    if (!isset($_SESSION['DEBUG_PASS'])) {
+
+        $_SESSION['WORD'] = rand(3, 13);
+        $_SESSION['DEBUG_PASS'] = wordlist('sys/var/wordlist.txt', $_SESSION['WORD'] , 1)[0];
+    } 
+    
+    $word_length = $_SESSION['WORD']; 
+    $admin_pass = $_SESSION['DEBUG_PASS'];
 
     // Initialize attempts if not already set
     if (!isset($_SESSION['ATTEMPTS'])) {
-        $_SESSION['ATTEMPTS'] = 4;
+        $_SESSION['ATTEMPTS'] = $max_attempts;
     }
 
     if (!isset($_SESSION['DUMP'])) {
-        $max_words = rand(5, 17);
         $word_list = wordlist('sys/var/wordlist.txt', $word_length, $max_words);
-        $data = array_merge([$root_pass], $word_list);
+        $data = array_merge([$admin_pass], $word_list);
 
         // Number of rows and columns in the memory dump
         $rows = 17;
-        $columns = 2;
+        $columns = 4;
 
         // Generate the memory dump
         $memoryDump = mem_dump($rows, $columns, $data, $word_length);
@@ -63,14 +71,14 @@ function dump($data) {
         return $_SESSION['DUMP'];
     } else {
 
-        if ($data != $root_pass) {
-            $match = count_match_chars($data, $root_pass);
+        if ($data != $admin_pass) {
+            $match = count_match_chars($data, $admin_pass);
             $_SESSION['DUMP'] = str_replace($data, replaceWithDots($data), $_SESSION['DUMP']);
 
             $_SESSION['ATTEMPTS']--; // Decrement attempts
 
             echo "Entry Denied.\n";
-            echo "{$match}/{$word_length} correct.\n \n";
+            echo "{$match}/{$word_length} correct.\n";
             echo "Likeness={$match}.\n \n";
 
             if ($_SESSION['ATTEMPTS'] === 1) {
@@ -92,7 +100,7 @@ function dump($data) {
             unset($_SESSION['ATTEMPTS']);
             unset($_SESSION['BLOCKED']);
             echo "EXCACT MATCH!\n";
-            return "LOGON WITH PASSWORD: {$root_pass}\n";
+            return "PASSWORD: {$admin_pass}\n";
         }
 
     }
@@ -162,7 +170,7 @@ function format_dump($memoryDump) {
 
     foreach ($memoryDump as $row) {
         // Generate a random starting memory address for each line
-        $memoryAddress = "0x" . dechex(rand(4096, 65535));
+        $memoryAddress = "0x" . dechex(rand(4096, 6553));
         $formattedDump .= $memoryAddress . " ";
         foreach ($row as $cell) {
             $formattedDump .= " " . $cell;

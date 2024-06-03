@@ -1,9 +1,9 @@
 {
-    "name": "Vault 3",
-    "location": "Las Vegas, Nevada",
-    "id": "3",
+    "name": "Vault 8",
+    "location": "Northern Nevada",
+    "id": "8",
     "admin": "robco",
-    "status": "offline",
+    "status": "online",
     "accounts": {
         "overseer": "braun"
     },

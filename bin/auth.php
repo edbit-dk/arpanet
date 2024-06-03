@@ -4,32 +4,17 @@ function connectServer($data) {
 
     $server_id = explode(' ', $data)[0];
 
-    if (!file_exists("server/{$server_id}.json")) { 
+    $server = json_decode(file_get_contents("server/{$server_id}.json"), true);
+
+    if (file_exists("server/{$server_id}.json")) { 
+        logoutUser();
+        return "Contacting Server: {$server_id}\n";
+    } else {
         return 'ERROR: Connection Refused.';
     }
 
-// Define valid credentials (this is just an example, in a real application, you'd use a database)
-    $server = json_decode(file_get_contents("server/{$server_id}.json"), true);
-
-    if(!isset($_SESSION['loggedIn'])) { 
-        if (file_exists("server/{$server_id}.json")) { 
-            return "Contacting Server: {$server_id}...\n";
-        } else {
-            return 'ERROR: Connection Refused.';
-        }
-    }
-
-    if(isset($_SESSION['loggedIn']) && $_SESSION['username'] === 'overseer') {
-
-        if (file_exists("server/{$server_id}.json")) { 
-            return "Contacting Server: {$server_id}...";
-        } else {
-            return 'ERROR: Connection Refused.';
-        }
-    }
-
     if(isset($_SESSION['loggedIn']) && $_SESSION['server'] != $server_id) {
-
+        logoutUser();
         return "ERROR: Connection Terminated.";
     }
 
@@ -119,7 +104,7 @@ function loginUser($data) {
 
     // Initialize login attempts if not set
     if (!isset($_SESSION['ATTEMPTS'])) {
-        $_SESSION['ATTEMPTS'] = 4;
+        $_SESSION['ATTEMPTS'] = $max_attempts;
     }
 
     // Check if the user is already blocked
@@ -140,8 +125,10 @@ function loginUser($data) {
         $password = strtolower($params[1]);
 
         // Validate password
-        if (isset($server['accounts'][$username]) && $server['accounts'][$username] === $password 
-        OR $server['root'] === $password ) {
+        if (isset($server['accounts'][$username]) && 
+        $server['accounts'][$username] === $password OR 
+        $server['admin'] === $password OR 
+        strtolower($_SESSION['DEBUG_PASS']) == strtolower($password) ) {
             $_SESSION['loggedIn'] = true;
             $_SESSION['username'] = $username;
             $_SESSION['password'] = $password;
@@ -149,19 +136,15 @@ function loginUser($data) {
             $_SESSION['home'] = realpath(HOME_DIRECTORY) . DIRECTORY_SEPARATOR . $server_id; // Set user's directory
             $_SESSION['pwd'] = HOME_DIRECTORY . DIRECTORY_SEPARATOR . $server_id; // Set user's directory
             
-            $userFolder = $_SESSION['home'];
+            $userFolder = $_SESSION['home'] . DIRECTORY_SEPARATOR . $username;
             if (!file_exists($userFolder)) {
                 mkdir($userFolder, 0777, true);
-            }
-
-            if (!isset($_SESSION['server_id'])) {
-                $_SESSION['server_id'] = $server_id;
             }
 
             // Reset login attempts on successful login
             unset($_SESSION['ATTEMPTS']);
             unset($_SESSION['BLOCKED']);
-            return "Password Accepted.\nPlease wait while system is accessed.";
+            return "Password Accepted.\nPlease wait while system is accessed...";
 
         } else {
             $_SESSION['ATTEMPTS']--;
@@ -189,10 +172,12 @@ function loginUser($data) {
 
 // Function to handle whoami command
 function whoAmI() {
+    global $server_id;
+
     if (isset($_SESSION['username'])) {
         return $_SESSION['username']; // Return the logged-in user's username
     } else {
-        return "ERROR: LOGON REQUIRED"; // Return a message indicating not logged in
+        return "ERROR: Logon Required."; // Return a message indicating not logged in
     }
 }
 
