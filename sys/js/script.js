@@ -66,9 +66,31 @@ function handleRedirect(response) {
         if (match) {
             const server_id = match[1]; // Extract the first capture group (the value after "Server:")
             setTimeout(function() {
-                appendCommand('Connection Established!');
-            }, 2000);
-            redirectTo('?server=' + server_id); // Redirect to a specific query string using the server number
+                loadText('Connection Established!');
+            }, 1500);
+
+            setTimeout(function() {
+                redirectTo('?server=' + server_id); // Redirect to a specific query string using the server number
+            }, 1500);
+
+            
+        }
+    }
+
+    if (response.startsWith("Connecting")) {
+        const regex = /Code:\s*(\S+)/;// Regular expression to match "Server: " followed by any sequence of non-whitespace characters
+        const match = response.match(regex); // Match the regular expression in the response
+        if (match) {
+            const access_code = match[1]; // Extract the first capture group (the value after "Server:")
+            setTimeout(function() {
+                appendCommand("\n");
+                loadText("Security Access Code Accepted.\nWelcome to PoseidoNet!");
+            }, 1500);
+
+            setTimeout(function() {
+                redirectTo('?server=0'); // Redirect to a specific query string using the server number
+            }, 1500);
+           
         }
     }
 }
@@ -106,7 +128,7 @@ function handleUserInput() {
         clearTerminal(); // Clear the terminal
     } else if (command === 'logon') {
         handleLogon(args); // Handle logon command
-    } else if (command === 'logout' || command === 'reboot' || command === 'dc' || command === 'restart' || command === 'start' || command === 'autoexec ') {
+    } else if (command === 'logout' || command === 'logoff' || command === 'reboot' || command === 'dc' || command === 'restart' || command === 'start' || command === 'autoexec ') {
         sendCommand(command, args); // Otherwise, send the command to the server
         setTimeout(function() {
             location.reload();
@@ -185,6 +207,7 @@ function handlePasswordPromptResponse(response) {
         isPasswordPrompt = false; // Disable password prompt
         document.getElementById('command-input').type = 'text'; // Change input type to text
     } else if (response.startsWith("Password")) {
+        appendCommand("\n");
         appendCommand(response); // Display "LOGGING IN..." message
         setTimeout(function() {
             location.reload();

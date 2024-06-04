@@ -1,21 +1,70 @@
 <?php
 
+function connectUser($data){
+
+    $input = explode(' ', $data);
+
+    if (isset($_SESSION['USER'])) {
+        foreach($_SESSION['USER'] as $user => $data) {
+            echo "{$user}: {$data} \n";
+        };
+        return;
+    }
+
+    if(count($input) >= 1) {
+        if(empty($input[1])) {
+            $username = uniqid();
+        } else {
+            $username = $input[1];
+        }
+        $access_code = $input[0];
+    } else {
+        return 'ERROR: Security Access Code Not Accepted!';
+    }
+
+    if (file_exists("user/{$access_code}.json")) { 
+        
+        $_SESSION['USER'] = json_decode(file_get_contents("user/{$access_code}.json"), true);
+
+        $username = $_SESSION['USER']['NAME'];
+
+        // Add one to the XP field
+        if (isset($_SESSION['USER'])) {
+            $user_id = $_SESSION['USER']['ID'];
+            $_SESSION['USER']['XP'] += 10;
+            file_put_contents("user/{$user_id}.json", json_encode($_SESSION['USER']));
+        }
+        
+        echo "Connecting {$username} to PoseidoNet...\n";
+        return "Security Access Code: {$access_code}";
+    }
+        
+    if (!file_exists("user/{$access_code}.json")) {  
+        
+        $_SESSION['USER'] = [
+            'ID' => $access_code,
+            'NAME' => $username,
+            'XP' => 0
+        ];
+        
+        file_put_contents("user/{$access_code}.json", json_encode($_SESSION['USER']));
+    
+        echo "Connecting to PoseidoNet...\n";
+        return "Security Access Code: {$data}";
+    }
+
+    return 'ERROR: Security Access Code Not Accepted!';
+}
+
 function connectServer($data) {
 
     $server_id = explode(' ', $data)[0];
 
-    $server = json_decode(file_get_contents("server/{$server_id}.json"), true);
-
-    if (file_exists("server/{$server_id}.json")) { 
-        logoutUser();
+    if (file_exists("server/{$server_id}.json")) {
+        logoutUser();  
         return "Contacting Server: {$server_id}\n";
     } else {
         return 'ERROR: Connection Refused.';
-    }
-
-    if(isset($_SESSION['loggedIn']) && $_SESSION['server'] != $server_id) {
-        logoutUser();
-        return "ERROR: Connection Terminated.";
     }
 
 }
@@ -128,7 +177,7 @@ function loginUser($data) {
         if (isset($server['accounts'][$username]) && 
         $server['accounts'][$username] === $password OR 
         $server['admin'] === $password OR 
-        strtolower($_SESSION['DEBUG_PASS']) == strtolower($password) ) {
+        strtolower($_SESSION['DEBUG_PASS']) == $password ) {
             $_SESSION['loggedIn'] = true;
             $_SESSION['username'] = $username;
             $_SESSION['password'] = $password;
@@ -144,9 +193,18 @@ function loginUser($data) {
             // Reset login attempts on successful login
             unset($_SESSION['ATTEMPTS']);
             unset($_SESSION['BLOCKED']);
+
+            // Add one to the XP field
+            if (isset($_SESSION['USER'])) {
+                $user_id = $_SESSION['USER']['ID'];
+                $_SESSION['USER']['XP'] += 10;
+                file_put_contents("user/{$user_id}.json", json_encode($_SESSION['USER']));
+            }
+
             return "Password Accepted.\nPlease wait while system is accessed...";
 
         } else {
+
             $_SESSION['ATTEMPTS']--;
 
             // Calculate remaining attempts
@@ -183,8 +241,25 @@ function whoAmI() {
 
 // Function to handle user logout
 function logoutUser() {
+
+    global $server_id;
+
+    $user = $_SESSION['USER'];
+
     $_SESSION = array();
     session_destroy();
 
-return "LOGGING OUT...\n";
+    session_start();
+
+    $_SESSION['USER'] = $user;
+
+    return "LOGGING OUT FROM {$server_id}...\n";
+}
+
+
+function disconnectUser() {
+    $_SESSION = array();
+    session_destroy();
+
+    return "LOGGING OFF FROM PoseidoNET...\n";
 }

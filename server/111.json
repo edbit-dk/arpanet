@@ -1,0 +1,13 @@
+{
+    "name": "Vault 111",
+    "location": "Boston",
+    "id": "111",
+    "admin": "robco",
+    "status": "online",
+    "accounts": {
+        "overseer": "frozen"
+    },
+    "nodes": {
+
+     }
+}

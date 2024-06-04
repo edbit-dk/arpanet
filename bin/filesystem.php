@@ -253,11 +253,17 @@ function listFiles() {
     });
     
     $formattedFiles = array_map(function($file) {
-        $fileNameWithoutExtension = pathinfo($file, PATHINFO_FILENAME);
-        return "[" . $fileNameWithoutExtension . "]";
+        $filename = pathinfo($file, PATHINFO_FILENAME);
+        $extension = pathinfo($file, PATHINFO_EXTENSION);
+        if (!empty($extension)) {
+            return "[" . $filename . "." . $extension . "]";
+        } else {
+            return "[" . $filename . "]";
+        }
     }, $files);
     
     return implode("\n", $formattedFiles);
 }
+
 
 

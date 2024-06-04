@@ -1,0 +1,12 @@
+Uplink with central PoseidoNet initiated...
+ 
+Security Access Code Sequence Required: 
+ 
+70Y644
+008Z21
+9X7299
+A46123
+ 
+Security Access Code Sequence Accepted.
+ 
+Welcome to PoseidoNET!

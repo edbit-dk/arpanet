@@ -31,7 +31,7 @@ function wordlist($file, $word_length = 7, $max_count = 12) {
 function dump($data) {
     global $server;
 
-    $data = strtoupper($data);
+    $data = trim(strtoupper($data));
     $max_words = rand(5, 17);
     $max_attempts = 4;
 
@@ -75,7 +75,13 @@ function dump($data) {
             $match = count_match_chars($data, $admin_pass);
             $_SESSION['DUMP'] = str_replace($data, replaceWithDots($data), $_SESSION['DUMP']);
 
-            $_SESSION['ATTEMPTS']--; // Decrement attempts
+            if(preg_match('/\([^()]*\)|\{[^{}]*\}|\[[^\[\]]*\]/', $data)) {
+                $_SESSION['ATTEMPTS']++;
+            }
+
+            if(preg_match('/^[a-zA-Z]+$/', $data)) {
+                $_SESSION['ATTEMPTS']--;
+            }
 
             echo "Entry Denied.\n";
             echo "{$match}/{$word_length} correct.\n";
@@ -99,6 +105,14 @@ function dump($data) {
             // Reset login attempts on successful login
             unset($_SESSION['ATTEMPTS']);
             unset($_SESSION['BLOCKED']);
+
+            // Add one to the XP field
+            if (isset($_SESSION['USER'])) {
+                $user_id = $_SESSION['USER']['ID'];
+                $_SESSION['USER']['XP'] += 50;
+                file_put_contents("user/{$user_id}.json", json_encode($_SESSION['USER']));
+            }
+
             echo "EXCACT MATCH!\n";
             return "PASSWORD: {$admin_pass}\n";
         }
