@@ -6,7 +6,12 @@ function getVersionInfo() {
 
 // Function to get help information for commands
 function getHelpInfo($command) {
-    $helpInfo = include 'sys/lib/help.php';
+
+    if(!isset($_SESSION['loggedIn'])) {
+        $helpInfo = include 'sys/lib/help/guest.php';
+    } else {
+        $helpInfo = include 'sys/lib/help/auth.php';
+    }
 
     $command = strtoupper($command);
     

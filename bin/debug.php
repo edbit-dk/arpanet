@@ -211,6 +211,14 @@ function set($data) {
         return "Root (5A8) \n";
     }
 
+    if(strpos('HALT', $command) !== false) {
+        return 'SHUTTING DOWN...';
+    }
+
+    if(strpos('HALT RESTART', $command) !== false) {
+        return 'RESTARTING...';
+    }
+
     if(strpos('HALT RESTART/MAINT', $command) !== false) {
         $_SESSION['MAINT_MODE'] = true;
         return file_get_contents('sys/var/maint.txt') . "\n";
