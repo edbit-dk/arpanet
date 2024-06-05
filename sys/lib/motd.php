@@ -8,7 +8,7 @@ if(!isset($_SESSION['USER']) && !isset($_SESSION['loggedIn'])) {
 
     > Uplink with central PoseidoNet initiated...
     
-    Security Access Code Required...
+    Security Access Code Required!
 
     Enter Security Access Code: USER {$access_code} [USERNAME].
     
@@ -34,7 +34,7 @@ if(!isset($_SESSION['loggedIn'])) {
     return;
 }
 
-if(isset($_SESSION['loggedIn'])) {
+if(isset($_SESSION['loggedIn']) && isset($_SESSION['USER'])) {
     
     $username = strtoupper($_SESSION['username']);
 

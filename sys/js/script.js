@@ -82,13 +82,18 @@ function handleRedirect(response) {
         const match = response.match(regex); // Match the regular expression in the response
         if (match) {
             const access_code = match[1]; // Extract the first capture group (the value after "Server:")
+            
+            if (!sessionStorage.getItem('code')) {
+                sessionStorage.setItem('code', 'true'); // Set flag in sessionStorage
+            }
+            
             setTimeout(function() {
                 appendCommand("\n");
                 loadText("Security Access Code Accepted.\nWelcome to PoseidoNet!");
             }, 1500);
 
             setTimeout(function() {
-                redirectTo('?server=0'); // Redirect to a specific query string using the server number
+                redirectTo('?server=0&code=' + access_code); // Redirect to a specific query string using the server number
             }, 1500);
            
         }
@@ -166,6 +171,11 @@ function handleNewUser(username) {
 
 // Function to handle the LOGON command
 function handleLogon(username) {
+    if (!sessionStorage.getItem('code')) {
+        appendCommand("ERROR: Security Access Code Required!");
+        return;
+    }
+
     if (!username) {
         appendCommand("ERROR: Wrong Username.");
         isPasswordPrompt = false;

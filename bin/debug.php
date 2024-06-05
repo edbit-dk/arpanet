@@ -76,6 +76,8 @@ function dump($data) {
             $_SESSION['DUMP'] = str_replace($data, replaceWithDots($data), $_SESSION['DUMP']);
 
             if(preg_match('/\([^()]*\)|\{[^{}]*\}|\[[^\[\]]*\]/', $data)) {
+                echo "Dud Removed.\n";
+                echo "Tries Reset.\n";
                 $_SESSION['ATTEMPTS']++;
             }
 
@@ -83,7 +85,7 @@ function dump($data) {
                 $_SESSION['ATTEMPTS']--;
             }
 
-            echo "Entry Denied.\n";
+            echo "Entry denied.\n";
             echo "{$match}/{$word_length} correct.\n";
             echo "Likeness={$match}.\n \n";
 

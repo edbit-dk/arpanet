@@ -60,12 +60,20 @@ function executeCommand($command, $data) {
         return connectUser($data);
     }
 
+    if ($command === 'motd') {
+        return motd();
+    }
+
+    if ($command === 'boot') {
+        return boot();
+    }
+
     if ($command === 'score') {
         return listUsers();
     }
 
     // Handle the LOGIN command separately
-    if ($command === 'logon') {
+    if ($command === 'logon' && isset($_SESSION['USER'])) {
         return loginUser($data);
     }
 
@@ -74,17 +82,13 @@ function executeCommand($command, $data) {
     }
 
         // Check if the user is logged in
-        if (!isset($_SESSION['loggedIn'])) {
+        if (!isset($_SESSION['loggedIn']) && isset($_SESSION['USER'])) {
 
             switch ($command) {
                 case 'set':
                     return set($data);
                 case 'run':
                     return run($data);
-                case 'boot':
-                    return boot();
-                case 'motd':
-                    return motd();
                 case 'help':
                     return getHelpInfo($data);
                 case $command == 'debug' || $command == 'mem':
@@ -104,8 +108,6 @@ function executeCommand($command, $data) {
             //  logMessage($_SESSION['username'] . ' used command: ' . $command . " {$data}", $server_id);
         
               switch ($command) {
-                case 'motd':
-                    return motd();
                 case 'email':
                     return emailUser($data);
                 case $command == 'ls' || $command == 'dir':
@@ -136,8 +138,6 @@ function executeCommand($command, $data) {
             // logMessage($_SESSION['username'] . ' used command: ' . $command);
         
              switch ($command) {
-                case 'motd':
-                    return motd();
                 case $command == 'ls' || $command == 'dir':
                     return listFiles();
                 case 'cd':

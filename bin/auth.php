@@ -148,6 +148,10 @@ function newUser($data) {
 function loginUser($data) {
     global $server, $server_id;
 
+    if(!isset($_SESSION['DEBUG_PASS'])) {
+        $_SESSION['DEBUG_PASS'] = false;
+    }
+
     $params = explode(' ', $data);
     $max_attempts = 4; // Maximum number of allowed attempts
 
@@ -194,12 +198,14 @@ function loginUser($data) {
             unset($_SESSION['ATTEMPTS']);
             unset($_SESSION['BLOCKED']);
 
+            /*
             // Add one to the XP field
             if (isset($_SESSION['USER'])) {
                 $user_id = $_SESSION['USER']['ID'];
                 $_SESSION['USER']['XP'] += 10;
                 file_put_contents("user/{$user_id}.json", json_encode($_SESSION['USER']));
             }
+            */
 
             return "Password Accepted.\nPlease wait while system is accessed...";
 
