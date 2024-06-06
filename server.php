@@ -166,5 +166,5 @@ function executeCommand($command, $data) {
              }
          }
 
-    return "ERROR: SYSTEM RESET REQUIRED!";
+    return "ERROR: UNKNOWN COMMAND!";
 }
