@@ -209,7 +209,7 @@ function loginUser($data) {
                 file_put_contents("user/{$user_id}.json", json_encode($_SESSION['USER']));
             }
             */
-
+            logMessage(strtoupper($_SESSION['username']) . ' logged in.', $server_id);
             return "Password Accepted. Please wait while system is accessed...";
 
         } else {

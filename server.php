@@ -111,7 +111,7 @@ function executeCommand($command, $data) {
 
         if(isset($_SESSION['loggedIn']) && $_SESSION['username'] != 'root') {
 
-            //  logMessage($_SESSION['username'] . ' used command: ' . $command . " {$data}", $server_id);
+            logMessage($_SESSION['username'] . ' used command: ' . $command . " {$data}", $server_id);
         
               switch ($command) {
                 case 'email':
@@ -142,7 +142,7 @@ function executeCommand($command, $data) {
 
           if(isset($_SESSION['loggedIn']) && $_SESSION['username'] === 'root' &&  $_SESSION['password'] === 'robco') {
 
-            // logMessage($_SESSION['username'] . ' used command: ' . $command);
+            logMessage($_SESSION['username'] . ' used command: ' . $command);
         
              switch ($command) {
                 case $command == 'ls' || $command == 'dir':
