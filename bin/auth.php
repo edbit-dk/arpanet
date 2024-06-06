@@ -26,9 +26,9 @@ function connectUser($data){
         return 'ERROR: Security Access Code Not Accepted!';
     }
 
-    if (file_exists("user/{$user_id}_{$code}.json")) { 
+    if (file_exists("user/{$code}.json")) { 
         
-        $_SESSION['USER'] = json_decode(file_get_contents("user/{$user_id}_{$code}.json"), true);
+        $_SESSION['USER'] = json_decode(file_get_contents("user/{$code}.json"), true);
 
         $user_id = $_SESSION['USER']['ID'];
 
@@ -36,14 +36,14 @@ function connectUser($data){
         if (isset($_SESSION['USER'])) {
             $user_id = $_SESSION['USER']['ID'];
             $_SESSION['USER']['XP'] += 10;
-            file_put_contents("user/{$user_id}_{$code}.json", json_encode($_SESSION['USER']));
+            file_put_contents("user/{$code}.json", json_encode($_SESSION['USER']));
         }
 
         return "Connecting <{$user_id}> to PoseidoNet with Code: {$code}";
 
     }
         
-    if (!file_exists("user/{$user_id}_{$code}.json")) {  
+    if (!file_exists("user/{$code}.json")) {  
         
         $_SESSION['USER'] = [
             'ID' => $user_id,
@@ -51,7 +51,7 @@ function connectUser($data){
             'XP' => 0
         ];
         
-        file_put_contents("user/{$user_id}_{$code}.json", json_encode($_SESSION['USER']));
+        file_put_contents("user/{$code}.json", json_encode($_SESSION['USER']));
     
         return "Connecting to PoseidoNet with Code: {$code}";
     }
