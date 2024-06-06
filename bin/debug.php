@@ -99,7 +99,7 @@ function dump($data) {
 
             if ($_SESSION['ATTEMPTS'] <= 0) {
                 $_SESSION['BLOCKED'] = true;
-                return "ERROR: Terminal Locked.\n\nPlease contact an administrator!\n";
+                return "ERROR: Terminal Locked. Please contact an administrator!\n";
             }
 
             return $_SESSION['DUMP'];
@@ -200,6 +200,10 @@ function format_dump($memoryDump) {
 
 function set($data) {
 
+    if(empty($data)) {
+        return 'ERROR: Missing Parameters!';
+    }
+
     $command = strtoupper($data);
 
     if(strpos('TERMINAL/INQUIRE', $command) !== false) {
@@ -212,11 +216,14 @@ function set($data) {
     }
 
     if(strpos('HALT', $command) !== false) {
+        logoutUser();
+        disconnectUser();
         return 'SHUTTING DOWN...';
     }
 
     if(strpos('HALT RESTART', $command) !== false) {
-        return 'RESTARTING...';
+        echo 'RESTARTING...';
+        return file_get_contents('sys/var/boot.txt') . "\n";
     }
 
     if(strpos('HALT RESTART/MAINT', $command) !== false) {
@@ -227,6 +234,10 @@ function set($data) {
 }
 
 function run($data) { 
+
+    if(empty($data)) {
+        return 'ERROR: Missing Parameters!';
+    }
 
     $command = strtoupper($data);
 

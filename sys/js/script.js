@@ -89,7 +89,7 @@ function handleRedirect(response) {
             
             setTimeout(function() {
                 appendCommand("\n");
-                loadText("Security Access Code Accepted.\nWelcome to PoseidoNet!");
+                loadText("Security Access Code Accepted!\nWelcome to PoseidoNet!");
             }, 1500);
 
             setTimeout(function() {

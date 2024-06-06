@@ -41,7 +41,7 @@ function scanNodes($number) {
     return $terminal;
 }
 
-function listUsers() {
+function listUsers($data = '') {
 
     // Directory containing JSON files
 $directory = 'user';
@@ -74,7 +74,7 @@ while (($file = readdir($dir)) !== false) {
         }
 
         // Extract and output the NAME and XP fields
-        $name = $data['NAME'] ?? 'Unknown';
+        $name = $data['ID'] ?? 'Unknown';
         $xp = $data['XP'] ?? 0;
 
         echo "$name ($xp)\n";

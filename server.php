@@ -51,12 +51,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     echo getHelpInfo('');
 }
 
+
 // Function to execute commands
 function executeCommand($command, $data) {
 
     global $server_id;
 
-    if ($command === 'user') {
+    if ($command === 'code') {
         return connectUser($data);
     }
 
@@ -68,8 +69,12 @@ function executeCommand($command, $data) {
         return boot();
     }
 
-    if ($command === 'score') {
-        return listUsers();
+    if ($command === 'accounts') {
+        return listUsers($data);
+    }
+
+    if ($command === 'user') {
+        return connectUser($data);
     }
 
     // Handle the LOGIN command separately
@@ -103,6 +108,7 @@ function executeCommand($command, $data) {
             
         }
 
+
         if(isset($_SESSION['loggedIn']) && $_SESSION['username'] != 'root') {
 
             //  logMessage($_SESSION['username'] . ' used command: ' . $command . " {$data}", $server_id);
@@ -133,6 +139,7 @@ function executeCommand($command, $data) {
               }        
           }
 
+
           if(isset($_SESSION['loggedIn']) && $_SESSION['username'] === 'root' &&  $_SESSION['password'] === 'robco') {
 
             // logMessage($_SESSION['username'] . ' used command: ' . $command);
@@ -159,4 +166,5 @@ function executeCommand($command, $data) {
              }
          }
 
+    return "ERROR: SYSTEM RESET REQUIRED!";
 }

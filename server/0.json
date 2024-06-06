@@ -1,11 +1,11 @@
 {
-    "name": "=== Enclave Vault-Research Control ===",
+    "name": "Enclave Vault-Research Control",
     "location": "Nebraska",
     "id": "0",
     "admin": "robco",
     "status": "online",
     "accounts": {
-        "admin": "president"
+        "admin": "101097"
     },
     "nodes": {
        "3": "Vault 3",

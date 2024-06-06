@@ -4,14 +4,21 @@ $access_code = random_str(6, 'AXYZ01234679');
 
 if(!isset($_SESSION['USER']) && !isset($_SESSION['loggedIn'])) {
     echo <<< EOT
-    Welcome to ROBCO Industries (TM) Termlink
+    
+    Welcome to POSEIDON ENERGY Corporation
+    -Begin your Odyssey with us-
+
+    This terminal allows access to PoseidoNET.
+    __________________________________________
 
     > Uplink with central PoseidoNet initiated...
-    
-    Security Access Code Required!
 
-    Enter Security Access Code: USER {$access_code} [USERNAME].
+    ##############################
+    Security Access Code Required! 
+    ##############################
     
+    > Enter: CODE {$access_code} [USERNAME].
+
     EOT;
 
     return;
@@ -53,3 +60,4 @@ if(isset($_SESSION['loggedIn']) && isset($_SESSION['USER'])) {
 
 }
 
+return "ERROR: Unknown Guest Command";
