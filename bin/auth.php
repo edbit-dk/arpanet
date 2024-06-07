@@ -23,6 +23,8 @@ function connectUser($data){
             $user_id = $input[1];
         }
 
+        $user_id = strtolower($user_id);
+
         $code = $input[0];
         $user_profile = $input[0] . '_' . $user_id;
     } else {
