@@ -5,12 +5,12 @@
     "admin": "robco",
     "status": "online",
     "accounts": {
-        "admin": "101097"
+        "overseer": "101097"
     },
     "nodes": {
-       "3": "Vault 3",
-       "8": "Vault 8",
-       "13": "Vault 13",
-       "76": "Vault 76"
+        "3": "Vault 3",
+        "8": "Vault 8",
+        "13": "Vault 13",
+        "76": "Vault 76"
     }
 }

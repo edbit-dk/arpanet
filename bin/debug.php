@@ -29,7 +29,7 @@ function wordlist($file, $word_length = 7, $max_count = 12) {
 }
 
 function dump($data) {
-    global $server;
+    global $server, $server_id;
 
     $data = trim(strtoupper($data));
     $max_words = rand(5, 17);
@@ -75,10 +75,13 @@ function dump($data) {
             $match = count_match_chars($data, $admin_pass);
             $_SESSION['DUMP'] = str_replace($data, replaceWithDots($data), $_SESSION['DUMP']);
 
-            if(preg_match('/\([^()]*\)|\{[^{}]*\}|\[[^\[\]]*\]/', $data)) {
+            if(preg_match('/\([^()]*\)|\{[^{}]*\}|\[[^\[\]]*\]|<[^<>]*>/', $data)) {
                 echo "Dud Removed.\n";
                 echo "Tries Reset.\n";
-                $_SESSION['ATTEMPTS']++;
+
+                if($_SESSION['ATTEMPTS'] < 4) {
+                    $_SESSION['ATTEMPTS']++;
+                }
             }
 
             if(preg_match('/^[a-zA-Z]+$/', $data)) {
@@ -90,7 +93,7 @@ function dump($data) {
             echo "Likeness={$match}.\n \n";
 
             if ($_SESSION['ATTEMPTS'] === 1) {
-                echo "WARNING: Lockout Imminent !!!\n\n";
+                echo "!!! WARNING: LOCKOUT IMMINENT !!!\n\n";
             }
 
            $attemps_left = str_char_repeat($_SESSION['ATTEMPTS']);
@@ -99,7 +102,7 @@ function dump($data) {
 
             if ($_SESSION['ATTEMPTS'] <= 0) {
                 $_SESSION['BLOCKED'] = true;
-                return "ERROR: Terminal Locked. Please contact an administrator!\n";
+                return "ERROR: TERMINAL LOCKED.\nPlease contact an administrator\n";
             }
 
             return $_SESSION['DUMP'];
@@ -108,14 +111,21 @@ function dump($data) {
             unset($_SESSION['ATTEMPTS']);
             unset($_SESSION['BLOCKED']);
 
+            // Store the new user credentials
+            $username = $_SESSION['USER']['ID'];
+            $server['accounts'][$username] = strtolower($admin_pass);
+             // Save the updated user data to the file
+            file_put_contents("server/{$server_id}.json", json_encode($server));
+
             // Add one to the XP field
             if (isset($_SESSION['USER'])) {
-                $user_id = $_SESSION['USER']['ID'];
+                $user_profile = $_SESSION['USER']['CODE'] . '_' . $username;
                 $_SESSION['USER']['XP'] += 50;
-                file_put_contents("user/{$user_id}.json", json_encode($_SESSION['USER']));
+                file_put_contents("user/{$user_profile}.json", json_encode($_SESSION['USER']));
             }
 
             echo "EXCACT MATCH!\n";
+            echo "USERNAME:" . strtoupper($username);
             return "PASSWORD: {$admin_pass}\n";
         }
 

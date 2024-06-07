@@ -77,8 +77,8 @@ function handleRedirect(response) {
         }
     }
 
-    if (response.startsWith("Connecting")) {
-        const regex = /Code:\s*(\S+)/;// Regular expression to match "Server: " followed by any sequence of non-whitespace characters
+    if (response.startsWith("ACCESS")) {
+        const regex = /CODE:\s*(\S+)/;// Regular expression to match "Server: " followed by any sequence of non-whitespace characters
         const match = response.match(regex); // Match the regular expression in the response
         if (match) {
             const access_code = match[1]; // Extract the first capture group (the value after "Server:")
@@ -89,12 +89,13 @@ function handleRedirect(response) {
             
             setTimeout(function() {
                 appendCommand("\n");
-                loadText("Security Access Code Accepted!\nWelcome to PoseidoNet!");
-            }, 1500);
+                loadText("Security Access Code Sequence Accepted.\nWelcome to PoseidoNet!");
 
-            setTimeout(function() {
-                redirectTo('?server=0&code=' + access_code); // Redirect to a specific query string using the server number
-            }, 1500);
+                setTimeout(function() {
+                    redirectTo('?server=0&code=' + access_code); // Redirect to a specific query string using the server number
+                }, 1500);
+
+            }, 3000);
            
         }
     }

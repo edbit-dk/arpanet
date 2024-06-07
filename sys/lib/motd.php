@@ -1,8 +1,13 @@
 <?php
 
-$access_code = random_str(6, 'AXYZ01234679');
-
 if(!isset($_SESSION['USER']) && !isset($_SESSION['loggedIn'])) {
+
+    $code_1 = random_str(6, 'AXYZ01234679');
+    $code_2 = random_str(6, 'AXYZ01234679');
+    $code_3 = random_str(6, 'AXYZ01234679');
+
+    $access_code = "{$code_1}-{$code_2}-{$code_3}"; 
+
     echo <<< EOT
     
     Welcome to POSEIDON ENERGY Corporation
@@ -13,11 +18,11 @@ if(!isset($_SESSION['USER']) && !isset($_SESSION['loggedIn'])) {
 
     > Uplink with central PoseidoNet initiated...
 
-    ##############################
-    Security Access Code Required! 
-    ##############################
+    #############################
+    Security Access Code Sequence
+    #############################
     
-    > Enter: CODE {$access_code} [USERNAME].
+    > ENTER: CODE {$access_code} [USERNAME].
 
     EOT;
 
