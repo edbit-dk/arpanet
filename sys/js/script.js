@@ -95,7 +95,7 @@ function handleRedirect(response) {
                     redirectTo('?server=0&code=' + access_code); // Redirect to a specific query string using the server number
                 }, 1500);
 
-            }, 3000);
+            }, 1500);
            
         }
     }
@@ -107,7 +107,7 @@ function redirectTo(url) {
     // Replace 'your_redirect_url?specific_query_string' with the URL you want to redirect to along with the specific query string you want to include
     setTimeout(function() {
         window.location.href = url;
-    }, 3000); // Delay of 1000 milliseconds (1 second) before reloading
+    }, 2500); // Delay of 1000 milliseconds (1 second) before reloading
 }
 
 // Function to handle user input
