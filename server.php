@@ -132,7 +132,7 @@ function executeCommand($command, $data) {
                     return getHelpInfo($data);
                 case $command == 'scan' || $command == 'find':
                     return scanNodes($data);
-                case 'connect':
+                case $command == 'connect' || $command == 'telnet':
                     return connectServer($data);
                 default:
                     return "ERROR: Unknown User Command";

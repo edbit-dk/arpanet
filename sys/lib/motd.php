@@ -31,6 +31,21 @@ if(!isset($_SESSION['USER']) && !isset($_SESSION['loggedIn'])) {
     return;
 }
 
+$server_name = $server['name'];
+$location = $server['location'];
+$status = $server['status'];
+
+if(!isset($_SESSION['loggedIn'])) {
+    echo <<< EOT
+    Welcome to ROBCO Industries (TM) Termlink
+    -Server {$server_id}-
+     
+    Password Required
+    EOT;
+
+    return;
+}
+
 if(isset($_SESSION['loggedIn']) && isset($_SESSION['USER'])) {
     
     $username = strtoupper($_SESSION['username']);
@@ -48,21 +63,6 @@ if(isset($_SESSION['loggedIn']) && isset($_SESSION['USER'])) {
     EOT;
     return;
 
-}
-
-$server_name = $server['name'];
-$location = $server['location'];
-$status = $server['status'];
-
-if(!isset($_SESSION['loggedIn'])) {
-    echo <<< EOT
-    Welcome to ROBCO Industries (TM) Termlink
-    -Server {$server_id}-
-     
-    Password Required
-    EOT;
-
-    return;
 }
 
 return "ERROR: Unknown Guest Command";

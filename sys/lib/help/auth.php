@@ -2,11 +2,10 @@
 return [
     'LOGOUT' => '',
     'LOGOFF' => '',
-    'CONNECT' => '[ID]',
-    'CD' => '[DIR]',
-    'DIR' => '',
-    'MORE' => '[FILENAME]',
     'FIND' => '',
-    'MEM' => 'DEBUG',
+    'CONNECT' => '[SERVER ID]',
+    'DIR' => '',
+    'CD' => '[DIR]',
+    'MORE' => '[FILENAME]',
     'EMAIL' => '[SUBJECT] [USER@ID] < [BODY]'
 ];
