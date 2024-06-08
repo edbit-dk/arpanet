@@ -87,10 +87,12 @@ closedir($dir);
 
 function emailUser($data) {
 
+    $from_user = $_SESSION['USER']['ID'];
+
     $parts = explode('<', trim($data), 2);
     $subject = strtoupper(explode(' ', $parts[0])[0]);
     $email = explode(' ', $parts[0])[1];
-    $user = explode('@', $email)[0];
+    $to_user = explode('@', $email)[0];
     $node = explode('@', $email)[1];
     $body = trim($parts[1]);
 
@@ -100,15 +102,23 @@ function emailUser($data) {
     }
 
     // Construct the full path
-    $path = "home/{$node}/{$user}/";
+    $path = "home/{$node}/{$to_user}/";
 
     // Check if the file exists, if not, create it
     if (!file_exists($path)) {
         return "ERROR: User Missing.";
     }
 
+    $email = <<< EOT
+    Subject: "{$subject}"
+    To: {$to_user}
+    From: {$from_user}
+
+    {$body}
+    EOT;
+
     // Write content to the file
-    if (file_put_contents($path . $subject, $body) !== false) {
+    if (file_put_contents($path . $subject . '.mail', $email) !== false) {
         return "SENDING EMAIL: $subject";
     } else {
         return "ERROR: Failed Sending Email!";
