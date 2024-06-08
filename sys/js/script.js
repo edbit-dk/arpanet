@@ -114,8 +114,6 @@ function redirectTo(url) {
 function handleUserInput() {
     const input = document.getElementById('command-input').value.trim();
 
-    localStorage.setItem('boot', true);
-
     if (input === '') return; // Ignore empty input
 
     // Append the command to the terminal and add it to history
@@ -358,13 +356,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Check if 'boot' command has been sent during the current session
     if (!sessionStorage.getItem('boot')) {
-        sendCommand('boot', '');
-        sessionStorage.setItem('boot', 'true'); // Set flag in sessionStorage
+
         setTimeout(function() {
+            sendCommand('boot', '');
+        }, 500);
+        
+        setTimeout(function() {
+            sessionStorage.setItem('boot', true); // Set flag in sessionStorage
             location.reload();
-        }, 7000);
+        }, 10000);
     } else {
-        sendCommand('motd', '');
+
+        setTimeout(function() {
+            sendCommand('motd', '');
+        }, 500);
     }
 });
 

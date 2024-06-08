@@ -37,7 +37,7 @@ function dump($data) {
 
     if (!isset($_SESSION['DEBUG_PASS'])) {
 
-        $_SESSION['WORD'] = rand(3, 13);
+        $_SESSION['WORD'] = rand(2, 13);
         $_SESSION['DEBUG_PASS'] = wordlist('sys/var/wordlist.txt', $_SESSION['WORD'] , 1)[0];
     } 
     
@@ -125,7 +125,7 @@ function dump($data) {
             }
 
             echo "EXCACT MATCH!\n";
-            echo "USERNAME:" . strtoupper($username);
+            echo "USERNAME: " . strtoupper($username) . "\n";
             return "PASSWORD: {$admin_pass}\n";
         }
 

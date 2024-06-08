@@ -2,7 +2,7 @@
 
 function connectUser($data){
 
-    $input = explode(' ', $data);
+    $input = explode(' ', trim($data));
 
     if(empty($data) && !isset($_SESSION['USER'])) {
         return 'ERROR: Security Access Code Not Accepted!';
@@ -15,10 +15,10 @@ function connectUser($data){
         return;
     }
 
-    if(count($input) >= 1 && strlen($input[0]) === 20 && preg_match('/^[AXYZ01234679-]+$/', $input[0])) {
+    if (count($input) >= 1 && strlen($input[0]) === 20 && preg_match('/^[AXYZ01234679-]+$/', $input[0])) {
 
         if(empty($input[1]) OR !preg_match('/^[a-zA-Z]+[a-zA-Z0-9._-]+$/', $input[1])) {
-            $user_id = uniqid();
+            $user_id = wordlist('sys/var/wordlist.txt', rand(5, 17) , 1)[0];
         } else {
             $user_id = $input[1];
         }
@@ -26,28 +26,12 @@ function connectUser($data){
         $user_id = strtolower($user_id);
 
         $code = $input[0];
-        $user_profile = $input[0] . '_' . $user_id;
+
     } else {
         return 'ERROR: Security Access Code Not Accepted!';
     }
 
-    if (file_exists("user/{$user_profile}.json")) { 
-        
-        $_SESSION['USER'] = json_decode(file_get_contents("user/{$user_profile}.json"), true);
-
-        $user_id = strtoupper($_SESSION['USER']['ID']);
-
-        // Add one to the XP field
-        if (isset($_SESSION['USER'])) {
-            $_SESSION['USER']['XP'] += 10;
-            file_put_contents("user/{$user_profile}.json", json_encode($_SESSION['USER']));
-        }
-        
-        return "ACCESS CODE: {$code}\nEMPLOYEE ID: {$user_id}";
-
-    }
-        
-    if (!file_exists("user/{$user_profile}.json")) { 
+    if (!file_exists("user/{$user_id}.json")) { 
         
         $_SESSION['USER'] = [
             'ID' => $user_id,
@@ -55,11 +39,34 @@ function connectUser($data){
             'XP' => 0
         ];
         
-        file_put_contents("user/{$user_profile}.json", json_encode($_SESSION['USER']));
+        file_put_contents("user/{$user_id}.json", json_encode($_SESSION['USER']));
 
         $user_id = strtoupper($user_id);
     
         return "ACCESS CODE: {$code}\nEMPLOYEE ID: {$user_id}";
+    }
+
+    if (file_exists("user/{$user_id}.json")) { 
+        
+        $user = json_decode(file_get_contents("user/{$user_id}.json"), true);
+
+        if($user['CODE'] == $code) {
+
+        $_SESSION['USER'] = $user;
+
+        // Add one to the XP field
+        if (isset($_SESSION['USER'])) {
+            $_SESSION['USER']['XP'] += 10;
+            file_put_contents("user/{$user_id}.json", json_encode($_SESSION['USER']));
+            
+        }
+
+        $user_id = strtoupper($_SESSION['USER']['ID']);
+        
+        return "ACCESS CODE: {$code}\nEMPLOYEE ID: {$user_id}";
+        
+        }
+
     }
 
     return 'ERROR: Security Access Code Not Accepted!';

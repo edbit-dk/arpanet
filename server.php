@@ -166,5 +166,5 @@ function executeCommand($command, $data) {
              }
          }
 
-    return "ERROR: UNKNOWN COMMAND!";
+    return "ERROR: Unknown Command";
 }
