@@ -57,7 +57,7 @@ function executeCommand($command, $data) {
 
     global $server_id;
 
-    if ($command === 'code') {
+    if ($command === 'enter') {
         return connectUser($data);
     }
 

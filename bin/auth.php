@@ -18,9 +18,9 @@ function connectUser($data){
     if (count($input) >= 1 && strlen($input[0]) === 20 && preg_match('/^[AXYZ01234679-]+$/', $input[0])) {
 
         if(empty($input[1]) OR !preg_match('/^[a-zA-Z]+[a-zA-Z0-9._-]+$/', $input[1])) {
-            $user_id = wordlist('sys/var/wordlist.txt', rand(5, 17) , 1)[0];
+            $user_id = $_SESSION['EMPLOYEE_ID'];
         } else {
-            $user_id = $input[1];
+            $user_id = str_replace("_", "-", $input[1]);
         }
 
         $user_id = strtolower($user_id);

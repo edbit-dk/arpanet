@@ -10,22 +10,32 @@ if(!isset($_SESSION['USER']) && !isset($_SESSION['loggedIn'])) {
 
     $access_code = "{$code_1}-{$code_2}-{$code_3}"; 
 
+    $employee_id = strtoupper(random_username(wordlist('sys/var/wordlist.txt', rand(5, 10) , 1)[0]));
+
+    $_SESSION['EMPLOYEE_ID'] = strtolower($employee_id);
+
     echo <<< EOT
     
     Welcome to POSEIDON ENERGY Corporation
     -Begin your Odyssey with us-
 
     This terminal allows access to PoseidoNET.
+    Type HELP after logon for more commands.
     __________________________________________
 
-    > Uplink with central PoseidoNet initiated...
+    Uplink with central PoseidoNet initiated.
+
+    Enter Security Access Code Sequence:
 
     #################################
-    # Security Access Code Sequence #
+    ACCESS CODE: {$access_code}
+    EMPLOYEE ID: {$employee_id}
     #################################
     
-    > Enter: CODE {$access_code} [EMPLOYEE ID].
+    Remember <ACCESS CODE> And <EMPLOYEE ID> !
 
+    > ENTER <ACCESS CODE> [EMPLOYEE ID]:
+     
     EOT;
 
     return;

@@ -78,3 +78,8 @@ function random_str(
     }
     return implode('', $pieces);
 }
+
+
+function random_username($string) {
+    return vsprintf('%s%s%d', [...sscanf(strtolower($string), '%s %2s'), random_int(1, 100)]);
+}
