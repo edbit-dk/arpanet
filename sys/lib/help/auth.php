@@ -1,10 +1,12 @@
 <?php
 return [
     'ACCOUNTS' => '',
-    'LOGON' => '[USERNAME]',
+    'LOGOUT' => '',
     'LOGOFF' => '',
-    'VERSION' => '',
-    'SET' => '[COMMAND]',
-    'RUN' => '[COMMAND]',
-    'MEM' => '[DEBUG]',
+    'FIND' => '',
+    'CONNECT' => '[SERVER ID]',
+    'DIR' => '',
+    'CD' => '[DIR]',
+    'MORE' => '[FILENAME]',
+    'EMAIL' => '[SUBJECT] [USER@ID] < [BODY]'
 ];
