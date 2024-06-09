@@ -1,5 +1,6 @@
 <?php
 return [
+    'USER' => '',
     'LOGON' => '[USERNAME]',
     'LOGOFF' => '',
     'VERSION' => '',
