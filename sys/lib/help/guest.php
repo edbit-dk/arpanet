@@ -1,10 +1,10 @@
 <?php
 return [
     'USER' => '',
-    'LOGON' => '[USERNAME]',
+    'LOGON' => '<USERNAME>',
     'LOGOFF' => '',
     'VERSION' => '',
-    'SET' => '[COMMAND]',
-    'RUN' => '[COMMAND]',
+    'SET' => '<COMMAND>',
+    'RUN' => '<COMMAND>',
     'MEM' => '[DEBUG]',
 ];
