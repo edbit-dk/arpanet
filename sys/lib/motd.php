@@ -10,7 +10,7 @@ if(!isset($_SESSION['USER']) && !isset($_SESSION['loggedIn'])) {
 
     $access_code = "{$code_1}-{$code_2}-{$code_3}"; 
 
-    $employee_id = strtoupper(random_username(wordlist('sys/var/wordlist.txt', rand(5, 10) , 1)[0]));
+    $employee_id = strtoupper(random_username(wordlist('sys/var/namelist.txt', rand(5, 12) , 1)[0]));
 
     $_SESSION['EMPLOYEE_ID'] = strtolower($employee_id);
 
