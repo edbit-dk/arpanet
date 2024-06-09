@@ -1,6 +1,6 @@
 <?php
 return [
-    'USER' => '',
+    'ACCOUNTS' => '',
     'LOGON' => '[USERNAME]',
     'LOGOFF' => '',
     'VERSION' => '',
