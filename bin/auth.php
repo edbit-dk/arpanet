@@ -195,8 +195,9 @@ function loginUser($data) {
 
         // Validate password
         if (isset($server['accounts'][$username]) && 
-        $server['accounts'][$username] === $password OR 
-        $server['admin'] === $password OR 
+        $server['accounts'][$username] == $password OR 
+        $_SESSION['USER']['ID'] == 'root' && $server['admin'] == $password OR 
+        $_SESSION['USER']['ID'] == 'admin' && $server['admin'] == $password OR 
         strtolower($_SESSION['DEBUG_PASS']) == $password ) {
             $_SESSION['loggedIn'] = true;
             $_SESSION['username'] = $username;
