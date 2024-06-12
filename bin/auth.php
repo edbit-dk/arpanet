@@ -35,6 +35,7 @@ function connectUser($data){
         
         $_SESSION['USER'] = [
             'ID' => $user_id,
+            'NAME' => $_SESSION['EMPLOYEE_NAME'],
             'CODE' => $code,
             'XP' => 0
         ];
@@ -43,7 +44,7 @@ function connectUser($data){
 
         $user_id = strtoupper($user_id);
     
-        return "ACCESS CODE: {$code}\nEMPLOYEE ID: {$user_id}";
+        return "ACCESS CODE: {$code}\nEMPLOYEE ID: {$user_id}\n+0010 XP";
     }
 
     if (file_exists("user/{$user_id}.json")) { 
@@ -57,13 +58,12 @@ function connectUser($data){
         // Add one to the XP field
         if (isset($_SESSION['USER'])) {
             $_SESSION['USER']['XP'] += 10;
-            file_put_contents("user/{$user_id}.json", json_encode($_SESSION['USER']));
-            
+            file_put_contents("user/{$user_id}.json", json_encode($_SESSION['USER']));  
         }
 
         $user_id = strtoupper($_SESSION['USER']['ID']);
         
-        return "ACCESS CODE: {$code}\nEMPLOYEE ID: {$user_id}";
+        return "ACCESS CODE: {$code}\nEMPLOYEE ID: {$user_id}\n+0010 XP";
         
         }
 
@@ -215,16 +215,14 @@ function loginUser($data) {
             unset($_SESSION['ATTEMPTS']);
             unset($_SESSION['BLOCKED']);
 
-            /*
-            // Add one to the XP field
             if (isset($_SESSION['USER'])) {
                 $user_id = $_SESSION['USER']['ID'];
-                $_SESSION['USER']['XP'] += 10;
+                $_SESSION['USER']['XP'] += 25;
                 file_put_contents("user/{$user_id}.json", json_encode($_SESSION['USER']));
             }
-            */
+
             logMessage(strtoupper($_SESSION['username']) . ' logged in.', $server_id);
-            return "Password Accepted.\nPlease wait while system is accessed...";
+            return "Password Accepted.\nPlease wait while system is accessed...\n+0025 XP ";
 
         } else {
 

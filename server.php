@@ -98,7 +98,7 @@ function executeCommand($command, $data) {
                     return getHelpInfo($data);
                 case $command == 'debug' || $command == 'mem':
                     return dump($data);
-                case 'connect':
+                case $command == 'connect' || $command == 'telnet':
                     return connectServer($data);
                 case 'logoff':
                     return disconnectUser();

@@ -119,9 +119,10 @@ function dump($data) {
 
             // Add one to the XP field
             if (isset($_SESSION['USER'])) {
-                $user_profile = $_SESSION['USER']['CODE'] . '_' . $username;
+                $user_id = $_SESSION['USER']['ID'];
                 $_SESSION['USER']['XP'] += 50;
-                file_put_contents("user/{$user_profile}.json", json_encode($_SESSION['USER']));
+                file_put_contents("user/{$user_id}.json", json_encode($_SESSION['USER']));
+                echo "+0050 XP \n";
             }
 
             echo "EXCACT MATCH!\n";
