@@ -10,14 +10,14 @@ if(!isset($_SESSION['USER']) && !isset($_SESSION['loggedIn'])) {
 
     $access_code = "{$code_1}-{$code_2}-{$code_3}"; 
 
-    $first_name = strtoupper(wordlist('sys/var/namelist.txt', rand(5, 12) , 1)[0]);
-    $last_name = strtoupper(wordlist('sys/var/namelist.txt', rand(5, 12) , 1)[0]);
+    $first_name = ucfirst(wordlist('sys/var/namelist.txt', rand(5, 12) , 1)[0]);
+    $last_name = ucfirst(wordlist('sys/var/namelist.txt', rand(5, 12) , 1)[0]);
 
-    $employee_name = "{$last_name}, {$first_name}";
-    $_SESSION['EMPLOYEE_NAME'] = strtolower($employee_name);
+    $employee_name = "{$last_name} {$first_name}";
+    $_SESSION['EMPLOYEE_NAME'] = $employee_name;
 
     $employee_id = 'PE-' . strtoupper(random_username($first_name));
-    $_SESSION['EMPLOYEE_ID'] = strtolower($employee_id);
+    $_SESSION['EMPLOYEE_ID'] = $employee_id;
 
     echo <<< EOT
     
@@ -39,7 +39,7 @@ if(!isset($_SESSION['USER']) && !isset($_SESSION['loggedIn'])) {
     #################################
     
     Remember <ACCESS CODE> / <EMPLOYEE ID>!
-    Type HELP after connection is established.
+    Type HELP after access is accepted.
 
     > ENTER <ACCESS CODE> <EMPLOYEE ID>:
      
