@@ -80,7 +80,7 @@ function connectServer($data) {
         logoutUser();  
         return "Contacting Server: {$server_id}\n";
     } else {
-        return 'ERROR: Connection Refused.';
+        return 'ERROR: ACCESS DENIED';
     }
 
 }

@@ -39,7 +39,7 @@ if(!isset($_SESSION['USER']) && !isset($_SESSION['loggedIn'])) {
     #################################
     
     Remember <ACCESS CODE> / <EMPLOYEE ID>!
-    Type HELP after connection accepted.
+    Type HELP after connection is established.
 
     > ENTER <ACCESS CODE> <EMPLOYEE ID>:
      
@@ -56,8 +56,13 @@ if(!isset($_SESSION['loggedIn'])) {
     echo <<< EOT
     Welcome to ROBCO Industries (TM) Termlink
     -Server {$server_id}-
-     
+
+    **** NETWORK ONLINE ****
+    
+    {$server_name}
+    _________________________________________
     Password Required
+
     EOT;
 
     return;

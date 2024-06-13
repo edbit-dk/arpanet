@@ -66,7 +66,7 @@ function handleRedirect(response) {
         if (match) {
             const server_id = match[1]; // Extract the first capture group (the value after "Server:")
             setTimeout(function() {
-                loadText('Connection Established!');
+                loadText('Accessing Mainframe...');
             }, 1500);
 
             setTimeout(function() {
