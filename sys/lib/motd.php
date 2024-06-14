@@ -39,7 +39,7 @@ if(!isset($_SESSION['USER']) && !isset($_SESSION['loggedIn'])) {
     #################################
     
     Remember <ACCESS CODE> / <EMPLOYEE ID>!
-    Type HELP after access is accepted.
+    Type HELP when uplink is accepted.
 
     > ENTER <ACCESS CODE> <EMPLOYEE ID>:
      
