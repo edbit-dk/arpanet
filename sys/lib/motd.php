@@ -14,7 +14,7 @@ if(!isset($_SESSION['USER']) && !isset($_SESSION['loggedIn'])) {
     $last_name = ucfirst(wordlist('sys/var/namelist.txt', rand(5, 12) , 1)[0]);
 
     $employee_name = "{$last_name} {$first_name}";
-    $_SESSION['EMPLOYEE_NAME'] = $employee_name;
+    $_SESSION['EMPLOYEE_NAME'] = strtoupper($employee_name);
 
     $employee_id = 'PE-' . strtoupper(random_username($first_name));
     $_SESSION['EMPLOYEE_ID'] = $employee_id;

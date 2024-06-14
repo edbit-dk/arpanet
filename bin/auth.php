@@ -34,7 +34,7 @@ function connectUser($data){
     if (!file_exists("user/{$user_id}.json")) { 
         
         $_SESSION['USER'] = [
-            'ID' => strtoupper($user_id),
+            'ID' => $user_id,
             'NAME' => $_SESSION['EMPLOYEE_NAME'],
             'CODE' => $code,
             'XP' => 0
