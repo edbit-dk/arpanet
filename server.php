@@ -69,10 +69,6 @@ function executeCommand($command, $data) {
         return boot();
     }
 
-    if ($command === 'accounts') {
-        return listUsers($data);
-    }
-
     if ($command === 'user') {
         return connectUser($data);
     }
@@ -114,6 +110,8 @@ function executeCommand($command, $data) {
             logMessage(strtoupper($_SESSION['username']) . ' used command: ' . $command . " {$data}", $server_id);
         
               switch ($command) {
+                case 'accounts':
+                    return listAccounts($data);
                 case 'email':
                     return emailUser($data);
                 case $command == 'ls' || $command == 'dir':

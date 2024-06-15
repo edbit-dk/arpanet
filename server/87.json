@@ -1,11 +1,11 @@
 {
-    "name": "Vault 101",
+    "name": "Vault 87",
     "location": "Capital Wasteland",
-    "id": "101",
+    "id": "87",
     "admin": "robco",
     "status": "online",
     "accounts": {
-        "overseer": "amata"
+        "overseer": "101097"
     },
     "nodes": {
         "87": "Vault 87",

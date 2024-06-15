@@ -41,6 +41,43 @@ function scanNodes($number) {
     return $terminal;
 }
 
+function listAccounts($data = 5) {
+    global $server;
+
+    $terminal = "RUN LIST/ACCOUNTS.F '{$data}'\n";
+
+    if (file_exists("user/{$data}.json")) {
+        $accounts = json_decode(file_get_contents("user/{$data}.json"), true);
+        
+        foreach ($accounts as $account => $info) {
+            $terminal .= " $account: $info\n";
+        }
+
+        return $terminal;
+    
+    } else {
+        $accounts = $server['accounts']; 
+    }
+
+    $i = 0;
+    foreach ($accounts as $account => $password) {
+
+        if(file_exists("user/{$account}.json")) {
+            $user = json_decode(file_get_contents("user/{$account}.json"), true);
+            $user_xp = $user['XP'];
+            $terminal .= " $account ($user_xp XP): $password\n";
+            
+        }
+
+        $i++;
+        if($i == $data) {
+            break;
+        }
+
+    }
+    return $terminal;
+}
+
 function listUsers($data = '') {
 
     // Directory containing JSON files

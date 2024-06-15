@@ -260,6 +260,10 @@ function run($data) {
         return 'ERROR: Maintenance Mode Required!';
     }
 
+    if(strpos('LIST/ACCOUNTS.F', $command) !== false) {
+        return listAccounts();
+    }
+
     if(strpos('DEBUG/ACCOUNTS.F', $command) !== false) {
         $_SESSION['DEBUG_MODE'] = true;
         echo file_get_contents('sys/var/attempts.txt') . "\n";
