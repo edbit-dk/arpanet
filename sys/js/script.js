@@ -140,7 +140,7 @@ function handleUserInput() {
         return; // Exit function after reload is scheduled
     } else if (command === 'register') {
         handleNewUser(args); // Handle new user creation
-    } else if (command === 'theme') {
+    } else if (command === 'color) {
         setTheme(args); // Handle color setting
     } else {
         sendCommand(command, args); // Otherwise, send the command to the server
