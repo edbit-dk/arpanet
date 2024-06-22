@@ -18,17 +18,19 @@ require_once 'bin/info.php';
 require_once 'bin/helpers.php';
 
 $request = parse_get('query');
-
-if(!isset($_SESSION['server'])) {
-    $server_id = isset($request['server']) ? $request['server'] : rand_filename("server/");
-} else {
-    $server_id = $_SESSION['server'];
-}
+$server_id = isset($request['server']) ? $request['server'] : rand_filename("server/");
 
 if(!file_exists("server/{$server_id}.json")) {
     echo "ERROR: Connection Terminated.\n";
     return;
 }
+
+if(isset($request['server']) OR !isset($_SESSION['server'])) {
+   $_SESSION['server'] = $server_id;
+} else {
+    $server_id = $_SESSION['server'];
+}
+
 
 // Define valid credentials (this is just an example, in a real application, you'd use a database)
 $server = json_decode(file_get_contents("server/{$server_id}.json"), true);
