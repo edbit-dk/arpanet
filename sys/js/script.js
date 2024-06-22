@@ -92,7 +92,7 @@ function handleRedirect(response) {
                 loadText("Security Access Code Sequence Accepted.\nWelcome to PoseidoNet!");
 
                 setTimeout(function() {
-                    redirectTo('?server=0&code=' + access_code); // Redirect to a specific query string using the server number
+                    redirectTo('?code=' + access_code); // Redirect to a specific query string using the server number
                 }, 1500);
 
             }, 1500);

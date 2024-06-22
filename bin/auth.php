@@ -43,6 +43,8 @@ function connectUser($data){
         file_put_contents("user/{$user_id}.json", json_encode($_SESSION['USER']));
 
         $user_id = strtoupper($user_id);
+
+        sleep(2);
     
         return "ACCESS CODE: {$code}\nEMPLOYEE ID: {$user_id}\n+0010 XP";
     }
@@ -62,6 +64,8 @@ function connectUser($data){
         }
 
         $user_id = strtoupper($_SESSION['USER']['ID']);
+
+        sleep(2);
         
         return "ACCESS CODE: {$code}\nEMPLOYEE ID: {$user_id}\n+0010 XP";
         

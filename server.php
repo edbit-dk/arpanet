@@ -19,21 +19,19 @@ require_once 'bin/helpers.php';
 
 $request = parse_get('query');
 
-$server_id = isset($request['server']) ? $request['server'] : rand_filename("server/");
-
-if (!file_exists("server/{$server_id}.json")) { 
-    $server_id = DEFAULT_NODE;
+if(!isset($_SESSION['server'])) {
+    $server_id = isset($request['server']) ? $request['server'] : rand_filename("server/");
+} else {
+    $server_id = $_SESSION['server'];
 }
 
-
-// Define valid credentials (this is just an example, in a real application, you'd use a database)
-$server = json_decode(file_get_contents("server/{$server_id}.json"), true);
-
-if(isset($_SESSION['loggedIn']) && $_SESSION['server'] != $server_id && $_SESSION['username'] != 'overseer') {
-
+if(!file_exists("server/{$server_id}.json")) {
     echo "ERROR: Connection Terminated.\n";
     return;
 }
+
+// Define valid credentials (this is just an example, in a real application, you'd use a database)
+$server = json_decode(file_get_contents("server/{$server_id}.json"), true);
 
 // Handle POST requests
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
