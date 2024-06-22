@@ -19,7 +19,7 @@ require_once 'bin/helpers.php';
 
 $request = parse_get('query');
 
-$server_id = isset($request['server']) ? $request['server'] : 1;
+$server_id = isset($request['server']) ? $request['server'] : rand_filename("server/");
 
 if (!file_exists("server/{$server_id}.json")) { 
     $server_id = DEFAULT_NODE;

@@ -1,0 +1,16 @@
+{
+    "name": "Vault 4",
+    "location": "Los Angeles, California",
+    "id": "4",
+    "admin": "robco",
+    "status": "online",
+    "accounts": {
+        "overseer": "101097"
+    },
+    "nodes": {
+        "4": "Vault 4",
+        "31": "Vault 31",
+        "32": "Vault 32",
+        "33": "Vault 33"
+     }
+}

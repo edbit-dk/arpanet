@@ -266,4 +266,23 @@ function listFiles() {
 }
 
 
+function rand_filename($dir) {
+
+    // Get all filenames in the directory
+    $files = glob($dir . '/*');
+
+    // Check if there are any files in the directory
+    if (count($files) > 0) {
+        // Select a random file from the list
+        $randomFile = $files[array_rand($files)];
+
+        // Extract the filename without the extension
+        $randomFileName = pathinfo($randomFile, PATHINFO_FILENAME);
+
+        // Return the random file name without the extension
+        return $randomFileName;
+    } else {
+        return "No files found in the directory.";
+    }
+}
 
