@@ -31,7 +31,7 @@ function connectUser($data){
         return 'ERROR: Security Access Code Not Accepted!';
     }
 
-    if (!file_exists("user/{$user_id}.json")) { 
+    if (!file_exists("app/user/{$user_id}.json")) { 
         
         $_SESSION['USER'] = [
             'ID' => $user_id,
@@ -40,7 +40,7 @@ function connectUser($data){
             'XP' => 0
         ];
         
-        file_put_contents("user/{$user_id}.json", json_encode($_SESSION['USER']));
+        file_put_contents("app/user/{$user_id}.json", json_encode($_SESSION['USER']));
 
         $user_id = strtoupper($user_id);
 
@@ -49,9 +49,9 @@ function connectUser($data){
         return "ACCESS CODE: {$code}\nEMPLOYEE ID: {$user_id}\n+0010 XP";
     }
 
-    if (file_exists("user/{$user_id}.json")) { 
+    if (file_exists("app/user/{$user_id}.json")) { 
         
-        $user = json_decode(file_get_contents("user/{$user_id}.json"), true);
+        $user = json_decode(file_get_contents("app/user/{$user_id}.json"), true);
 
         if($user['CODE'] == $code) {
 
@@ -60,7 +60,7 @@ function connectUser($data){
         // Add one to the XP field
         if (isset($_SESSION['USER'])) {
             $_SESSION['USER']['XP'] += 10;
-            file_put_contents("user/{$user_id}.json", json_encode($_SESSION['USER']));  
+            file_put_contents("app/user/{$user_id}.json", json_encode($_SESSION['USER']));  
         }
 
         $user_id = strtoupper($_SESSION['USER']['ID']);
@@ -80,7 +80,7 @@ function connectServer($data) {
 
     $server_id = explode(' ', $data)[0];
 
-    if (file_exists("server/{$server_id}.json")) {
+    if (file_exists("app/server/{$server_id}.json")) {
         logoutUser();  
         return "Contacting Server: {$server_id}\n";
     } else {
@@ -96,8 +96,8 @@ function setupServer($data) {
     $username = $_SESSION['username'];
     $password = $_SESSION['password'];
     
-    if (!file_exists("server/{$server_id}.json")) {
-        file_put_contents("server/{$server_id}.json", json_encode(
+    if (!file_exists("app/server/{$server_id}.json")) {
+        file_put_contents("app/server/{$server_id}.json", json_encode(
         [
                 'name' => 'Default',
                 'server' => $_SESSION['server_id'],
@@ -148,7 +148,7 @@ function newUser($data) {
         // Store the new user credentials
         $server['accounts'][$username] = $password;
         // Save the updated user data to the file
-        file_put_contents("server/{$_SESSION['server_id']}.json", json_encode($server));
+        file_put_contents("app/server/{$_SESSION['server_id']}.json", json_encode($server));
 
         // Create a folder for the new user
         $userFolder  = realpath(HOME_DIRECTORY) . DIRECTORY_SEPARATOR . $server_id; // Set user's directory

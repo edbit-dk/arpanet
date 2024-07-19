@@ -8,11 +8,11 @@ function restartServer() {
 
 // Function to display Message of the Day
 function boot() {
-    include('sys/var/boot.txt');
+    include('app/text/boot.txt');
 }
 
 function motd() {
-    require('sys/lib/motd.php');
+    require('app/motd.php');
 }
 
 // Function to log messages

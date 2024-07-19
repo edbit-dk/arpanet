@@ -4,7 +4,7 @@
  * Class Application
  * The heart of the application
  */
-class Application
+class App
 {
     /** @var mixed Instance of the controller */
     private $controller;

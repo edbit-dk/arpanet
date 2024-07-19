@@ -4,23 +4,23 @@
 session_start(); // Start the session
 
 // Define the home directory
-define('HOME_DIRECTORY', getcwd() . "/home/");
+define('HOME_DIRECTORY', getcwd() . "/public/uploads/");
 
 define('DEFAULT_NODE', '0');
 
 $special_chars = "!?,;.'[]={}@#$%^*()-_\/|";
 
-require_once 'bin/system.php';
-require_once 'bin/debug.php';
-require_once 'bin/filesystem.php';
-require_once 'bin/auth.php';
-require_once 'bin/info.php';
-require_once 'bin/helpers.php';
+require_once 'app/system.php';
+require_once 'app/debug.php';
+require_once 'app/filesystem.php';
+require_once 'app/auth.php';
+require_once 'app/info.php';
+require_once 'app/helpers.php';
 
 $request = parse_get('query');
-$server_id = isset($request['server']) ? $request['server'] : rand_filename("server/");
+$server_id = isset($request['server']) ? $request['server'] : rand_filename("app/server/");
 
-if(!file_exists("server/{$server_id}.json")) {
+if(!file_exists("app/server/{$server_id}.json")) {
     echo "ERROR: Connection Terminated.\n";
     return;
 }
@@ -33,7 +33,7 @@ if(isset($request['server']) OR !isset($_SESSION['server'])) {
 
 
 // Define valid credentials (this is just an example, in a real application, you'd use a database)
-$server = json_decode(file_get_contents("server/{$server_id}.json"), true);
+$server = json_decode(file_get_contents("app/server/{$server_id}.json"), true);
 
 // Handle POST requests
 if ($_SERVER["REQUEST_METHOD"] === "POST") {

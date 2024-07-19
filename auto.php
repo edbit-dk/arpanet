@@ -3,7 +3,7 @@
 session_start(); // Start the session
 
 // Define the home directory
-define('HOME_DIRECTORY', __DIR__ . '/home/');
+define('HOME_DIRECTORY', getcwd() . "/public/uploads/");
 
 // Get the input from the POST request
 $input = isset($_POST['input']) ? $_POST['input'] : '';

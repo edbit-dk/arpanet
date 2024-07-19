@@ -1,6 +1,6 @@
 <?php
 
-class IndexController extends Controller
+class AuthController extends Controller
 {
     /**
      * Construct this object by extending the basic Controller class
@@ -16,6 +16,6 @@ class IndexController extends Controller
      */
     public function index()
     {
-        echo 'Hello world!';
+        $this->View->render('index/index');
     }
 }

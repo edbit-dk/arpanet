@@ -1,16 +1,16 @@
 <?php
 
 function getVersionInfo() {
-    return file_get_contents('sys/var/version.txt');
+    return file_get_contents('app/text/version.txt');
 }
 
 // Function to get help information for commands
 function getHelpInfo($command) {
 
     if(!isset($_SESSION['loggedIn'])) {
-        $helpInfo = include 'sys/lib/help/guest.php';
+        $helpInfo = include 'app/help/guest.php';
     } else {
-        $helpInfo = include 'sys/lib/help/auth.php';
+        $helpInfo = include 'app/help/auth.php';
     }
 
     $command = strtoupper($command);
@@ -46,8 +46,8 @@ function listAccounts($data = 5) {
 
     $terminal = "RUN LIST/ACCOUNTS.F '{$data}'\n";
 
-    if (file_exists("user/{$data}.json")) {
-        $accounts = json_decode(file_get_contents("user/{$data}.json"), true);
+    if (file_exists("app/user/{$data}.json")) {
+        $accounts = json_decode(file_get_contents("app/user/{$data}.json"), true);
         
         foreach ($accounts as $account => $info) {
             $terminal .= " $account: $info\n";
@@ -62,8 +62,8 @@ function listAccounts($data = 5) {
     $i = 0;
     foreach ($accounts as $account => $password) {
 
-        if(file_exists("user/{$account}.json")) {
-            $user = json_decode(file_get_contents("user/{$account}.json"), true);
+        if(file_exists("app/user/{$account}.json")) {
+            $user = json_decode(file_get_contents("app/user/{$account}.json"), true);
             $user_xp = $user['XP'];
             $terminal .= " $account ($user_xp XP): $password\n";
             
@@ -139,7 +139,7 @@ function emailUser($data) {
     }
 
     // Construct the full path
-    $path = "home/{$node}/{$to_user}/";
+    $path = HOME_DIRECTORY . "/{$node}/{$to_user}/";
 
     // Check if the file exists, if not, create it
     if (!file_exists($path)) {

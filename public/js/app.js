@@ -1,5 +1,5 @@
 // Array to store command history
-let stylesheets = 'sys/css/';
+let stylesheets = 'public/css/';
 let commandHistory = [];
 let historyIndex = -1;
 let currentDirectory = ''; // Variable to store the current directory
@@ -92,7 +92,7 @@ function handleRedirect(response) {
                 loadText("Security Access Code Sequence Accepted.\nWelcome to PoseidoNet!");
 
                 setTimeout(function() {
-                    redirectTo('?code=' + access_code); // Redirect to a specific query string using the server number
+                    redirectTo('?code=' + btoa(access_code)); // Redirect to a specific query string using the server number
                 }, 1500);
 
             }, 1500);
