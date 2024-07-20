@@ -8,17 +8,17 @@ function restartServer() {
 
 // Function to display Message of the Day
 function boot() {
-    include('app/text/boot.txt');
+    include(APP. 'text/boot.txt');
 }
 
 function motd() {
-    require('app/motd.php');
+    require(APP. 'motd.php');
 }
 
 // Function to log messages
 function logMessage($message, $logFile = 1) {
 
-    $logFile = "log/{$logFile}.log";
+    $logFile = APP. "log/{$logFile}.log";
 
     // Set the default timezone
     date_default_timezone_set('UTC');

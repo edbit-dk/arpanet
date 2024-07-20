@@ -8,9 +8,9 @@ function getVersionInfo() {
 function getHelpInfo($command) {
 
     if(!isset($_SESSION['loggedIn'])) {
-        $helpInfo = include 'app/help/guest.php';
+        $helpInfo = include APP. 'help/guest.php';
     } else {
-        $helpInfo = include 'app/help/auth.php';
+        $helpInfo = include APP. 'help/auth.php';
     }
 
     $command = strtoupper($command);
@@ -46,8 +46,8 @@ function listAccounts($data = 5) {
 
     $terminal = "RUN LIST/ACCOUNTS.F '{$data}'\n";
 
-    if (file_exists("app/user/{$data}.json")) {
-        $accounts = json_decode(file_get_contents("app/user/{$data}.json"), true);
+    if (file_exists(APP. "user/{$data}.json")) {
+        $accounts = json_decode(file_get_contents(APP. "user/{$data}.json"), true);
         
         foreach ($accounts as $account => $info) {
             $terminal .= " $account: $info\n";
@@ -63,7 +63,7 @@ function listAccounts($data = 5) {
     foreach ($accounts as $account => $password) {
 
         if(file_exists("app/user/{$account}.json")) {
-            $user = json_decode(file_get_contents("app/user/{$account}.json"), true);
+            $user = json_decode(file_get_contents(APP. "user/{$account}.json"), true);
             $user_xp = $user['XP'];
             $terminal .= " $account ($user_xp XP): $password\n";
             

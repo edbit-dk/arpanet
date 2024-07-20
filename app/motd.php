@@ -10,8 +10,8 @@ if(!isset($_SESSION['USER']) && !isset($_SESSION['loggedIn'])) {
 
     $access_code = "{$code_1}-{$code_2}-{$code_3}"; 
 
-    $first_name = ucfirst(wordlist('app/text/namelist.txt', rand(5, 12) , 1)[0]);
-    $last_name = ucfirst(wordlist('app/text/namelist.txt', rand(5, 12) , 1)[0]);
+    $first_name = ucfirst(wordlist(APP . 'text/namelist.txt', rand(5, 12) , 1)[0]);
+    $last_name = ucfirst(wordlist(APP . 'text/namelist.txt', rand(5, 12) , 1)[0]);
 
     $employee_name = "{$last_name} {$first_name}";
     $_SESSION['EMPLOYEE_NAME'] = strtoupper($employee_name);

@@ -38,7 +38,7 @@ function dump($data) {
     if (!isset($_SESSION['DEBUG_PASS'])) {
 
         $_SESSION['WORD'] = rand(2, 13);
-        $_SESSION['DEBUG_PASS'] = wordlist('app/text/wordlist.txt', $_SESSION['WORD'] , 1)[0];
+        $_SESSION['DEBUG_PASS'] = wordlist(APP . 'text/wordlist.txt', $_SESSION['WORD'] , 1)[0];
     } 
     
     $word_length = $_SESSION['WORD']; 
@@ -50,7 +50,7 @@ function dump($data) {
     }
 
     if (!isset($_SESSION['DUMP'])) {
-        $word_list = wordlist('app/text/wordlist.txt', $word_length, $max_words);
+        $word_list = wordlist(APP . 'text/wordlist.txt', $word_length, $max_words);
         $data = array_merge([$admin_pass], $word_list);
 
         // Number of rows and columns in the memory dump
@@ -62,7 +62,7 @@ function dump($data) {
 
         // Format and output the memory dump with memory paths
         if (!isset($_SESSION['DEBUG_MODE'])) {
-            echo file_get_contents('app/text/debug.txt');
+            echo file_get_contents(APP. 'text/debug.txt');
         }
 
         echo "{$_SESSION['ATTEMPTS']} ATTEMPT(S) LEFT: # # # # \n \n";
@@ -115,13 +115,13 @@ function dump($data) {
             $username = $_SESSION['USER']['ID'];
             $server['accounts'][$username] = strtolower($admin_pass);
              // Save the updated user data to the file
-            file_put_contents("app/server/{$server_id}.json", json_encode($server));
+            file_put_contents(APP. "server/{$server_id}.json", json_encode($server));
 
             // Add one to the XP field
             if (isset($_SESSION['USER'])) {
                 $user_id = $_SESSION['USER']['ID'];
                 $_SESSION['USER']['XP'] += 50;
-                file_put_contents("app/user/{$user_id}.json", json_encode($_SESSION['USER']));
+                file_put_contents(APP. "user/{$user_id}.json", json_encode($_SESSION['USER']));
                 echo "+0050 XP \n";
             }
 
@@ -234,12 +234,12 @@ function set($data) {
 
     if(strpos('HALT RESTART', $command) !== false) {
         echo 'RESTARTING...';
-        return file_get_contents('app/includes/boot.txt') . "\n";
+        return file_get_contents(APP. 'text/boot.txt') . "\n";
     }
 
     if(strpos('HALT RESTART/MAINT', $command) !== false) {
         $_SESSION['MAINT_MODE'] = true;
-        return file_get_contents('app/includes/maint.txt') . "\n";
+        return file_get_contents(APP. 'text/maint.txt') . "\n";
     }
 
 }
@@ -266,7 +266,7 @@ function run($data) {
 
     if(strpos('DEBUG/ACCOUNTS.F', $command) !== false) {
         $_SESSION['DEBUG_MODE'] = true;
-        echo file_get_contents('app/includes/attempts.txt') . "\n";
+        echo file_get_contents(APP. 'text/attempts.txt') . "\n";
         return dump($data);
     }
 }

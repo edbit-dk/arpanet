@@ -1,26 +1,38 @@
 <?php
 
+// set a constant that holds the project's folder path, like "/var/www/".
+// DIRECTORY_SEPARATOR adds a slash to the end of the path
+define('ROOT', dirname(__DIR__) . DIRECTORY_SEPARATOR);
+// set a constant that holds the project's "application" folder, like "/var/www/application".
+define('APP', ROOT . 'app' . DIRECTORY_SEPARATOR);
+
+// auto-loading the classes (currently only from application/libs) via Composer's PSR-4 auto-loader
+// later it might be useful to use a namespace here, but for now let's keep it as simple as possible
+require ROOT . 'vendor/autoload.php';
+
+// load application config (error reporting etc.)
+require APP . 'config/app.php';
 
 session_start(); // Start the session
 
 // Define the home directory
-define('HOME_DIRECTORY', getcwd() . "/public/uploads/");
+define('HOME_DIRECTORY', ROOT . "/public/uploads/");
 
 define('DEFAULT_NODE', '0');
 
 $special_chars = "!?,;.'[]={}@#$%^*()-_\/|";
 
-require_once 'app/system.php';
-require_once 'app/debug.php';
-require_once 'app/filesystem.php';
-require_once 'app/auth.php';
-require_once 'app/info.php';
-require_once 'app/helpers.php';
+require_once APP . 'system.php';
+require_once APP . 'debug.php';
+require_once APP . 'filesystem.php';
+require_once APP . 'auth.php';
+require_once APP . 'info.php';
+require_once APP . 'helpers.php';
 
 $request = parse_get('query');
-$server_id = isset($request['server']) ? $request['server'] : rand_filename("app/server/");
+$server_id = isset($request['server']) ? $request['server'] : rand_filename(APP . "server/");
 
-if(!file_exists("app/server/{$server_id}.json")) {
+if(!file_exists(APP . "server/{$server_id}.json")) {
     echo "ERROR: Connection Terminated.\n";
     return;
 }
@@ -33,7 +45,7 @@ if(isset($request['server']) OR !isset($_SESSION['server'])) {
 
 
 // Define valid credentials (this is just an example, in a real application, you'd use a database)
-$server = json_decode(file_get_contents("app/server/{$server_id}.json"), true);
+$server = json_decode(file_get_contents(APP . "server/{$server_id}.json"), true);
 
 // Handle POST requests
 if ($_SERVER["REQUEST_METHOD"] === "POST") {

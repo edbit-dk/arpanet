@@ -1,17 +1,20 @@
-<?php
-
-/**
- * A super-simple user-authentication solution, embedded into a small framework.
- *
- * HUGE
- *
- * @link https://github.com/panique/huge
- * @license http://opensource.org/licenses/MIT MIT License
- */
-
-// auto-loading the classes (currently only from application/libs) via Composer's PSR-4 auto-loader
-// later it might be useful to use a namespace here, but for now let's keep it as simple as possible
-require '../vendor/autoload.php';
-
-// start our application
-new App();
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PoseidoNET</title>
+<link rel="stylesheet" href="public/css/styles.css"> <!-- Link to the external CSS file -->
+<link id="theme-color" rel="stylesheet" href="public/css/green-crt.css">
+</head>
+<body>
+  <div id="terminal-wrapper">
+    <div id="terminal"></div>
+    <div id="prompt">
+      <span id="user"></span> >
+        <input type="text" id="command-input" autofocus autocomplete="off">
+    </div>
+  </div>
+  <script src="public/js/app.js"></script> <!-- Link to the external JavaScript file -->
+</body>
+</html>

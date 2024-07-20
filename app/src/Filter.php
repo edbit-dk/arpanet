@@ -49,7 +49,7 @@ class Filter
      * @param  $value    The value to be filtered
      * @return mixed    
      */
-    public static function XSSFilter(&$value)
+    public static function escape(&$value)
     {
         // if argument is a string, filters that string
         if (is_string($value)) {
@@ -67,7 +67,7 @@ class Filter
              * @see http://php.net/manual/en/control-structures.foreach.php
              */
             foreach ($value as &$valueInValue) {
-                self::XSSFilter($valueInValue);
+                self::escape($valueInValue);
             }
         }
 
