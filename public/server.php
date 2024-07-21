@@ -13,6 +13,8 @@ require ROOT . 'vendor/autoload.php';
 // load application config (error reporting etc.)
 require APP . 'config/app.php';
 
+#DB::connect(DB_HOST, DB_NAME, DB_USER, DB_PASS);
+
 session_start(); // Start the session
 
 // Define the home directory

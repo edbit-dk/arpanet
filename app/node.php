@@ -1,0 +1,3 @@
+<?php
+
+DB::table('nodes');

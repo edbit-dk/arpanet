@@ -59,3 +59,24 @@ define('DB_NAME', 'mini');
 define('DB_USER', 'root');
 define('DB_PASS', '12345678');
 define('DB_CHARSET', 'utf8');
+
+/**
+* Configuration for: Email server credentials
+*
+* Here you can define how you want to send emails.
+* If you have successfully set up a mail server on your linux server and you know
+* what you do, then you can skip this section. Otherwise please set EMAIL_USE_SMTP to true
+* and fill in your SMTP provider account data.
+*
+* EMAIL_USED_MAILER: Check Mail class for alternatives
+* EMAIL_USE_SMTP: Use SMTP or not
+* EMAIL_SMTP_AUTH: leave this true unless your SMTP service does not need authentication
+*/
+define('EMAIL_USED_MAILER' , 'phpmailer');
+define('EMAIL_USE_SMTP', false);
+define('EMAIL_SMTP_HOST', 'yourhost');
+define('EMAIL_SMTP_AUTH', true);
+define('EMAIL_SMTP_USERNAME', 'yourusername');
+define('EMAIL_SMTP_PASSWORD', 'yourpassword');
+define('EMAIL_SMTP_PORT', 465);
+define('EMAIL_SMTP_ENCRYPTION', 'ssl');
