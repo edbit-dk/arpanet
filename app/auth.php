@@ -31,7 +31,7 @@ function connectUser($data){
         return 'ERROR: Security Access Code Not Accepted!';
     }
 
-    if (!file_exists(APP . "user/{$user_id}.json")) { 
+    if (!file_exists(APP_CACHE . "user/{$user_id}.json")) { 
         
         $_SESSION['USER'] = [
             'ID' => $user_id,
@@ -40,7 +40,7 @@ function connectUser($data){
             'XP' => 0
         ];
         
-        file_put_contents(APP. "user/{$user_id}.json", json_encode($_SESSION['USER']));
+        file_put_contents(APP_STORAGE. "user/{$user_id}.json", json_encode($_SESSION['USER']));
 
         $user_id = strtoupper($user_id);
 
@@ -49,7 +49,7 @@ function connectUser($data){
         return "ACCESS CODE: {$code}\nEMPLOYEE ID: {$user_id}\n+0010 XP";
     }
 
-    if (file_exists(APP . "user/{$user_id}.json")) { 
+    if (file_exists(APP_CACHE . "user/{$user_id}.json")) { 
         
         $user = json_decode(file_get_contents(APP. "user/{$user_id}.json"), true);
 
@@ -96,7 +96,7 @@ function setupServer($data) {
     $username = $_SESSION['username'];
     $password = $_SESSION['password'];
     
-    if (!file_exists(APP . "server/{$server_id}.json")) {
+    if (!file_exists(APP_CACHE . "server/{$server_id}.json")) {
         file_put_contents(APP. "server/{$server_id}.json", json_encode(
         [
                 'name' => 'Default',
@@ -222,7 +222,7 @@ function loginUser($data) {
             if (isset($_SESSION['USER'])) {
                 $user_id = $_SESSION['USER']['ID'];
                 $_SESSION['USER']['XP'] += 25;
-                file_put_contents(APP . "user/{$user_id}.json", json_encode($_SESSION['USER']));
+                file_put_contents(APP_CACHE . "user/{$user_id}.json", json_encode($_SESSION['USER']));
             }
 
             logMessage(strtoupper($_SESSION['username']) . ' logged in.', $server_id);

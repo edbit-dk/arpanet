@@ -5,6 +5,8 @@
 define('ROOT', dirname(__DIR__) . DIRECTORY_SEPARATOR);
 // set a constant that holds the project's "application" folder, like "/var/www/application".
 define('APP', ROOT . 'app' . DIRECTORY_SEPARATOR);
+define('APP_STORAGE', APP . 'storage' . DIRECTORY_SEPARATOR);
+define('APP_CACHE', APP_STORAGE . 'cache' . DIRECTORY_SEPARATOR);
 
 // auto-loading the classes (currently only from application/libs) via Composer's PSR-4 auto-loader
 // later it might be useful to use a namespace here, but for now let's keep it as simple as possible
@@ -32,9 +34,9 @@ require_once APP . 'info.php';
 require_once APP . 'helpers.php';
 
 $request = parse_get('query');
-$server_id = isset($request['server']) ? $request['server'] : rand_filename(APP . "server/");
+$server_id = isset($request['server']) ? $request['server'] : rand_filename(APP_CACHE . "server/");
 
-if(!file_exists(APP . "server/{$server_id}.json")) {
+if(!file_exists(APP_CACHE . "server/{$server_id}.json")) {
     echo "ERROR: Connection Terminated.\n";
     return;
 }
@@ -47,7 +49,7 @@ if(isset($request['server']) OR !isset($_SESSION['server'])) {
 
 
 // Define valid credentials (this is just an example, in a real application, you'd use a database)
-$server = json_decode(file_get_contents(APP . "server/{$server_id}.json"), true);
+$server = json_decode(file_get_contents(APP_CACHE . "server/{$server_id}.json"), true);
 
 // Handle POST requests
 if ($_SERVER["REQUEST_METHOD"] === "POST") {

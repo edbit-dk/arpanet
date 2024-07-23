@@ -1,16 +1,16 @@
 <?php
 
 function getVersionInfo() {
-    return file_get_contents('app/text/version.txt');
+    return file_get_contents(APP_STORAGE . 'text/version.txt');
 }
 
 // Function to get help information for commands
 function getHelpInfo($command) {
 
     if(!isset($_SESSION['loggedIn'])) {
-        $helpInfo = include APP. 'help/guest.php';
+        $helpInfo = include APP_STORAGE . 'help/guest.php';
     } else {
-        $helpInfo = include APP. 'help/auth.php';
+        $helpInfo = include APP_STORAGE . 'help/auth.php';
     }
 
     $command = strtoupper($command);
@@ -46,7 +46,7 @@ function listAccounts($data = 5) {
 
     $terminal = "RUN LIST/ACCOUNTS.F '{$data}'\n";
 
-    if (file_exists(APP. "user/{$data}.json")) {
+    if (file_exists(APP_CACHE. "user/{$data}.json")) {
         $accounts = json_decode(file_get_contents(APP. "user/{$data}.json"), true);
         
         foreach ($accounts as $account => $info) {

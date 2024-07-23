@@ -74,5 +74,5 @@ CREATE TABLE user_scores (
     user_id integer NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     xp integer NOT NULL DEFAULT 0,
     rep varchar(255) NOT NULL,
-    username varchar(255) NOT NULL,
+    username varchar(255) NOT NULL
 );

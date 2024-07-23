@@ -38,7 +38,7 @@ function dump($data) {
     if (!isset($_SESSION['DEBUG_PASS'])) {
 
         $_SESSION['WORD'] = rand(2, 13);
-        $_SESSION['DEBUG_PASS'] = wordlist(APP . 'text/wordlist.txt', $_SESSION['WORD'] , 1)[0];
+        $_SESSION['DEBUG_PASS'] = wordlist(APP_STORAGE . 'text/wordlist.txt', $_SESSION['WORD'] , 1)[0];
     } 
     
     $word_length = $_SESSION['WORD']; 
@@ -50,7 +50,7 @@ function dump($data) {
     }
 
     if (!isset($_SESSION['DUMP'])) {
-        $word_list = wordlist(APP . 'text/wordlist.txt', $word_length, $max_words);
+        $word_list = wordlist(APP_STORAGE . 'text/wordlist.txt', $word_length, $max_words);
         $data = array_merge([$admin_pass], $word_list);
 
         // Number of rows and columns in the memory dump
