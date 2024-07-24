@@ -1,5 +1,10 @@
 <?php
 
+require APP_MODEL . 'user.php';
+require APP_MODEL . 'server.php';
+require APP_MODEL . 'level.php';
+require APP_MODEL . 'log.php';
+
 function wordlist($file, $word_length = 7, $max_count = 12) {
     $words = file_get_contents($file);
     
@@ -234,12 +239,12 @@ function set($data) {
 
     if(strpos('HALT RESTART', $command) !== false) {
         echo 'RESTARTING...';
-        return file_get_contents(APP. 'text/boot.txt') . "\n";
+        return file_get_contents(APP_STORAGE. 'text/boot.txt') . "\n";
     }
 
     if(strpos('HALT RESTART/MAINT', $command) !== false) {
         $_SESSION['MAINT_MODE'] = true;
-        return file_get_contents(APP. 'text/maint.txt') . "\n";
+        return file_get_contents(APP_STORAGE. 'text/maint.txt') . "\n";
     }
 
 }
@@ -266,7 +271,7 @@ function run($data) {
 
     if(strpos('DEBUG/ACCOUNTS.F', $command) !== false) {
         $_SESSION['DEBUG_MODE'] = true;
-        echo file_get_contents(APP. 'text/attempts.txt') . "\n";
+        echo file_get_contents(APP_STORAGE. 'text/attempts.txt') . "\n";
         return dump($data);
     }
 }

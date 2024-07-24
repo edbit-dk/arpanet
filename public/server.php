@@ -5,6 +5,8 @@
 define('ROOT', dirname(__DIR__) . DIRECTORY_SEPARATOR);
 // set a constant that holds the project's "application" folder, like "/var/www/application".
 define('APP', ROOT . 'app' . DIRECTORY_SEPARATOR);
+define('APP_CONTROLLER', APP . 'controllers' . DIRECTORY_SEPARATOR);
+define('APP_MODEL', APP . 'models' . DIRECTORY_SEPARATOR);
 define('APP_STORAGE', APP . 'storage' . DIRECTORY_SEPARATOR);
 define('APP_CACHE', APP_STORAGE . 'cache' . DIRECTORY_SEPARATOR);
 
@@ -26,11 +28,11 @@ define('DEFAULT_NODE', '0');
 
 $special_chars = "!?,;.'[]={}@#$%^*()-_\/|";
 
-require_once APP . 'system.php';
-require_once APP . 'debug.php';
-require_once APP . 'filesystem.php';
-require_once APP . 'auth.php';
-require_once APP . 'info.php';
+require_once APP_CONTROLLER . 'system.php';
+require_once APP_CONTROLLER . 'debug.php';
+require_once APP_CONTROLLER . 'filesystem.php';
+require_once APP_CONTROLLER . 'auth.php';
+require_once APP_CONTROLLER . 'info.php';
 require_once APP . 'helpers.php';
 
 $request = parse_get('query');

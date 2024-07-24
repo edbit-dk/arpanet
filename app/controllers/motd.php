@@ -1,5 +1,8 @@
 <?php
 
+require APP_MODEL . 'user.php';
+require APP_MODEL . 'server.php';
+
 global $server_id, $server;
 
 if(!isset($_SESSION['USER']) && !isset($_SESSION['loggedIn'])) {

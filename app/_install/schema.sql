@@ -4,7 +4,7 @@ CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     email varchar(255) NOT NULL UNIQUE,
     username varchar(255) NOT NULL UNIQUE,
-    access_code varchar(255) NOT NULL,
+    password varchar(255) NOT NULL,
     first_name varchar(255) NOT NULL,
     last_name varchar(255) NOT NULL,
     active boolean DEFAULT true,
@@ -40,7 +40,7 @@ CREATE TABLE server_accounts (
 
 -- Server Logs -------------------------------------------------------
 
-CREATE TABLE server_logs (
+CREATE TABLE logs (
     id SERIAL PRIMARY KEY,
     server_id integer NOT NULL REFERENCES servers(id) ON DELETE CASCADE,
     info text,
@@ -51,7 +51,7 @@ CREATE TABLE server_logs (
 
 -- Help manuals -------------------------------------------------------
 
-CREATE TABLE help_man (
+CREATE TABLE help (
     id SERIAL PRIMARY KEY,
     cmd varchar(255),
     opt varchar(255),
@@ -63,16 +63,9 @@ CREATE TABLE help_man (
 
 CREATE TABLE levels (
     id SERIAL PRIMARY KEY,
-    xp integer NOT NULL DEFAULT 0,
-    rep varchar(255)
-);
-
--- Levels -------------------------------------------------------
-
-CREATE TABLE user_scores (
-    id SERIAL PRIMARY KEY,
-    user_id integer NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    xp integer NOT NULL DEFAULT 0,
-    rep varchar(255) NOT NULL,
-    username varchar(255) NOT NULL
+    rep varchar(255),
+    xp_req integer NOT NULL DEFAULT 0,
+    xp_reward integer NOT NULL DEFAULT 0,
+    skill_1 integer NOT NULL DEFAULT 4,
+    skill_2 integer NOT NULL DEFAULT 5
 );

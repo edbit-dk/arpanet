@@ -1,5 +1,9 @@
 <?php
 
+require APP_MODEL . 'user.php';
+require APP_MODEL . 'server.php';
+require APP_MODEL . 'log.php';
+
 function connectUser($data){
 
     $input = explode(' ', trim($data));
