@@ -86,8 +86,8 @@ function login_user($data) {
 
     $db_user = DB::table('users')
         ->join('levels', 'levels.id = users.level_id', 'LEFT')
-        ->where('email', '=', $user['email']),
-        ->orWhere('username', '=', $user['email']),
+        ->where('email', '=', $user['email'])
+        ->orWhere('username', '=', $user['email'])
         ->where('password', '=', $user['password'])
         ->first();
 
