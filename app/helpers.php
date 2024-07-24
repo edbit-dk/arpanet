@@ -1,9 +1,14 @@
 <?php
 
-function parse_get($get) {
-    if(!isset($get)) {
-        parse_str( parse_url( $_POST[$get], PHP_URL_QUERY), $query);
-        return $query;
+function parse_request($url) {
+
+    if(isset($url)) {
+        $url_components = parse_url($url);
+        // Use parse_str() function to parse the
+        // string passed via URL
+        parse_str($url_components['query'], $params);
+
+        return $params;
     }
 
     return false;
@@ -85,6 +90,10 @@ function random_str(
 }
 
 
-function random_username($string) {
-    return vsprintf('%s%s%d', [...sscanf(strtolower("$string-"), '%s %2s'), random_int(1, 99)]);
+function random_username($string, $integer = '') {
+    if(empty($integer)) {
+       $integer = random_int(1, 99);
+    }
+
+    return vsprintf('%s%s%d', [...sscanf(strtolower("$string-"), '%s %2s'), $integer]);
 }

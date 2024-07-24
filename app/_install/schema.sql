@@ -1,16 +1,17 @@
 -- Users -------------------------------------------------------
 
 CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
+    ID SERIAL PRIMARY KEY,
     email varchar(255) NOT NULL UNIQUE,
-    username varchar(255) NOT NULL UNIQUE,
+    username varchar(255) UNIQUE,
     password varchar(255) NOT NULL,
-    first_name varchar(255) NOT NULL,
-    last_name varchar(255) NOT NULL,
-    active boolean DEFAULT true,
+    firstname varchar(255) NOT NULL,
+    lastname varchar(255) NOT NULL,
+    fullname varchar(255) NOT NULL,
+    active boolean DEFAULT false,
     level_id integer NOT NULL DEFAULT 0,
     xp integer NOT NULL DEFAULT 0,
-    rep varchar(255) NOT NULL,
+    rep varchar(255) NOT NULL DEFAULT 'UNKNOWN',
     last_login datetime,
     created_at datetime,
     updated_at datetime

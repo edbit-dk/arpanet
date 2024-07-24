@@ -106,6 +106,12 @@ class DB
         return $this;
     }
 
+    public function orWhere($column, $operator, $value)
+    {
+        $this->conditions[] = [$column, $operator, $value, 'OR'];
+        return $this;
+    }
+
     public function order($column, $direction = 'ASC')
     {
         $this->order = "ORDER BY $column $direction";
@@ -159,6 +165,19 @@ class DB
 
         $stmt->execute();
         return $stmt->fetchAll();
+    }
+
+    public function first()
+    {
+        $sql = "SELECT {$this->columns} FROM {$this->table} " . $this->buildJoins() . ' ' . $this->buildConditions() . " $this->order LIMIT 1";
+        $stmt = self::$pdo->prepare($sql);
+
+        foreach ($this->conditions as $condition) {
+            $stmt->bindParam(":{$condition[0]}", $condition[2]);
+        }
+
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function update(array $data)

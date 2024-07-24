@@ -17,6 +17,9 @@ if (ENV == 'dev' || ENV == 'maint') {
     ini_set("display_errors", 1);
 }
 
+// Datetime format
+define('TIMESTAMP_FORMAT', 'Y-m-d H:i:s');
+
 // set a constant that holds the project's "application" folder, like "/var/www/application".
 define('APP', ROOT . 'app' . DIRECTORY_SEPARATOR);
 define('APP_CONTROLLER', APP . 'controllers' . DIRECTORY_SEPARATOR);
@@ -70,9 +73,9 @@ define('URL', URL_PROTOCOL . URL_DOMAIN . URL_SUB_FOLDER);
  */
 define('DB_TYPE', 'mysql');
 define('DB_HOST', '127.0.0.1');
-define('DB_NAME', 'mini');
+define('DB_NAME', 'terminal');
 define('DB_USER', 'root');
-define('DB_PASS', '12345678');
+define('DB_PASS', 'mysql');
 define('DB_CHARSET', 'utf8');
 
 /**

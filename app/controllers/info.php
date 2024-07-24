@@ -5,7 +5,7 @@ require APP_MODEL . 'log.php';
 require APP_MODEL . 'user.php';
 require APP_MODEL . 'server.php';
 
-function getVersionInfo() {
+function version_info() {
     return file_get_contents(APP_STORAGE . 'text/version.txt');
 }
 

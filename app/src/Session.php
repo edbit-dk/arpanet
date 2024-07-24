@@ -66,6 +66,22 @@ class Session
         session_destroy();
     }
 
+     /*
+     * Check if session exists or not
+     */
+    public static function exists($key = null)
+    {
+        return (isset($_SESSION[$key])) ? true : false;
+    }
+
+    /*
+     * Check if session exists or not
+     */
+    public static function has($key = null)
+    {
+        return self::exists($key);
+    }
+
     /**
      * Checks if the user is logged in or not
      *

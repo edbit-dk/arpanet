@@ -4,38 +4,17 @@
 // DIRECTORY_SEPARATOR adds a slash to the end of the path
 define('ROOT', dirname(__DIR__) . DIRECTORY_SEPARATOR);
 
-// load application config (error reporting etc.)
-require  ROOT . 'app/config/app.php';
+require ROOT . 'app/bootstrap.php';
 
-// auto-loading the classes (currently only from application/libs) via Composer's PSR-4 auto-loader
-// later it might be useful to use a namespace here, but for now let's keep it as simple as possible
-require ROOT . 'vendor/autoload.php';
+$request = parse_request(Request::post('query'));
 
-#DB::connect(DB_HOST, DB_NAME, DB_USER, DB_PASS);
-
-Session::init(); // Start the session
-
-require_once APP_CONTROLLER . 'system.php';
-require_once APP_CONTROLLER . 'debug.php';
-require_once APP_CONTROLLER . 'filesystem.php';
-require_once APP_CONTROLLER . 'auth.php';
-require_once APP_CONTROLLER . 'info.php';
-require_once APP . 'helpers.php';
-
-$request = parse_get('query');
 $server_id = isset($request['server']) ? $request['server'] : rand_filename(APP_CACHE . "server/");
+Session::set('server', $server_id);
 
 if(!file_exists(APP_CACHE . "server/{$server_id}.json")) {
     echo "ERROR: Connection Terminated.\n";
     return;
 }
-
-if(isset($request['server']) OR !empty(Session::get('server'))) {
-    Session::set('server', $server_id);
-} else {
-    $server_id = Session::get('server');
-}
-
 
 // Define valid credentials (this is just an example, in a real application, you'd use a database)
 $server = json_decode(file_get_contents(APP_CACHE . "server/{$server_id}.json"), true);
@@ -62,8 +41,12 @@ function executeCommand($command, $data) {
 
     global $server_id;
 
-    if ($command === 'enter') {
-        return connectUser($data);
+    if ($command === 'register') {
+        return register_user($data);
+    }
+
+    if ($command === 'login') {
+        return login_user($data);
     }
 
     if ($command === 'motd') {
@@ -75,16 +58,16 @@ function executeCommand($command, $data) {
     }
 
     if ($command === 'user') {
-        return connectUser($data);
+        return user();
     }
 
     // Handle the LOGIN command separately
     if ($command === 'logon' && isset($_SESSION['USER'])) {
-        return loginUser($data);
+        return server_logon($data);
     }
 
     if ($command === 'version') {
-        return getVersionInfo();
+        return version_info();
     }
 
         // Check if the user is logged in
@@ -100,9 +83,9 @@ function executeCommand($command, $data) {
                 case $command == 'debug' || $command == 'mem':
                     return dump($data);
                 case $command == 'connect' || $command == 'telnet':
-                    return connectServer($data);
+                    return contact_server($data);
                 case 'logoff':
-                    return disconnectUser();
+                    return disconnect_network();
                 default:
                     return "ERROR: Unknown Guest Command";
             } 
@@ -126,9 +109,9 @@ function executeCommand($command, $data) {
                 case $command == 'cat' || $command == 'more':
                     return readFileContent($data);
                 case 'logon':
-                    return loginUser($data);
+                    return server_logon($data);
                 case $command == 'logout' || $command == 'dc':
-                    return logoutUser();
+                    return logout_user();
                 case $command == 'reboot' || $command == 'autoexec' || $command == 'restart' || $command == 'start':
                     return restartServer();
                 case 'help':
@@ -136,7 +119,7 @@ function executeCommand($command, $data) {
                 case $command == 'scan' || $command == 'find':
                     return scanNodes($data);
                 case $command == 'connect' || $command == 'telnet':
-                    return connectServer($data);
+                    return contact_server($data);
                 default:
                     return "ERROR: Unknown User Command";
               }        
@@ -163,7 +146,7 @@ function executeCommand($command, $data) {
                  case $command == 'rm' || $command == 'del':
                      return deleteFileOrFolder($data);
                 case $command == 'logout' || $command == 'dc':
-                    return logoutUser();
+                    return logout_user();
                  default:
                      return "ERROR: Unknown Root Command";
              }

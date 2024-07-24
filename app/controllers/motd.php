@@ -10,17 +10,12 @@ if(!isset($_SESSION['USER']) && !isset($_SESSION['loggedIn'])) {
     $code_1 = random_str(6, 'AXYZ01234679');
     $code_2 = random_str(6, 'AXYZ01234679');
     $code_3 = random_str(6, 'AXYZ01234679');
+    $code_4 = random_str(6, 'AXYZ01234679');
 
-    $access_code = "{$code_1}-{$code_2}-{$code_3}"; 
+    $access_code = "{$code_1}-{$code_2}-{$code_3}-{$code_4}"; 
 
     $first_name = ucfirst(wordlist(APP_STORAGE . 'text/namelist.txt', rand(5, 12) , 1)[0]);
     $last_name = ucfirst(wordlist(APP_STORAGE . 'text/namelist.txt', rand(5, 12) , 1)[0]);
-
-    $employee_name = "{$last_name} {$first_name}";
-    $_SESSION['EMPLOYEE_NAME'] = strtoupper($employee_name);
-
-    $employee_id = 'PE-' . strtoupper(random_username($first_name));
-    $_SESSION['EMPLOYEE_ID'] = $employee_id;
 
     echo <<< EOT
     
@@ -36,15 +31,16 @@ if(!isset($_SESSION['USER']) && !isset($_SESSION['loggedIn'])) {
     Uplink with central PoseidoNet initiated.
     Enter Security Access Code Sequence:
 
-    #################################
-    ACCESS CODE: {$access_code}
-    EMPLOYEE ID: {$employee_id}
-    #################################
+    ###################################
+    >>> {$access_code} <<<
+    ###################################
     
-    Remember <ACCESS CODE> / <EMPLOYEE ID>!
+    Enter code and your email to proceed.
     Type HELP when uplink is accepted.
+    _________________________________________
 
-    > ENTER <ACCESS CODE> <EMPLOYEE ID>:
+    > REGISTER <ACCESS CODE> <EMAIL>
+    > LOGIN <ACCESS CODE> <EMAIL>
      
     EOT;
 

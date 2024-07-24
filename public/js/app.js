@@ -138,8 +138,6 @@ function handleUserInput() {
             location.reload();
         }, 1500); // Delay of 100 milliseconds
         return; // Exit function after reload is scheduled
-    } else if (command === 'register') {
-        handleNewUser(args); // Handle new user creation
     } else if (command === 'color') {
         setTheme(args); // Handle color setting
     } else {
@@ -194,10 +192,7 @@ function handlePasswordPrompt() {
 
     userPassword = password; // Store the password
 
-    if (usernameForNewUser) {
-        sendCommand('register', usernameForNewUser + ' ' + password);
-        usernameForNewUser = ''; // Reset the username for new user
-    } else if (usernameForLogon) {
+    if (usernameForLogon) {
         sendCommand('logon', usernameForLogon + ' ' + password);
         usernameForLogon = ''; // Reset the username for logon
     }
@@ -223,9 +218,7 @@ function handlePasswordPromptResponse(response) {
         }, 2500); // Delay of 1000 milliseconds (1 second) before reloading
     } else {
         // Only resend the command if it's not "LOGGING IN..." or an error
-        if (usernameForNewUser) {
-            sendCommand('register', usernameForNewUser + ' ' + userPassword);
-        } else if (usernameForLogon) {
+        if (usernameForLogon) {
             sendCommand('logon', usernameForLogon + ' ' + userPassword);
         }
     }

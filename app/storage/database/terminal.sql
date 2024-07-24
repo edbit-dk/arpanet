@@ -55,11 +55,12 @@ CREATE TABLE `levels` (
 --
 
 INSERT INTO `levels` (`id`, `rep`, `xp_req`, `xp_reward`, `skill_1`, `skill_2`) VALUES
+(0, 'UNKNOWN', 0, 1, 2, 3),
 (1, 'Novice', 15, 2, 4, 5),
 (2, 'Skilled', 25, 3, 6, 8),
 (3, 'Advanced', 50, 4, 9, 10),
 (4, 'Expert', 75, 5, 11, 12),
-(5, 'Master', 100, 6, 13, 15);
+(5, 'Master', 100, 10, 13, 15);
 
 -- --------------------------------------------------------
 
@@ -113,16 +114,17 @@ CREATE TABLE `server_accounts` (
 --
 
 CREATE TABLE `users` (
-  `id` bigint UNSIGNED NOT NULL,
+  `ID` bigint UNSIGNED NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `username` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `username` varchar(255) COLLATE utf8mb4_general_ci,
   `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `first_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `last_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `firstname` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `lastname` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `fullname` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `active` tinyint(1) DEFAULT '1',
   `level_id` int NOT NULL DEFAULT '0',
   `xp` int NOT NULL DEFAULT '0',
-  `rep` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `rep` varchar(255) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'UNKNOWN',
   `last_login` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
@@ -171,8 +173,8 @@ ALTER TABLE `server_accounts`
 -- Indeks for tabel `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`),
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `ID` (`ID`),
   ADD UNIQUE KEY `email` (`email`),
   ADD UNIQUE KEY `username` (`username`);
 
