@@ -3,30 +3,17 @@
 // set a constant that holds the project's folder path, like "/var/www/".
 // DIRECTORY_SEPARATOR adds a slash to the end of the path
 define('ROOT', dirname(__DIR__) . DIRECTORY_SEPARATOR);
-// set a constant that holds the project's "application" folder, like "/var/www/application".
-define('APP', ROOT . 'app' . DIRECTORY_SEPARATOR);
-define('APP_CONTROLLER', APP . 'controllers' . DIRECTORY_SEPARATOR);
-define('APP_MODEL', APP . 'models' . DIRECTORY_SEPARATOR);
-define('APP_STORAGE', APP . 'storage' . DIRECTORY_SEPARATOR);
-define('APP_CACHE', APP_STORAGE . 'cache' . DIRECTORY_SEPARATOR);
+
+// load application config (error reporting etc.)
+require  ROOT . 'app/config/app.php';
 
 // auto-loading the classes (currently only from application/libs) via Composer's PSR-4 auto-loader
 // later it might be useful to use a namespace here, but for now let's keep it as simple as possible
 require ROOT . 'vendor/autoload.php';
 
-// load application config (error reporting etc.)
-require APP . 'config/app.php';
-
 #DB::connect(DB_HOST, DB_NAME, DB_USER, DB_PASS);
 
-session_start(); // Start the session
-
-// Define the home directory
-define('HOME_DIRECTORY', ROOT . "/public/uploads/");
-
-define('DEFAULT_NODE', '0');
-
-$special_chars = "!?,;.'[]={}@#$%^*()-_\/|";
+Session::init(); // Start the session
 
 require_once APP_CONTROLLER . 'system.php';
 require_once APP_CONTROLLER . 'debug.php';
@@ -43,10 +30,10 @@ if(!file_exists(APP_CACHE . "server/{$server_id}.json")) {
     return;
 }
 
-if(isset($request['server']) OR !isset($_SESSION['server'])) {
-   $_SESSION['server'] = $server_id;
+if(isset($request['server']) OR !empty(Session::get('server'))) {
+    Session::set('server', $server_id);
 } else {
-    $server_id = $_SESSION['server'];
+    $server_id = Session::get('server');
 }
 
 
@@ -57,7 +44,7 @@ $server = json_decode(file_get_contents(APP_CACHE . "server/{$server_id}.json"),
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Get the command and data from POST data
     $command = strtolower($_POST['command']);
-    $data = $_POST['data'];
+    $data = Request::post('data');
 
     // Execute the appropriate command
     $output = executeCommand($command, $data);

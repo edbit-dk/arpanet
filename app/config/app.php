@@ -17,6 +17,21 @@ if (ENV == 'dev' || ENV == 'maint') {
     ini_set("display_errors", 1);
 }
 
+// set a constant that holds the project's "application" folder, like "/var/www/application".
+define('APP', ROOT . 'app' . DIRECTORY_SEPARATOR);
+define('APP_CONTROLLER', APP . 'controllers' . DIRECTORY_SEPARATOR);
+define('APP_MODEL', APP . 'models' . DIRECTORY_SEPARATOR);
+define('APP_STORAGE', APP . 'storage' . DIRECTORY_SEPARATOR);
+define('APP_CACHE', APP_STORAGE . 'cache' . DIRECTORY_SEPARATOR);
+
+// Define the home directory
+define('HOME_DIRECTORY', ROOT . "/public/uploads/");
+
+// Define default server node
+define('DEFAULT_NODE', '0');
+
+define('SPECIAL_CHARS', "!?,;.'[]={}@#$%^*()-_\/|");
+
 /**
  * Configuration for: URL
  * Here we auto-detect your applications URL and the potential sub-folder. Works perfectly on most servers and in local
