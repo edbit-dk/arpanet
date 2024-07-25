@@ -2,7 +2,7 @@
 
 function parse_request($url) {
 
-    if(isset($url)) {
+    if(!empty($url)) {
         $url_components = parse_url($url);
         // Use parse_str() function to parse the
         // string passed via URL

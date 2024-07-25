@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     echo $output;
 } else {
     // If accessed directly without POST method, return help information
-    echo getHelpInfo('');
+    echo help_info('');
 }
 
 
@@ -79,7 +79,7 @@ function executeCommand($command, $data) {
                 case 'run':
                     return run($data);
                 case 'help':
-                    return getHelpInfo($data);
+                    return help_info($data);
                 case $command == 'debug' || $command == 'mem':
                     return dump($data);
                 case $command == 'connect' || $command == 'telnet':
@@ -115,7 +115,7 @@ function executeCommand($command, $data) {
                 case $command == 'reboot' || $command == 'autoexec' || $command == 'restart' || $command == 'start':
                     return restartServer();
                 case 'help':
-                    return getHelpInfo($data);
+                    return help_info($data);
                 case $command == 'scan' || $command == 'find':
                     return scanNodes($data);
                 case $command == 'connect' || $command == 'telnet':

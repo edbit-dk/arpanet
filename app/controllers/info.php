@@ -10,7 +10,7 @@ function version_info() {
 }
 
 // Function to get help information for commands
-function getHelpInfo($command) {
+function help_info($command) {
 
     if(!isset($_SESSION['loggedIn'])) {
         $helpInfo = include APP_STORAGE . 'help/guest.php';
