@@ -42,7 +42,7 @@ document.getElementById('command-input').addEventListener('keydown', function(e)
 function sendCommand(command, data, queryString = '') {
     const query = window.location.search; // Get the current URL query string
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'server.php' + queryString, true); // Include the query string in the URL
+    xhr.open('POST', 'api.php' + queryString, true); // Include the query string in the URL
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4 && xhr.status === 200) {

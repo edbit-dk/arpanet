@@ -1,10 +1,5 @@
 <?php
 
-require APP_MODEL . 'user.php';
-require APP_MODEL . 'server.php';
-require APP_MODEL . 'level.php';
-require APP_MODEL . 'log.php';
-
 function wordlist($file, $word_length = 7, $max_count = 12) {
     $words = file_get_contents($file);
     

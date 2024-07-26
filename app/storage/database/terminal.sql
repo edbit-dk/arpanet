@@ -88,7 +88,7 @@ CREATE TABLE `servers` (
   `admin_id` int NOT NULL DEFAULT '0',
   `admin_pass` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `active` tinyint(1) DEFAULT '1',
+  `status` tinyint(1) DEFAULT 'online',
   `location` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `nodes` json DEFAULT NULL,
   `level_id` int NOT NULL DEFAULT '0',
@@ -114,7 +114,7 @@ CREATE TABLE `server_accounts` (
 --
 
 CREATE TABLE `users` (
-  `ID` bigint UNSIGNED NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `username` varchar(255) COLLATE utf8mb4_general_ci,
   `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
@@ -173,8 +173,8 @@ ALTER TABLE `server_accounts`
 -- Indeks for tabel `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`ID`),
-  ADD UNIQUE KEY `ID` (`ID`),
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`),
   ADD UNIQUE KEY `email` (`email`),
   ADD UNIQUE KEY `username` (`username`);
 

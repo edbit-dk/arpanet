@@ -1,17 +1,21 @@
 <?php
 
+function system_version() {
+    return file_get_contents(APP_STORAGE . 'text/version.txt');
+}
+
 // Function to handle user logout
-function restartServer() {
-    logoutUser();
+function system_restart() {
+    logout_user();
     return "RESTARTING...";
 }
 
 // Function to display Message of the Day
-function boot() {
+function system_boot() {
     include(APP_STORAGE . 'text/boot.txt');
 }
 
-function motd() {
+function system_motd() {
     require(APP_CONTROLLER. 'motd.php');
 }
 

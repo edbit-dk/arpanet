@@ -1,7 +1,7 @@
 -- Users -------------------------------------------------------
 
 CREATE TABLE users (
-    ID SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     email varchar(255) NOT NULL UNIQUE,
     username varchar(255) UNIQUE,
     password varchar(255) NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE servers (
     admin_id integer NOT NULL DEFAULT 0,
     admin_pass varchar(255) NOT NULL,
     name varchar(255) NOT NULL,
-    active boolean DEFAULT true,
+    status varchar(255) DEFAULT online,
     location varchar(255) NOT NULL,
     nodes json,
     level_id integer NOT NULL DEFAULT 0,

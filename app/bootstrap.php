@@ -9,11 +9,14 @@ require ROOT . 'vendor/autoload.php';
 
 DB::connect(DB_HOST, DB_NAME, DB_USER, DB_PASS);
 
+require_once APP_MODEL . 'server.php';
+
 Session::init(); // Start the session
 
 require_once APP_CONTROLLER . 'system.php';
 require_once APP_CONTROLLER . 'debug.php';
 require_once APP_CONTROLLER . 'filesystem.php';
 require_once APP_CONTROLLER . 'auth.php';
+require_once APP_CONTROLLER . 'server.php';
 require_once APP_CONTROLLER . 'info.php';
 require_once APP . 'helpers.php';

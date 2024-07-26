@@ -1,9 +1,6 @@
 <?php
 
-require APP_MODEL . 'user.php';
-require APP_MODEL . 'server.php';
-
-global $server_id, $server;
+global $api_server_id, $server;
 
 if(!isset($_SESSION['USER']) && !isset($_SESSION['loggedIn'])) {
 
@@ -48,10 +45,10 @@ $server_name = $server['name'];
 $location = $server['location'];
 $status = $server['status'];
 
-if(!isset($_SESSION['loggedIn'])) {
+if(!isset($_SESSION['auth'])) {
     echo <<< EOT
     Welcome to ROBCO Industries (TM) Termlink
-    -Server {$server_id}-
+    -Server {$api_server_id}-
 
     **** NETWORK ONLINE ****
     
@@ -64,14 +61,14 @@ if(!isset($_SESSION['loggedIn'])) {
     return;
 }
 
-if(isset($_SESSION['loggedIn']) && isset($_SESSION['USER'])) {
+if(isset($_SESSION['auth']) && isset($_SESSION['USER'])) {
     
     $username = strtoupper($_SESSION['username']);
 
     echo <<< EOT
     ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM
     COPYRIGHT 2075-2077 ROBCO INDUSTRIES
-    -Server {$server_id} ({$status})-
+    -Server {$api_server_id} ({$status})-
     
     {$server_name}
     [{$location}]

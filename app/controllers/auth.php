@@ -1,9 +1,5 @@
 <?php
 
-require APP_MODEL . 'user.php';
-require APP_MODEL . 'server.php';
-require APP_MODEL . 'log.php';
-
 function validate_user_input($data) {
 
     $input = explode(' ', trim($data));
@@ -20,7 +16,7 @@ function validate_user_input($data) {
     return $user;
 }
 
-function register_user($data){
+function auth_register($data){
 
     if(empty($data)) {
         return 'ERROR: Security Access Code Not Accepted!';
@@ -76,7 +72,7 @@ function register_user($data){
 
 }
 
-function login_user($data) {
+function auth_login($data) {
 
     if(empty($data)) {
         return 'ERROR: Security Access Code Not Accepted!';
@@ -87,8 +83,8 @@ function login_user($data) {
     $db_user = DB::table('users')
         ->join('levels', 'levels.id = users.level_id', 'LEFT')
         ->where('email', '=', $user['email'])
-        ->orWhere('username', '=', $user['email'])
         ->where('password', '=', $user['password'])
+        ->orWhere('username', '=', $user['email'])
         ->first();
 
     if(!empty($db_user)) { 
@@ -113,7 +109,7 @@ function login_user($data) {
 
 }
 
-function user() {
+function auth_user() {
     if (isset($_SESSION['USER'])) {
         foreach($_SESSION['USER'] as $user => $data) {
             echo "{$user}: {$data} \n";
@@ -208,94 +204,6 @@ function createUser($data) {
     }
 
     return "ERROR: NEW_USER";
-}
-
-// Function to handle user login
-function server_logon($data) {
-    global $server, $server_id;
-
-    if(!isset($_SESSION['DEBUG_PASS'])) {
-        $_SESSION['DEBUG_PASS'] = false;
-    }
-
-    $params = explode(' ', $data);
-    $max_attempts = 4; // Maximum number of allowed attempts
-
-    // Initialize login attempts if not set
-    if (!isset($_SESSION['ATTEMPTS'])) {
-        $_SESSION['ATTEMPTS'] = $max_attempts;
-    }
-
-    // Check if the user is already blocked
-    if (isset($_SESSION['BLOCKED']) && $_SESSION['BLOCKED'] === true) {
-        return "ERROR: Terminal Locked. Please contact an administrator!";
-    }
-
-    // If no parameters provided, prompt for username
-    if (empty($params)) {
-        return "ERROR: Wrong Username.";
-    } else {
-        $username = $params[0];
-    }
-
-    // If both username and password provided, complete login process
-    if (count($params) === 2) {
-        $username = strtolower($params[0]);
-        $password = strtolower($params[1]);
-
-        // Validate password
-        if (isset($server['accounts'][$username]) && 
-        $server['accounts'][$username] == $password OR 
-        $_SESSION['USER']['ID'] == 'root' && $server['admin'] == $password OR 
-        $_SESSION['USER']['ID'] == 'admin' && $server['admin'] == $password OR 
-        strtolower($_SESSION['DEBUG_PASS']) == $password ) {
-            $_SESSION['loggedIn'] = true;
-            $_SESSION['username'] = $username;
-            $_SESSION['password'] = $password;
-            $_SESSION['server'] = $server_id;
-            $_SESSION['home'] = realpath(HOME_DIRECTORY) . DIRECTORY_SEPARATOR . $server_id; // Set user's directory
-            $_SESSION['pwd'] = HOME_DIRECTORY . DIRECTORY_SEPARATOR . $server_id; // Set user's directory
-            
-            $userFolder = $_SESSION['home'] . DIRECTORY_SEPARATOR . $username;
-            if (!file_exists($userFolder)) {
-                mkdir($userFolder, 0777, true);
-            }
-
-            // Reset login attempts on successful login
-            unset($_SESSION['ATTEMPTS']);
-            unset($_SESSION['BLOCKED']);
-
-            if (isset($_SESSION['USER'])) {
-                $user_id = $_SESSION['USER']['ID'];
-                $_SESSION['USER']['XP'] += 25;
-                file_put_contents(APP_CACHE . "user/{$user_id}.json", json_encode($_SESSION['USER']));
-            }
-
-            logMessage(strtoupper($_SESSION['username']) . ' logged in.', $server_id);
-            return "Password Accepted.\nPlease wait while system is accessed...\n+0025 XP ";
-
-        } else {
-
-            $_SESSION['ATTEMPTS']--;
-
-            // Calculate remaining attempts
-            $attempts_left = $_SESSION['ATTEMPTS'];
-
-            if ($_SESSION['ATTEMPTS'] === 1) {
-                echo "WARNING: Lockout Imminent !!!\n";
-            }
-
-            // Block the user after 4 failed attempts
-            if ($_SESSION['ATTEMPTS'] === 0) {
-                $_SESSION['BLOCKED'] = true;
-                return "ERROR: Terminal Locked. Please contact an administrator!";
-            }
-
-            return "ERROR: Wrong Username or Password.\nAttempts Remaining: {$attempts_left}";
-        }
-    }
-
-    return "ERROR: Wrong Input."; // Invalid login parameters message
 }
 
 

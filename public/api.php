@@ -6,23 +6,20 @@ define('ROOT', dirname(__DIR__) . DIRECTORY_SEPARATOR);
 
 require ROOT . 'app/bootstrap.php';
 
-App::set('config', get_defined_constants());
+$api_request = parse_request(Request::post('query'));
 
-App::set('request', parse_request(Request::post('query')));
-
-App::set('server', App::get('request.server') ? App::get('request.server') : rand_filename(APP_CACHE . "server/"));
-
-
-var_dump(App::get('config'));
-die;
-
-if(!file_exists(APP_CACHE . "server/{$server_id}.json")) {
-    echo "ERROR: Connection Terminated.\n";
-    return;
+if(!empty($api_request['server'])) {
+    $api_server_id = $api_request['server'];
+} else {
+    $api_server_id = rand(1,2);
 }
 
-// Define valid credentials (this is just an example, in a real application, you'd use a database)
-$server = json_decode(file_get_contents(APP_CACHE . "server/{$server_id}.json"), true);
+$server = server_get('id', $api_server_id);
+
+if(!$server) {
+    echo "ERROR: Connection Terminated.\n";
+    return; 
+}
 
 // Handle POST requests
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -31,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $data = Request::post('data');
 
     // Execute the appropriate command
-    $output = executeCommand($command, $data);
+    $output = api_run($command, $data);
 
     // Output the result
     echo $output;
@@ -42,28 +39,28 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 
 // Function to execute commands
-function executeCommand($command, $data) {
+function api_run($command, $data) {
 
-    global $server_id;
-
-    if ($command === 'register') {
-        return register_user($data);
-    }
-
-    if ($command === 'login') {
-        return login_user($data);
-    }
-
+    // MISC
     if ($command === 'motd') {
-        return motd();
+        return system_motd();
     }
 
     if ($command === 'boot') {
-        return boot();
+        return system_boot();
+    }
+
+    // AUTH
+    if ($command === 'register') {
+        return auth_register($data);
+    }
+
+    if ($command === 'login') {
+        return auth_login($data);
     }
 
     if ($command === 'user') {
-        return user();
+        return auth_user();
     }
 
     // Handle the LOGIN command separately
@@ -72,11 +69,11 @@ function executeCommand($command, $data) {
     }
 
     if ($command === 'version') {
-        return version_info();
+        return system_version();
     }
 
         // Check if the user is logged in
-        if (!isset($_SESSION['loggedIn']) && isset($_SESSION['USER'])) {
+        if (!isset($_SESSION['auth']) && isset($_SESSION['USER'])) {
 
             switch ($command) {
                 case 'set':
@@ -98,7 +95,7 @@ function executeCommand($command, $data) {
         }
 
 
-        if(isset($_SESSION['loggedIn']) && $_SESSION['username'] != 'root') {
+        if(isset($_SESSION['auth']) && $_SESSION['username'] != 'root') {
 
             logMessage(strtoupper($_SESSION['username']) . ' used command: ' . $command . " {$data}", $server_id);
         
@@ -118,7 +115,7 @@ function executeCommand($command, $data) {
                 case $command == 'logout' || $command == 'dc':
                     return logout_user();
                 case $command == 'reboot' || $command == 'autoexec' || $command == 'restart' || $command == 'start':
-                    return restartServer();
+                    return system_restart();
                 case 'help':
                     return help_info($data);
                 case $command == 'scan' || $command == 'find':
@@ -131,7 +128,7 @@ function executeCommand($command, $data) {
           }
 
 
-          if(isset($_SESSION['loggedIn']) && $_SESSION['username'] === 'root' &&  $_SESSION['password'] === 'robco') {
+          if(isset($_SESSION['auth']) && $_SESSION['username'] === 'root' &&  $_SESSION['password'] === 'robco') {
 
             logMessage(strtoupper($_SESSION['username']) . ' used command: ' . $command . " {$data}", $server_id);
         

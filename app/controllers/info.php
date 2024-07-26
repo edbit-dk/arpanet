@@ -1,14 +1,5 @@
 <?php
 
-require APP_MODEL . 'help.php';
-require APP_MODEL . 'log.php';
-require APP_MODEL . 'user.php';
-require APP_MODEL . 'server.php';
-
-function version_info() {
-    return file_get_contents(APP_STORAGE . 'text/version.txt');
-}
-
 // Function to get help information for commands
 function help_info($command) {
 
