@@ -6,10 +6,15 @@ define('ROOT', dirname(__DIR__) . DIRECTORY_SEPARATOR);
 
 require ROOT . 'app/bootstrap.php';
 
-$request = parse_request(Request::post('query'));
+App::set('config', get_defined_constants());
 
-$server_id = isset($request['server']) ? $request['server'] : rand_filename(APP_CACHE . "server/");
-Session::set('server', $server_id);
+App::set('request', parse_request(Request::post('query')));
+
+App::set('server', App::get('request.server') ? App::get('request.server') : rand_filename(APP_CACHE . "server/"));
+
+
+var_dump(App::get('config'));
+die;
 
 if(!file_exists(APP_CACHE . "server/{$server_id}.json")) {
     echo "ERROR: Connection Terminated.\n";
