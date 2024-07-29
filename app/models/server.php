@@ -1,10 +1,13 @@
 <?php
 
-$db_server = DB::table('servers');
+class Server {
 
-function server_get($field, $value) {
-    global $db_server;
+    private static $table = 'servers';
 
-    return $db_server->where($field, '=', $value)->first();
+    public static function get($field, $value) { 
+        $db = DB::table(self::$table);
+
+        return $db->where($field, '=', $value)->first();
+    }
 
 }

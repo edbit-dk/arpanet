@@ -1,6 +1,110 @@
 <?php
 
-function validate_user_input($data) {
+class Authorize 
+{
+
+    public static function validate($data) {
+
+        $input = explode(' ', trim($data));
+
+        if (count($input) >= 1 && strlen($input[0]) === 27 && preg_match('/^[AXYZ01234679-]+$/', $input[0])) {
+
+            $user['password'] = $input[0];
+            $user['email'] = $input[1];
+
+        } else {
+            return 'ERROR: Security Access Code Not Accepted!';
+        }
+
+        return $user;
+    }
+
+    public static function register($data) {
+        if(empty($data)) {
+            return 'ERROR: Security Access Code Not Accepted!';
+        } else {
+            $user = self::validate($data);
+            $user['firstname'] = ucfirst(strtolower(wordlist(APP_STORAGE . 'text/namelist.txt', rand(5, 12) , 1)[0]));
+            $user['lastname'] = ucfirst(strtolower(wordlist(APP_STORAGE . 'text/namelist.txt', rand(5, 12) , 1)[0]));
+        }
+    
+        $user_exists = User::get('email', $user['email']);
+    
+        if(empty($user_exists)) {
+    
+            $password = $user['password'];
+            $firstname = $user['firstname'];
+            $lastname = $user['lastname'];
+            $fullname = "$firstname $lastname";
+    
+            $user_id = User::create([
+                'email' =>  $user['email'],
+                'password' => $password,
+                'firstname' => $firstname,
+                'lastname' =>  $lastname,
+                'fullname' => $fullname,
+                'last_login' => date(TIMESTAMP_FORMAT),
+                'created_at' => date(TIMESTAMP_FORMAT)
+            ]);
+    
+            $username = 'PE-' . strtoupper(random_username($firstname, $user_id));
+    
+            User::update("id,=,{$user_id}", ['username' => $username]);
+    
+            $_SESSION['USER'] = [
+                'EMPLOYEE ID' => $username,
+                'NAME' => $fullname,
+                'LEVEL' => 'UNKNOWN',
+                'XP' => 0
+            ];
+    
+            sleep(1);
+    
+            return "ACCESS CODE: {$password}\nEMPLOYEE ID: {$username}\n";
+    
+        } else {
+            return 'ERROR: Employee already exists!';
+        }
+    }
+
+    public static function login($data) {
+        if(empty($data)) {
+            return 'ERROR: Security Access Code Not Accepted!';
+        } else {
+            $user = self::validate($data);
+        }
+    
+        $db_user = DB::table('users')
+            ->join('levels', 'levels.id = users.level_id', 'LEFT')
+            ->where('email', '=', $user['email'])
+            ->where('password', '=', $user['password'])
+            ->orWhere('username', '=', $user['email'])
+            ->first();
+    
+        if(!empty($db_user)) { 
+    
+            $_SESSION['USER'] = [
+                'EMPLOYEE ID' => $db_user['username'],
+                'NAME' => $db_user['fullname'],
+                'LEVEL' => $db_user['rep'],
+                'XP' => $db_user['xp']
+            ];
+    
+            $password = $db_user['password'];
+            $username = $db_user['username'];
+    
+            sleep(1);
+    
+            return "ACCESS CODE: {$password}\nEMPLOYEE ID: {$username}\n";
+    
+        } else {
+            return 'ERROR: Employee not found!'; 
+        }
+    }
+
+}
+
+function auth_validate_input($data) {
 
     $input = explode(' ', trim($data));
 
@@ -16,98 +120,7 @@ function validate_user_input($data) {
     return $user;
 }
 
-function auth_register($data){
 
-    if(empty($data)) {
-        return 'ERROR: Security Access Code Not Accepted!';
-    } else {
-        $user = validate_user_input($data);
-        $user['firstname'] = ucfirst(strtolower(wordlist(APP_STORAGE . 'text/namelist.txt', rand(5, 12) , 1)[0]));
-        $user['lastname'] = ucfirst(strtolower(wordlist(APP_STORAGE . 'text/namelist.txt', rand(5, 12) , 1)[0]));
-    }
-
-    $user_exists = DB::table('users')
-    ->select(['email'])
-    ->where('email', '=', $user['email'])
-    ->limit(1)
-    ->read();
-
-    if(empty($user_exists)) {
-
-        $password = $user['password'];
-        $firstname = $user['firstname'];
-        $lastname = $user['lastname'];
-        $fullname = "$firstname $lastname";
-
-        $user_id = DB::table('users')->insert([
-            'email' =>  $user['email'],
-            'password' => $password,
-            'firstname' => $firstname,
-            'lastname' =>  $lastname,
-            'fullname' => $fullname,
-            'last_login' => date(TIMESTAMP_FORMAT),
-            'created_at' => date(TIMESTAMP_FORMAT)
-        ]);
-
-        $username = 'PE-' . strtoupper(random_username($firstname, $user_id));
-
-        DB::table('users')
-        ->where('id', '=', $user_id)
-        ->update(['username' => $username]);
-
-        $_SESSION['USER'] = [
-            'EMPLOYEE ID' => $username,
-            'NAME' => $fullname,
-            'LEVEL' => 'UNKNOWN',
-            'XP' => 0
-        ];
-
-        sleep(1);
-
-        return "ACCESS CODE: {$password}\nEMPLOYEE ID: {$username}\n";
-
-    } else {
-        return 'ERROR: Employee already exists!';
-    }
-
-}
-
-function auth_login($data) {
-
-    if(empty($data)) {
-        return 'ERROR: Security Access Code Not Accepted!';
-    } else {
-        $user = validate_user_input($data);
-    }
-
-    $db_user = DB::table('users')
-        ->join('levels', 'levels.id = users.level_id', 'LEFT')
-        ->where('email', '=', $user['email'])
-        ->where('password', '=', $user['password'])
-        ->orWhere('username', '=', $user['email'])
-        ->first();
-
-    if(!empty($db_user)) { 
-
-        $_SESSION['USER'] = [
-            'EMPLOYEE ID' => $db_user['username'],
-            'NAME' => $db_user['fullname'],
-            'LEVEL' => $db_user['rep'],
-            'XP' => $db_user['xp']
-        ];
-
-        $password = $db_user['password'];
-        $username = $db_user['username'];
-
-        sleep(1);
-
-        return "ACCESS CODE: {$password}\nEMPLOYEE ID: {$username}\n";
-
-    } else {
-        return 'ERROR: Employee not found!'; 
-    }
-
-}
 
 function auth_user() {
     if (isset($_SESSION['USER'])) {

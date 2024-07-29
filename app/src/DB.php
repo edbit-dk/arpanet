@@ -1,4 +1,5 @@
 <?php
+
 /*
 // Connect to the database
 DB::connection('localhost', 'my_database', 'user', 'password');

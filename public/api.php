@@ -14,7 +14,7 @@ if(!empty($api_request['server'])) {
     $api_server_id = rand(1,2);
 }
 
-$server = server_get('id', $api_server_id);
+$server = Server::get('id', $api_server_id);
 
 if(!$server) {
     echo "ERROR: Connection Terminated.\n";
@@ -52,11 +52,11 @@ function api_run($command, $data) {
 
     // AUTH
     if ($command === 'register') {
-        return auth_register($data);
+        return Authorize::register($data);
     }
 
     if ($command === 'login') {
-        return auth_login($data);
+        return Authorize::login($data);
     }
 
     if ($command === 'user') {
