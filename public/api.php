@@ -43,11 +43,11 @@ function api_run($command, $data) {
 
     // MISC
     if ($command === 'motd') {
-        return system_motd();
+        return System::motd();
     }
 
     if ($command === 'boot') {
-        return system_boot();
+        return System::boot();
     }
 
     // AUTH
@@ -69,7 +69,7 @@ function api_run($command, $data) {
     }
 
     if ($command === 'version') {
-        return system_version();
+        return System::version();
     }
 
         // Check if the user is logged in
@@ -87,7 +87,7 @@ function api_run($command, $data) {
                 case $command == 'connect' || $command == 'telnet':
                     return contact_server($data);
                 case 'logoff':
-                    return disconnect_network();
+                    return User::logout();
                 default:
                     return "ERROR: Unknown Guest Command";
             } 
@@ -97,8 +97,6 @@ function api_run($command, $data) {
 
         if(isset($_SESSION['auth']) && $_SESSION['username'] != 'root') {
 
-            logMessage(strtoupper($_SESSION['username']) . ' used command: ' . $command . " {$data}", $server_id);
-        
               switch ($command) {
                 case 'accounts':
                     return listAccounts($data);
@@ -115,7 +113,7 @@ function api_run($command, $data) {
                 case $command == 'logout' || $command == 'dc':
                     return logout_user();
                 case $command == 'reboot' || $command == 'autoexec' || $command == 'restart' || $command == 'start':
-                    return system_restart();
+                    return System::restart();
                 case 'help':
                     return help_info($data);
                 case $command == 'scan' || $command == 'find':
@@ -130,8 +128,6 @@ function api_run($command, $data) {
 
           if(isset($_SESSION['auth']) && $_SESSION['username'] === 'root' &&  $_SESSION['password'] === 'robco') {
 
-            logMessage(strtoupper($_SESSION['username']) . ' used command: ' . $command . " {$data}", $server_id);
-        
              switch ($command) {
                 case $command == 'ls' || $command == 'dir':
                     return listFiles();

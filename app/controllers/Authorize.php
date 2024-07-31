@@ -74,12 +74,7 @@ class Authorize
             $user = self::validate($data);
         }
     
-        $db_user = DB::table('users')
-            ->join('levels', 'levels.id = users.level_id', 'LEFT')
-            ->where('email', '=', $user['email'])
-            ->where('password', '=', $user['password'])
-            ->orWhere('username', '=', $user['email'])
-            ->first();
+        $db_user = User::login($user);
     
         if(!empty($db_user)) { 
     
@@ -103,23 +98,6 @@ class Authorize
     }
 
 }
-
-function auth_validate_input($data) {
-
-    $input = explode(' ', trim($data));
-
-    if (count($input) >= 1 && strlen($input[0]) === 27 && preg_match('/^[AXYZ01234679-]+$/', $input[0])) {
-
-        $user['password'] = $input[0];
-        $user['email'] = $input[1];
-
-    } else {
-        return 'ERROR: Security Access Code Not Accepted!';
-    }
-
-    return $user;
-}
-
 
 
 function auth_user() {
@@ -246,12 +224,4 @@ function logout_user() {
     $_SESSION['USER'] = $user;
 
     return "LOGGING OUT FROM {$server_id}...\n";
-}
-
-
-function disconnect_network() {
-    $_SESSION = array();
-    session_destroy();
-
-    return "DISCONNECTING from PoseidoNET...\n";
 }
