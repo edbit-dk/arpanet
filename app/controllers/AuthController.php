@@ -1,6 +1,6 @@
 <?php
 
-class Authorize 
+class AuthController 
 {
 
     public static function validate($data) {
@@ -9,11 +9,11 @@ class Authorize
 
         if (count($input) >= 1 && strlen($input[0]) === 27 && preg_match('/^[AXYZ01234679-]+$/', $input[0])) {
 
-            $user['password'] = $input[0];
-            $user['email'] = $input[1];
+            $user[User::$password] = $input[0];
+            $user[User::$email] = $input[1];
 
         } else {
-            return 'ERROR: Security Access Code Not Accepted!';
+            return Text::get('ERROR_ACCESS_CODE');
         }
 
         return $user;
@@ -21,37 +21,36 @@ class Authorize
 
     public static function register($data) {
         if(empty($data)) {
-            return 'ERROR: Security Access Code Not Accepted!';
+            return Text::get('ERROR_ACCESS_CODE');
         } else {
             $user = self::validate($data);
-            $user['firstname'] = ucfirst(strtolower(wordlist(APP_STORAGE . 'text/namelist.txt', rand(5, 12) , 1)[0]));
-            $user['lastname'] = ucfirst(strtolower(wordlist(APP_STORAGE . 'text/namelist.txt', rand(5, 12) , 1)[0]));
+            $user[User::$firstname] = ucfirst(strtolower(wordlist(APP_STORAGE . 'text/namelist.txt', rand(5, 12) , 1)[0]));
+            $user[User::$lastname] = ucfirst(strtolower(wordlist(APP_STORAGE . 'text/namelist.txt', rand(5, 12) , 1)[0]));
         }
     
-        $user_exists = User::get('email', $user['email']);
+        $user_exists = User::get(User::$email, $user[User::$email]);
     
         if(empty($user_exists)) {
     
-            $password = $user['password'];
-            $firstname = $user['firstname'];
-            $lastname = $user['lastname'];
+            $password = $user[User::$password];
+            $firstname = $user[User::$firstname];
+            $lastname = $user[User::$lastname];
             $fullname = "$firstname $lastname";
     
             $user_id = User::create([
-                'email' =>  $user['email'],
-                'password' => $password,
-                'firstname' => $firstname,
-                'lastname' =>  $lastname,
-                'fullname' => $fullname,
-                'last_login' => date(TIMESTAMP_FORMAT),
-                'created_at' => date(TIMESTAMP_FORMAT)
+                User::$email =>  $user[User::$email],
+                User::$password => $password,
+                User::$firstname => $firstname,
+                User::$lastname =>  $lastname,
+                User::$fullname => $fullname,
+                User::$created_at => date(TIMESTAMP_FORMAT)
             ]);
     
             $username = 'PE-' . strtoupper(random_username($firstname, $user_id));
     
-            User::update("id,=,{$user_id}", ['username' => $username]);
+            User::update(User::$id . ",=,{$user_id}", [User::$username => $username]);
     
-            $_SESSION['USER'] = [
+            $_SESSION[User::$session] = [
                 'EMPLOYEE ID' => $username,
                 'NAME' => $fullname,
                 'LEVEL' => 'UNKNOWN',
@@ -63,38 +62,45 @@ class Authorize
             return "ACCESS CODE: {$password}\nEMPLOYEE ID: {$username}\n";
     
         } else {
-            return 'ERROR: Employee already exists!';
+            return Text::get('ERROR_USER_TAKEN');
         }
     }
 
     public static function login($data) {
         if(empty($data)) {
-            return 'ERROR: Security Access Code Not Accepted!';
+            return Text::get('ERROR_ACCESS_CODE');
         } else {
             $user = self::validate($data);
         }
     
-        $db_user = User::login($user);
+        $db_user = User::auth($user);
     
         if(!empty($db_user)) { 
     
-            $_SESSION['USER'] = [
-                'EMPLOYEE ID' => $db_user['username'],
-                'NAME' => $db_user['fullname'],
-                'LEVEL' => $db_user['rep'],
-                'XP' => $db_user['xp']
-            ];
+            Session::set(User::$session, [
+                'EMPLOYEE ID' => $db_user[User::$username],
+                'NAME' => $db_user[User::$fullname],
+                'LEVEL' => $db_user[User::$rep],
+                'XP' => $db_user[User::$xp]
+            ]);
     
-            $password = $db_user['password'];
-            $username = $db_user['username'];
+            $password = $db_user[User::$password];
+            $username = $db_user[User::$username];
     
             sleep(1);
     
             return "ACCESS CODE: {$password}\nEMPLOYEE ID: {$username}\n";
     
         } else {
-            return 'ERROR: Employee not found!'; 
+            return Text::get('ERROR_USER_404');
         }
+    }
+
+    public static function logout() {
+        $_SESSION = array();
+        session_destroy();
+    
+        return "DISCONNECTING from PoseidoNET...\n";
     }
 
 }
@@ -108,18 +114,6 @@ function auth_user() {
         return;
     }
 }
-
-function contact_server($data) {
-
-    $server_id = explode(' ', $data)[0];
-
-    if (file_exists(APP_CACHE . "server/{$server_id}.json")) {
-        logout_user();  
-        return "Contacting Server: {$server_id}\n";
-    } else {
-        return 'ERROR: ACCESS DENIED';
-    }
-
 }
 
 function setupServer($data) {
@@ -207,21 +201,4 @@ function whoAmI() {
     } else {
         return "ERROR: Logon Required."; // Return a message indicating not logged in
     }
-}
-
-// Function to handle user logout
-function logout_user() {
-
-    global $server_id;
-
-    $user = $_SESSION['USER'];
-
-    $_SESSION = array();
-    session_destroy();
-
-    session_start();
-
-    $_SESSION['USER'] = $user;
-
-    return "LOGGING OUT FROM {$server_id}...\n";
 }

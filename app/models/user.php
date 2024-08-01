@@ -3,8 +3,22 @@
 class User {
 
     private static $table = 'users';
-    private static $session = 'USER';
+    public static $session = 'USER';
 
+    public static $id = 'id';
+    public static $email = 'email';
+    public static $username = 'username';
+    public static $password = 'password';
+    public static $firstname = 'firstname';
+    public static $lastname = 'lastname';
+    public static $fullname = 'fullname';
+    public static $active = 'active';
+    public static $level_id = 'level_id';
+    public static $xp = 'xp';
+    public static $rep = 'rep';
+    public static $last_login = 'last_login';
+    public static $created_at = 'created_at';
+    public static $updated_at = 'updated_at';
 
     public static function db() {
         
@@ -12,7 +26,7 @@ class User {
     }
 
     public static function session() {
-        return $_SESSION[self::$session];
+        return Session::get(self::$session);
     }
 
     public static function get($field, $value) {
@@ -36,7 +50,7 @@ class User {
         return $db->where($cond[0],$cond[1], $cond[2])->update($data);
     }
 
-    public static function login($user) {
+    public static function auth($user) {
 
         $db = DB::table(self::$table);
 
@@ -47,13 +61,6 @@ class User {
             ->orWhere('username', '=', $user['email'])
             ->first();
 
-    }
-
-    public static function logout() {
-        $_SESSION = array();
-        session_destroy();
-
-        return "DISCONNECTING from PoseidoNET...\n";
     }
 
 

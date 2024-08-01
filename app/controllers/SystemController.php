@@ -1,13 +1,13 @@
 <?php
 
-class System 
+class SystemController 
 {
     public static function version() {
         return file_get_contents(APP_STORAGE . 'text/version.txt');
     }
 
     public static function restart() {
-        User::logout();
+        AuthController::logout();
         return "RESTARTING...";
     }
 
