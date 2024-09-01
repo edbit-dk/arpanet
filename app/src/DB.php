@@ -170,7 +170,7 @@ class DB
     }
 
     private function buildConditions()
-    {
+    {        
         if (!$this->conditions) {
             return '';
         }

@@ -46,6 +46,14 @@ function api_run($command, $data) {
         return SystemController::motd();
     }
 
+    if ($command === 'uplink') {
+        return SystemController::uplink();
+    }
+
+    if ($command === 'help') {
+        return SystemController::help();
+    }
+
     if ($command === 'boot') {
         return SystemController::boot();
     }
@@ -150,5 +158,9 @@ function api_run($command, $data) {
              }
          }
 
-    return "ERROR: Unknown Command";
+    return "
+>>> UPLINK REQUIRED <<<
+
+** IMPROPER REQUEST **
+** ACCESS DENIED **";
 }

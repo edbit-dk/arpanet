@@ -74,6 +74,9 @@ class AuthController
         }
     
         $db_user = User::auth($user);
+
+        var_dump($db_user);
+        die;
     
         if(!empty($db_user)) { 
     
@@ -114,7 +117,7 @@ function auth_user() {
         return;
     }
 }
-}
+
 
 function setupServer($data) {
 

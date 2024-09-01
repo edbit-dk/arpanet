@@ -58,7 +58,6 @@ class User {
             ->join('levels', 'levels.id = users.level_id', 'LEFT')
             ->where('email', '=', $user['email'])
             ->where('password', '=', $user['password'])
-            ->orWhere('username', '=', $user['email'])
             ->first();
 
     }

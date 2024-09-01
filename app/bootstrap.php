@@ -11,10 +11,10 @@ DB::connect(DB_HOST, DB_NAME, DB_USER, DB_PASS);
 
 Session::init(); // Start the session
 
-require_once APP_CONTROLLER . 'system.php';
+require_once APP_CONTROLLER . 'SystemController.php';
 require_once APP_CONTROLLER . 'debug.php';
 require_once APP_CONTROLLER . 'filesystem.php';
-require_once APP_CONTROLLER . 'Authorize.php';
-require_once APP_CONTROLLER . 'server.php';
+require_once APP_CONTROLLER . 'AuthController.php';
+require_once APP_CONTROLLER . 'ServerController.php';
 require_once APP_CONTROLLER . 'info.php';
 require_once APP . 'helpers.php';

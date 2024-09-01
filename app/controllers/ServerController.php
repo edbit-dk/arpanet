@@ -10,7 +10,7 @@ class ServerController
         $server_id = explode(' ', $data)[0];
 
         if (file_exists(APP_CACHE . "server/{$server_id}.json")) {
-            logout_user();  
+            self::logout();  
             return "Contacting Server: {$server_id}\n";
         } else {
             return 'ERROR: ACCESS DENIED';

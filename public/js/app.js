@@ -267,7 +267,7 @@ function loadText(text) {
 
 // Function to simulate CRT effect
 function simulateCRT(text, container) {
-    const delay = 2; // Delay between each character in milliseconds
+    const delay = 5; // Delay between each character in milliseconds
     const distortionChance = 0.5; // Chance of random distortion per character
     const inputField = document.getElementById('command-input');
     inputField.value = ''; // Clear input field
