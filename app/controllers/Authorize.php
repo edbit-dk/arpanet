@@ -11,6 +11,7 @@ class Authorize
 
             $user['password'] = $input[0];
             $user['email'] = $input[1];
+            $user['username'] = explode('@', $input[1])[0];
 
         } else {
             return 'ERROR: Security Access Code Not Accepted!';
@@ -47,8 +48,8 @@ class Authorize
                 'created_at' => date(TIMESTAMP_FORMAT)
             ]);
     
-            $username = 'PE-' . strtoupper(random_username($firstname, $user_id));
-    
+            $username = 'PE-' . strtoupper(random_username($user['username'], $user_id));
+
             User::update("id,=,{$user_id}", ['username' => $username]);
     
             $_SESSION['USER'] = [
@@ -78,7 +79,7 @@ class Authorize
             ->join('levels', 'levels.id = users.level_id', 'LEFT')
             ->where('email', '=', $user['email'])
             ->where('password', '=', $user['password'])
-            ->orWhere('username', '=', $user['email'])
+            ->orWhere('username', '=', $user['username'])
             ->first();
     
         if(!empty($db_user)) { 
