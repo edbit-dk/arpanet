@@ -14,7 +14,7 @@ if(!empty($api_request['server'])) {
     $api_server_id = rand(1,2);
 }
 
-$server = Server::get('id', $api_server_id);
+$server = Server::get(Server::$id, $api_server_id);
 
 if(!$server) {
     echo "ERROR: Connection Terminated.\n";
@@ -43,20 +43,20 @@ function api_run($command, $data) {
 
     // MISC
     if ($command === 'motd') {
-        return system_motd();
+        return SystemController::motd();
     }
 
     if ($command === 'boot') {
-        return system_boot();
+        return SystemController::boot();
     }
 
     // AUTH
     if ($command === 'register') {
-        return Authorize::register($data);
+        return AuthController::register($data);
     }
 
     if ($command === 'login') {
-        return Authorize::login($data);
+        return AuthController::login($data);
     }
 
     if ($command === 'user') {
@@ -69,7 +69,7 @@ function api_run($command, $data) {
     }
 
     if ($command === 'version') {
-        return system_version();
+        return SystemController::version();
     }
 
         // Check if the user is logged in
@@ -85,9 +85,9 @@ function api_run($command, $data) {
                 case $command == 'debug' || $command == 'mem':
                     return dump($data);
                 case $command == 'connect' || $command == 'telnet':
-                    return contact_server($data);
+                    return ServerController::connect($data);
                 case 'logoff':
-                    return disconnect_network();
+                    return AuthController::logout();
                 default:
                     return "ERROR: Unknown Guest Command";
             } 
@@ -97,8 +97,6 @@ function api_run($command, $data) {
 
         if(isset($_SESSION['auth']) && $_SESSION['username'] != 'root') {
 
-            logMessage(strtoupper($_SESSION['username']) . ' used command: ' . $command . " {$data}", $server_id);
-        
               switch ($command) {
                 case 'accounts':
                     return listAccounts($data);
@@ -113,15 +111,15 @@ function api_run($command, $data) {
                 case 'logon':
                     return server_logon($data);
                 case $command == 'logout' || $command == 'dc':
-                    return logout_user();
+                    return ServerController::logout();
                 case $command == 'reboot' || $command == 'autoexec' || $command == 'restart' || $command == 'start':
-                    return system_restart();
+                    return SystemController::restart();
                 case 'help':
                     return help_info($data);
                 case $command == 'scan' || $command == 'find':
                     return scanNodes($data);
                 case $command == 'connect' || $command == 'telnet':
-                    return contact_server($data);
+                    return ServerController::connect($data);
                 default:
                     return "ERROR: Unknown User Command";
               }        
@@ -130,8 +128,6 @@ function api_run($command, $data) {
 
           if(isset($_SESSION['auth']) && $_SESSION['username'] === 'root' &&  $_SESSION['password'] === 'robco') {
 
-            logMessage(strtoupper($_SESSION['username']) . ' used command: ' . $command . " {$data}", $server_id);
-        
              switch ($command) {
                 case $command == 'ls' || $command == 'dir':
                     return listFiles();
@@ -148,7 +144,7 @@ function api_run($command, $data) {
                  case $command == 'rm' || $command == 'del':
                      return deleteFileOrFolder($data);
                 case $command == 'logout' || $command == 'dc':
-                    return logout_user();
+                    return ServerController::logout();
                  default:
                      return "ERROR: Unknown Root Command";
              }

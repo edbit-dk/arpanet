@@ -1,5 +1,37 @@
 <?php
 
+class ServerController
+{
+    public static function logon() {
+
+    }
+
+    public static function connect($data) {
+        $server_id = explode(' ', $data)[0];
+
+        if (file_exists(APP_CACHE . "server/{$server_id}.json")) {
+            logout_user();  
+            return "Contacting Server: {$server_id}\n";
+        } else {
+            return 'ERROR: ACCESS DENIED';
+        }
+    }
+
+    public static function logout() {
+
+        $_SESSION = array();
+        session_destroy();
+    
+        session_start();
+
+        Session::set(User::$session, User::session());
+
+        $server = Session::get(Server::$session);
+    
+        return "LOGGING OUT FROM {$server}...\n";
+    }
+}
+
 // Function to handle user login
 function server_logon($data) {
     global $server, $server_id;
@@ -61,7 +93,6 @@ function server_logon($data) {
                 file_put_contents(APP_CACHE . "user/{$user_id}.json", json_encode($_SESSION['USER']));
             }
 
-            logMessage(strtoupper($_SESSION['username']) . ' logged in.', $server_id);
             return "Password Accepted.\nPlease wait while system is accessed...\n+0025 XP ";
 
         } else {

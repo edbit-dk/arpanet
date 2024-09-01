@@ -30,11 +30,11 @@ class App
         $this->createControllerAndActionNames();
 
         // does such a controller exist ?
-        if (file_exists(Config::get('PATH_CONTROLLER') . $this->controller_name . '.php')) {
+        if (file_exists(App::get('PATH_CONTROLLER') . $this->controller_name . '.php')) {
 
             // load this file and create this controller
             // example: if controller would be "car", then this line would translate into: $this->car = new car();
-            require Config::get('PATH_CONTROLLER') . $this->controller_name . '.php';
+            require App::get('PATH_CONTROLLER') . $this->controller_name . '.php';
             $this->controller = new $this->controller_name();
 
             // check are controller and method existing and callable?
@@ -48,7 +48,7 @@ class App
                 }
             } else {
                 // load 404 error page
-                require Config::get('PATH_CONTROLLER') . 'ErrorController.php';
+                require App::get('PATH_CONTROLLER') . 'ErrorController.php';
                 $this->controller = new ErrorController;
                 $this->controller->error404();
             }
@@ -92,12 +92,12 @@ class App
     {
         // check for controller: no controller given ? then make controller = default controller (from config)
         if (!$this->controller_name) {
-            $this->controller_name = Config::get('DEFAULT_CONTROLLER');
+            $this->controller_name = App::get('DEFAULT_CONTROLLER');
         }
 
         // check for action: no action given ? then make action = default action (from config)
         if (!$this->action_name OR (strlen($this->action_name) == 0)) {
-            $this->action_name = Config::get('DEFAULT_ACTION');
+            $this->action_name = App::get('DEFAULT_ACTION');
         }
 
         // rename controller name to real controller class/file name ("index" to "IndexController")
