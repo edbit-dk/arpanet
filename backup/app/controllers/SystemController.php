@@ -1,27 +1,28 @@
 <?php
 
-namespace App\Controllers;
-
-use App\Controllers\Controller;
-
-use App\Models\User;
-
-class SystemController extends Controller
+class SystemController 
 {
-
-    public function index($request, $response) 
-    {
-
-        return $this->view->render($response, 'terminal.twig');
+    public static function version() {
+        return file_get_contents(APP_STORAGE . 'text/version.txt');
     }
 
-    public function boot($request, $response) 
-    {
-        return file_get_contents(__DIR__ . '/../../storage/text/boot.txt');
+    public static function restart() {
+        AuthController::logout();
+        return "RESTARTING...";
     }
 
-    public function welcome($request, $response) 
-    {
+    public static function boot() {
+        return include(APP_STORAGE . 'text/boot.txt');
+    }
+
+    public static function motd() {
+        $code_1 = random_str(6, 'AXYZ01234679');
+        $code_2 = random_str(6, 'AXYZ01234679');
+        $code_3 = random_str(6, 'AXYZ01234679');
+        $code_4 = random_str(6, 'AXYZ01234679');
+    
+        $access_code = "{$code_1}-{$code_2}-{$code_3}-{$code_4}"; 
+    
         echo <<< EOT
 
         WELCOME TO ROBCO INDUSTRIES (TM) TERMLINK

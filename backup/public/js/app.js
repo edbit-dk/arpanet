@@ -42,8 +42,7 @@ document.getElementById('command-input').addEventListener('keydown', function(e)
 function sendCommand(command, data, queryString = '') {
     const query = window.location.search; // Get the current URL query string
     const xhr = new XMLHttpRequest();
-    const route = command.split(" ")[0];
-    xhr.open('POST', route.toLowerCase() + queryString, true); // Include the query string in the URL
+    xhr.open('POST', 'api.php' + queryString, true); // Include the query string in the URL
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4 && xhr.status === 200) {
@@ -315,7 +314,7 @@ function autocompleteCommand() {
 
     // Send an AJAX request to the server for autocomplete suggestions
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', 'auto.php', true);
+    xhr.open('POST', 'auto.php', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4 && xhr.status === 200) {
@@ -362,7 +361,7 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
 
         setTimeout(function() {
-            sendCommand('welcome', '');
+            sendCommand('motd', '');
         }, 500);
     }
 });

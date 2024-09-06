@@ -1,15 +1,16 @@
 {
-    "name": "datalaere/terminal",
-    "type": "project",
-    "description": "Retro vintage terminal",
-    "keywords": ["login", "auth", "user", "authentication", "mvc", "membership"],
-    "homepage": "https://github.com/datalaere/terminal",
-    "license": "MIT",
-    "require-dev": {
-        "php": ">=5.5.0",
-        "phpmailer/phpmailer": "~6.0"
+    "require": {
+        "slim/slim": "^3.0",
+        "slim/twig-view": "^2.5",
+        "illuminate/database": "^8.83"
     },
     "autoload": {
-        "psr-4": { "": ["app/src/", "app/models/", "app/controllers/"] }
+        "psr-4": {
+            "App\\": "app"
+        },
+
+        "files": [
+            "app/helpers.php"
+        ]
     }
 }
