@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Controllers\Controller;
+use App\Services\Controller;
 
 use App\Models\User;
 
@@ -17,7 +17,7 @@ class SystemController extends Controller
 
     public function boot($request, $response) 
     {
-        return file_get_contents(__DIR__ . '/../storage/text/boot.txt');
+        return file_get_contents(__DIR__ . '/../../storage/text/boot.txt');
     }
 
     public function welcome($request, $response) 

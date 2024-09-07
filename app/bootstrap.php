@@ -2,21 +2,23 @@
 
 session_start();
 
-require __DIR__ . '/../vendor/autoload.php';
+define('PATH_ROOT', dirname(__DIR__));
+
+require PATH_ROOT . '/vendor/autoload.php';
 
 
 $app = new \Slim\App(require __DIR__ . '/settings.php');
 
-require __DIR__ . '/config/container.php';
+require PATH_ROOT . '/app/config/container.php';
 
-require __DIR__ . '/config/env.php';
+require PATH_ROOT . '/app/config/env.php';
 
-require __DIR__ . '/config/security.php';
+require PATH_ROOT . '/app/config/services.php';
 
-require __DIR__ . '/config/database.php';
+require PATH_ROOT . '/app/config/database.php';
 
-require __DIR__ . '/config/view.php';
+require PATH_ROOT . '/app/config/view.php';
 
-require __DIR__ . '/config/controllers.php';
+require PATH_ROOT . '/app/config/controllers.php';
 
-require __DIR__ . '/routes.php';
+require PATH_ROOT . '/app/routes.php';
