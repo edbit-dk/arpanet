@@ -13,7 +13,8 @@ class MatchesPassword extends AbstractRule {
         $this->pass = $password;
     }
 
-    public function validate($input) {
+    public function validate($input): bool  
+    {
         return password_verify($input, $this->pass);
     }
 

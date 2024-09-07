@@ -7,7 +7,7 @@ use Respect\Validation\Rules\AbstractRule;
 
 class EmailExists extends AbstractRule {
 
-    public function validate($input) 
+    public function validate($input): bool 
     {
         return User::where('email', $input)->count() === 0;
     }
