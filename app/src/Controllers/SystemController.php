@@ -17,7 +17,7 @@ class SystemController extends Controller
 
     public function boot($request, $response) 
     {
-        return file_get_contents(__DIR__ . '/../../storage/text/boot.txt');
+        return file_get_contents(__DIR__ . '/../storage/text/boot.txt');
     }
 
     public function welcome($request, $response) 
@@ -40,8 +40,8 @@ class SystemController extends Controller
     
         This terminal allows access to PoseidoNET,
         the US transcontinental network operated by
-        Poseidon Energy, stretching from the Pacific
-        to the Atlantic.
+        Poseidon Energy, stretching from the US Pacific
+        to the US Atlantic.
 
         Enter UPLINK to access central PoseidoNet.
         _________________________________________
