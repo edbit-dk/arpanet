@@ -2,9 +2,9 @@
 
 namespace App\Controllers;
 
-use App\Controllers\Controller;
-
 use App\Models\User;
+use App\Controllers\Controller;
+use Respect\Validation\Validator as v;
 
 class AuthController extends Controller
 {
@@ -17,26 +17,36 @@ class AuthController extends Controller
 
     public function register($request, $response) 
     {
-        $data = $request->getParams();
-
-        var_dump($data);
-        die;
+        
+        $data = $request->getParam('data');
 
         if(empty($data)) {
             return 'ERROR: Missing parameters.';
         }
 
-        return $response->withRedirect($this->router->pathFor('default'));
-        
+        $input = [
+            'password' =>  explode(' ', $data)[0],
+            'email' => explode(' ', $data)[1]
+        ];
 
-        $password = explode(' ', $data)[0];
-        $email = explode(' ', $data)[1];
-
-        die;
-        User::create([
-            'password' => $password,
-            'email' => $email
-            
+        $validation = $this->validator->validate($input, [
+            'email' => v::noWhitespace()->notEmpty(),
+            'password' => v::length(27)->notEmpty()
         ]);
+
+        if($validation->failed()) {
+            return 'ERROR: Missing parameters.';
+        }
+
+        $user_id = User::create([
+            'password' => $input['password'],
+            'email' => $input['email']
+            
+        ])->id();
+
+        $password = $input['password'];
+        $email = $input['email'];
+
+        return "ACCESS CODE: {$password}\nEMPLOYEE ID: {$email}\n";
     }
 }
