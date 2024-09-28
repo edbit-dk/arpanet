@@ -1,22 +1,10 @@
 
-INITIATING BOOT...
-
-Initializing RobCo Industries(TM) 
-MF Boot Agent v2.3.0
+Initializing RobCo Industries(TM) MF Boot Agent v2.3.0
 RETROS BIOS
 RBIOS-4.02.08.00 52EE5.E7.E8
 Copyright 2201-2203 Robco Ind.
-
-64K RAM DETECTED...
 Uppermem: 64 KB
-
-LOADING ROBCO UNIFIED OS...
 
 RobCo Unified Operating System v.85
 Copyright 2075-2077 RobCo Ind.
 
-LAUNCHING INTERFACE...
-
-WAIT...
-
-Hello.

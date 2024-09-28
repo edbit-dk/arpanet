@@ -1,11 +1,11 @@
 <?php
 
-$container['view'] = function ($container) {
-    $view = new \Slim\Views\Twig($container['settings']['view']);
+$c['view'] = function ($c) {
+    $view = new \Slim\Views\Twig($c['settings']['view']);
 
     $view->addExtension(new \Slim\Views\TwigExtension(
-        $container->router,
-        $container->request->getUri()
+        $c->router,
+        $c->request->getUri()
     ));
 
     return $view;

@@ -1,6 +1,6 @@
 <?php
 
-$container['environment'] = function () {
+$c['environment'] = function () {
     $scriptName = $_SERVER['SCRIPT_NAME'];
     $_SERVER['REAL_SCRIPT_NAME'] = $scriptName;
     $_SERVER['SCRIPT_NAME'] = dirname(dirname($scriptName)) . '/' . basename($scriptName);

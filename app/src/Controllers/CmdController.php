@@ -9,14 +9,8 @@ use App\Models\User;
 class CmdController extends Controller
 {
 
-    public function index($request, $response) 
+    public function help() 
     {
-
-        return $this->view->render($response, 'terminal.twig');
-    }
-
-    public function store($request, $response) 
-    {
-        
+        return 'ok';
     }
 }

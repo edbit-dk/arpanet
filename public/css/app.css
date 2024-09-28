@@ -2,26 +2,23 @@
 
 body, input {
   font-family: 'VT323', Arial, Helvetica, sans-serif;;
-  font-size: 24px;
   -webkit-font-smoothing: none;
+  font-size: 24px;
   line-height: 1.2;
   text-shadow: 0 0 5px #C8C8C8;
-  background: #020202;
+  background-color: #000000;
 }
 
 #terminal-wrapper {
     margin: 0 auto;
-    padding: 5px;
-    width: 100%;
-    border: none; 
-    height: 95dvh;
+    border: none;
+    height: 90dvh; 
     overflow-y: auto;
 }
 
 #terminal {
     margin:0 auto;
     margin-bottom: 10px;
-    width: 100%;
     overflow:auto;
     white-space: pre; /* Preserve whitespace */
 }
@@ -35,7 +32,6 @@ body, input {
 #command-input {
     background: none;
     border: none;
-    font-size: 24px; /* Adjust font size as needed */
     width: 100%; /* Set width to 100% to make it full-width */
     outline: none;
     position: relative; /* Use relative positioning */
@@ -43,7 +39,21 @@ body, input {
 }
 
 .container {
-    padding-top: 80px;
+    padding-top: 20px;
     padding-bottom: 40px;
+    width: 1024px;
 }
+
+#terminal-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+
+
+  /* Media queries for responsive font-size adjustments on smaller screens */
+  @media (min-width: 1024px) {
+    body, input{
+      font-size: 44px; /* Smaller font on tablets */
+    }
+  }
+
 

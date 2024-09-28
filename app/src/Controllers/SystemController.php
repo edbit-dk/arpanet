@@ -17,39 +17,47 @@ class SystemController extends Controller
 
     public function boot($request, $response) 
     {
-        return file_get_contents(__DIR__ . '/../../storage/text/boot.txt');
+        return file_get_contents($this->settings['path'] . '/app/storage/text/boot.txt');
     }
 
     public function welcome($request, $response) 
     {
-        echo <<< EOT
-
-        WELCOME TO ROBCO INDUSTRIES (TM) TERMLINK
-    
-
-        EOT;
-    
-        return;
+        return file_get_contents($this->settings['path'] . '/app/storage/text/welcome.txt');
     }
 
-    public static function help() { 
-        echo <<< EOT
-
-        WELCOME TO POSEIDON ENERGY CORPORATION
-        -Begin your Odyssey with us-
-    
-        This terminal allows access to PoseidoNET,
-        the US transcontinental network operated by
-        Poseidon Energy, stretching from the US Pacific
-        to the US Atlantic.
-
-        Enter UPLINK to access central PoseidoNet.
-        _________________________________________
-    
-        EOT;
-    
-        return;
+    public function terminal($request, $response) 
+    {
+        return file_get_contents($this->settings['path'] . '/app/storage/text/termlink.txt');
     }
+
+    public function version($request, $response) 
+    {
+        return file_get_contents($this->settings['path'] . '/app/storage/text/version.txt');
+    }
+
+    public function help($request, $response)
+    {
+
+        $command = strtoupper($request->getParam('data'));
+
+        if($this->auth->check()) {
+            $help = include($this->settings['path'] . '/app/storage/array/auth.php');
+        } else {
+            $help = include($this->settings['path'] . '/app/storage/array/guest.php');
+        }
+    
+
+        if (!empty($command)) {
+            return isset($help[$command]) ? $help[$command] : "Command not found.";
+        }
+        
+        $output = "HELP:\n";
+        foreach ($help as $cmd => $text) {
+            $output .= " $cmd $text\n";
+        }
+        return $output;
+    }
+    
 
     public static function uplink() {
         $code_1 = random_str(6, 'AXYZ01234679');

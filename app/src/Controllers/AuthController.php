@@ -29,12 +29,9 @@ class AuthController extends Controller
             'email' => explode(' ', $data)[1]
         ];
 
-        $validation = $this->validator->validate($input, [
-            'email' => v::noWhitespace()->notEmpty()->email()->emailExists(),
-            'password' => v::length(27)->notEmpty()
-        ]);
+        $validation = false;
 
-        if($validation->failed()) {
+        if(!$validation) {
             return 'ERROR: Missing parameters.';
         }
 

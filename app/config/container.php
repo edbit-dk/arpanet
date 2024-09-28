@@ -1,3 +1,3 @@
 <?php
 
-$container = $app->getContainer();
+$c = $app->getContainer();

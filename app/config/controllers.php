@@ -1,13 +1,17 @@
 <?php
 
-$container['DefaultController'] = function ($container) {
-    return new \App\Controllers\DefaultController($container);
+$c['DefaultController'] = function ($c) {
+    return new \App\Controllers\DefaultController($c);
 }; 
 
-$container['AuthController'] = function ($container) {
-    return new \App\Controllers\AuthController($container);
+$c['AuthController'] = function ($c) {
+    return new \App\Controllers\AuthController($c);
 }; 
 
-$container['SystemController'] = function ($container) {
-    return new \App\Controllers\SystemController($container);
+$c['SystemController'] = function ($c) {
+    return new \App\Controllers\SystemController($c);
+}; 
+
+$c['CmdController'] = function ($c) {
+    return new \App\Controllers\CmdController($c);
 }; 

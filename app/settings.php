@@ -2,6 +2,7 @@
 
 return [
     'settings' => [
+        'path' => PATH_ROOT,
         'displayErrorDetails' => true,
         'view' =>  __DIR__ . '/../app/views', [
                 'cache' => false
