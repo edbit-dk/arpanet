@@ -2,21 +2,21 @@
 
 namespace App\Services;
 
-use App\Models\User;
+use App\Models\Server;
 
-class Auth {
+class Mainframe {
 
-    public function user() {
-        return User::find($_SESSION['user']);
+    public function server() {
+        return Server::find($_SESSION['server']);
     }
 
     public function check() {
-        return isset($_SESSION['user']);
+        return isset($_SESSION['server']);
     }
 
     public function attempt($emailOrUsername, $password) {
 
-        $user = User::where('email', $emailOrUsername)
+        $user = Server::where('email', $emailOrUsername)
                     ->orWhere('username', $emailOrUsername)->first();
 
         if (!$user) {
@@ -24,7 +24,7 @@ class Auth {
         }
 
         if ($user->password == $password) {
-            $_SESSION['user'] = $user->id;
+            $_SESSION['server'] = $user->id;
             return true;
         }
 
@@ -32,7 +32,7 @@ class Auth {
     }
 
     public function logout() {
-        unset($_SESSION['user']);
+        unset($_SESSION['server']);
     }
 
 }

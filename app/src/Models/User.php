@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Model
 {
+    public $timestamps = true;
+    
     protected $fillable = [
 		'email',
 		'username',
@@ -19,4 +22,9 @@ class User extends Model
         'rep',
         'last_login'
     ];
+
+    public function servers(): BelongsToMany
+    {
+        return $this->belongsToMany(Server::class, 'server_user');
+    }
 }

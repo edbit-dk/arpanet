@@ -2,7 +2,7 @@
 return [
     'USER' => '',
     'CONNECT' => '<SERVER ID>',
-    'LOGON' => 'LOGON <USERNAME>',
+    'LOGON' => '<USERNAME>',
     'LOGOFF' => '',
     'VERSION' => '',
     'COLOR' => '<GREEN|WHITE|YELLOW>',

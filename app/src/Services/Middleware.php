@@ -4,15 +4,15 @@ namespace App\Services;
 
 class Middleware {
 
-    protected $container;
+    protected $c;
 
     function __construct($container) {
-        $this->container = $container;
+        $this->c = $container;
     }
 
     public function __get($property) {
-        if ($this->container->{$property}) {
-            return $this->container->{$property};
+        if ($this->c->{$property}) {
+            return $this->c->{$property};
         }
     }
 

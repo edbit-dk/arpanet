@@ -8,13 +8,6 @@ use App\Models\User;
 
 class SystemController extends Controller
 {
-
-    public function index($request, $response) 
-    {
-
-        return $this->view->render($response, 'terminal.twig');
-    }
-
     public function boot($request, $response) 
     {
         return file_get_contents($this->settings['path'] . '/app/storage/text/boot.txt');
@@ -22,42 +15,21 @@ class SystemController extends Controller
 
     public function welcome($request, $response) 
     {
+        if($this->auth->check()) {
+            return $this->termlink($request, $response);
+        }
         return file_get_contents($this->settings['path'] . '/app/storage/text/welcome.txt');
     }
 
-    public function terminal($request, $response) 
+    public function termlink($request, $response) 
     {
-        return file_get_contents($this->settings['path'] . '/app/storage/text/termlink.txt');
+        echo file_get_contents($this->settings['path'] . '/app/storage/text/termlink.txt');
     }
 
     public function version($request, $response) 
     {
         return file_get_contents($this->settings['path'] . '/app/storage/text/version.txt');
     }
-
-    public function help($request, $response)
-    {
-
-        $command = strtoupper($request->getParam('data'));
-
-        if($this->auth->check()) {
-            $help = include($this->settings['path'] . '/app/storage/array/auth.php');
-        } else {
-            $help = include($this->settings['path'] . '/app/storage/array/guest.php');
-        }
-    
-
-        if (!empty($command)) {
-            return isset($help[$command]) ? $help[$command] : "Command not found.";
-        }
-        
-        $output = "HELP:\n";
-        foreach ($help as $cmd => $text) {
-            $output .= " $cmd $text\n";
-        }
-        return $output;
-    }
-    
 
     public static function uplink() {
         $code_1 = random_str(6, 'AXYZ01234679');
@@ -76,10 +48,10 @@ class SystemController extends Controller
         >>> {$access_code} <<<
         ###################################
         
-        Please login/register user:
+        Please login/register:
     
         > REGISTER <ACCESS CODE> <EMAIL>
-        > LOGIN <ACCESS CODE> <EMAIL>
+        > LOGIN <ACCESS CODE> <EMAIL/USERNAME>
         _________________________________________
          
         EOT;

@@ -4,7 +4,7 @@ return [
     'settings' => [
         'path' => PATH_ROOT,
         'displayErrorDetails' => true,
-        'view' =>  __DIR__ . '/../app/views', [
+        'view' =>  PATH_ROOT. '/app/views', [
                 'cache' => false
         ],
         'db' => [

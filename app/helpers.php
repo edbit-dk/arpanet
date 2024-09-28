@@ -97,3 +97,31 @@ function random_username($string, $integer = '') {
 
     return vsprintf('%s%s%d', [...sscanf(strtolower("$string-"), '%s %2s'), $integer]);
 }
+
+function wordlist($file, $word_length = 7, $max_count = 12) {
+    $words = file_get_contents($file);
+    
+    $words = explode(" ", $words);
+    $retwords = [];
+    $i=0;
+    $index=0;
+    $wordlen=0;
+    $length = $word_length;
+    $count =$max_count;
+    $failsafe=0;
+    
+    do {
+        $index = rand(0,count($words));
+        $wordlen = strlen($words[$index]);
+        if ($wordlen == $length) {
+            $retwords[] = strtoupper($words[$index]);
+            $i++;
+        } else {
+            $failsafe++;
+        }
+        if ($failsafe > 1000) $i = $failsafe;
+    } while ($i < $count);
+    
+    //$retwords = substr($retwords,0,strlen($retwords)-1);
+    return $retwords;
+}
