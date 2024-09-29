@@ -41,7 +41,6 @@ body, input {
 .container {
     padding-top: 20px;
     padding-bottom: 40px;
-    width: 1024px;
 }
 
 #terminal-wrapper::-webkit-scrollbar {
@@ -52,7 +51,7 @@ body, input {
   /* Media queries for responsive font-size adjustments on smaller screens */
   @media (min-width: 1024px) {
     body, input{
-      font-size: 44px; /* Smaller font on tablets */
+      font-size: 70px; /* Smaller font on tablets */
     }
   }
 

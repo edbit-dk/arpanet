@@ -15,3 +15,15 @@ $c['SystemController'] = function ($c) {
 $c['CmdController'] = function ($c) {
     return new \App\Controllers\CmdController($c);
 }; 
+
+$c['ServerController'] = function ($c) {
+    return new \App\Controllers\ServerController($c);
+}; 
+
+$c['DebugController'] = function ($c) {
+    return new \App\Controllers\DebugController($c);
+}; 
+
+$c['FileController'] = function ($c) {
+    return new \App\Controllers\FileController($c);
+}; 

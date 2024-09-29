@@ -1,12 +1,12 @@
 <?php
 
-function parse_request($url) {
+function parse_request($url, $custom_query = 'query') {
 
     if(!empty($url)) {
         $url_components = parse_url($url);
         // Use parse_str() function to parse the
         // string passed via URL
-        parse_str($url_components['query'], $params);
+        parse_str($url_components[$custom_query], $params);
 
         return $params;
     }
@@ -124,4 +124,79 @@ function wordlist($file, $word_length = 7, $max_count = 12) {
     
     //$retwords = substr($retwords,0,strlen($retwords)-1);
     return $retwords;
+}
+
+
+function replaceWithDots($input) {
+    // Get the length of the input string
+    $length = strlen($input);
+    
+    // Create a string of dots with the same length as the input string
+    $dots = str_repeat('.', $length);
+    
+    return $dots;
+}
+
+
+// Function to generate a random string of characters
+function rand_str($length = 7) {
+    $special_chars = SPECIAL_CHARS;
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $special_chars[rand(0, strlen($special_chars) - 1)];
+    }
+    return $randomString;
+}
+
+
+// Function to generate a memory dump
+function mem_dump($rows, $columns, $specialWords = [], $length = 7) {
+    $memoryDump = array();
+
+    // Insert special words into the specialPositions array
+    $specialPositions = [];
+    for ($i = 0; $i < count($specialWords); $i++) {
+        $row = rand(0, $rows - 1);
+        $col = rand(0, $columns - 1);
+        $specialPositions[] = [$row, $col, strtoupper($specialWords[$i])];
+    }
+
+    // Generate random strings for each cell
+    for ($i = 0; $i < $rows; $i++) {
+        $row = array();
+        for ($j = 0; $j < $columns; $j++) {
+            $cell = rand_str($length);
+            // Check if this cell is a special position
+            foreach ($specialPositions as $index => $pos) {
+                if ($pos[0] === $i && $pos[1] === $j) {
+                    // Insert special word and remove it from specialPositions array
+                    $cell = $pos[2];
+                    unset($specialPositions[$index]);
+                    break;
+                }
+            }
+            $row[] = $cell;
+        }
+        $memoryDump[] = $row;
+    }
+
+    return $memoryDump;
+}
+
+// Function to format the memory dump with memory paths
+function format_dump($memoryDump) {
+    $formattedDump = "";
+    $rowNumber = 0;
+
+    foreach ($memoryDump as $row) {
+        // Generate a random starting memory address for each line
+        $memoryAddress = "0x" . dechex(rand(4096, 6553));
+        $formattedDump .= $memoryAddress . " ";
+        foreach ($row as $cell) {
+            $formattedDump .= " " . $cell;
+        }
+        $formattedDump .= "\n";
+    }
+
+    return $formattedDump;
 }

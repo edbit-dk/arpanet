@@ -14,17 +14,33 @@ class Mainframe {
         return isset($_SESSION['server']);
     }
 
-    public function attempt($emailOrUsername, $password) {
+    public function connect($data)
+    {
+        $server = Server::where('id', $data)
+        ->orWhere('name', $data)
+        ->where('status', 1)
+        ->first();
 
-        $user = Server::where('email', $emailOrUsername)
-                    ->orWhere('username', $emailOrUsername)->first();
+        if (!$server) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
-        if (!$user) {
+    public function attempt($data, $password) {
+
+        $server = Server::where('id', $data)
+        ->orWhere('name', $data)
+        ->where('status', 1)
+        ->first();
+
+        if (!$server) {
             return false;
         }
 
-        if ($user->password == $password) {
-            $_SESSION['server'] = $user->id;
+        if ($server->admin_pass == $password) {
+            $_SESSION['server'] = $server->id;
             return true;
         }
 

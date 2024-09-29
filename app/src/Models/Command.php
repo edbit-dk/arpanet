@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Help extends Model
+class Command extends Model
 {
     public $timestamps = true;
     

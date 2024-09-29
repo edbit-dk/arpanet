@@ -18,12 +18,61 @@ class SystemController extends Controller
         if($this->auth->check()) {
             return $this->termlink($request, $response);
         }
+
+        if($this->mainframe->check()) {
+            return $this->mainframe($request, $response);
+        }
+
         return file_get_contents($this->settings['path'] . '/app/storage/text/welcome.txt');
     }
 
     public function termlink($request, $response) 
     {
-        echo file_get_contents($this->settings['path'] . '/app/storage/text/termlink.txt');
+        $termlink = file_get_contents($this->settings['path'] . '/app/storage/text/termlink.txt');
+
+        if($request->getParam('query')) {
+            $server_id = parse_request($request->getParam('query'))['server'];
+        } else {
+            $server_id = false;
+        }
+
+        if(!$server_id) {
+        echo "$termlink";
+        } else {
+        echo <<< EOT
+        $termlink
+                     -Server $server_id-
+        EOT;
+        }
+
+        return;
+
+    }
+
+    public function mainframe($request, $response) 
+    {
+        $termlink = file_get_contents($this->settings['path'] . '/app/storage/text/mainframe.txt');
+
+        
+        if($request->getParam('query')) {
+            $server_id = parse_request($request->getParam('query'))['server'];
+        } else {
+            $server_id = false;
+        }
+
+        $user = $this->auth->user()->username;
+
+        if(!$server_id) {
+        echo "$termlink";
+        } else {
+        echo <<< EOT
+        $termlink
+                     -Server $server_id-
+        EOT;
+        }
+
+        return;
+
     }
 
     public function version($request, $response) 
@@ -44,16 +93,13 @@ class SystemController extends Controller
         Uplink with central PoseidoNet initiated.
         Enter Security Access Code Sequence:
     
-        ###################################
+        ***********************************
         >>> {$access_code} <<<
-        ###################################
+        ***********************************
         
-        Please login/register:
-    
         > REGISTER <ACCESS CODE> <EMAIL>
         > LOGIN <ACCESS CODE> <EMAIL/USERNAME>
         _________________________________________
-         
         EOT;
     
         return;

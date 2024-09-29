@@ -52,7 +52,10 @@ class AuthController extends Controller
 
         if($this->auth->attempt($email, $password)) {
             $username = $this->auth->user()->username;
-            return "ACCESS CODE: {$password}\nEMPLOYEE ID: {$username}\n";            
+            echo "ACCESS CODE: {$password}\nEMPLOYEE ID: {$username}\n"; 
+            echo 'USER AUTHENTICATED!';           
+        } else {
+            return 'ERROR: Wrong credentials!';
         }
 
     }
