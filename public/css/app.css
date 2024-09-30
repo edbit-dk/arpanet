@@ -3,7 +3,7 @@
 body, input {
   font-family: 'VT323', Arial, Helvetica, sans-serif;;
   -webkit-font-smoothing: none;
-  font-size: 24px;
+  font-size: 100%;
   line-height: 1.2;
   text-shadow: 0 0 5px #C8C8C8;
   background-color: #000000;
@@ -48,11 +48,38 @@ body, input {
   }
 
 
-  /* Media queries for responsive font-size adjustments on smaller screens */
-  @media (min-width: 1024px) {
-    body, input{
-      font-size: 70px; /* Smaller font on tablets */
-    }
+  /* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  body{
+    font-size: 1.4em;
   }
+}
 
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  body{
+    font-size: 2em; 
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  body{
+    font-size: 2.5em; 
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  body{
+    font-size: 3.45em; 
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  body{
+    font-size: 4em;
+  }
+}
 
