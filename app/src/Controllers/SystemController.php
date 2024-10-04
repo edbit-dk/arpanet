@@ -8,6 +8,12 @@ use App\Models\User;
 
 class SystemController extends Controller
 {
+
+    public function reboot($request, $response) 
+    {
+        return file_get_contents($this->settings['path'] . '/app/storage/text/boot.txt');
+    } 
+    
     public function boot($request, $response) 
     {
         return file_get_contents($this->settings['path'] . '/app/storage/text/boot.txt');
@@ -15,12 +21,13 @@ class SystemController extends Controller
 
     public function welcome($request, $response) 
     {
-        if($this->auth->check()) {
-            return $this->termlink($request, $response);
+
+        if($this->mainframe->remote()) {
+            return $this->server($request, $response);
         }
 
-        if($this->mainframe->check()) {
-            return $this->mainframe($request, $response);
+        if($this->auth->check()) {
+            return $this->termlink($request, $response);
         }
 
         return file_get_contents($this->settings['path'] . '/app/storage/text/welcome.txt');
@@ -29,19 +36,29 @@ class SystemController extends Controller
     public function termlink($request, $response) 
     {
         $termlink = file_get_contents($this->settings['path'] . '/app/storage/text/termlink.txt');
+        $server_id = false;
 
-        if($request->getParam('query')) {
-            $server_id = parse_request($request->getParam('query'))['server'];
-        } else {
-            $server_id = false;
+        if($this->mainframe->check()) {
+
+            if($this->mainframe->local()) {
+                $server_id = $this->mainframe->local();
+            }
+
+            if($this->mainframe->remote()) {
+                $server_id = $this->mainframe->remote();
+            }
+            
         }
 
+
         if(!$server_id) {
-        echo "$termlink";
+        echo $termlink;
         } else {
         echo <<< EOT
         $termlink
                      -Server $server_id-
+
+        Password Required
         EOT;
         }
 
@@ -49,25 +66,32 @@ class SystemController extends Controller
 
     }
 
-    public function mainframe($request, $response) 
+    public function server($request, $response) 
     {
-        $termlink = file_get_contents($this->settings['path'] . '/app/storage/text/mainframe.txt');
+        $termlink = file_get_contents($this->settings['path'] . '/app/storage/text/robco.txt');
+        $server_id = false;
 
-        
-        if($request->getParam('query')) {
-            $server_id = parse_request($request->getParam('query'))['server'];
-        } else {
-            $server_id = false;
+        $server_name = $this->mainframe->server()->name;
+
+
+        if($this->mainframe->check()) {
+
+            if($this->mainframe->remote()) {
+                $server_id = $this->mainframe->remote();
+            }
+            
         }
 
-        $user = $this->auth->user()->username;
 
         if(!$server_id) {
-        echo "$termlink";
+        echo $termlink;
         } else {
         echo <<< EOT
         $termlink
-                     -Server $server_id-
+                        -Server $server_id-
+
+        $server_name
+        ___________________________________________
         EOT;
         }
 
@@ -97,8 +121,8 @@ class SystemController extends Controller
         >>> {$access_code} <<<
         ***********************************
         
-        > REGISTER <ACCESS CODE> <EMAIL>
-        > LOGIN <ACCESS CODE> <EMAIL/USERNAME>
+        > REGISTER <EMAIL> <ACCESS CODE> 
+        > LOGIN <EMAIL/USERNAME> <ACCESS CODE>
         _________________________________________
         EOT;
     

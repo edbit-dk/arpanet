@@ -1,5 +1,6 @@
 <?php
 
+session_cache_limiter(false);
 session_start();
 
 define('PATH_ROOT', dirname(__DIR__));

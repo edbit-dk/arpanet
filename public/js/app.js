@@ -62,41 +62,34 @@ function sendCommand(command, data, queryString = '') {
 
 // Function to handle redirect
 function handleRedirect(response) {
+
     if (response.startsWith("Contacting")) {
-        const regex = /Server:\s*(\S+)/;
-        const match = response.match(regex);
-        if (match) {
-            const server_id = match[1];
-            setTimeout(function() {
-                loadText('Accessing Mainframe...');
-            }, 1500);
+        setTimeout(function() {
+            loadText("Accessing Mainframe...");
 
             setTimeout(function() {
-                redirectTo('?server=' + server_id); // Redirect to a specific query string using the server number
-            }, 1500);
-        }
+                clearTerminal();
+                sendCommand('welcome', '');
+            }, 2000);
+
+        }, 2000);
     }
 
-    if (response.startsWith("ACCESS")) {
-        const regex = /CODE:\s*(\S+)/;
-        const match = response.match(regex);
-        if (match) {
-            const access_code = match[1];
-
-            if (!sessionStorage.getItem('code')) {
-                sessionStorage.setItem('code', 'true');
-            }
-
+    if (response.startsWith("Security")) {
             setTimeout(function() {
-                appendCommand("\n");
-                loadText("Security Access Code Sequence Accepted.\nWelcome to PoseidoNet!");
+
+                if (!sessionStorage.getItem('uplink')) {
+                    sessionStorage.setItem('uplink', 'true');
+                }
+
+                loadText("Please wait while network is accessed...");
 
                 setTimeout(function() {
-                    redirectTo('?code=' + btoa(access_code));
-                }, 1500);
+                    clearTerminal();
+                    sendCommand('welcome', '');
+                }, 2000);
 
-            }, 1500);
-        }
+            }, 2000);
     }
 }
 
@@ -162,7 +155,7 @@ function handleNewUser(username) {
 
 // Function to handle the LOGON command
 function handleLogon(username) {
-    if (!sessionStorage.getItem('code')) {
+    if (!sessionStorage.getItem('uplink')) {
         appendCommand("ERROR: Security Access Code Required!");
         return;
     }
@@ -324,7 +317,7 @@ $(document).ready(function() {
         setTimeout(function() {
             sessionStorage.setItem('boot', true); // Set 'boot' flag in sessionStorage
             location.reload(); // Reload the page after setting the boot flag
-        }, 10000);
+        }, 5000);
     } else {
 
         setTimeout(function() {

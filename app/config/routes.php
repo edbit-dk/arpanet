@@ -5,13 +5,14 @@ use App\Middleware\GuestMiddleware;
 $app->get('/', 'DefaultController:index')->setName('default');
 
 // System
-$app->get('/boot', 'SystemController:boot');
 $app->get('/version', 'SystemController:version');
 $app->get('/termlink', 'SystemController:termlink');
 $app->get('/welcome', 'SystemController:welcome');
 
 // Guest
 $app->group('', function() {
+
+    $this->get('/boot', 'SystemController:boot');
 
     // Auth
     $this->get('/register', 'AuthController:register');
@@ -26,6 +27,8 @@ $app->group('', function() {
 // Auth
 $app->group('', function() {
 
+    $this->get('/reboot', 'SystemController:boot');
+
     // Auth
     $this->get('/logout', 'AuthController:logout');
 
@@ -33,7 +36,6 @@ $app->group('', function() {
     $this->get('/help', 'CmdController:help');
     $this->get('/user', 'CmdController:user');
     $this->get('/accounts', 'CmdController:accounts');
-    $this->get('/logoff', 'CmdController:logoff');
     $this->get('/find', 'CmdController:find');
     $this->get('/dir', 'CmdController:dir');
     $this->get('/cd', 'CmdController:cd');
@@ -45,5 +47,6 @@ $app->group('', function() {
     // Server
     $this->get('/connect', 'ServerController:connect');
     $this->get('/logon', 'ServerController:logon');
+    $this->get('/logoff', 'ServerController:logoff');
 
 })->add(new AuthMiddleware($c));

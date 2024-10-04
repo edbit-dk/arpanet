@@ -19,10 +19,10 @@ class AuthController extends Controller
 
         $input = explode(' ', trim($data));
 
-        if (count($input) >= 1 && strlen($input[0]) === 27 && preg_match('/^[AXYZ01234679-]+$/', $input[0])) {
+        if (count($input) >= 1 && ctype_alnum($input[1])) {
 
-            $user[$this->password] = $input[0];
-            $user[$this->email] = $input[1];
+            $user[$this->email] = $input[0];
+            $user[$this->password] = $input[1];
 
         } else {
             return false;
@@ -44,16 +44,16 @@ class AuthController extends Controller
         if(!$user) {
             return 'ERROR: Missing parameters.';
         } else {
-            $password = $user[$this->password];
             $email = $user[$this->email];
+            $password = $user[$this->password];
         }
 
         sleep(1);
 
         if($this->auth->attempt($email, $password)) {
             $username = $this->auth->user()->username;
-            echo "ACCESS CODE: {$password}\nEMPLOYEE ID: {$username}\n"; 
-            echo 'USER AUTHENTICATED!';           
+            echo "Security Access Code Sequence Accepted.\n"; 
+            echo "Welcome to PoseidoNet!\n";         
         } else {
             return 'ERROR: Wrong credentials!';
         }
@@ -76,6 +76,7 @@ class AuthController extends Controller
         } else {
             $password = $user[$this->password];
             $email = $user[$this->email];
+            $email_username = explode('@', $email)[0];
             $firstname = ucfirst(strtolower(wordlist($this->settings['path'] . '/app/storage/text/namelist.txt', rand(5, 12) , 1)[0]));
             $lastname = ucfirst(strtolower(wordlist($this->settings['path']. '/app/storage/text/namelist.txt', rand(5, 12) , 1)[0]));
         }
@@ -92,7 +93,7 @@ class AuthController extends Controller
             $this->created => \Carbon\Carbon::now()
         ]);
 
-        $username = 'PE-' . strtoupper(random_username($firstname, $user_id));
+        $username = 'PE-' . strtoupper(random_username($email_username, $user_id));
 
         $user = User::find($user_id);
         $user->username = $username;
