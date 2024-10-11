@@ -16,6 +16,5 @@ $app->get('/welcome', function($app) {
 
 
 
-/*
-$app->get('/welcome', [DefaultController::class, 'index']);
-*/  
+
+$app->get('/test', [DefaultController::class, 'index']);

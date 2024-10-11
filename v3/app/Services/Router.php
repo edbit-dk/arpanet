@@ -76,7 +76,7 @@ class Router
                 [$controller, $method] = $handler;
 
                 if (is_string($controller) && class_exists($controller)) {
-                    $controller = new $controller($this->container);
+                    $controller = new $controller($this);
                 }
 
                 if (is_object($controller) && method_exists($controller, $method)) {
