@@ -4,11 +4,11 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/src"
+            "App\\": "app"
         },
 
         "files": [
-            "app/functions.php"
+            "helpers.php"
         ]
     }
 }

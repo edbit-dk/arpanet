@@ -4,10 +4,10 @@ namespace App\Controllers;
 
 use App\Services\Controller;
 
-class DefaultController extends Controller
+class RobcoController extends Controller
 {
 
-    public function index()
+    public function index($router)
     {
         return view('app.php');
     }
