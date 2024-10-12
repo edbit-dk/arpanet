@@ -3,7 +3,7 @@
 return [
     'path' => BASE_PATH,
     'errors' => true,
-    'views' =>  BASE_PATH. '/views/',
+    'views' =>  BASE_PATH. '/templates/',
     'db' => [
         'driver' => 'mysql',
         'host' => 'localhost',

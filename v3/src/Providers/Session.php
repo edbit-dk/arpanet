@@ -1,23 +1,23 @@
 <?php
 
-namespace App\Services;
+namespace App\Providers;
 
 class Session
 {
 
-    public static $cacheExpire = null;
-    public static $cacheLimiter = null;
+    public $cacheExpire = null;
+    public $cacheLimiter = null;
 
-    public static function start()
+    public function start()
     {
         if (session_status() === PHP_SESSION_NONE) {
 
-            if (self::$cacheLimiter !== null) {
-                session_cache_limiter(self::$cacheLimiter);
+            if ($this->cacheLimiter !== null) {
+                session_cache_limiter($this->cacheLimiter);
             }
 
-            if (self::$cacheExpire !== null) {
-                session_cache_expire(self::$cacheExpire);
+            if ($this->cacheExpire !== null) {
+                session_cache_expire($this->cacheExpire);
             }
 
             session_start();
@@ -28,9 +28,9 @@ class Session
      * @param string $key
      * @return mixed
      */
-    public static function get(string $key)
+    public function get(string $key)
     {
-        if (self::has($key)) {
+        if ($this->has($key)) {
             return $_SESSION[$key];
         }
 
@@ -48,19 +48,19 @@ class Session
         return $this;
     }
 
-    public static function remove(string $key): void
+    public function remove(string $key): void
     {
-        if (self::has($key)) {
+        if ($this->has($key)) {
             unset($_SESSION[$key]);
         }
     }
 
-    public static function clear(): void
+    public function clear(): void
     {
         session_unset();
     }
 
-    public static function has(string $key): bool
+    public function has(string $key): bool
     {
         return array_key_exists($key, $_SESSION);
     }

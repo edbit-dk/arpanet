@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Services;
+namespace App\Providers;
 
 class Controller 
 {
 
     protected $c;
 
-    public function __construct($container)
+    public function __construct($app)
     {
-        $this->c = $container;
+        $this->c = $app->container;
     }
 
     public function __get($property) 

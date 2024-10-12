@@ -75,14 +75,14 @@ function handleRedirect(response) {
         }, 2000);
     }
 
-    if (response.startsWith("Security")) {
+    if (response.startsWith("Welcome")) {
             setTimeout(function() {
 
                 if (!sessionStorage.getItem('uplink')) {
                     sessionStorage.setItem('uplink', 'true');
                 }
 
-                loadText("Please wait while network is accessed...");
+                loadText("Connecting...");
 
                 setTimeout(function() {
                     clearTerminal();
@@ -317,7 +317,7 @@ $(document).ready(function() {
         setTimeout(function() {
             sessionStorage.setItem('boot', true); // Set 'boot' flag in sessionStorage
             location.reload(); // Reload the page after setting the boot flag
-        }, 5000);
+        }, 10000);
     } else {
 
         setTimeout(function() {

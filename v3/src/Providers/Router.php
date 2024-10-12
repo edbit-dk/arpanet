@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Services;
+namespace App\Providers;
 
 class Router
 {
     public $routes = [];
     public $request;
     public $container;
+    public $error = false;
 
     /**
      * Constructor: Initialize the router with the request.
@@ -62,6 +63,11 @@ class Router
         return null;
     }
 
+    public function notFound($view)
+    {
+        $this->error = $view;
+    }
+
     public function run()
     {
         $matchedRoute = $this->match();
@@ -88,7 +94,11 @@ class Router
                 throw new \Exception("Invalid route handler");
             }
         } else {
-            echo "404 - Route not found";
+            if(!$this->error) {
+                echo "404 - Route not found";
+            } else {
+                include $this->error;
+            }
         }
     }
 }

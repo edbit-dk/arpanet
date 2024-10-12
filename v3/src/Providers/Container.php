@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Providers;
 
 use Exception;
 use ReflectionClass;
@@ -88,5 +88,12 @@ class Container
         }
 
         return $reflector->newInstanceArgs($dependencies);
+    }
+
+    public function __get($property) 
+    {
+        if($this->get($property)) {
+            return $this->get($property);
+        }
     }
 }

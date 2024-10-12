@@ -2,14 +2,14 @@
 
 namespace App\Controllers;
 
-use App\Services\Controller;
+use App\Providers\Controller;
 
 class DefaultController extends Controller
 {
 
-    public function index($app)
+    public function index()
     {
-        return view('app.php');
+        view('app.php');
     }
 
 }
