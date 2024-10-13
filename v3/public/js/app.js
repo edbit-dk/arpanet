@@ -75,7 +75,7 @@ function handleRedirect(response) {
         }, 2000);
     }
 
-    if (response.startsWith("Welcome")) {
+    if (response.startsWith("Security")) {
             setTimeout(function() {
 
                 if (!sessionStorage.getItem('uplink')) {

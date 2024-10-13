@@ -14,6 +14,10 @@ function app($name) {
     return $c->get($name);
 }
 
+function config($name) {
+    return app('config')[$name];
+}
+
 function request() {
     return app('request');
 }

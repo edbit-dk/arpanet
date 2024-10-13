@@ -14,10 +14,8 @@ $app->get('/version', [SystemController::class, 'version']);
 $app->get('/termlink', [SystemController::class, 'termlink']);
 $app->get('/welcome', [SystemController::class, 'welcome']);
 
-
 // Guest
 if(!auth()->check()) {
-
     // Auth
     $app->get('/register', [AuthController::class, 'register']);
     $app->get('/login', [AuthController::class, 'login']);

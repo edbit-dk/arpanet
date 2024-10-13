@@ -13,6 +13,7 @@ class AuthController extends Controller
     private $firstname = 'firstname';
     private $lastname = 'lastname';
     private $created = 'created_at';
+    private $access_code = 'access_code';
 
     private function validate($data) {
 
@@ -51,7 +52,7 @@ class AuthController extends Controller
 
         if($this->auth->attempt($email, $password)) {
             echo "Security Access Code Sequence Accepted.\n"; 
-            echo "Welcome to PoseidoNet!\n";         
+            return "Welcome to PoseidoNet!\n";         
         } else {
             return 'ERROR: Wrong credentials!';
         }
@@ -60,7 +61,6 @@ class AuthController extends Controller
 
     public function register() 
     {
-        
         $data = request()->get('data');
 
         if(empty($data)) {
@@ -68,6 +68,7 @@ class AuthController extends Controller
         }
 
         $user = $this->validate($data);
+
 
         if(!$user) {
             return 'ERROR: Missing parameters.';
@@ -86,7 +87,6 @@ class AuthController extends Controller
             $lastname = ucfirst(strtolower(wordlist($this->config['views']. '/lists/namelist.txt', rand(5, 12) , 1)[0]));
         }
 
-
         if (User::where($this->email, '=', $email)->exists()) {
             return 'ERROR: User taken!';
          }
@@ -100,6 +100,12 @@ class AuthController extends Controller
             $this->created => \Carbon\Carbon::now()
         ]);
 
+
+
+        if(empty($user_id)) {
+            return 'ERROR: Wrong credentials!';
+        }
+
         $username = 'PE-' . strtoupper(random_username($email_username, $user_id));
 
         $user = User::find($user_id);
@@ -110,7 +116,8 @@ class AuthController extends Controller
 
         $this->auth->attempt($username, $password);
 
-        return "Welcome {$username}, to PoseidoNET!\n";
+        echo "Security Access Code Accepted.\n";
+        return "Welcome to PoseidoNET!\n";
     }
 
     public function logout() {
