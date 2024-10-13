@@ -94,7 +94,7 @@ class AuthController extends Controller
         $user_id = User::insertGetId([
             $this->password => $password,
             $this->email => $email,
-            $this->access_code => session()->get('access_code'),
+            $this->access_code => session()->find('access_code'),
             $this->firstname => $firstname,
             $this->lastname => $lastname,
             $this->created => \Carbon\Carbon::now()
