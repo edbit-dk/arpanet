@@ -31,6 +31,6 @@ class View{
     public function render($view = '', Array $data = []) {
         extract($data);
 
-        return include $this->templates . $view;
+        include $this->templates . $view;
     }
 }

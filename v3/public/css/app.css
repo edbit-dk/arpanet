@@ -79,7 +79,7 @@ body, input {
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
   body{
-    font-size: 4rem;
+    font-size: 3.8rem;
   }
 }
 
