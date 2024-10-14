@@ -70,7 +70,7 @@ INSERT INTO `levels` (`id`, `rep`, `xp_req`, `xp_reward`, `skill_1`, `skill_2`) 
 
 CREATE TABLE `logs` (
   `id` bigint UNSIGNED NOT NULL,
-  `server_id` int NOT NULL,
+  `host_id` int NOT NULL,
   `info` text COLLATE utf8mb4_general_ci,
   `ip` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `code` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -80,16 +80,17 @@ CREATE TABLE `logs` (
 -- --------------------------------------------------------
 
 --
--- Struktur-dump for tabellen `servers`
+-- Struktur-dump for tabellen `hosts`
 --
 
-CREATE TABLE `servers` (
+CREATE TABLE `hosts` (
   `id` bigint UNSIGNED NOT NULL,
-  `admin_id` int NOT NULL DEFAULT '0',
-  `admin_pass` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `user_id` int NOT NULL DEFAULT '0',
+  `password` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `ip` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `status` varchar(255) COLLATE utf8mb4_general_ci DEFAULT 'online',
-  `location` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `location` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `nodes` json DEFAULT NULL,
   `level_id` int NOT NULL DEFAULT '0',
   `created_at` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL
@@ -98,13 +99,13 @@ CREATE TABLE `servers` (
 -- --------------------------------------------------------
 
 --
--- Struktur-dump for tabellen `server_user`
+-- Struktur-dump for tabellen `host_user`
 --
 
-CREATE TABLE `server_user` (
+CREATE TABLE `host_user` (
   `id` bigint UNSIGNED NOT NULL,
   `user_id` int NOT NULL,
-  `server_id` int NOT NULL
+  `host_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -115,9 +116,9 @@ CREATE TABLE `server_user` (
 
 CREATE TABLE `users` (
   `id` bigint UNSIGNED NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `access_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `firstname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `lastname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -156,16 +157,16 @@ ALTER TABLE `logs`
   ADD UNIQUE KEY `id` (`id`);
 
 --
--- Indeks for tabel `servers`
+-- Indeks for tabel `hosts`
 --
-ALTER TABLE `servers`
+ALTER TABLE `hosts`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id` (`id`);
 
 --
--- Indeks for tabel `server_user`
+-- Indeks for tabel `host_user`
 --
-ALTER TABLE `server_user`
+ALTER TABLE `host_user`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id` (`id`);
 
@@ -201,15 +202,15 @@ ALTER TABLE `logs`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- Tilføj AUTO_INCREMENT i tabel `servers`
+-- Tilføj AUTO_INCREMENT i tabel `hosts`
 --
-ALTER TABLE `servers`
+ALTER TABLE `hosts`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- Tilføj AUTO_INCREMENT i tabel `server_user`
+-- Tilføj AUTO_INCREMENT i tabel `host_user`
 --
-ALTER TABLE `server_user`
+ALTER TABLE `host_user`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --

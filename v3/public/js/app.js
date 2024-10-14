@@ -82,12 +82,12 @@ function handleRedirect(response) {
                     sessionStorage.setItem('uplink', 'true');
                 }
 
-                loadText("Connecting...");
+                loadText("Welcome to PoseidoNet!");
 
                 setTimeout(function() {
                     clearTerminal();
                     sendCommand('welcome', '');
-                }, 2000);
+                }, 2500);
 
             }, 2000);
     }

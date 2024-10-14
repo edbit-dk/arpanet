@@ -26,8 +26,8 @@ class User extends Model
         'last_login'
     ];
 
-    public function servers(): BelongsToMany
+    public function hosts(): BelongsToMany
     {
-        return $this->belongsToMany(Server::class, 'server_user');
+        return $this->belongsToMany(Server::class, 'host_user');
     }
 }

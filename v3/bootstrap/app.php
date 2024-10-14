@@ -27,12 +27,12 @@ $c->set('db', function($capsule) {
     return $capsule;
 });
 
-$c->set('auth', function() {
+$c->set('user', function() {
     return new App\Services\UserService();
 });
 
-$c->set('mainframe', function() {
-    return new App\Services\ServerService();
+$c->set('host', function() {
+    return new App\Services\HostService();
 });
 
 $app = new App\Providers\Router($c->request, $c);

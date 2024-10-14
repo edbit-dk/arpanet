@@ -2,17 +2,17 @@
 
 namespace App\Services;
 
-use App\Models\Server;
+use App\Models\Host;
 use App\Models\User;
 
-class ServerService {
+class HostService {
 
     private $remote_server = 'remote_server';
     private $local_server = 'local_server';
     private $max_attempts = 4; // Maximum number of allowed login attempts
 
     public function server() {
-            return Server::find($_SESSION[$this->remote_server])->first();
+            return Host::find($_SESSION[$this->remote_server])->first();
     }
 
     public function check() {
@@ -29,7 +29,7 @@ class ServerService {
 
     public function connect($data)
     {
-        $server = Server::where('id', $data)
+        $server = Host::where('id', $data)
         ->orWhere('ip', $data)
         ->orWhere('name', $data)
         ->where('status', 1)
@@ -70,10 +70,10 @@ class ServerService {
         $user = User::where('username', $username)->first();
 
         if($user) {
-            $server = Server::where('id', $server_id)
-            ->where('admin_id', $user->id)
-            ->orWhere('admin_pass', $password)
-            ->orWhere('debug_pass', $debug_pass)
+            $server = Host::where('id', $server_id)
+            ->where('user_id', $user->id)
+            ->orWhere('password', $password)
+            ->orWhere('password', $debug_pass)
             ->first();
         }
 
@@ -81,55 +81,55 @@ class ServerService {
         if (!$server) {
             return false;
         } else {
-            $_SESSION[$this->remote_server] = $server->id;
+            session()->set($this->remote_server, $server->id);
             return true;
         }
     }
 
     public function debug($pass = false) 
     {
-        if(!isset($_SESSION['server_debug_pass'])) {
-            return $_SESSION['server_debug_pass'] = false;
+        if(!isset($_SESSION['debug_pass'])) {
+            return $_SESSION['debug_pass'] = false;
         }
 
         if($pass) {
-            return $_SESSION['server_debug_pass'] = $pass;
+            return $_SESSION['debug_pass'] = $pass;
         }
 
-        return $_SESSION['server_debug_pass'];
+        return $_SESSION['debug_pass'];
     }
 
     public function attempts($attempt = false)
     {
-        if (!isset($_SESSION['server_logon_attempts'])) {
-            $_SESSION['server_logon_attempts'] = $this->max_attempts;
+        if (!isset($_SESSION['logon_attempts'])) {
+            $_SESSION['logon_attempts'] = $this->max_attempts;
         }
 
         if($attempt) {
-            $_SESSION['server_logon_attempts']--;
+            $_SESSION['logon_attempts']--;
         }
 
-        return $_SESSION['server_logon_attempts'];
+        return $_SESSION['logon_attempts'];
     }
 
     public function reset()
     {
-        unset($_SESSION['server_logon_attempts']);
-        unset($_SESSION['server_user_blocked']);
+        unset($_SESSION['logon_attempts']);
+        unset($_SESSION['user_blocked']);
     }
 
     public function blocked($block = false)
     {
-        if (!isset($_SESSION['server_user_blocked'])) {
-            $_SESSION['server_user_blocked'] = false;
+        if (!isset($_SESSION['user_blocked'])) {
+            $_SESSION['user_blocked'] = false;
         }
 
-        if ($_SESSION['server_user_blocked'] === true) {
+        if ($_SESSION['user_blocked'] === true) {
             return "ERROR: Terminal Locked. Please contact an administrator!";
         }
 
         if($block) {
-            $_SESSION['server_user_blocked'] = true;
+            $_SESSION['user_blocked'] = true;
         }
     }
 

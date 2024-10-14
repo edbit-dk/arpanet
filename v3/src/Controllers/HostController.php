@@ -4,20 +4,22 @@ namespace App\Controllers;
 
 use App\Providers\Controller;
 
-class ServerController extends Controller
+class HostController extends Controller
 {
     public function connect() 
     {
         $data = strtoupper(request()->get('data'));
 
-        $server = $this->mainframe->connect($data);
+        $server = $this->host->connect($data);
 
         sleep(1);
         
         if(!$server) {
-            return 'ERROR: ACCESS DENIED.';
+            echo 'ERROR: ACCESS DENIED.';
+            exit;
         } else {
-            return "Contacting Server...\n";
+            echo "Contacting host...\n";
+            exit;
         }
 
     }
@@ -26,19 +28,20 @@ class ServerController extends Controller
 
         $data = request()->get('data');
 
-        $this->mainframe->debug();
+        $this->host->debug();
     
         $params = explode(' ', $data);
     
         // Initialize login attempts if not set
-        $this->mainframe->attempts();
+        $this->host->attempts();
     
         // Check if the user is already blocked
-        $this->mainframe->blocked();
+        $this->host->blocked();
     
         // If no parameters provided, prompt for username
         if (empty($params)) {
-            return "ERROR: Wrong Username.";
+            echo "ERROR: Wrong Username.";
+            exit;
         } else {
             $username = $params[0];
         }
@@ -49,17 +52,18 @@ class ServerController extends Controller
             $password = strtolower($params[1]);
     
             // Validate password
-            if ($this->mainframe->attempt($username, $password)) {
+            if ($this->host->attempt($username, $password)) {
     
                 // Reset login attempts on successful login
-                $this->mainframe->reset();
+                $this->host->reset();
     
-                return "Password Accepted.\nPlease wait while system is accessed...\n+0025 XP ";
+                echo "Password Accepted.\nPlease wait while system is accessed...\n+0025 XP ";
+                exit;
     
             } else {
     
                 // Calculate remaining attempts
-                $attempts_left = $this->mainframe->attempts(true);
+                $attempts_left = $this->host->attempts(true);
     
                 if ($attempts_left === 1) {
                     echo "WARNING: Lockout Imminent !!!\n";
@@ -67,18 +71,27 @@ class ServerController extends Controller
     
                 // Block the user after 4 failed attempts
                 if ($attempts_left === 0) {
-                    return $this->mainframe->block(true);
+                    $this->host->block(true);
+                    echo "TERMINAL LOCKED.\n";
+                    echo "Please contact an administrator.";
+                    exit;
                 }
     
-                return "ERROR: Wrong Username or Password.\nAttempts Remaining: {$attempts_left}";
+                echo "ERROR: Wrong Username or Password.\nAttempts Remaining: {$attempts_left}";
+                exit;
             }
         }
     }
 
     public function logoff() {
 
-        $this->mainframe->logout();
+        $this->host->logout();
+        unset($_SESSION['debug_attempts']);
+        unset($_SESSION['user_blocked']);
+        unset($_SESSION['dump']);
+        unset($_SESSION['root']);
+        unset($_SESSION['maint']);
     
-        return "DISCONNECTING FROM SERVER...\n";
+        echo "Disconnecting...\n";
     }
 }

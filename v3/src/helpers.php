@@ -27,7 +27,7 @@ function session() {
 }
 
 function auth() {
-    return app('auth');
+    return app('user');
 }
 
 function db() {

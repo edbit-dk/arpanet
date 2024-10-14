@@ -11,10 +11,10 @@ class CmdController extends Controller
     {
         $command = strtoupper(request()->get('data'));
 
-        if(!$this->auth->check()) {
-            $help = include($this->settings['path'] . '/app/storage/array/auth.php');
+        if(!auth()->check()) {
+            $help = require config('path') . '/storage/array/auth.php';
         } else {
-            $help = include($this->settings['path'] . '/app/storage/array/guest.php');
+            $help = require config('path') . '/storage/array/guest.php';
         }
     
 
@@ -26,14 +26,14 @@ class CmdController extends Controller
         foreach ($help as $cmd => $text) {
             $output .= " $cmd $text\n";
         }
-        return $output;
+        echo $output;
     }
 
     public function user() 
     {
-        $user = $this->auth->user();
+        $user = $this->user->auth();
 
-        echo "EMPLOYEE-ID: {$user->username} \n";
+        echo "USERNAME: {$user->username} \n";
         echo "FIRSTNAME: {$user->firstname} \n";
         echo "LASTNAME: {$user->lastname} \n";
         echo "LEVEL: {$user->level_id} \n";
@@ -41,9 +41,9 @@ class CmdController extends Controller
         echo "REP: {$user->rep} \n";
     }
 
-    public function servers() 
+    public function hosts() 
     {
-        $servers = $this->auth->user()->servers;
+        $servers = $this->user->auth()->servers;
 
         foreach ($servers as $server) {
             echo $server->name . "\n";

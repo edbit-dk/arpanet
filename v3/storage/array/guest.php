@@ -1,7 +1,7 @@
 <?php
 return [
     'USER' => '',
-    'CONNECT' => '<SERVER ID>',
+    'CONNECT' => '<HOST ID>',
     'LOGON' => '<USERNAME>',
     'LOGOFF' => '',
     'VERSION' => '',

@@ -20,11 +20,11 @@ class SystemController extends Controller
     public function welcome() 
     {
 
-        if($this->mainframe->remote()) {
+        if($this->host->remote()) {
             return $this->server();
         }
 
-        if($this->auth->check()) {
+        if($this->user->check()) {
             return $this->termlink();
         }
 
@@ -36,21 +36,21 @@ class SystemController extends Controller
         $termlink = view('robco/termlink.txt');
         $server_id = false;
 
-        if($this->mainframe->check()) {
+        if($this->host->check()) {
 
-            if($this->mainframe->local()) {
-                $server_id = $this->mainframe->local();
+            if($this->host->local()) {
+                $server_id = $this->host->local();
             }
 
-            if($this->mainframe->remote()) {
-                $server_id = $this->mainframe->remote();
+            if($this->host->remote()) {
+                $server_id = $this->host->remote();
             }
             
         }
 
 
         if(!$server_id) {
-        echo $termlink;
+            echo $termlink;
         } else {
         echo <<< EOT
         $termlink
@@ -69,13 +69,13 @@ class SystemController extends Controller
         $termlink =  view('robco/auth.txt');
         $server_id = false;
 
-        $server_name = $this->mainframe->server()->name;
+        $server_name = $this->host->server()->name;
 
 
-        if($this->mainframe->check()) {
+        if($this->host->check()) {
 
-            if($this->mainframe->remote()) {
-                $server_id = $this->mainframe->remote();
+            if($this->host->remote()) {
+                $server_id = $this->host->remote();
             }
             
         }
@@ -121,10 +121,10 @@ class SystemController extends Controller
         >>> {$access_code} <<<
         ***********************************
 
-        !!! KEEP ACCESS CODE AS BACKUP !!!
+        !!! BACKUP ACCESS CODE !!!
         
-        > REGISTER <EMAIL> <PASSWORD> 
-        > LOGIN <USERNAME> <PASSWORD> 
+        > NEWUSER <USERNAME> <ACCESS CODE> 
+        > LOGIN <USERNAME> <ACCESS CODE>
         _________________________________________
         EOT;
     

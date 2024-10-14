@@ -4,7 +4,7 @@ return [
     'LOGOUT' => '',
     'LOGOFF' => '',
     'FIND' => '',
-    'CONNECT' => '<SERVER ID>',
+    'CONNECT' => '<HOST ID>',
     'DIR' => '',
     'CD' => '[DIR]',
     'MORE' => '<FILENAME>',

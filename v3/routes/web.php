@@ -2,9 +2,10 @@
 
 use App\Controllers\DefaultController;
 use App\Controllers\SystemController;
-use App\Controllers\ServerController;
+use App\Controllers\HostController;
 use App\Controllers\AuthController;
 use App\Controllers\CmdController;
+use App\Controllers\DebugController;
 
 $app->get('/', [DefaultController::class, 'index']);
 
@@ -17,7 +18,7 @@ $app->get('/welcome', [SystemController::class, 'welcome']);
 // Guest
 if(!auth()->check()) {
     // Auth
-    $app->get('/register', [AuthController::class, 'register']);
+    $app->get('/newuser', [AuthController::class, 'newuser']);
     $app->get('/login', [AuthController::class, 'login']);
 
     // System
@@ -33,10 +34,18 @@ if(auth()->check()) {
     $app->get('/help', [CmdController::class, 'help']);
 
     // Auth
+    $app->get('/password', [AuthController::class, 'password']);
+    $app->get('/user', [AuthController::class, 'user']);
     $app->get('/logout', [AuthController::class, 'logout']);
 
+    // Debug
+    $app->get('/dump', [DebugController::class, 'dump']);
+    $app->get('/set', [DebugController::class, 'set']);
+    $app->get('/run', [DebugController::class, 'run']);
+
     // Server
-    $app->get('/connect', [ServerController::class, 'connect']);
-    $app->get('/logon', [ServerController::class, 'logon']);
-    $app->get('/logoff', [ServerController::class, 'logoff']);
+    $app->get('/connect', [HostController::class, 'connect']);
+    $app->get('/telnet', [HostController::class, 'connect']);
+    $app->get('/logon', [HostController::class, 'logon']);
+    $app->get('/logoff', [HostController::class, 'logoff']);
 }

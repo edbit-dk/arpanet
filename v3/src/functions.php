@@ -140,7 +140,7 @@ function replaceWithDots($input) {
 
 // Function to generate a random string of characters
 function rand_str($length = 7) {
-    $special_chars = SPECIAL_CHARS;
+    $special_chars = "!?,;.'[]={}@#$%^*()-_\/|";
     $randomString = '';
     for ($i = 0; $i < $length; $i++) {
         $randomString .= $special_chars[rand(0, strlen($special_chars) - 1)];

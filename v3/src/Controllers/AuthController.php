@@ -8,7 +8,7 @@ use App\Providers\Controller;
 class AuthController extends Controller
 {
 
-    private $email = 'email';
+    private $username = 'username';
     private $password = 'password';
     private $firstname = 'firstname';
     private $lastname = 'lastname';
@@ -21,8 +21,8 @@ class AuthController extends Controller
 
         if (count($input) >= 2) {
 
-            $user[$this->email] = $input[0];
-            $user[$this->password] = $input[1];
+            $user[$this->username] = $input[0];
+            $user[$this->access_code] = $input[1];
 
         } else {
             return false;
@@ -43,18 +43,18 @@ class AuthController extends Controller
         $user = $this->validate($data);
 
         if(!$user) {
-            echo 'ERROR: Missing parameters.';
+            echo 'ERROR: Input errors. Please try again!';
             exit;
         } else {
-            $email = $user[$this->email];
-            $password = $user[$this->password];
+            $access_code = $user[$this->access_code];
+            $username = $user[$this->username];
         }
 
         sleep(1);
 
-        if($this->auth->attempt($email, $password)) {
+        if($this->user->login($username, $access_code)) {
             echo "Security Access Code Sequence Accepted.\n"; 
-            echo "Welcome to PoseidoNet!\n";
+            echo "Trying to connect...\n";
             exit;         
         } else {
             echo 'ERROR: Wrong credentials!';
@@ -63,7 +63,41 @@ class AuthController extends Controller
 
     }
 
-    public function register() 
+    public function user() 
+    {
+        $user = auth()->user();
+
+        echo "ACCESS CODE: {$user->access_code} \n";
+        echo "SIGNUP: {$user->created_at} \n";
+        echo "USERNAME: {$user->username} \n";
+        echo "PASSWORD: {$user->password} \n";
+        echo "FIRSTNAME: {$user->firstname} \n";
+        echo "LASTNAME: {$user->lastname} \n";
+        echo "LEVEL: {$user->level_id} \n";
+        echo "XP: {$user->xp} \n";
+        echo "REP: {$user->rep} \n";
+    }
+
+    public function password()
+    {
+        $data = request()->get('data');
+
+        if(empty($data)) {
+            echo 'ERROR: Missing parameters.';
+            exit;
+        }
+
+        $input = explode(' ', trim($data))[0];
+
+        auth()->user()->update([
+            'password' => $input
+        ]);
+
+        echo 'Password updated!';
+        exit;
+    }
+
+    public function newuser() 
     {
         $data = request()->get('data');
 
@@ -75,52 +109,33 @@ class AuthController extends Controller
         $user = $this->validate($data);
 
         if(!$user) {
-            echo 'ERROR: Missing parameters.';
+            echo 'ERROR: Input errors. Please try again!';
             exit;
         } else {
-            $password = $user[$this->password];
-            $email = $user[$this->email];
-
-            if(filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $email_username = explode('@', $email)[0];
-            } else {
-                $email = '';
-                $email_username = $email;
-            }
+            $access_code = $user[$this->access_code];
+            $username = $user[$this->username];
 
             $firstname = ucfirst(strtolower(wordlist($this->config['views'] . '/lists/namelist.txt', rand(5, 12) , 1)[0]));
             $lastname = ucfirst(strtolower(wordlist($this->config['views']. '/lists/namelist.txt', rand(5, 12) , 1)[0]));
         }
 
-        if (User::where($this->email, '=', $email)->exists()) {
-            echo 'ERROR: User taken!';
+        if (User::where($this->username, '=', $username)->exists()) {
+            echo 'ERROR: Username taken!';
             exit;
          }
 
-        $user_id = User::insertGetId([
-            $this->password => $password,
-            $this->email => $email,
+        User::create([
+            $this->username => $username,
             $this->access_code => session()->find('access_code'),
             $this->firstname => $firstname,
             $this->lastname => $lastname,
             $this->created => \Carbon\Carbon::now()
         ]);
 
-        if(empty($user_id)) {
-            echo 'ERROR: Wrong credentials!';
-            exit;
-        }
-
-        $username = 'PE-' . strtoupper(random_username($email_username, $user_id));
-
-        $user = User::find($user_id);
-        $user->username = $username;
-        $user->save();
-
         sleep(1);
 
-        $this->auth->attempt($username, $password);
-
+        $this->user->login($username, $access_code);
+        
         echo "Security Access Code Accepted.\n";
         echo "Welcome to PoseidoNET!\n";
         exit;

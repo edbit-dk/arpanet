@@ -14,7 +14,7 @@ class UserService {
         return isset($_SESSION['user']);
     }
 
-    public function attempt($emailOrUsername, $password) {
+    public function login($emailOrUsername, $password) {
 
         $user = User::where('email', $emailOrUsername)
                     ->orWhere('username', $emailOrUsername)
