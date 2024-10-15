@@ -1,1 +1,1 @@
->>> ERROR: Improper Terminal Request! <<<
+ERROR: IMPROPER REQUEST

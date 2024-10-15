@@ -11,20 +11,31 @@ class HostService {
     private $guest = 'guest';
     private $max_attempts = 4; // Maximum number of allowed login attempts
 
-    public function server() {
-            return Host::find($_SESSION[$this->host])->first();
-    }
-
-    public function check() {
-        if($this->guest() || $this->auth()) {
-            return true;
-        } else {
-            return false;
+    public function server() 
+    {
+        if($this->guest()) {
+            return Host::find($_SESSION[$this->guest]);
         }
+
+        if($this->auth()) {
+            return Host::find($_SESSION[$this->host]);
+        }
+
     }
 
-    public function admin() {
+    public function admin() 
+    {
         return $this->server()->username;
+    }
+
+    public function auth()
+    {
+        return isset($_SESSION[$this->host]);
+    }
+
+    public function guest()
+    {
+        return isset($_SESSION[$this->guest]);
     }
 
     public function connect($data)
@@ -32,7 +43,7 @@ class HostService {
         $server = Host::where('id', $data)
         ->orWhere('ip', $data)
         ->orWhere('name', $data)
-        ->where('status', 1)
+        ->where('active', 1)
         ->first();
 
         if (!$server) {
@@ -41,30 +52,13 @@ class HostService {
            $_SESSION[$this->guest] = $server->id;
            return true;
         }
-    }
 
-    public function guest()
-    {
-        if(isset($_SESSION[$this->guest])) {
-            return $_SESSION[$this->guest];
-        }
-
-        return false;
-    }
-
-    public function auth()
-    {
-        if(isset($_SESSION[$this->host])) {
-            return $_SESSION[$this->host];
-        }
-
-        return false;
     }
 
     public function logon($username, $password) {
 
         $server = false;
-        $server_id = $this->guest();
+        $server_id = $this->server()->id;
 
         $user = auth()->login($username, $password);
 
@@ -140,6 +134,7 @@ class HostService {
 
     public function logout() {
         unset($_SESSION[$this->host]);
+        unset($_SESSION[$this->guest]);
     }
 
 }

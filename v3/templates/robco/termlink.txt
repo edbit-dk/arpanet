@@ -1,1 +1,4 @@
 WELCOME TO ROBCO INDUSTRIES (TM) TERMLINK
+Connected to PoseidoNET
+
+[Type HELP for command list]

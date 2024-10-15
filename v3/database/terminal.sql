@@ -85,15 +85,16 @@ CREATE TABLE `logs` (
 
 CREATE TABLE `hosts` (
   `id` bigint UNSIGNED NOT NULL,
-  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT 'admin',
+  `password` varchar(255) COLLATE utf8mb4_general_ci DEFAULT 'robco',
   `name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `ip` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `status` varchar(255) COLLATE utf8mb4_general_ci DEFAULT 'online',
+  `active` tinyint(1) DEFAULT '1',
   `location` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `nodes` json DEFAULT NULL,
   `level_id` int NOT NULL DEFAULT '0',
-  `created_at` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL
+  `created_at` datetime DEFAULT NULL
+  `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------

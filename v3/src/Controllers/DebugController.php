@@ -17,7 +17,7 @@ class DebugController extends Controller
     
         if (!isset($_SESSION['debug_pass'])) {
     
-            $_SESSION['word'] = rand(2, 13);
+            $_SESSION['word'] = rand(2, 15);
             $_SESSION['debug_pass'] = wordlist(config('views') . '/lists/wordlist.txt', $_SESSION['word'] , 1)[0];
         } 
         
@@ -54,7 +54,7 @@ class DebugController extends Controller
     
             if ($data != $admin_pass) {
                 $match = count_match_chars($data, $admin_pass);
-                $_SESSION['dump'] = str_replace($data, replaceWithDots($data), $_SESSION['dump']);
+                $_SESSION['dump'] = str_replace($data, dot_replacer($data), $_SESSION['dump']);
     
                 if(preg_match('/\([^()]*\)|\{[^{}]*\}|\[[^\[\]]*\]|<[^<>]*>/', $data)) {
                     echo "Dud Removed.\n";
@@ -104,8 +104,7 @@ class DebugController extends Controller
     
                 echo "EXCACT MATCH!\n";
                 echo "+0050 XP \n";
-                echo "USERNAME: " . strtoupper(auth()->user()->username) . "\n";
-                echo "PASSWORD: {$admin_pass}\n";
+                echo "Please wait while security is reset...".
             }
     
         }

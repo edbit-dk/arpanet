@@ -4,13 +4,16 @@ namespace App\Controllers;
 
 use App\Providers\Controller;
 
+use App\Models\Host;
+use App\Models\Level;
+
 class HostController extends Controller
 {
     public function connect() 
     {
         $data = strtoupper(request()->get('data'));
 
-        $server = $this->host->connect($data);
+        $server = host()->connect($data);
 
         sleep(1);
         
@@ -18,10 +21,37 @@ class HostController extends Controller
             echo 'ERROR: ACCESS DENIED.';
             exit;
         } else {
-            echo "Contacting host...\n";
+            echo "Contacting Host...\n";
             exit;
         }
 
+    }
+
+    public function create() 
+    {
+        $data = request()->get('data');
+
+        $input = explode(' ', trim($data));
+
+        $name = $input[0];
+
+        $level = Level::inRandomOrder()->first();
+
+        $pass_length = rand($level->skill_1, $level->skill_2);
+        
+        $admin_pass = wordlist(config('views') . '/lists/wordlist.txt', $pass_length , 1)[0];
+
+        $location = wordlist(config('views') . '/lists/statelist.txt', $pass_length , 1)[0];
+        
+        $host = Host::create([
+            'name' => $name,
+            'password' =>  strtolower($admin_pass),
+            'level_id' => $level->id,
+            'location' => $location,
+            'ip' => random_ip()
+        ]);
+
+        echo 'OK';
     }
 
     public function logon() {
@@ -40,7 +70,7 @@ class HostController extends Controller
     
         // If no parameters provided, prompt for username
         if (empty($params)) {
-            echo "ERROR: Wrong Username.";
+            echo "ERROR: WRONG USERNAME";
             exit;
         } else {
             $username = $params[0];
@@ -56,7 +86,10 @@ class HostController extends Controller
     
                 // Reset login attempts on successful login
                 $this->host->reset();
-    
+                auth()->user()->hosts()->attach(host()->guest());
+
+                sleep(1);
+                
                 echo "Password Accepted.\nPlease wait while system is accessed...\n+0025 XP ";
                 exit;
     
@@ -66,7 +99,7 @@ class HostController extends Controller
                 $attempts_left = $this->host->attempts(true);
     
                 if ($attempts_left === 1) {
-                    echo "WARNING: Lockout Imminent !!!\n";
+                    echo "WARNING: LOCKOUT IMMINENT !!!\n";
                 }
     
                 // Block the user after 4 failed attempts
@@ -77,7 +110,7 @@ class HostController extends Controller
                     exit;
                 }
     
-                echo "ERROR: Wrong Username or Password.\nAttempts Remaining: {$attempts_left}";
+                echo "ERROR: WRONG USERNAME.\nAttempts Remaining: {$attempts_left}";
                 exit;
             }
         }

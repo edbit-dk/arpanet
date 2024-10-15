@@ -1,6 +1,4 @@
-##########################################
-  WELCOME TO POSEIDON ENERGY CORPORATION
-      -Begin your Odyssey with us-
+WELCOME TO ROBCO INDUSTRIES (TM) TERMLINK
 
 This terminal allows access to PoseidoNET, 
 the US transcontinental network operated 
@@ -8,4 +6,4 @@ by Poseidon Energy, stretching from the
 US Pacific to the US Atlantic.
 
 Use UPLINK to access central PoseidoNet.
-##########################################
+_________________________________________

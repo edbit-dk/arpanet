@@ -10,6 +10,8 @@ use App\Controllers\DebugController;
 $app->get('/', [DefaultController::class, 'index']);
 $app->get('/test', [DefaultController::class, 'test']);
 
+$app->get('/host-create', [HostController::class, 'create']);
+
 
 // System
 $app->get('/version', [SystemController::class, 'version']);
@@ -44,9 +46,14 @@ if(auth()->check()) {
     $app->get('/set', [DebugController::class, 'set']);
     $app->get('/run', [DebugController::class, 'run']);
 
-    // Server
+    // Host
     $app->get('/connect', [HostController::class, 'connect']);
     $app->get('/telnet', [HostController::class, 'connect']);
     $app->get('/logon', [HostController::class, 'logon']);
     $app->get('/logoff', [HostController::class, 'logoff']);
+    $app->get('/exit', [HostController::class, 'logoff']);
+
+
+    // CMD
+    $app->get('/scan', [CmdController::class, 'scan']);
 }

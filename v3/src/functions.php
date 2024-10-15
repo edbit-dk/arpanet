@@ -112,6 +112,9 @@ function wordlist($file, $word_length = 7, $max_count = 12) {
     
     do {
         $index = rand(0,count($words));
+        if(!array_key_exists($index ,$words)) {
+            return wordlist($file, $word_length, $max_count);
+        }
         $wordlen = strlen($words[$index]);
         if ($wordlen == $length) {
             $retwords[] = strtoupper($words[$index]);
@@ -123,11 +126,14 @@ function wordlist($file, $word_length = 7, $max_count = 12) {
     } while ($i < $count);
     
     //$retwords = substr($retwords,0,strlen($retwords)-1);
+    if(!is_array($retwords)) {
+        $retwords[] = $retwords;
+    }
     return $retwords;
 }
 
 
-function replaceWithDots($input) {
+function dot_replacer($input) {
     // Get the length of the input string
     $length = strlen($input);
     
@@ -199,4 +205,9 @@ function format_dump($memoryDump) {
     }
 
     return $formattedDump;
+}
+
+
+function random_ip() {
+    return long2ip(rand(0, 4294967295));
 }

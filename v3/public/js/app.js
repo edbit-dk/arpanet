@@ -75,6 +75,16 @@ function handleRedirect(response) {
         }, 2000);
     }
 
+    if (response.startsWith("EXCACT")) {
+        setTimeout(function() {
+            setTimeout(function() {
+                clearTerminal();
+                sendCommand('welcome', '');
+            }, 2500);
+
+        }, 2000);
+    }
+
     if (response.startsWith("Security")) {
             setTimeout(function() {
 
@@ -107,7 +117,7 @@ function handleUserInput() {
     if (input === '') return; // Ignore empty input
 
     // Append the command to the terminal and add it to history
-    appendCommand(input);
+    loadText(input);
     commandHistory.push(input);
     historyIndex = commandHistory.length;
 
@@ -122,11 +132,11 @@ function handleUserInput() {
         clearTerminal(); // Clear the terminal
     } else if (command === 'logon') {
         handleLogon(args); // Handle logon command
-    } else if (['logout', 'logoff', 'reboot', 'dc', 'restart', 'start', 'autoexec '].includes(command)) {
+    } else if (['logout', 'logoff', 'reboot', 'dc', 'restart', 'start', 'autoexec', 'exit'].includes(command)) {
         sendCommand(command, args); // Send the command to the server
         setTimeout(function() {
             location.reload();
-        }, 1500);
+        }, 2500);
     } else if (command === 'color') {
         setTheme(args); // Handle color setting
     } else {
@@ -143,25 +153,25 @@ function setTheme(color) {
 // Function to handle creating a new user
 function handleNewUser(username) {
     if (!username) {
-        appendCommand("ERROR: NEW_USER [USERNAME]");
+        loadText("ERROR: NEW_USER [USERNAME]");
         return;
     }
     if (isPasswordPrompt) return;
     isPasswordPrompt = true;
     $('#command-input').attr('type', 'password');
     usernameForNewUser = username;
-    appendCommand("ENTER PASSWORD NOW:");
+    loadText("ENTER PASSWORD NOW:");
 }
 
 // Function to handle the LOGON command
 function handleLogon(username) {
     if (!sessionStorage.getItem('uplink')) {
-        appendCommand("ERROR: Security Access Code Required!");
+        loadText("ERROR: Security Access Code Required!");
         return;
     }
 
     if (!username) {
-        appendCommand("ERROR: Wrong Username.");
+        loadText("ERROR: Wrong Username.");
         isPasswordPrompt = false;
         $('#command-input').attr('type', 'text');
         return;
@@ -170,7 +180,7 @@ function handleLogon(username) {
     isPasswordPrompt = true;
     $('#command-input').attr('type', 'password');
     usernameForLogon = username;
-    appendCommand("ENTER PASSWORD:");
+    loadText("ENTER PASSWORD:");
 }
 
 // Function to handle password prompt
@@ -191,12 +201,11 @@ function handlePasswordPrompt() {
 // Function to handle password prompt response
 function handlePasswordPromptResponse(response) {
     if (response.startsWith("ERROR") || response.startsWith("WARNING")) {
-        appendCommand(response);
+        loadText(response);
         isPasswordPrompt = false;
         $('#command-input').attr('type', 'text');
     } else if (response.startsWith("Password")) {
-        appendCommand("\n");
-        appendCommand(response);
+        loadText(response);
         setTimeout(function() {
             location.reload();
         }, 2500);

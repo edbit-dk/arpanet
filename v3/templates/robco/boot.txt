@@ -1,4 +1,4 @@
------------------------------------
+
 Initializing RobCo Industries(TM) 
 MF Boot Agent v2.3.0
 RETROS BIOS
@@ -8,4 +8,4 @@ Uppermem: 64 KB
 
 RobCo Unified Operating System v.85
 Copyright 2075-2077 RobCo Ind.
------------------------------------
+

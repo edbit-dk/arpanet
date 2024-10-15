@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Providers\Controller;
 
+use App\Models\Host;
+
 class CmdController extends Controller
 {
 
@@ -43,10 +45,33 @@ class CmdController extends Controller
 
     public function hosts() 
     {
-        $servers = $this->user->auth()->servers;
+        $servers = auth()->hosts()->get();
 
         foreach ($servers as $server) {
-            echo $server->name . "\n";
+
+            $name = $server->name;
+            $ip = $server->ip;
+
+            echo "[$name ($ip)]\n";
         }
+    }
+
+    public function scan() 
+    {
+        if(host()->auth()) {
+            $nodes = host()->server()->nodes()->get();
+            dd($nodes);
+        }
+
+        $servers  = Host::inRandomOrder()->limit(5)->get();
+
+        foreach ($servers as $server) {
+
+            $name = $server->name;
+            $ip = $server->ip;
+
+            echo "[$name ($ip)]\n";
+        }
+        
     }
 }

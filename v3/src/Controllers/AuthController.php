@@ -57,7 +57,7 @@ class AuthController extends Controller
             echo "Trying to connect...\n";
             exit;         
         } else {
-            echo 'ERROR: Wrong credentials!';
+            echo 'ERROR: WRONG USERNAME';
             exit;
         }
 
@@ -83,7 +83,7 @@ class AuthController extends Controller
         $data = request()->get('data');
 
         if(empty($data)) {
-            echo 'ERROR: Missing parameters.';
+            echo 'ERROR: MISSING INPUT';
             exit;
         }
 
@@ -126,7 +126,7 @@ class AuthController extends Controller
 
         User::create([
             $this->username => $username,
-            $this->access_code => session()->find('access_code'),
+            $this->access_code => session()->get('access_code'),
             $this->firstname => $firstname,
             $this->lastname => $lastname,
             $this->created => \Carbon\Carbon::now()
@@ -137,7 +137,6 @@ class AuthController extends Controller
         $this->user->login($username, $access_code);
         
         echo "Security Access Code Accepted.\n";
-        echo "Welcome to PoseidoNET!\n";
         exit;
     }
 

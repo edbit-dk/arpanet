@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Providers\Controller;
 
+use App\Models\Host;
+
 class SystemController extends Controller
 {
 
@@ -20,44 +22,38 @@ class SystemController extends Controller
     public function welcome() 
     {
 
-        if($this->host->auth()) {
+        if(host()->auth()) {
             return $this->server();
         }
 
-        if($this->user->check()) {
+        if(auth()->check()) {
             return $this->termlink();
         }
 
-        return view('robco/welcome.txt');
+        $welcome = view('robco/welcome.txt');
+
+        echo $welcome;
     }
 
     public function termlink() 
     {
-        $termlink = view('robco/auth.txt');
+        $termlink = view('robco/termlink.txt');
         $server_id = false;
 
-        if($this->host->check()) {
-
-            if($this->host->guest()) {
-                $server_id = $this->host->guest();
-            }
-
-            if($this->host->auth()) {
-                $server_id = $this->host->auth();
-            }
+        if(host()->guest()) {
             
-        }
+        $server_id = host()->server()->id;
+        $server_ip = host()->server()->ip;
 
-
-        if(!$server_id) {
-            echo $termlink;
-        } else {
         echo <<< EOT
         $termlink
-                     -Server $server_id-
+               -Server $server_id ($server_ip)-
 
         Password Required
         EOT;
+
+        } else {
+        echo $termlink;
         }
 
         return;
@@ -66,33 +62,20 @@ class SystemController extends Controller
 
     public function server() 
     {
-        $termlink =  view('robco/termlink.txt');
-        $server_id = false;
+        $termlink =  view('robco/auth.txt');
 
-        $server_name = $this->host->server()->name;
-        $server_location = $this->host->server()->location;
+        $server_name = host()->server()->name;
+        $server_location = host()->server()->location;
 
         $username = auth()->user()->username;
 
-        if($this->host->check()) {
-
-            if($this->host->auth()) {
-                $server_id = $this->host->auth();
-            }
-            
-        }
-
-        if(!$server_id) {
-        echo $termlink;
-        } else {
         echo <<< EOT
         $termlink
-        $server_name - $server_location
+                 $server_name ($server_location)
 
         Welcome, $username 
         ___________________________________________
         EOT;
-        }
 
         return;
 
