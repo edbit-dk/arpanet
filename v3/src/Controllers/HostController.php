@@ -52,7 +52,7 @@ class HostController extends Controller
             $password = strtolower($params[1]);
     
             // Validate password
-            if ($this->host->attempt($username, $password)) {
+            if ($this->host->logon($username, $password)) {
     
                 // Reset login attempts on successful login
                 $this->host->reset();
@@ -86,6 +86,7 @@ class HostController extends Controller
     public function logoff() {
 
         $this->host->logout();
+        unset($_SESSION['debug_pass']);
         unset($_SESSION['debug_attempts']);
         unset($_SESSION['user_blocked']);
         unset($_SESSION['dump']);

@@ -1,4 +1,1 @@
->>> TERMINAL ERROR <<<
-
-** IMPROPER REQUEST **
-** ACCESS DENIED **
+>>> ERROR: Improper Terminal Request! <<<

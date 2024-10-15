@@ -28,7 +28,7 @@ class Session
      * @param string $key
      * @return mixed
      */
-    public function find(string $key)
+    public function get(string $key)
     {
         if ($this->has($key)) {
             return $_SESSION[$key];

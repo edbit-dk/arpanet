@@ -85,7 +85,7 @@ CREATE TABLE `logs` (
 
 CREATE TABLE `hosts` (
   `id` bigint UNSIGNED NOT NULL,
-  `user_id` int NOT NULL DEFAULT '0',
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `password` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `ip` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,

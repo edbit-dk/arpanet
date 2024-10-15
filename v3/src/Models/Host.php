@@ -13,6 +13,6 @@ class Host extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->BelongsToMany(User::class, 'host_user');
+        return $this->BelongsToMany(User::class);
     }
 }

@@ -8,6 +8,7 @@ use App\Controllers\CmdController;
 use App\Controllers\DebugController;
 
 $app->get('/', [DefaultController::class, 'index']);
+$app->get('/test', [DefaultController::class, 'test']);
 
 
 // System

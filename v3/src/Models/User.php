@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-use App\Models\Server;
+use App\Models\Host;
 
 class User extends Model
 {
@@ -28,6 +28,12 @@ class User extends Model
 
     public function hosts(): BelongsToMany
     {
-        return $this->belongsToMany(Server::class, 'host_user');
+        return $this->BelongsToMany(Host::class);
     }
+
+    public function host($host)
+    {
+        return $this->hosts()->where('host_id', $host)->first();
+    }
+
 }

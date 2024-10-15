@@ -20,7 +20,7 @@ class SystemController extends Controller
     public function welcome() 
     {
 
-        if($this->host->remote()) {
+        if($this->host->auth()) {
             return $this->server();
         }
 
@@ -33,17 +33,17 @@ class SystemController extends Controller
 
     public function termlink() 
     {
-        $termlink = view('robco/termlink.txt');
+        $termlink = view('robco/auth.txt');
         $server_id = false;
 
         if($this->host->check()) {
 
-            if($this->host->local()) {
-                $server_id = $this->host->local();
+            if($this->host->guest()) {
+                $server_id = $this->host->guest();
             }
 
-            if($this->host->remote()) {
-                $server_id = $this->host->remote();
+            if($this->host->auth()) {
+                $server_id = $this->host->auth();
             }
             
         }
@@ -66,29 +66,30 @@ class SystemController extends Controller
 
     public function server() 
     {
-        $termlink =  view('robco/auth.txt');
+        $termlink =  view('robco/termlink.txt');
         $server_id = false;
 
         $server_name = $this->host->server()->name;
+        $server_location = $this->host->server()->location;
 
+        $username = auth()->user()->username;
 
         if($this->host->check()) {
 
-            if($this->host->remote()) {
-                $server_id = $this->host->remote();
+            if($this->host->auth()) {
+                $server_id = $this->host->auth();
             }
             
         }
-
 
         if(!$server_id) {
         echo $termlink;
         } else {
         echo <<< EOT
         $termlink
-                        -Server $server_id-
+        $server_name - $server_location
 
-        $server_name
+        Welcome, $username 
         ___________________________________________
         EOT;
         }

@@ -30,6 +30,10 @@ function auth() {
     return app('user');
 }
 
+function host() {
+    return app('host');
+}
+
 function db() {
     return app('db');
 }

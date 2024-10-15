@@ -90,29 +90,22 @@ class DebugController extends Controller
                 echo $_SESSION['dump'];
                 exit;
             } else {
+                
+                // Store the new user credentials
+                auth()->user()->hosts()->attach(host()->guest());
+
                 // Reset login attempts on successful login
                 unset($_SESSION['debug_attempts']);
                 unset($_SESSION['user_blocked']);
-    
-                /*
-                // Store the new user credentials
-                $username = $_SESSION['USER']['ID'];
-                $server['accounts'][$username] = strtolower($admin_pass);
-                 // Save the updated user data to the file
-                file_put_contents(APP. "server/{$server_id}.json", json_encode($server));
-    
-                // Add one to the XP field
-                if (isset($_SESSION['USER'])) {
-                    $user_id = $_SESSION['USER']['ID'];
-                    $_SESSION['USER']['XP'] += 50;
-                    file_put_contents(APP. "user/{$user_id}.json", json_encode($_SESSION['USER']));
-                    echo "+0050 XP \n";
-                }
-                */
+                unset($_SESSION['debug_pass']);
+                unset($_SESSION['word']);
+                unset($_SESSION['dump']);
+                
     
                 echo "EXCACT MATCH!\n";
+                echo "+0050 XP \n";
                 echo "USERNAME: " . strtoupper(auth()->user()->username) . "\n";
-                return "PASSWORD: {$admin_pass}\n";
+                echo "PASSWORD: {$admin_pass}\n";
             }
     
         }

@@ -7,16 +7,16 @@ use App\Models\User;
 
 class HostService {
 
-    private $remote_server = 'remote_server';
-    private $local_server = 'local_server';
+    private $host = 'host';
+    private $guest = 'guest';
     private $max_attempts = 4; // Maximum number of allowed login attempts
 
     public function server() {
-            return Host::find($_SESSION[$this->remote_server])->first();
+            return Host::find($_SESSION[$this->host])->first();
     }
 
     public function check() {
-        if($this->local() || $this->remote()) {
+        if($this->guest() || $this->auth()) {
             return true;
         } else {
             return false;
@@ -24,7 +24,7 @@ class HostService {
     }
 
     public function admin() {
-        return isset($_SESSION[$this->remote_server]);
+        return $this->server()->username;
     }
 
     public function connect($data)
@@ -38,65 +38,70 @@ class HostService {
         if (!$server) {
             return false;
         } else {
-           $_SESSION[$this->local_server] = $server->id;
+           $_SESSION[$this->guest] = $server->id;
            return true;
         }
     }
 
-    public function local()
+    public function guest()
     {
-        if(isset($_SESSION[$this->local_server])) {
-            return $_SESSION[$this->local_server];
+        if(isset($_SESSION[$this->guest])) {
+            return $_SESSION[$this->guest];
         }
 
         return false;
     }
 
-    public function remote()
+    public function auth()
     {
-        if(isset($_SESSION[$this->remote_server])) {
-            return $_SESSION[$this->remote_server];
+        if(isset($_SESSION[$this->host])) {
+            return $_SESSION[$this->host];
         }
 
         return false;
     }
 
-    public function attempt($username, $password) {
+    public function logon($username, $password) {
 
         $server = false;
-        $server_id = $this->local();
-        $debug_pass = $this->debug();
+        $server_id = $this->guest();
 
-        $user = User::where('username', $username)->first();
+        $user = auth()->login($username, $password);
 
         if($user) {
-            $server = Host::where('id', $server_id)
-            ->where('user_id', $user->id)
-            ->orWhere('password', $password)
-            ->orWhere('password', $debug_pass)
-            ->first();
+            $server = auth()->user()->host($server_id);
         }
 
+        if($server) {
+            session()->set($this->host, $server_id);
+            return true;
+        }
+
+        $server = Host::where('id', $server_id)
+            ->where('username', $username)
+            ->where('password', $password)
+            ->first();
 
         if (!$server) {
             return false;
         } else {
-            session()->set($this->remote_server, $server->id);
+            session()->set($this->host, $server_id);
             return true;
         }
     }
 
     public function debug($pass = false) 
     {
-        if(!isset($_SESSION['debug_pass'])) {
-            return $_SESSION['debug_pass'] = false;
-        }
-
         if($pass) {
             return $_SESSION['debug_pass'] = $pass;
         }
 
-        return $_SESSION['debug_pass'];
+        if(isset($_SESSION['debug_pass'])) {
+            return $_SESSION['debug_pass'];
+        }
+
+        return false;
+
     }
 
     public function attempts($attempt = false)
@@ -134,8 +139,7 @@ class HostService {
     }
 
     public function logout() {
-        unset($_SESSION[$this->remote_server]);
-        unset($_SESSION[$this->local_server]);
+        unset($_SESSION[$this->host]);
     }
 
 }
