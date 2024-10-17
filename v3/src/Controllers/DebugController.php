@@ -113,7 +113,7 @@ class DebugController extends Controller
     
                 echo "EXCACT MATCH!\n";
                 echo "+0050 XP \n";
-                echo "Please wait while security is reset...";
+                echo "LOADING...";
             }
     
         }

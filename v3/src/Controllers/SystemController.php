@@ -33,11 +33,13 @@ class SystemController extends Controller
 
     public function reboot() 
     {
+        echo bootup();
         view('robco/boot.txt');
     } 
     
     public function boot() 
     {
+        echo bootup();
         view('robco/boot.txt');
     }
 
@@ -64,16 +66,17 @@ class SystemController extends Controller
         if(host()->guest()) {
             $auth =  view('robco/auth.txt');
             
-            $location = host()->server()->location;
+            $name = host()->server()->name;
             $server_ip = host()->server()->ip;
             $level = host()->server()->level->rep;
 
             echo <<< EOT
             $auth
-              -Server $server_ip ($location)-
-
-            Password Required      [SECURITY: $level]
-            _________________________________________
+                      -Server $server_ip-
+                      
+            $name
+            Password Required          [SECURITY: $level]
+            _____________________________________________
             EOT;
 
         } else {
@@ -88,13 +91,13 @@ class SystemController extends Controller
         $termlink =  view('robco/auth.txt');
 
         $server_name = host()->server()->name;
-        $server_location = host()->server()->location;
+        $org= host()->server()->org;
 
         $username = auth()->user()->username;
 
         echo <<< EOT
         $termlink
-                 -$server_name ($server_location)-
+                 -$server_name ($org)-
 
         Welcome, $username 
         ___________________________________________

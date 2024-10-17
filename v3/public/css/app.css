@@ -3,30 +3,34 @@
 body, input {
   font-family: 'VT323', Arial, Helvetica, sans-serif;;
   -webkit-font-smoothing: none;
-  font-size: 100%;
+  font-size: 5.4vw;
+  padding: 1vw;
   line-height: 1.2;
   text-shadow: 0 0 5px #C8C8C8;
   background-color: #000000;
 }
 
 #terminal-wrapper {
-    margin: 0 auto;
-    border: none;
-    height: 90dvh; 
-    overflow-y: auto;
+  width: 100%; /* Ensure it takes up the available width */
+  max-width: 100vw; /* Limit the width to the viewport */
+  height: 80vh; /* Adjust the height of the terminal area */
+  overflow-y: auto; /* Add vertical scrolling if the content exceeds the height */
+  box-sizing: border-box; /* Ensure padding is included in the width/height */
 }
 
 #terminal {
-    margin:0 auto;
-    margin-bottom: 10px;
-    overflow:auto;
-    white-space: pre; /* Preserve whitespace */
+  white-space: pre-wrap; /* Preserve spaces and allow wrapping */
+  word-wrap: break-word; /* Break long words that don't fit */
+  overflow-wrap: break-word; /* Handle wrapping for long words */
+  max-width: 100%; /* Ensure text wraps within the available width */
 }
 
 #prompt {
     display: flex;
     align-items: center;
     position: relative; /* Add relative positioning to parent */
+    background: #00935E;
+    margin-top: 10px; /* Space between the terminal content and prompt */
 }
 
 #command-input {
@@ -48,38 +52,4 @@ body, input {
   }
 
 
-  /* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 600px) {
-  body{
-    font-size: 1.4rem;
-  }
-}
-
-/* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {
-  body{
-    font-size: 2rem; 
-  }
-}
-
-/* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {
-  body{
-    font-size: 2.4rem; 
-  }
-}
-
-/* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {
-  body{
-    font-size: 3.4rem; 
-  }
-}
-
-/* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 1200px) {
-  body{
-    font-size: 4rem;
-  }
-}
-
+ 

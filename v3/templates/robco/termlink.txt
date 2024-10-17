@@ -1,6 +1,6 @@
------------------------------------------
-WELCOME TO ROBCO INDUSTRIES (TM) TERMLINK
-           -Central PoseidoNET-
+=-------------------------------------------=
+| WELCOME TO ROBCO INDUSTRIES (TM) TERMLINK |
+|           -Central PoseidoNET-            |
+|-------------------------------------------|
 
-Type HELP for command list
-________________________________________
+TERMINAL

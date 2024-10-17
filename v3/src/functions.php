@@ -211,3 +211,32 @@ function format_dump($memoryDump) {
 function random_ip() {
     return long2ip(rand(0, 4294967295));
 }
+
+
+function bootup() {
+    $keyphrases = [' start memory discovery', ' CPUO starting cell relocation', 
+                   ' CPUO launch EFIO', ' CPUO starting EFIO'];
+    $middle_pieces = [' 1', ' 0', ' 0x0000A4', ' 0x00000000000000000', 
+                      ' 0x000014', ' 0x000009', ' 0x000000000000E003D'];
+    
+    // Start the huge string with '*'
+    $huge_string = '*';
+
+    // Loop 70 times, similar to the Python code
+    for ($i = 0; $i < 5; $i++) {
+        // Randomly choose between 3 to 7 middle pieces
+        $num_middle_pieces = rand(3, 7);
+        
+        // Build the middle piece string
+        $middle_piece = '';
+        for ($j = 0; $j < $num_middle_pieces; $j++) {
+            $middle_piece .= $middle_pieces[array_rand($middle_pieces)];
+        }
+        
+        // Append the middle piece and a random keyphrase to the huge string
+        $huge_string .= $middle_piece;
+        $huge_string .= $keyphrases[array_rand($keyphrases)];
+    }
+
+    return $huge_string;
+}

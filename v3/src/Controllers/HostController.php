@@ -56,7 +56,14 @@ class HostController extends Controller
         echo 'OK';
     }
 
-    public function logon() {
+    // sysadmin571_bypas /: 
+    public function sysadmin()
+    {
+        echo bootup();
+    }
+
+    public function logon() 
+    {
 
         $data = request()->get('data');
 
@@ -126,14 +133,16 @@ class HostController extends Controller
             $servers  = Host::inRandomOrder()->limit(5)->get();
         }
 
+        echo "Scanning...\n \n";
+
         foreach ($servers as $server) {
 
-            $ip = $server->ip;
+            $id = $server->id;
             $org = $server->org;
-            $level = $server->level->rep;
+            $name = $server->name;
             $location = $server->location;
 
-            echo "[$ip ($org, $location) - $level]\n";
+            echo "$id. $name [$org] ($location)\n";
         }
         
     }

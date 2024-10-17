@@ -242,7 +242,9 @@ function loadText(text) {
             scrollToBottom();
             lineIndex++;
             if (lineIndex < lines.length) {
-                setTimeout(displayNextLine, 320);
+                setTimeout(displayNextLine, 300);
+            } else {
+                $('#command-input').focus();
             }
         }
     }
@@ -256,20 +258,45 @@ function simulateCRT(text, container) {
     const inputField = $('#command-input').val('');
 
     let currentIndex = 0;
+    let currentLine = $('<div>'); // Create a new lin
 
-    function displayNextChar() {
+    // Add the line container to the DOM
+    container.append(currentLine);
+
+    function displayNextWord() {
         if (currentIndex < text.length) {
-            let char = text[currentIndex];
-            if (char === ' ') char = '\u00A0';
-            container.append($('<span>').html(char));
-            currentIndex++;
-            setTimeout(displayNextChar, delay);
+            let word = '';
+
+            // Read the next word from the text
+            while (currentIndex < text.length && text[currentIndex] !== ' ') {
+                word += text[currentIndex];
+                currentIndex++;
+            }
+            currentIndex++; // Skip the space
+
+            // Create a span for the word and add it to the current line
+            const wordElement = $('<span>').text(word + ' ');
+
+            currentLine.append(wordElement);
+
+            // Check if the word overflows the container
+            if (container[0].scrollWidth > container[0].clientWidth) {
+                // Remove the word from the current line
+                wordElement.remove();
+
+                // Move the word to a new line
+                currentLine = $('<div>').append(wordElement);
+                container.append(currentLine);
+            }
+
+            // Add delay for CRT effect
+            setTimeout(displayNextWord, delay);
         } else {
             scrollToBottom();
         }
     }
 
-    displayNextChar();
+    displayNextWord();
 }
 
 // Function to scroll the terminal window to the bottom
