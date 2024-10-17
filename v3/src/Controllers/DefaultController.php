@@ -16,7 +16,7 @@ class DefaultController extends Controller
 
     public function test()
     {
-
+        echo "EXCACT";
     }
 
 }

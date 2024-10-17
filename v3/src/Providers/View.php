@@ -25,8 +25,6 @@ class View{
 
     /**
      * Render the template, returning it's content.
-     * @param array $data Data made available to the view.
-     * @return string The rendered template.
      */
     public function render($view = '', Array $data = []) {
         extract($data);

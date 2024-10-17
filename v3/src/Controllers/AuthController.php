@@ -54,7 +54,7 @@ class AuthController extends Controller
 
         if($this->user->login($username, $access_code)) {
             echo "Security Access Code Sequence Accepted.\n"; 
-            echo "Trying to connect...\n";
+            echo "Trying...\n";
             exit;         
         } else {
             echo 'ERROR: WRONG USERNAME';
@@ -142,8 +142,12 @@ class AuthController extends Controller
 
     public function logout() {
 
-        auth()->logout();
-    
-        echo "DISCONNECTING from PoseidoNET...\n";
+        if(host()->guest()) {
+            unset($_SESSION['guest']);
+            exit;
+        } else {
+            auth()->logout();
+            echo "DISCONNECTING from PoseidoNET...\n";
+        }
     }
 }

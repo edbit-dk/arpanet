@@ -9,6 +9,28 @@ use App\Models\Host;
 class SystemController extends Controller
 {
 
+    public function help()
+    {
+        $command = strtoupper(request()->get('data'));
+
+        if(!auth()->check()) {
+            $help = require config('path') . '/storage/array/auth.php';
+        } else {
+            $help = require config('path') . '/storage/array/guest.php';
+        }
+    
+
+        if (!empty($command)) {
+            return isset($help[$command]) ? $help[$command] : "Command not found.";
+        }
+        
+        $output = "COMMANDS:\n";
+        foreach ($help as $cmd => $text) {
+            $output .= " $cmd $text\n";
+        }
+        echo $output;
+    }
+
     public function reboot() 
     {
         view('robco/boot.txt');
@@ -37,26 +59,27 @@ class SystemController extends Controller
 
     public function termlink() 
     {
-        $termlink = view('robco/termlink.txt');
         $server_id = false;
 
         if(host()->guest()) {
+            $auth =  view('robco/auth.txt');
             
-        $server_id = host()->server()->id;
-        $server_ip = host()->server()->ip;
+            $location = host()->server()->location;
+            $server_ip = host()->server()->ip;
+            $level = host()->server()->level->rep;
 
-        echo <<< EOT
-        $termlink
-               -Server $server_id ($server_ip)-
+            echo <<< EOT
+            $auth
+              -Server $server_ip ($location)-
 
-        Password Required
-        EOT;
+            Password Required      [SECURITY: $level]
+            _________________________________________
+            EOT;
 
         } else {
-        echo $termlink;
+            view('robco/termlink.txt');
+            exit;
         }
-
-        return;
 
     }
 
@@ -71,7 +94,7 @@ class SystemController extends Controller
 
         echo <<< EOT
         $termlink
-                 $server_name ($server_location)
+                 -$server_name ($server_location)-
 
         Welcome, $username 
         ___________________________________________
@@ -108,7 +131,7 @@ class SystemController extends Controller
         !!! BACKUP ACCESS CODE !!!
         
         > NEWUSER <USERNAME> <ACCESS CODE> 
-        > LOGIN <USERNAME> <ACCESS CODE>
+        > LOGIN <USERNAME> <PASSWORD/ACCESS CODE>
         _________________________________________
         EOT;
     

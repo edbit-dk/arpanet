@@ -134,7 +134,7 @@ class HostService {
 
     public function logout() {
         unset($_SESSION[$this->host]);
-        unset($_SESSION[$this->guest]);
+        
     }
 
 }

@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 use App\Models\User;
+use App\Models\Level;
 
 class Host extends Model
 {
@@ -13,6 +15,7 @@ class Host extends Model
 		'username',
 		'password',
         'name',
+        'org',
 		'ip',
 		'status',
 		'location',
@@ -29,11 +32,18 @@ class Host extends Model
 
     public function nodes(): BelongsToMany
     {
-        return $this->BelongsToMany(Host::class, 'host_node', 'node_id', 'host_id');
+        return $this->BelongsToMany(Host::class, 'host_node', 'host_id', 'node_id');
     }
 
     public function node($host)
     {
         return $this->nodes()->where('node_id', $host)->first();
     }
+
+    public function level(): HasOne   
+    {
+        return $this->hasOne(Level::class, 'id', 'level_id');
+    }
+
+
 }

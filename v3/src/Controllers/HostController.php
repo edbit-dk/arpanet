@@ -11,6 +11,8 @@ class HostController extends Controller
 {
     public function connect() 
     {
+        $this->logoff();
+
         $data = strtoupper(request()->get('data'));
 
         $server = host()->connect($data);
@@ -37,7 +39,7 @@ class HostController extends Controller
 
         $level = Level::inRandomOrder()->first();
 
-        $pass_length = rand($level->skill_1, $level->skill_2);
+        $pass_length = rand($level->min, $level->max);
         
         $admin_pass = wordlist(config('views') . '/lists/wordlist.txt', $pass_length , 1)[0];
 
@@ -116,6 +118,26 @@ class HostController extends Controller
         }
     }
 
+    public function scan() 
+    {
+        if(host()->auth() OR host()->guest()) {
+            $servers = host()->server()->nodes()->get();
+        } else {
+            $servers  = Host::inRandomOrder()->limit(5)->get();
+        }
+
+        foreach ($servers as $server) {
+
+            $ip = $server->ip;
+            $org = $server->org;
+            $level = $server->level->rep;
+            $location = $server->location;
+
+            echo "[$ip ($org, $location) - $level]\n";
+        }
+        
+    }
+
     public function logoff() {
 
         $this->host->logout();
@@ -125,7 +147,5 @@ class HostController extends Controller
         unset($_SESSION['dump']);
         unset($_SESSION['root']);
         unset($_SESSION['maint']);
-    
-        echo "Disconnecting...\n";
     }
 }

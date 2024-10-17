@@ -46,16 +46,16 @@ CREATE TABLE `levels` (
   `rep` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `xp_req` int NOT NULL DEFAULT '0',
   `xp_reward` int NOT NULL DEFAULT '0',
-  `skill_1` int NOT NULL DEFAULT '3',
-  `skill_2` int NOT NULL
+  `min` int NOT NULL,
+  `max` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Data dump for tabellen `levels`
 --
 
-INSERT INTO `levels` (`id`, `rep`, `xp_req`, `xp_reward`, `skill_1`, `skill_2`) VALUES
-(0, 'UNKNOWN', 0, 1, 2, 3),
+INSERT INTO `levels` (`id`, `rep`, `xp_req`, `xp_reward`, `min`, `max`) VALUES
+(0, 'NONE', 0, 1, 2, 3),
 (1, 'Novice', 15, 2, 4, 5),
 (2, 'Skilled', 25, 3, 6, 8),
 (3, 'Advanced', 50, 4, 9, 10),
@@ -88,10 +88,10 @@ CREATE TABLE `hosts` (
   `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT 'admin',
   `password` varchar(255) COLLATE utf8mb4_general_ci DEFAULT 'robco',
   `name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `org` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `ip` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `active` tinyint(1) DEFAULT '1',
   `location` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `nodes` json DEFAULT NULL,
   `level_id` int NOT NULL DEFAULT '0',
   `created_at` datetime DEFAULT NULL
   `updated_at` datetime DEFAULT NULL
@@ -112,6 +112,18 @@ CREATE TABLE `host_user` (
 -- --------------------------------------------------------
 
 --
+-- Struktur-dump for tabellen `host_user`
+--
+
+CREATE TABLE `host_node` (
+  `id` bigint UNSIGNED NOT NULL,
+  `node_id` int NOT NULL,
+  `host_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Struktur-dump for tabellen `users`
 --
 
@@ -126,7 +138,7 @@ CREATE TABLE `users` (
   `active` tinyint(1) DEFAULT '1',
   `level_id` int NOT NULL DEFAULT '0',
   `xp` int NOT NULL DEFAULT '0',
-  `rep` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'UNKNOWN',
+  `rep` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'NONE',
   `last_login` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL

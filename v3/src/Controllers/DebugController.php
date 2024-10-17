@@ -11,13 +11,19 @@ class DebugController extends Controller
     {
         $data = request()->get('data');
 
+        $level = host()->server()->level;
+        $min_level = $level->min;
+        $max_level = $level->max;
+
         $data = trim(strtoupper($data));
-        $max_words = rand(5, 17);
+        // min: 5 max: 17
+        $max_words = rand($min_level, $max_level);
         $max_attempts = 4;
     
         if (!isset($_SESSION['debug_pass'])) {
     
-            $_SESSION['word'] = rand(2, 15);
+            // min: 2 max: 15
+            $_SESSION['word'] = rand($min_level, $max_level);
             $_SESSION['debug_pass'] = wordlist(config('views') . '/lists/wordlist.txt', $_SESSION['word'] , 1)[0];
         } 
         
@@ -69,17 +75,20 @@ class DebugController extends Controller
                     $_SESSION['debug_attempts']--;
                 }
     
-                echo "Entry denied.\n";
-                echo "{$match}/{$word_length} correct.\n";
-                echo "Likeness={$match}.\n \n";
+                if(!isset($_SESSION['user_blocked'])) {
+                    echo "Entry denied.\n";
+                    echo "{$match}/{$word_length} correct.\n";
+                    echo "Likeness={$match}.\n \n";
+
+                    $attemps_left = str_char_repeat($_SESSION['debug_attempts']);
     
+                    echo "{$_SESSION['debug_attempts']} ATTEMPT(S) LEFT: {$attemps_left} \n \n";
+                }
+
                 if ($_SESSION['debug_attempts'] === 1) {
                     echo "!!! WARNING: LOCKOUT IMMINENT !!!\n\n";
                 }
-    
-               $attemps_left = str_char_repeat($_SESSION['debug_attempts']);
-    
-                echo "{$_SESSION['debug_attempts']} ATTEMPT(S) LEFT: {$attemps_left} \n \n";
+
     
                 if ($_SESSION['debug_attempts'] <= 0) {
                     $_SESSION['user_blocked'] = true;
@@ -92,7 +101,7 @@ class DebugController extends Controller
             } else {
                 
                 // Store the new user credentials
-                auth()->user()->hosts()->attach(host()->guest());
+                auth()->user()->hosts()->attach(host()->server()->id);
 
                 // Reset login attempts on successful login
                 unset($_SESSION['debug_attempts']);
@@ -104,13 +113,13 @@ class DebugController extends Controller
     
                 echo "EXCACT MATCH!\n";
                 echo "+0050 XP \n";
-                echo "Please wait while security is reset...".
+                echo "Please wait while security is reset...";
             }
     
         }
     }
 
-    public function set($request, $response) 
+    public function set() 
     {
         $data = request()->get('data');
 
@@ -128,23 +137,27 @@ class DebugController extends Controller
     
         if(strpos('FILE/PROTECTION=OWNER:RWED ACCOUNTS.F', $command) !== false) {
             session()->set('root', true);
-            return "Root (5A8) \n";
+            echo "Root (5A8) \n";
+            exit;
         }
     
         if(strpos('HALT', $command) !== false) {
             $this->user->logout();
             
-            return 'SHUTTING DOWN...';
+            echo 'SHUTTING DOWN...';
+            exit;
         }
     
         if(strpos('HALT RESTART', $command) !== false) {
             echo 'RESTARTING...';
-            return view('robco/boot.txt') . "\n";
+            echo view('robco/boot.txt') . "\n";
+            exit;
         }
     
         if(strpos('HALT RESTART/MAINT', $command) !== false) {
             session()->set('maint', true);
-            return view('robco/maint.txt') . "\n";
+            echo view('robco/maint.txt') . "\n";
+            exit;
         }
        
     }
@@ -154,17 +167,20 @@ class DebugController extends Controller
         $data = request()->get('data');
 
         if(empty($data)) {
-            return 'ERROR: Missing Parameters!';
+            echo 'ERROR: Missing Parameters!';
+            exit;
         }
     
         $command = strtoupper($data);
     
         if(!isset($_SESSION['root'])) {
-            return 'ERROR: Root Access Required!';
+            echo 'ERROR: Root Access Required!';
+            exit;
         }
         
         if(!isset($_SESSION['maint'])) {
-            return 'ERROR: Maintenance Mode Required!';
+            echo 'ERROR: Maintenance Mode Required!';
+            exit;
         }
     
         if(strpos('LIST/ACCOUNTS.F', $command) !== false) {
@@ -174,7 +190,8 @@ class DebugController extends Controller
         if(strpos('DEBUG/ACCOUNTS.F', $command) !== false) {
             session()->set('debug', true);
             echo view('robco/attempts.txt') . "\n";
-            return dump($data);
+            echo $this->dump();
+            exit;
         }
     }
 
