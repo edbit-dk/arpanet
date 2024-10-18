@@ -87,6 +87,16 @@ function handleRedirect(response) {
         }, 2000);
     }
 
+    if (response.startsWith("Password")) {
+        setTimeout(function() {
+            setTimeout(function() {
+                clearTerminal();
+                sendCommand('welcome', '');
+            }, 2500);
+
+        }, 2000);
+    }
+
     if (response.startsWith("Security")) {
             setTimeout(function() {
 
@@ -186,9 +196,11 @@ function handleUserInput() {
         }
         handleLogon(args); // Handle logon command with username provided
     } else if (['logout', 'logoff', 'reboot', 'dc', 'restart', 'start', 'autoexec', 'exit'].includes(command)) {
+        loadText("Please wait...");
         sendCommand(command, args); // Send the command to the server
         setTimeout(function() {
-            location.reload();
+            clearTerminal();
+            sendCommand('welcome', '');
         }, 2500);
     } else if (command === 'color') {
         setTheme(args); // Handle color setting
@@ -276,7 +288,8 @@ function handlePasswordPromptResponse(response) {
     } else if (response.startsWith("Password")) {
         loadText(response);
         setTimeout(function() {
-            location.reload();
+            clearTerminal();
+            sendCommand('welcome', '');
         }, 2500);
     } else {
         if (usernameForLogon) {
@@ -423,7 +436,8 @@ $(document).ready(function() {
         
         setTimeout(function() {
             sessionStorage.setItem('boot', true); // Set 'boot' flag in sessionStorage
-            location.reload(); // Reload the page after setting the boot flag
+            clearTerminal();
+            sendCommand('welcome', '');
         }, 10000);
     } else {
 

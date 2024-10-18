@@ -60,17 +60,6 @@ class HostService {
         $server = false;
         $server_id = $this->server()->id;
 
-        $user = auth()->login($username, $password);
-
-        if($user) {
-            $server = auth()->user()->host($server_id);
-        }
-
-        if($server) {
-            session()->set($this->host, $server_id);
-            return true;
-        }
-
         $server = Host::where('id', $server_id)
             ->where('username', $username)
             ->where('password', $password)
@@ -79,6 +68,7 @@ class HostService {
         if (!$server) {
             return false;
         } else {
+            session()->set($this->guest, $server_id);
             session()->set($this->host, $server_id);
             return true;
         }
@@ -132,9 +122,17 @@ class HostService {
         }
     }
 
-    public function logout() {
-        unset($_SESSION[$this->host]);
+    public function logout() 
+    {
+        if(session()->has($this->host)) {
+            unset($_SESSION[$this->host]); 
+            exit;
+        }  
         
+        if(!session()->has($this->host) && session()->has($this->guest)) {
+            unset($_SESSION[$this->guest]); 
+            exit;
+        } 
     }
 
 }

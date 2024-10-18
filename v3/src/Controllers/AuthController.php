@@ -50,7 +50,7 @@ class AuthController extends Controller
                     echo "Trying...\n";
                     exit;         
                 } else {
-                    echo 'ERROR: WRONG USERrrNAME!';
+                    echo 'ERROR: WRONG USERNAME!';
                     exit;
                 }
             }
@@ -68,7 +68,7 @@ class AuthController extends Controller
     
         // If no parameters provided, prompt for username
         if (empty($params)) {
-            echo "ERROR: WRONG USERNAME";
+            echo "ERROR: WRONG USERNAME!";
             exit;
         } else {
             $username = $params[0];
@@ -198,13 +198,19 @@ class AuthController extends Controller
     public function logout() 
     {
 
-        if(host()->guest()) {
-            unset($_SESSION['guest']);
+        if(host()->auth()) {
+            host()->logout();
             exit;
-        } else {
-            auth()->logout();
-            echo "DISCONNECTING from ARPANET...\n";
         }
+        
+        if(host()->guest()) {
+            host()->logout();
+            exit;
+        }
+        
+        auth()->logout();
+        echo "DISCONNECTING from ARPANET...\n";
+    
     }
 
     public function reset()
