@@ -126,8 +126,8 @@ function wordlist($file, $word_length = 7, $max_count = 12) {
     } while ($i < $count);
     
     //$retwords = substr($retwords,0,strlen($retwords)-1);
-    if(!is_array($retwords)) {
-        $retwords[] = $retwords;
+    if(empty($retwords)) {
+        return wordlist($file, $word_length, $max_count);
     }
     return $retwords;
 }

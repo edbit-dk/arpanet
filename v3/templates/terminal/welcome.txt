@@ -2,10 +2,10 @@
 | WELCOME TO IBM CORPORATION (TM) TERMLINK |
 |------------------------------------------|
 
-This terminal allows access to ARPANET, the
-US transcontinental network operated by 
-DISA, stretching from the US to UK and 
-Norway by sattelite.
+This terminal allows access to ARPANET 
+(1969-1990), the transcontinental network 
+operated by the US Military, stretching from 
+US to UK and Norway by sattelite.
 
 Use UPLINK to access central ARPANET.
-_____________________________________________
+____________________________________________

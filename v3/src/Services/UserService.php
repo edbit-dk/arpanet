@@ -4,17 +4,21 @@ namespace App\Services;
 
 use App\Models\User;
 
-class UserService {
+class UserService 
+{
 
-    public function user() {
+    public function user() 
+    {
         return User::find($_SESSION['user']);
     }
 
-    public function check() {
+    public function check() 
+    {
         return isset($_SESSION['user']);
     }
 
-    public function login($emailOrUsername, $password) {
+    public function login($emailOrUsername, $password) 
+    {
 
         $user = User::where('email', $emailOrUsername)
                     ->orWhere('username', $emailOrUsername)

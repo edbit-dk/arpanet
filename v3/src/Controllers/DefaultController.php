@@ -16,7 +16,10 @@ class DefaultController extends Controller
 
     public function test()
     {
-        echo "EXCACT";
+        $firstname = wordlist($this->config['views'] . '/lists/namelist.txt', rand(5, 12) , 1);
+        $lastname = wordlist($this->config['views'] . '/lists/namelist.txt', rand(5, 12) , 1);
+
+        var_dump($firstname, $lastname);
     }
 
 }

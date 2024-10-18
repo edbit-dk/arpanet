@@ -9,9 +9,7 @@ if(host()->guest()) {
 
     $app->get('/dump', [DebugController::class, 'dump']);
     $app->get('/set', [DebugController::class, 'set']);
-    $app->get('/run', [DebugController::class, 'run']);
-    $app->get('/logon', [HostController::class, 'logon']);
-    
+    $app->get('/run', [DebugController::class, 'run']);    
 }
 
 

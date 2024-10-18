@@ -19,7 +19,6 @@ $app->get('/logout', [AuthController::class, 'logout']);
 $app->get('/connect', [HostController::class, 'connect']);
 $app->get('/telnet', [HostController::class, 'connect']);
 $app->get('/scan', [HostController::class, 'scan']);
-$app->get('/logon', [HostController::class, 'logon']);
 $app->get('/logoff', [HostController::class, 'logoff']);
 $app->get('/exit', [HostController::class, 'logoff']);
 

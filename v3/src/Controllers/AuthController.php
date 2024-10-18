@@ -15,52 +15,103 @@ class AuthController extends Controller
     private $created = 'created_at';
     private $access_code = 'access_code';
 
-    private function validate($data) {
-
+    private function validate($data) 
+    {
         $input = explode(' ', trim($data));
 
-        if (count($input) >= 2) {
+        if (!session()->has($this->username)) {
+            session()->set($this->username, $input[0]);
+        } 
 
-            $user[$this->username] = $input[0];
-            $user[$this->access_code] = $input[1];
+        if (!session()->has($this->password)) {
+            session()->set($this->password, $input[1]);
+        } 
 
-        } else {
-            return false;
-        }
-
-        return $user;
     }
 
-    public function login() 
+    public function logon() 
     {
         $data = request()->get('data');
 
-        if(empty($data)) {
-            echo 'ERROR: Missing parameters.';
-            exit;
+        if(!auth()->check()) {
+            sleep(1);
+
+            $this->validate($data);
+
+            if(session()->has($this->username) && session()->has($this->password)){
+
+                $username = session()->get($this->username);
+                $password = session()->get($this->password);
+
+                $this->reset();
+
+                if($this->user->login($username, $password)) {
+                    echo "Security Access Code Sequence Accepted.\n"; 
+                    echo "Trying...\n";
+                    exit;         
+                } else {
+                    echo 'ERROR: WRONG USERrrNAME!';
+                    exit;
+                }
+            }
         }
 
-        $user = $this->validate($data);
+        $params = explode(' ', $data);
 
-        if(!$user) {
-            echo 'ERROR: Input errors. Please try again!';
+        $this->host->debug();
+    
+        // Initialize login attempts if not set
+        $this->host->attempts();
+    
+        // Check if the user is already blocked
+        $this->host->blocked();
+    
+        // If no parameters provided, prompt for username
+        if (empty($params)) {
+            echo "ERROR: WRONG USERNAME";
             exit;
         } else {
-            $access_code = $user[$this->access_code];
-            $username = $user[$this->username];
+            $username = $params[0];
         }
+    
+        // If both username and password provided, complete login process
+        if (count($params) === 2) {
+            $username = strtolower($params[0]);
+            $password = strtolower($params[1]);
+    
+            // Validate password
+            if ($this->host->logon($username, $password)) {
+    
+                // Reset login attempts on successful login
+                $this->host->reset();
+                auth()->user()->hosts()->attach(host()->guest());
 
-        sleep(1);
-
-        if($this->user->login($username, $access_code)) {
-            echo "Security Access Code Sequence Accepted.\n"; 
-            echo "Trying...\n";
-            exit;         
-        } else {
-            echo 'ERROR: WRONG USERNAME';
-            exit;
+                sleep(1);
+                
+                echo "Password Accepted.\nPlease wait while system is accessed...\n+0025 XP ";
+                exit;
+    
+            } else {
+    
+                // Calculate remaining attempts
+                $attempts_left = $this->host->attempts(true);
+    
+                if ($attempts_left === 1) {
+                    echo "WARNING: LOCKOUT IMMINENT !!!\n";
+                }
+    
+                // Block the user after 4 failed attempts
+                if ($attempts_left === 0) {
+                    $this->host->block(true);
+                    echo "TERMINAL LOCKED.\n";
+                    echo "Please contact an administrator.";
+                    exit;
+                }
+    
+                echo "ERROR: WRONG USERNAME.\nAttempts Remaining: {$attempts_left}";
+                exit;
+            }
         }
-
     }
 
     public function user() 
@@ -102,21 +153,24 @@ class AuthController extends Controller
         $data = request()->get('data');
 
         if(empty($data)) {
-            echo 'ERROR: Missing parameters.';
+            echo 'ERROR: WRONG USERNAME!';
             exit;
         }
 
-        $user = $this->validate($data);
-
-        if(!$user) {
-            echo 'ERROR: Input errors. Please try again!';
-            exit;
-        } else {
-            $access_code = $user[$this->access_code];
-            $username = $user[$this->username];
+        $this->validate($data);
+        
+        if(session()->has($this->password) && session()->has($this->access_code))  {
+            $access_code = session()->get($this->access_code);
+            $username = session()->get($this->username);
+            $password = session()->get($this->password);
+            
+            $this->reset();
 
             $firstname = ucfirst(strtolower(wordlist($this->config['views'] . '/lists/namelist.txt', rand(5, 12) , 1)[0]));
             $lastname = ucfirst(strtolower(wordlist($this->config['views']. '/lists/namelist.txt', rand(5, 12) , 1)[0]));
+        } else {
+            echo 'ERROR: INPUT MISSING!';
+            exit;
         }
 
         if (User::where($this->username, '=', $username)->exists()) {
@@ -126,7 +180,8 @@ class AuthController extends Controller
 
         User::create([
             $this->username => $username,
-            $this->access_code => session()->get('access_code'),
+            $this->password => $password,
+            $this->access_code => $access_code,
             $this->firstname => $firstname,
             $this->lastname => $lastname,
             $this->created => \Carbon\Carbon::now()
@@ -134,20 +189,27 @@ class AuthController extends Controller
 
         sleep(1);
 
-        $this->user->login($username, $access_code);
+        $this->user->login($username, $password);
         
         echo "Security Access Code Accepted.\n";
         exit;
     }
 
-    public function logout() {
+    public function logout() 
+    {
 
         if(host()->guest()) {
             unset($_SESSION['guest']);
             exit;
         } else {
             auth()->logout();
-            echo "DISCONNECTING from PoseidoNET...\n";
+            echo "DISCONNECTING from ARPANET...\n";
         }
+    }
+
+    public function reset()
+    {
+        unset($_SESSION[$this->username]);
+        unset($_SESSION[$this->password]);
     }
 }

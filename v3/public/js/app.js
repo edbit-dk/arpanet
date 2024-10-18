@@ -7,6 +7,8 @@ let isPasswordPrompt = false; // Flag to track if password prompt is active
 let userPassword = ''; // Variable to store the password
 let usernameForLogon = ''; // Variable to store the username for logon
 let usernameForNewUser = ''; // Variable to store the username for new user
+let isUsernamePrompt = false;
+let currentCommand = '';
 
 // Event listener for handling keydown events
 $('#command-input').keydown(function(e) {
@@ -88,11 +90,7 @@ function handleRedirect(response) {
     if (response.startsWith("Security")) {
             setTimeout(function() {
 
-                if (!sessionStorage.getItem('uplink')) {
-                    sessionStorage.setItem('uplink', 'true');
-                }
-
-                loadText("Welcome to PoseidoNet!");
+                loadText("Welcome to ARPANET!");
 
                 setTimeout(function() {
                     clearTerminal();
@@ -124,14 +122,69 @@ function handleUserInput() {
     // Clear the input field
     $('#command-input').val('');
 
+    // Check if a username or password prompt is active
+    if (isUsernamePrompt) {
+        // Handle username input for newuser or logon
+        if (input) {
+            if (currentCommand === 'newuser') {
+                usernameForNewUser = input;
+                loadText("ENTER PASSWORD NOW:");
+                isUsernamePrompt = false; // Username phase is over
+                isPasswordPrompt = true; // Move to password phase
+                $('#command-input').attr('type', 'password'); // Change input to password
+            } else if (currentCommand === 'logon') {
+                usernameForLogon = input;
+                loadText("ENTER PASSWORD:");
+                isUsernamePrompt = false; // Username phase is over
+                isPasswordPrompt = true; // Move to password phase
+                $('#command-input').attr('type', 'password'); // Change input to password
+            }
+            return;
+        } else {
+            loadText("ERROR: WRONG USERNAME!");
+            return;
+        }
+    }
+
+    if (isPasswordPrompt) {
+        // Handle password input
+        handlePasswordPrompt();
+        return;
+    }
+
     const parts = input.split(' ');
     const command = parts[0];
     const args = parts.slice(1).join(' ');
-    
+
+    // Block newuser and logon commands if uplink is not set
+    if (['newuser', 'logon', 'login'].includes(command) && !sessionStorage.getItem('uplink')) {
+        loadText("ERROR: Uplink Required!");
+        return; // Stop the process if uplink is not set
+    }
+
     if (command === 'clear' || command === 'cls') {
         clearTerminal(); // Clear the terminal
-    } else if (command === 'logon') {
-        handleLogon(args); // Handle logon command
+    } else if (command === 'uplink') {
+        sessionStorage.setItem('uplink', true);
+        sendCommand(command, args); // Send the command to the server
+    } else if (command === 'newuser') {
+        if (!args) {
+            loadText("ENTER USERNAME NOW:");
+            isUsernamePrompt = true;
+            currentCommand = 'newuser'; // Track the current command
+            $('#command-input').attr('type', 'text'); // Ensure input is set to text for username
+            return;
+        }
+        handleNewUser(args); // Handle newuser command with username provided
+    } else if (command === 'logon' || command === 'login') {
+        if (!args) {
+            loadText("ENTER USERNAME:");
+            isUsernamePrompt = true;
+            currentCommand = 'logon'; // Track the current command
+            $('#command-input').attr('type', 'text'); // Ensure input is set to text for username
+            return;
+        }
+        handleLogon(args); // Handle logon command with username provided
     } else if (['logout', 'logoff', 'reboot', 'dc', 'restart', 'start', 'autoexec', 'exit'].includes(command)) {
         sendCommand(command, args); // Send the command to the server
         setTimeout(function() {
@@ -144,57 +197,73 @@ function handleUserInput() {
     }
 }
 
+
+
+
+
 // Function to set text and background color
 function setTheme(color) {
     $('#theme-color').attr('href', stylesheets + color + '-crt.css');
     localStorage.setItem('theme', color);
 }
 
-// Function to handle creating a new user
+// Function to handle the NEWUSER command
 function handleNewUser(username) {
-    if (!username) {
-        loadText("ERROR: NEW_USER [USERNAME]");
+    if (!sessionStorage.getItem('uplink')) {
+        loadText("ERROR: Uplink Required!");
         return;
     }
-    if (isPasswordPrompt) return;
+
+    if (!usernameForNewUser && !username) {
+        loadText("ENTER USERNAME NOW:");
+        isUsernamePrompt = true;
+        $('#command-input').attr('type', 'text'); // Switch input to text for username
+        return;
+    }
+
+    if (isPasswordPrompt) return; // Already prompting for password, do nothing
     isPasswordPrompt = true;
-    $('#command-input').attr('type', 'password');
     usernameForNewUser = username;
     loadText("ENTER PASSWORD NOW:");
+    $('#command-input').attr('type', 'password'); // Change input to password
 }
 
 // Function to handle the LOGON command
 function handleLogon(username) {
     if (!sessionStorage.getItem('uplink')) {
-        loadText("ERROR: Security Access Code Required!");
+        loadText("ERROR: Uplink Required!");
         return;
     }
 
-    if (!username) {
-        loadText("ERROR: Wrong Username.");
-        isPasswordPrompt = false;
-        $('#command-input').attr('type', 'text');
+    if (!usernameForLogon && !username) {
+        loadText("ENTER USERNAME:");
+        isUsernamePrompt = true;
+        $('#command-input').attr('type', 'text'); // Switch input to text for username
         return;
     }
-    if (isPasswordPrompt) return;
+
+    if (isPasswordPrompt) return; // Already prompting for password, do nothing
     isPasswordPrompt = true;
-    $('#command-input').attr('type', 'password');
     usernameForLogon = username;
     loadText("ENTER PASSWORD:");
+    $('#command-input').attr('type', 'password'); // Change input to password
 }
+
 
 // Function to handle password prompt
 function handlePasswordPrompt() {
     const password = $('#command-input').val().trim();
-
     userPassword = password;
 
     if (usernameForLogon) {
         sendCommand('logon', usernameForLogon + ' ' + password);
         usernameForLogon = '';
+    } else if (usernameForNewUser) {
+        sendCommand('newuser', usernameForNewUser + ' ' + password);
+        usernameForNewUser = '';
     }
 
-    isPasswordPrompt = true;
+    isPasswordPrompt = false;
     $('#command-input').attr('type', 'text').val('');
 }
 
@@ -212,6 +281,8 @@ function handlePasswordPromptResponse(response) {
     } else {
         if (usernameForLogon) {
             sendCommand('logon', usernameForLogon + ' ' + userPassword);
+        } else if (usernameForNewUser) {
+            sendCommand('newuser', usernameForNewUser + ' ' + userPassword);
         }
     }
     $('#command-input').val('');

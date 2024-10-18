@@ -9,6 +9,7 @@ use App\Models\Level;
 
 class HostController extends Controller
 {
+
     public function connect() 
     {
         $this->logoff();
@@ -60,69 +61,6 @@ class HostController extends Controller
     public function sysadmin()
     {
         echo bootup();
-    }
-
-    public function logon() 
-    {
-
-        $data = request()->get('data');
-
-        $this->host->debug();
-    
-        $params = explode(' ', $data);
-    
-        // Initialize login attempts if not set
-        $this->host->attempts();
-    
-        // Check if the user is already blocked
-        $this->host->blocked();
-    
-        // If no parameters provided, prompt for username
-        if (empty($params)) {
-            echo "ERROR: WRONG USERNAME";
-            exit;
-        } else {
-            $username = $params[0];
-        }
-    
-        // If both username and password provided, complete login process
-        if (count($params) === 2) {
-            $username = strtolower($params[0]);
-            $password = strtolower($params[1]);
-    
-            // Validate password
-            if ($this->host->logon($username, $password)) {
-    
-                // Reset login attempts on successful login
-                $this->host->reset();
-                auth()->user()->hosts()->attach(host()->guest());
-
-                sleep(1);
-                
-                echo "Password Accepted.\nPlease wait while system is accessed...\n+0025 XP ";
-                exit;
-    
-            } else {
-    
-                // Calculate remaining attempts
-                $attempts_left = $this->host->attempts(true);
-    
-                if ($attempts_left === 1) {
-                    echo "WARNING: LOCKOUT IMMINENT !!!\n";
-                }
-    
-                // Block the user after 4 failed attempts
-                if ($attempts_left === 0) {
-                    $this->host->block(true);
-                    echo "TERMINAL LOCKED.\n";
-                    echo "Please contact an administrator.";
-                    exit;
-                }
-    
-                echo "ERROR: WRONG USERNAME.\nAttempts Remaining: {$attempts_left}";
-                exit;
-            }
-        }
     }
 
     public function scan() 

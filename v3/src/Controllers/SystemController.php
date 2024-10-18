@@ -34,13 +34,13 @@ class SystemController extends Controller
     public function reboot() 
     {
         echo bootup();
-        view('robco/boot.txt');
+        view('terminal/boot.txt');
     } 
     
     public function boot() 
     {
         echo bootup();
-        view('robco/boot.txt');
+        view('terminal/boot.txt');
     }
 
     public function welcome() 
@@ -76,7 +76,7 @@ class SystemController extends Controller
                       
             $name
             Password Required          [SECURITY: $level]
-            _____________________________________________
+            ____________________________________________
             EOT;
 
         } else {
@@ -100,7 +100,7 @@ class SystemController extends Controller
                  -$server_name ($org)-
 
         Welcome, $username 
-        ___________________________________________
+        __________________________________________
         EOT;
 
         return;
@@ -125,16 +125,16 @@ class SystemController extends Controller
         echo <<< EOT
         
         Uplink with central ARPANET initiated.
-        Enter Security Access Code Sequence:
+        Security Access Code Sequence:
     
         ***********************************
         >>> {$access_code} <<<
         ***********************************
 
-        !!! BACKUP ACCESS CODE !!!
+        !!! NEWUSER: BACKUP ACCESS CODE !!!
         
-        > NEWUSER <USERNAME> <ACCESS CODE> 
-        > LOGIN <USERNAME> <PASSWORD/ACCESS CODE>
+        > NEWUSER
+        > LOGON 
         _________________________________________
         EOT;
     
