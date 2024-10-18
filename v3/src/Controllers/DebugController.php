@@ -41,14 +41,14 @@ class DebugController extends Controller
     
             // Number of rows and columns in the memory dump
             $rows = 17;
-            $columns = 3;
+            $columns = 2;
     
             // Generate the memory dump
             $memoryDump = mem_dump($rows, $columns, $data, $word_length);
     
             // Format and output the memory dump with memory paths
             if (!isset($_SESSION['debug'])) {
-                view('/robco/debug.txt');
+                view('/terminal/debug.txt');
             }
     
             echo "{$_SESSION['debug_attempts']} ATTEMPT(S) LEFT: # # # # \n \n";
@@ -150,13 +150,13 @@ class DebugController extends Controller
     
         if(strpos('HALT RESTART', $command) !== false) {
             echo 'RESTARTING...';
-            echo view('robco/boot.txt') . "\n";
+            echo view('terminal/boot.txt') . "\n";
             exit;
         }
     
         if(strpos('HALT RESTART/MAINT', $command) !== false) {
             session()->set('maint', true);
-            echo view('robco/maint.txt') . "\n";
+            echo view('terminal/maint.txt') . "\n";
             exit;
         }
        
@@ -189,7 +189,7 @@ class DebugController extends Controller
     
         if(strpos('DEBUG/ACCOUNTS.F', $command) !== false) {
             session()->set('debug', true);
-            echo view('robco/attempts.txt') . "\n";
+            echo view('terminal/attempts.txt') . "\n";
             echo $this->dump();
             exit;
         }

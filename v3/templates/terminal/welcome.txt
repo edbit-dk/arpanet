@@ -1,0 +1,11 @@
+=------------------------------------------=
+| WELCOME TO IBM CORPORATION (TM) TERMLINK |
+|------------------------------------------|
+
+This terminal allows access to ARPANET, the
+US transcontinental network operated by 
+DISA, stretching from the US to UK and 
+Norway by sattelite.
+
+Use UPLINK to access central ARPANET.
+_____________________________________________

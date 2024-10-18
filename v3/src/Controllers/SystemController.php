@@ -24,7 +24,7 @@ class SystemController extends Controller
             return isset($help[$command]) ? $help[$command] : "Command not found.";
         }
         
-        $output = "COMMANDS:\n";
+        $output = "CMD:\n";
         foreach ($help as $cmd => $text) {
             $output .= " $cmd $text\n";
         }
@@ -54,7 +54,7 @@ class SystemController extends Controller
             return $this->termlink();
         }
 
-        $welcome = view('robco/welcome.txt');
+        $welcome = view('terminal/welcome.txt');
 
         echo $welcome;
     }
@@ -64,7 +64,7 @@ class SystemController extends Controller
         $server_id = false;
 
         if(host()->guest()) {
-            $auth =  view('robco/auth.txt');
+            $auth =  view('terminal/auth.txt');
             
             $name = host()->server()->name;
             $server_ip = host()->server()->ip;
@@ -80,7 +80,7 @@ class SystemController extends Controller
             EOT;
 
         } else {
-            view('robco/termlink.txt');
+            view('terminal/termlink.txt');
             exit;
         }
 
@@ -88,7 +88,7 @@ class SystemController extends Controller
 
     public function server() 
     {
-        $termlink =  view('robco/auth.txt');
+        $termlink =  view('terminal/auth.txt');
 
         $server_name = host()->server()->name;
         $org= host()->server()->org;
@@ -109,7 +109,7 @@ class SystemController extends Controller
 
     public function version() 
     {
-        view('robco/version.txt');
+        view('terminal/version.txt');
     }
 
     public static function uplink() {
@@ -124,7 +124,7 @@ class SystemController extends Controller
     
         echo <<< EOT
         
-        Uplink with central PoseidoNet initiated.
+        Uplink with central ARPANET initiated.
         Enter Security Access Code Sequence:
     
         ***********************************

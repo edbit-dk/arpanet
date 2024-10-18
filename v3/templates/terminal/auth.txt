@@ -1,0 +1,4 @@
+=------------------------------------------=
+| IBM CORPORATION UNIFIED OPERATING SYSTEM |
+|   COPYRIGHT 1969-1990 IMB CORPORATION    |
+|------------------------------------------|
