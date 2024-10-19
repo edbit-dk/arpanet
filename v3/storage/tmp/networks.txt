@@ -1,0 +1,15 @@
+US regions:
+- West
+- Central
+- East
+
+
+SUBNETS:
+
+- MILNET (Military)
+
+- SATNET (Sattelite)
+
+- NSFNET (EDU)
+
+- USENET (BBS)
