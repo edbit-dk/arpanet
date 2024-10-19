@@ -3,26 +3,25 @@
 body, input {
   font-family: 'VT323', Arial, Helvetica, sans-serif;;
   -webkit-font-smoothing: none;
-  font-size: 5.4vw;
-  padding: 1vw;
+  font-size: 5.5vw;
   line-height: 1.2;
   text-shadow: 0 0 5px #C8C8C8;
   background-color: #000000;
 }
 
 #terminal-wrapper {
-  width: 100%; /* Ensure it takes up the available width */
-  max-width: 100vw; /* Limit the width to the viewport */
+  width: 100%;
   height: 80vh; /* Adjust the height of the terminal area */
   overflow-y: auto; /* Add vertical scrolling if the content exceeds the height */
   box-sizing: border-box; /* Ensure padding is included in the width/height */
+  padding: 1vw;
 }
 
 #terminal {
   white-space: pre-wrap; /* Preserve spaces and allow wrapping */
   word-wrap: break-word; /* Break long words that don't fit */
   overflow-wrap: break-word; /* Handle wrapping for long words */
-  max-width: 100%; /* Ensure text wraps within the available width */
+  width: 100%; /* Ensure text wraps within the available width */
 }
 
 #prompt {
@@ -31,12 +30,12 @@ body, input {
     position: relative; /* Add relative positioning to parent */
     background: #00935E;
     margin-top: 10px; /* Space between the terminal content and prompt */
+    width: 99%;
 }
 
 #command-input {
     background: none;
     border: none;
-    width: 100%; /* Set width to 100% to make it full-width */
     outline: none;
     position: relative; /* Use relative positioning */
     margin-left: 2px; /* Add margin for spacing */
@@ -50,6 +49,3 @@ body, input {
 #terminal-wrapper::-webkit-scrollbar {
     display: none;
   }
-
-
- 

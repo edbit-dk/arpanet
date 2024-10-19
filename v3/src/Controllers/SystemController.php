@@ -24,7 +24,7 @@ class SystemController extends Controller
             return isset($help[$command]) ? $help[$command] : "Command not found.";
         }
         
-        $output = "CMD:\n";
+        $output = "HELP:\n";
         foreach ($help as $cmd => $text) {
             $output .= " $cmd $text\n";
         }
@@ -75,8 +75,8 @@ class SystemController extends Controller
                       -Server $server_ip-
                       
             $name
-            Password Required          [SECURITY: $level]
-            ____________________________________________
+            Password Required         [SECURITY: $level]
+            ___________________________________________
             EOT;
 
         } else {
@@ -97,7 +97,7 @@ class SystemController extends Controller
 
         echo <<< EOT
         $termlink
-                 -$server_name ($org)-
+                  -$server_name ($org)-
 
         Welcome, $username 
         __________________________________________

@@ -58,6 +58,7 @@ class HostService {
     public function logon($username, $password) {
 
         $server = false;
+        $user = false;
         $server_id = $this->server()->id;
 
         $server = Host::where('id', $server_id)
@@ -65,27 +66,37 @@ class HostService {
             ->where('password', $password)
             ->first();
 
-        if (!$server) {
-            return false;
-        } else {
+        if(!$server) {
+            $user = User::where('username', $username)
+            ->where('password', $password)->first();
+    
+            if(!$user) {
+               return false;
+            }
+
+            $user = $this->server()->user($user->id);
+
+            if(!$user) {
+                return false;
+             }
+        }
+
+        session()->set($this->guest, $server_id);
+        session()->set($this->host, $server_id);
+        return true;
+    }
+
+    public function debug($pass, $user) 
+    {
+        $server_id = $this->server()->id;
+
+        if(host()->user($user)) {
             session()->set($this->guest, $server_id);
             session()->set($this->host, $server_id);
             return true;
         }
-    }
-
-    public function debug($pass = false) 
-    {
-        if($pass) {
-            return $_SESSION['debug_pass'] = $pass;
-        }
-
-        if(isset($_SESSION['debug_pass'])) {
-            return $_SESSION['debug_pass'];
-        }
 
         return false;
-
     }
 
     public function attempts($attempt = false)

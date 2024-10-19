@@ -30,6 +30,11 @@ class Host extends Model
         return $this->BelongsToMany(User::class);
     }
 
+    public function user($user)
+    {
+        return $this->users()->where('user_id', $user)->first();
+    }
+
     public function nodes(): BelongsToMany
     {
         return $this->BelongsToMany(Host::class, 'host_node', 'host_id', 'node_id');

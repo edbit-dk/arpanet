@@ -17,8 +17,6 @@ class HostController extends Controller
         $data = strtoupper(request()->get('data'));
 
         $server = host()->connect($data);
-
-        sleep(1);
         
         if(!$server) {
             echo 'ERROR: ACCESS DENIED.';

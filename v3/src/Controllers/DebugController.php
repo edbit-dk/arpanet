@@ -28,7 +28,7 @@ class DebugController extends Controller
         } 
         
         $word_length = $_SESSION['word']; 
-        $admin_pass = $_SESSION['debug_pass'];
+        $debug_pass = $_SESSION['debug_pass'];
     
         // Initialize attempts if not already set
         if (!isset($_SESSION['debug_attempts'])) {
@@ -37,7 +37,7 @@ class DebugController extends Controller
     
         if (!isset($_SESSION['dump'])) {
             $word_list = wordlist(config('views') . '/lists/wordlist.txt', $word_length, $max_words);
-            $data = array_merge([$admin_pass], $word_list);
+            $data = array_merge([$debug_pass], $word_list);
     
             // Number of rows and columns in the memory dump
             $rows = 17;
@@ -58,8 +58,8 @@ class DebugController extends Controller
             exit;
         } else {
     
-            if ($data != $admin_pass) {
-                $match = count_match_chars($data, $admin_pass);
+            if ($data != $debug_pass) {
+                $match = count_match_chars($data, $debug_pass);
                 $_SESSION['dump'] = str_replace($data, dot_replacer($data), $_SESSION['dump']);
     
                 if(preg_match('/\([^()]*\)|\{[^{}]*\}|\[[^\[\]]*\]|<[^<>]*>/', $data)) {
@@ -101,7 +101,12 @@ class DebugController extends Controller
             } else {
                 
                 // Store the new user credentials
-                auth()->user()->hosts()->attach(host()->server()->id);
+                $server_id = host()->server()->id;
+                if(!auth()->user()->host($server_id)) {
+                    auth()->user()->hosts()->attach($server_id);
+                }
+
+                host()->debug($debug_pass, auth()->user()->id);
 
                 // Reset login attempts on successful login
                 unset($_SESSION['debug_attempts']);

@@ -50,15 +50,13 @@ class AuthController extends Controller
                     echo "Trying...\n";
                     exit;         
                 } else {
-                    echo 'ERROR: WRONG USERNAME!';
+                    echo 'ERROR: WRONG USERNAME';
                     exit;
                 }
             }
         }
 
         $params = explode(' ', $data);
-
-        $this->host->debug();
     
         // Initialize login attempts if not set
         $this->host->attempts();
@@ -68,7 +66,7 @@ class AuthController extends Controller
     
         // If no parameters provided, prompt for username
         if (empty($params)) {
-            echo "ERROR: WRONG USERNAME!";
+            echo "ERROR: WRONG USERNAME";
             exit;
         } else {
             $username = $params[0];
@@ -84,9 +82,6 @@ class AuthController extends Controller
     
                 // Reset login attempts on successful login
                 $this->host->reset();
-                auth()->user()->hosts()->attach(host()->guest());
-
-                sleep(1);
                 
                 echo "Password Accepted.\nPlease wait while system is accessed...\n+0025 XP ";
                 exit;
@@ -108,7 +103,7 @@ class AuthController extends Controller
                     exit;
                 }
     
-                echo "ERROR: WRONG USERNAME.\nAttempts Remaining: {$attempts_left}";
+                echo "ERROR: WRONG USERNAME\nAttempts Remaining: {$attempts_left}";
                 exit;
             }
         }
@@ -144,7 +139,7 @@ class AuthController extends Controller
             'password' => $input
         ]);
 
-        echo 'Password updated!';
+        echo 'SUCCESS! PASSWORD UPDATED';
         exit;
     }
 
@@ -153,7 +148,7 @@ class AuthController extends Controller
         $data = request()->get('data');
 
         if(empty($data)) {
-            echo 'ERROR: WRONG USERNAME!';
+            echo 'ERROR: WRONG USERNAME';
             exit;
         }
 
@@ -174,7 +169,7 @@ class AuthController extends Controller
         }
 
         if (User::where($this->username, '=', $username)->exists()) {
-            echo 'ERROR: Username taken!';
+            echo 'ERROR: USERNAME TAKEN';
             exit;
          }
 
@@ -191,7 +186,7 @@ class AuthController extends Controller
 
         $this->user->login($username, $password);
         
-        echo "Security Access Code Accepted.\n";
+        echo "Security Access Code Sequence Accepted.\n";
         exit;
     }
 
@@ -209,7 +204,7 @@ class AuthController extends Controller
         }
         
         auth()->logout();
-        echo "DISCONNECTING from ARPANET...\n";
+        echo "GOODBYE...\n";
     
     }
 
