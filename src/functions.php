@@ -1,6 +1,6 @@
 <?php
 
-function parse_request($url, $custom_query = 'query') {
+function request_url($url, $custom_query = 'query') {
 
     if(!empty($url)) {
         $url_components = parse_url($url);

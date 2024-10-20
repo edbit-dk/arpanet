@@ -47,3 +47,14 @@ function base_url() {
 
     echo $_SERVER['REQUEST_URI'] . 'public';
 }
+
+function parse_request($data = '') {
+
+    $data = request()->get($data);
+
+    if(is_null($data)) {
+        $data = '';
+    }
+
+    return explode(' ', trim($data));
+}

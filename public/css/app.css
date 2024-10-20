@@ -1,6 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=VT323);
 
-body, input {
+body, input, pre {
   font-family: 'VT323', Arial, Helvetica, sans-serif;;
   -webkit-font-smoothing: none;
   font-size: 5.5vw;
@@ -11,7 +11,7 @@ body, input {
 
 #terminal-wrapper {
   width: 100%;
-  height: 80vh; /* Adjust the height of the terminal area */
+  max-height: 80vh;
   overflow-y: auto; /* Add vertical scrolling if the content exceeds the height */
   box-sizing: border-box; /* Ensure padding is included in the width/height */
   padding: 1vw;
@@ -39,6 +39,7 @@ body, input {
     outline: none;
     position: relative; /* Use relative positioning */
     margin-left: 2px; /* Add margin for spacing */
+    width: 100%;
 }
 
 .container {

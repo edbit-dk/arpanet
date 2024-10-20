@@ -15,9 +15,8 @@ class AuthController extends Controller
     private $created = 'created_at';
     private $access_code = 'access_code';
 
-    private function validate($data) 
+    private function validate($input) 
     {
-        $input = explode(' ', trim($data));
 
         if (!session()->has($this->username)) {
             session()->set($this->username, $input[0]);
@@ -31,12 +30,11 @@ class AuthController extends Controller
 
     public function logon() 
     {
-        $data = request()->get('data');
+        $data = parse_request('data');
 
         if(!auth()->check()) {
-            sleep(1);
 
-            $this->validate($data);
+            $this->validate('data');
 
             if(session()->has($this->username) && session()->has($this->password)){
 
@@ -55,8 +53,6 @@ class AuthController extends Controller
                 }
             }
         }
-
-        $params = explode(' ', $data);
     
         // Initialize login attempts if not set
         $this->host->attempts();
@@ -65,17 +61,17 @@ class AuthController extends Controller
         $this->host->blocked();
     
         // If no parameters provided, prompt for username
-        if (empty($params)) {
+        if (empty($data)) {
             echo "ERROR: WRONG USERNAME";
             exit;
         } else {
-            $username = $params[0];
+            $username = $data[0];
         }
     
         // If both username and password provided, complete login process
-        if (count($params) === 2) {
-            $username = strtolower($params[0]);
-            $password = strtolower($params[1]);
+        if (count($data) === 2) {
+            $username = strtolower($data[0]);
+            $password = strtolower($data[1]);
     
             // Validate password
             if ($this->host->logon($username, $password)) {
@@ -126,17 +122,15 @@ class AuthController extends Controller
 
     public function password()
     {
-        $data = request()->get('data');
+        $input = parse_request('data');
 
         if(empty($data)) {
             echo 'ERROR: MISSING INPUT';
             exit;
         }
 
-        $input = explode(' ', trim($data))[0];
-
         auth()->user()->update([
-            'password' => $input
+            'password' => $input[0]
         ]);
 
         echo 'SUCCESS! PASSWORD UPDATED';
@@ -145,7 +139,7 @@ class AuthController extends Controller
 
     public function newuser() 
     {
-        $data = request()->get('data');
+        $data = parse_request('data');
 
         if(empty($data)) {
             echo 'ERROR: WRONG USERNAME';

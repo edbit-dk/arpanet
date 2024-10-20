@@ -317,12 +317,15 @@ function clearTerminal() {
 function loadText(text) {
     const lines = text.split('\n');
     let lineIndex = 0;
+    const preContainer = $('<pre>').css({
+        'white-space': 'pre-wrap',   // This preserves newlines and wraps long lines
+        'word-wrap': 'break-word'    // Break words if they are too long for the line
+    });
 
     function displayNextLine() {
         if (lineIndex < lines.length) {
-            const lineContainer = $('<div>');
-            simulateCRT(lines[lineIndex], lineContainer);
-            $('#terminal').append(lineContainer);
+            preContainer.append(lines[lineIndex] + '\n');  // Append line with newline
+            $('#terminal').append(preContainer);  // Append preformatted text to terminal
             scrollToBottom();
             lineIndex++;
             if (lineIndex < lines.length) {
@@ -335,6 +338,8 @@ function loadText(text) {
 
     displayNextLine();
 }
+
+
 
 // Function to simulate CRT effect
 function simulateCRT(text, container) {
