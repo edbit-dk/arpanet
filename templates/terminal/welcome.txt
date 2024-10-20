@@ -1,0 +1,11 @@
+=------------------------------------------=
+| WELCOME TO IBM CORPORATION (TM) TERMLINK |
+|------------------------------------------|
+
+This terminal allows access to ARPANET 
+(1969-1990), the transcontinental network 
+operated by the US Military, stretching 
+from US to UK and Norway by sattelite.
+
+Use UPLINK to access Central ARPANET.
+____________________________________________

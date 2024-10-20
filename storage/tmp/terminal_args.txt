@@ -1,0 +1,4 @@
+square brackets [optional option]
+angle brackets <required argument>
+curly braces {default values}
+parenthesis (miscellaneous info)

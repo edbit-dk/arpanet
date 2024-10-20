@@ -1,6 +1,0 @@
-=------------------------------------------=
-| WELCOME TO IBM CORPORATION (TM) TERMLINK |
-|           -CENTRAL ARPANET-              |
-|------------------------------------------|
-
-TERMINAL

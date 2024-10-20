@@ -1,4 +1,0 @@
-=-----------------------------------------=
-| IBM CORPORATION DISK OPERATING SYSTEM   |
-|  COPYRIGHT 1981-1982 IMB CORPORATION    |
-|-----------------------------------------|

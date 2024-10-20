@@ -1,0 +1,12 @@
+
+
+Initializing IBM Corporation(TM) 
+MF Boot Agent v2.3.0
+RETROS BIOS
+RBIOS-4.02.08.00 52EE5.E7.E8
+Copyright 1975-1977 IBM Corp.
+Uppermem: 64 KB
+
+IBM Unix Operating System (IBM UOS) v.85
+Copyright 1981-1982 IBM Corp.
+
