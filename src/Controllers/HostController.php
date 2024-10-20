@@ -22,7 +22,7 @@ class HostController extends Controller
             echo 'ERROR: ACCESS DENIED.';
             exit;
         } else {
-            echo "Contacting Host...\n";
+            echo "Contacting Host...";
             exit;
         }
 
@@ -55,30 +55,27 @@ class HostController extends Controller
         echo 'OK';
     }
 
-    // sysadmin571_bypass /: 
-    public function sysadmin()
-    {
-        echo bootup();
-    }
-
     public function scan() 
     {
+        $nodes = '';
+
         if(host()->auth() OR host()->guest()) {
             $servers = host()->server()->nodes()->get();
         } else {
             $servers  = Host::inRandomOrder()->limit(5)->get();
         }
 
-        echo "Scanning...\n \n";
+        echo "Scanning...\n";
 
         foreach ($servers as $server) {
 
-            $id = $server->id;
-            $org = $server->org;
-            $name = $server->name;
-            $location = $server->location;
+            if(isset($server->location->country)) {
+                $location = $server->location->country;
+            } else {
+                $location = 'GLOBAL';
+            }
 
-            echo "$id. $name [$org] ($location)\n";
+            echo "$server->id.  $server->name [$server->org] ($location)\n";
         }
         
     }

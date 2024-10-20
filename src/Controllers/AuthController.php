@@ -28,13 +28,29 @@ class AuthController extends Controller
 
     }
 
+    // sysadmin571_bypass /: 
+    public function sysadmin()
+    {
+       $user = host()->user(auth()->user()->id);
+
+       if($user) {
+            host()->logon($user->username, $user->password);
+       } else {
+            auth()->user()->hosts()->attach(host()->server()->id);
+       }
+
+       echo bootup();
+       echo "Password Accepted.";
+       exit;
+    }
+
     public function logon() 
     {
         $data = parse_request('data');
 
         if(!auth()->check()) {
 
-            $this->validate('data');
+            $this->validate($data);
 
             if(session()->has($this->username) && session()->has($this->password)){
 
@@ -45,7 +61,8 @@ class AuthController extends Controller
 
                 if($this->user->login($username, $password)) {
                     echo "Security Access Code Sequence Accepted.\n"; 
-                    echo "Trying...\n";
+                    echo "Trying...";
+                    sleep(1);
                     exit;         
                 } else {
                     echo 'ERROR: WRONG USERNAME';
@@ -198,6 +215,7 @@ class AuthController extends Controller
         }
         
         auth()->logout();
+        sleep(1);
         echo "GOODBYE...\n";
     
     }

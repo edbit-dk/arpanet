@@ -74,14 +74,14 @@ class SystemController extends Controller
             
             $name = host()->server()->name;
             $server_ip = host()->server()->ip;
-            $level = host()->server()->level->rep;
+            $level = host()->server()->level->id;
 
             echo <<< EOT
             $auth
                       -Server $server_ip-
                       
-            $name
-            Password Required         [SECURITY: $level]
+            <$name>
+            Password Required             [SECURITY: $level]
             ___________________________________________
             EOT;
 

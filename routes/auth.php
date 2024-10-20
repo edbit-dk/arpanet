@@ -23,6 +23,6 @@ $app->get('/logoff', [HostController::class, 'logoff']);
 $app->get('/exit', [HostController::class, 'logoff']);
 
 // Sysadmin
-$app->get('/sysadmin571_bypass', [HostController::class, 'sysadmin']);
+$app->get('/sysadmin571_bypass', [AuthController::class, 'sysadmin']);
 
 }

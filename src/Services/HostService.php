@@ -5,7 +5,8 @@ namespace App\Services;
 use App\Models\Host;
 use App\Models\User;
 
-class HostService {
+class HostService 
+{
 
     private $host = 'host';
     private $guest = 'guest';
@@ -34,7 +35,8 @@ class HostService {
 
     public function admin() 
     {
-        return $this->server()->username;
+        $user = $this->server()->user_id;
+        return $this->server()->user($user);
     }
 
     public function auth()
@@ -71,7 +73,6 @@ class HostService {
         $server_id = $this->server()->id;
 
         $server = Host::where('id', $server_id)
-            ->where('username', $username)
             ->where('password', $password)
             ->first();
 

@@ -210,9 +210,6 @@ function handleUserInput() {
 }
 
 
-
-
-
 // Function to set text and background color
 function setTheme(color) {
     $('#theme-color').attr('href', stylesheets + color + '-crt.css');
@@ -313,31 +310,31 @@ function clearTerminal() {
     $('#terminal').empty();
 }
 
-// Function to load text into terminal one line at a time
+// Function to load text into terminal one letter at a time
 function loadText(text) {
-    const lines = text.split('\n');
-    let lineIndex = 0;
+    let currentIndex = 0;
     const preContainer = $('<pre>').css({
         'white-space': 'pre-wrap',   // This preserves newlines and wraps long lines
         'word-wrap': 'break-word'    // Break words if they are too long for the line
     });
 
-    function displayNextLine() {
-        if (lineIndex < lines.length) {
-            preContainer.append(lines[lineIndex] + '\n');  // Append line with newline
-            $('#terminal').append(preContainer);  // Append preformatted text to terminal
-            scrollToBottom();
-            lineIndex++;
-            if (lineIndex < lines.length) {
-                setTimeout(displayNextLine, 300);
-            } else {
-                $('#command-input').focus();
-            }
+    $('#terminal').append(preContainer); // Append the container to the terminal
+
+    function displayNextLetter() {
+        if (currentIndex < text.length) {
+            preContainer.append(text[currentIndex]);  // Append each letter
+            currentIndex++;
+
+            scrollToBottom();  // Ensure terminal auto-scrolls to the bottom
+            setTimeout(displayNextLetter, 5);  // Delay between letters
+        } else {
+            $('#command-input').focus();  // Refocus on the input after all letters are displayed
         }
     }
 
-    displayNextLine();
+    displayNextLetter();
 }
+
 
 
 
