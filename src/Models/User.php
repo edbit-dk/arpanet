@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 use App\Models\Host;
+use App\Models\File;
+use App\Models\Folder;
 
 class User extends Model
 {
@@ -13,7 +15,7 @@ class User extends Model
     
     protected $fillable = [
 		'email',
-		'username',
+		'user_name',
 		'password',
         'access_code',
 		'firstname',
@@ -25,6 +27,18 @@ class User extends Model
         'rep',
         'last_login'
     ];
+
+    // A user can have many files
+    public function files()
+    {
+        return $this->hasMany(File::class);
+    }
+
+    // A user can have many folders
+    public function folders()
+    {
+        return $this->hasMany(Folder::class);
+    }
 
     public function hosts(): BelongsToMany
     {

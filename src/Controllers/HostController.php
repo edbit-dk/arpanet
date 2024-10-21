@@ -45,7 +45,7 @@ class HostController extends Controller
         $location = wordlist(config('views') . '/lists/statelist.txt', $pass_length , 1)[0];
         
         $host = Host::create([
-            'name' => $name,
+            'host_name' => $name,
             'password' =>  strtolower($admin_pass),
             'level_id' => $level->id,
             'location' => $location,
@@ -75,7 +75,7 @@ class HostController extends Controller
                 $location = 'GLOBAL';
             }
 
-            echo "$server->id.  $server->name [$server->org] ($location)\n";
+            echo "$server->id.  $server->host_name [$server->org] ($location)\n";
         }
         
     }

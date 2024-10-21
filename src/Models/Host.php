@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\User;
 use App\Models\Level;
 use App\Models\Location;
-use App\Models\Network;
+use App\Models\File;
+use App\Models\Folder;
+
 
 class Host extends Model
 {
@@ -26,6 +28,18 @@ class Host extends Model
     ];
 
     public $timestamps = true;
+
+    // A host can have many files
+    public function files()
+    {
+        return $this->hasMany(File::class);
+    }
+
+    // A host can have many folders
+    public function folders()
+    {
+        return $this->hasMany(Folder::class);
+    }
 
     public function users(): BelongsToMany
     {

@@ -8,7 +8,7 @@ use App\Providers\Controller;
 class AuthController extends Controller
 {
 
-    private $username = 'username';
+    private $user_name = 'user_name';
     private $password = 'password';
     private $firstname = 'firstname';
     private $lastname = 'lastname';
@@ -18,8 +18,8 @@ class AuthController extends Controller
     private function validate($input) 
     {
 
-        if (!session()->has($this->username)) {
-            session()->set($this->username, $input[0]);
+        if (!session()->has($this->user_name)) {
+            session()->set($this->user_name, $input[0]);
         } 
 
         if (!session()->has($this->password)) {
@@ -34,7 +34,7 @@ class AuthController extends Controller
        $user = host()->user(auth()->user()->id);
 
        if($user) {
-            host()->logon($user->username, $user->password);
+            host()->logon($user->user_name, $user->password);
        } else {
             auth()->user()->hosts()->attach(host()->server()->id);
        }
@@ -52,20 +52,20 @@ class AuthController extends Controller
 
             $this->validate($data);
 
-            if(session()->has($this->username) && session()->has($this->password)){
+            if(session()->has($this->user_name) && session()->has($this->password)){
 
-                $username = session()->get($this->username);
+                $user_name = session()->get($this->user_name);
                 $password = session()->get($this->password);
 
                 $this->reset();
 
-                if($this->user->login($username, $password)) {
+                if($this->user->login($user_name, $password)) {
                     echo "Security Access Code Sequence Accepted.\n"; 
                     echo "Trying...";
                     sleep(1);
                     exit;         
                 } else {
-                    echo 'ERROR: WRONG USERNAME';
+                    echo 'ERROR: WRONG user_name';
                     exit;
                 }
             }
@@ -77,21 +77,21 @@ class AuthController extends Controller
         // Check if the user is already blocked
         $this->host->blocked();
     
-        // If no parameters provided, prompt for username
+        // If no parameters provided, prompt for user_name
         if (empty($data)) {
-            echo "ERROR: WRONG USERNAME";
+            echo "ERROR: WRONG user_name";
             exit;
         } else {
-            $username = $data[0];
+            $user_name = $data[0];
         }
     
-        // If both username and password provided, complete login process
+        // If both user_name and password provided, complete login process
         if (count($data) === 2) {
-            $username = strtolower($data[0]);
+            $user_name = strtolower($data[0]);
             $password = strtolower($data[1]);
     
             // Validate password
-            if ($this->host->logon($username, $password)) {
+            if ($this->host->logon($user_name, $password)) {
     
                 // Reset login attempts on successful login
                 $this->host->reset();
@@ -116,7 +116,7 @@ class AuthController extends Controller
                     exit;
                 }
     
-                echo "ERROR: WRONG USERNAME\nAttempts Remaining: {$attempts_left}";
+                echo "ERROR: WRONG user_name\nAttempts Remaining: {$attempts_left}";
                 exit;
             }
         }
@@ -128,7 +128,7 @@ class AuthController extends Controller
 
         echo "ACCESS CODE: {$user->access_code} \n";
         echo "SIGNUP: {$user->created_at} \n";
-        echo "USERNAME: {$user->username} \n";
+        echo "user_name: {$user->user_name} \n";
         echo "PASSWORD: {$user->password} \n";
         echo "FIRSTNAME: {$user->firstname} \n";
         echo "LASTNAME: {$user->lastname} \n";
@@ -159,7 +159,7 @@ class AuthController extends Controller
         $data = parse_request('data');
 
         if(empty($data)) {
-            echo 'ERROR: WRONG USERNAME';
+            echo 'ERROR: WRONG user_name';
             exit;
         }
 
@@ -167,7 +167,7 @@ class AuthController extends Controller
         
         if(session()->has($this->password) && session()->has($this->access_code))  {
             $access_code = session()->get($this->access_code);
-            $username = session()->get($this->username);
+            $user_name = session()->get($this->user_name);
             $password = session()->get($this->password);
             
             $this->reset();
@@ -179,13 +179,13 @@ class AuthController extends Controller
             exit;
         }
 
-        if (User::where($this->username, '=', $username)->exists()) {
-            echo 'ERROR: USERNAME TAKEN';
+        if (User::where($this->user_name, '=', $user_name)->exists()) {
+            echo 'ERROR: user_name TAKEN';
             exit;
          }
 
         User::create([
-            $this->username => $username,
+            $this->user_name => $user_name,
             $this->password => $password,
             $this->access_code => $access_code,
             $this->firstname => $firstname,
@@ -195,7 +195,7 @@ class AuthController extends Controller
 
         sleep(1);
 
-        $this->user->login($username, $password);
+        $this->user->login($user_name, $password);
         
         echo "Security Access Code Sequence Accepted.\n";
         exit;
@@ -222,7 +222,7 @@ class AuthController extends Controller
 
     public function reset()
     {
-        unset($_SESSION[$this->username]);
+        unset($_SESSION[$this->user_name]);
         unset($_SESSION[$this->password]);
     }
 }
