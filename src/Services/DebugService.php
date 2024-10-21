@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Services;
 
-use App\Providers\Controller;
+use App\Models\Host;
+use App\Models\User;
 
-class DebugController extends Controller
+trait DebugService 
 {
 
     public function dump()
@@ -199,5 +200,5 @@ class DebugController extends Controller
             exit;
         }
     }
-
+  
 }

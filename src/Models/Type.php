@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 use App\Models\Host;
 
-class Location extends Model
+class Type extends Model
 {
     public $timestamps = true;
 

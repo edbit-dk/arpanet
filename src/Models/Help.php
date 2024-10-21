@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Command extends Model
+class Help extends Model
 {
+    protected $table = 'help';
+
     public $timestamps = true;
     
 }

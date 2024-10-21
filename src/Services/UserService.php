@@ -21,7 +21,7 @@ class UserService
     {
 
         $user = User::where('email', $emailOrUsername)
-                    ->orWhere('username', $emailOrUsername)
+                    ->orWhere('user_name', $emailOrUsername)
                     ->first();
 
         if (!$user) {

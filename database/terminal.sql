@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Vært: localhost
--- Genereringstid: 21. 10 2024 kl. 19:55:51
+-- Genereringstid: 21. 10 2024 kl. 21:23:59
 -- Serverversion: 8.0.39
 -- PHP-version: 8.2.24
 
@@ -20,27 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `terminal`
 --
-
--- --------------------------------------------------------
-
---
--- Struktur-dump for tabellen `commands`
---
-
-CREATE TABLE `commands` (
-  `id` bigint UNSIGNED NOT NULL,
-  `cmd` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `input` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `info` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `auth` tinyint(1) DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Data dump for tabellen `commands`
---
-
-INSERT INTO `commands` (`id`, `cmd`, `input`, `info`, `auth`) VALUES
-(1, 'HELP', '[CMD]', '(Detailed info about command)', 0);
 
 -- --------------------------------------------------------
 
@@ -78,6 +57,27 @@ CREATE TABLE `folders` (
 -- --------------------------------------------------------
 
 --
+-- Struktur-dump for tabellen `help`
+--
+
+CREATE TABLE `help` (
+  `id` bigint UNSIGNED NOT NULL,
+  `cmd` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `input` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `info` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `auth` tinyint(1) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Data dump for tabellen `help`
+--
+
+INSERT INTO `help` (`id`, `cmd`, `input`, `info`, `auth`) VALUES
+(1, 'HELP', '[CMD]', '(Detailed info about command)', 0);
+
+-- --------------------------------------------------------
+
+--
 -- Struktur-dump for tabellen `hosts`
 --
 
@@ -89,7 +89,7 @@ CREATE TABLE `hosts` (
   `org` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `active` tinyint(1) DEFAULT '1',
-  `location_id` int DEFAULT NULL,
+  `type_id` int DEFAULT NULL,
   `level_id` int NOT NULL DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
@@ -99,12 +99,12 @@ CREATE TABLE `hosts` (
 -- Data dump for tabellen `hosts`
 --
 
-INSERT INTO `hosts` (`id`, `user_id`, `password`, `host_name`, `org`, `ip`, `active`, `location_id`, `level_id`, `created_at`, `updated_at`) VALUES
+INSERT INTO `hosts` (`id`, `user_id`, `password`, `host_name`, `org`, `ip`, `active`, `type_id`, `level_id`, `created_at`, `updated_at`) VALUES
 (1, 1, 'robco', 'MILNET', 'US MILITARY', '98.46.221.126', 1, 1, 5, '1984-10-22 16:18:50', NULL),
-(2, 1, 'robco', 'USENET', 'Duke University', '191.78.206.214', 1, 0, 2, '1980-10-09 16:19:42', NULL),
-(3, 1, 'robco', 'SATNET', 'ARPA', '124.12.251.233', 1, 3, 4, '1973-10-02 16:22:26', NULL),
-(4, 1, 'robco', 'NSFNET', 'IBM', '203.209.131.14', 1, 1, 3, '1985-10-03 16:26:56', NULL),
-(5, 1, 'robco', 'ARPANET', 'US Military', '0.0.0.0', 1, 1, 1, '1969-10-10 16:29:25', NULL);
+(2, 1, 'robco', 'USENET', 'Duke University', '191.78.206.214', 1, 3, 2, '1980-10-09 16:19:42', NULL),
+(3, 1, 'robco', 'SATNET', 'ARPA', '124.12.251.233', 1, 5, 4, '1973-10-02 16:22:26', NULL),
+(4, 1, 'robco', 'BITNET', 'IBM', '203.209.131.14', 1, 2, 3, '1985-10-03 16:26:56', NULL),
+(5, 1, 'robco', 'ARPANET', 'US Military', '0.0.0.0', 1, 4, 1, '1969-10-10 16:29:25', NULL);
 
 -- --------------------------------------------------------
 
@@ -160,29 +160,6 @@ INSERT INTO `levels` (`id`, `rep`, `xp_req`, `xp_reward`, `min`, `max`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur-dump for tabellen `locations`
---
-
-CREATE TABLE `locations` (
-  `id` bigint UNSIGNED NOT NULL,
-  `country` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `info` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Data dump for tabellen `locations`
---
-
-INSERT INTO `locations` (`id`, `country`, `info`) VALUES
-(1, 'USA', 'Central'),
-(2, 'EUROPE', 'Global'),
-(3, 'AFRICA', 'Global'),
-(4, 'ASIA', 'Global'),
-(5, 'AUSTRALIA', 'Global');
-
--- --------------------------------------------------------
-
---
 -- Struktur-dump for tabellen `logs`
 --
 
@@ -194,6 +171,30 @@ CREATE TABLE `logs` (
   `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur-dump for tabellen `types`
+--
+
+CREATE TABLE `types` (
+  `id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `info` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Data dump for tabellen `types`
+--
+
+INSERT INTO `types` (`id`, `name`, `info`) VALUES
+(1, 'Military', 'Central'),
+(2, 'Education', 'Global'),
+(3, 'BBS', 'Global'),
+(4, 'Scientific', 'Global'),
+(5, 'Telecom', 'Global'),
+(6, '[REDACTED]', NULL);
 
 -- --------------------------------------------------------
 
@@ -231,13 +232,6 @@ INSERT INTO `users` (`id`, `email`, `user_name`, `password`, `access_code`, `fir
 --
 
 --
--- Indeks for tabel `commands`
---
-ALTER TABLE `commands`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
-
---
 -- Indeks for tabel `files`
 --
 ALTER TABLE `files`
@@ -254,6 +248,13 @@ ALTER TABLE `folders`
   ADD KEY `parent_id` (`parent_id`),
   ADD KEY `user_id` (`user_id`),
   ADD KEY `host_id` (`host_id`);
+
+--
+-- Indeks for tabel `help`
+--
+ALTER TABLE `help`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`);
 
 --
 -- Indeks for tabel `hosts`
@@ -283,17 +284,17 @@ ALTER TABLE `levels`
   ADD UNIQUE KEY `id` (`id`);
 
 --
--- Indeks for tabel `locations`
---
-ALTER TABLE `locations`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indeks for tabel `logs`
 --
 ALTER TABLE `logs`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id` (`id`);
+
+--
+-- Indeks for tabel `types`
+--
+ALTER TABLE `types`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indeks for tabel `users`
@@ -309,12 +310,6 @@ ALTER TABLE `users`
 --
 
 --
--- Tilføj AUTO_INCREMENT i tabel `commands`
---
-ALTER TABLE `commands`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
 -- Tilføj AUTO_INCREMENT i tabel `files`
 --
 ALTER TABLE `files`
@@ -325,6 +320,12 @@ ALTER TABLE `files`
 --
 ALTER TABLE `folders`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- Tilføj AUTO_INCREMENT i tabel `help`
+--
+ALTER TABLE `help`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `hosts`
@@ -351,16 +352,16 @@ ALTER TABLE `levels`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- Tilføj AUTO_INCREMENT i tabel `locations`
---
-ALTER TABLE `locations`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
 -- Tilføj AUTO_INCREMENT i tabel `logs`
 --
 ALTER TABLE `logs`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- Tilføj AUTO_INCREMENT i tabel `types`
+--
+ALTER TABLE `types`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `users`

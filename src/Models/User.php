@@ -20,7 +20,6 @@ class User extends Model
         'access_code',
 		'firstname',
 		'lastname',
-		'fullname',
         'active',
         'level_id',
         'xp',

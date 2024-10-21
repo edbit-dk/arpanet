@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Models\User;
 use App\Providers\Controller;
 
-class AuthController extends Controller
+class UserController extends Controller
 {
 
     private $user_name = 'user_name';
@@ -65,7 +65,7 @@ class AuthController extends Controller
                     sleep(1);
                     exit;         
                 } else {
-                    echo 'ERROR: WRONG user_name';
+                    echo 'ERROR: WRONG USERNAME';
                     exit;
                 }
             }

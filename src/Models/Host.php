@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 use App\Models\User;
 use App\Models\Level;
-use App\Models\Location;
+use App\Models\Type;
 use App\Models\File;
 use App\Models\Folder;
 
@@ -22,7 +22,7 @@ class Host extends Model
         'org',
 		'ip',
 		'status',
-		'location',
+		'type_id',
         'nodes',
         'level_id'
     ];
@@ -66,14 +66,9 @@ class Host extends Model
         return $this->hasOne(Level::class, 'id', 'level_id');
     }
 
-    public function location(): HasOne   
+    public function type(): HasOne   
     {
-        return $this->hasOne(Location::class, 'id', 'location_id');
-    }
-
-    public function network(): HasOne   
-    {
-        return $this->hasOne(Network::class, 'id', 'network_id');
+        return $this->hasOne(Type::class, 'id', 'type_id');
     }
 
 
