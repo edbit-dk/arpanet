@@ -160,7 +160,7 @@ class HostController extends Controller
         if(host()->guest()) {
             $auth =  view('terminal/auth.txt');
             
-            $name = host()->server()->name;
+            $name = host()->server()->host_name;
             $server_ip = host()->server()->ip;
             $level = host()->server()->level->id;
 
@@ -184,10 +184,10 @@ class HostController extends Controller
     {
         $termlink =  view('terminal/auth.txt');
 
-        $server_name = host()->server()->name;
+        $server_name = host()->server()->host_name;
         $org= host()->server()->org;
 
-        $username = auth()->user()->username;
+        $username = auth()->user()->user_name;
 
         echo <<< EOT
         $termlink

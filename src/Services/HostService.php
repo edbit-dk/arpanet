@@ -53,7 +53,7 @@ class HostService
     {
         $server = Host::where('id', $data)
         ->orWhere('ip', $data)
-        ->orWhere('name', $data)
+        ->orWhere('host_name', $data)
         ->where('active', 1)
         ->first();
 
@@ -77,7 +77,7 @@ class HostService
             ->first();
 
         if(!$server) {
-            $user = User::where('username', $username)
+            $user = User::where('user_name', $username)
             ->where('password', $password)->first();
     
             if(!$user) {

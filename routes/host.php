@@ -16,6 +16,9 @@ $app->get('/uplink', [HostController::class, 'uplink']);
 $app->get('/boot', [HostController::class, 'boot']);
 $app->get('/scan', [HostController::class, 'scan']);
 
+$app->get('/connect', [HostController::class, 'connect']);
+$app->get('/telnet', [HostController::class, 'connect']);
+
 if(host()->guest()) {
 
     $app->get('/dump', [HostController::class, 'dump']);
@@ -26,8 +29,6 @@ if(host()->guest()) {
 
 if(host()->auth()) {
     // Host
-    $app->get('/connect', [HostController::class, 'connect']);
-    $app->get('/telnet', [HostController::class, 'connect']);
     $app->get('/logoff', [HostController::class, 'logoff']);
     $app->get('/exit', [HostController::class, 'logoff']);
     
