@@ -31,7 +31,7 @@ class UserController extends Controller
     // sysadmin571_bypass /: 
     public function sysadmin()
     {
-       $user = host()->user(auth()->user()->id);
+       $user = host()->server()->user(auth()->user()->id);
 
        if($user) {
             host()->logon($user->user_name, $user->password);
@@ -39,8 +39,8 @@ class UserController extends Controller
             auth()->user()->hosts()->attach(host()->server()->id);
        }
 
+       echo "Password Accepted.\n";
        echo bootup();
-       echo "Password Accepted.";
        exit;
     }
 
@@ -128,7 +128,7 @@ class UserController extends Controller
 
         echo "ACCESS CODE: {$user->access_code} \n";
         echo "SIGNUP: {$user->created_at} \n";
-        echo "user_name: {$user->user_name} \n";
+        echo "USERNAME: {$user->user_name} \n";
         echo "PASSWORD: {$user->password} \n";
         echo "FIRSTNAME: {$user->firstname} \n";
         echo "LASTNAME: {$user->lastname} \n";
