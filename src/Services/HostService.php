@@ -100,7 +100,7 @@ class HostService
     {
         $server_id = $this->server()->id;
 
-        if(host()->user($user)) {
+        if($this->server()->user($user)) {
             session()->set($this->guest, $server_id);
             session()->set($this->host, $server_id);
             return true;
