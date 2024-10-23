@@ -79,7 +79,7 @@ class UserController extends Controller
     
         // If no parameters provided, prompt for user_name
         if (empty($data)) {
-            echo "ERROR: WRONG user_name";
+            echo "ERROR: WRONG USERNAME";
             exit;
         } else {
             $user_name = $data[0];
@@ -116,7 +116,7 @@ class UserController extends Controller
                     exit;
                 }
     
-                echo "ERROR: WRONG user_name\nAttempts Remaining: {$attempts_left}";
+                echo "ERROR: WRONG USERNAME\nAttempts Remaining: {$attempts_left}";
                 exit;
             }
         }
