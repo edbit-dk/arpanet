@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Services;
+namespace App\Controllers\Traits;
 
 use App\Models\Host;
 use App\Models\User;
 
-trait DebugService 
+trait DebugTrait 
 {
 
     public function dump()

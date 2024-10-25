@@ -3,7 +3,9 @@
 namespace App\Controllers;
 
 use App\Providers\Controller;
-use App\Services\DebugService;
+use App\Controllers\Traits\DebugTrait;
+use App\Controllers\Traits\FileTrait;
+use App\Services\FileService;
 
 use App\Models\Host;
 use App\Models\Level;
@@ -11,7 +13,7 @@ use App\Models\Level;
 class HostController extends Controller
 {
 
-    use DebugService;
+    use DebugTrait, FileTrait;
 
     public function index()
     {
@@ -34,6 +36,26 @@ class HostController extends Controller
             exit;
         }
 
+    }
+
+    public function echo()
+    {
+        $data = request()->get('data');
+
+        $input = explode('>', $data);
+
+        $file_content = str_replace("'", '', trim($input[0]));
+        $file_name = trim($input[1]);
+
+        $file = $this->file(
+            auth()->user()->id, 
+            host()->server()->id,
+            0,
+            $file_name,
+            $file_content
+        );
+
+        var_dump($file );
     }
 
     public function create() 

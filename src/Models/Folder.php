@@ -21,6 +21,12 @@ class Folder extends Model
         return $this->belongsTo(Host::class);
     }
 
+    // Check if the user is the owner of the folder
+    public function isOwnedBy($user)
+    {
+        return $this->user_id == $user->id;
+    }
+
     // A folder can have many files
     public function files()
     {

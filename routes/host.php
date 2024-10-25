@@ -29,6 +29,7 @@ if(host()->guest()) {
 
 if(host()->auth()) {
     // Host
+    $app->get('/echo', [HostController::class, 'echo']);
     $app->get('/logoff', [HostController::class, 'logoff']);
     $app->get('/exit', [HostController::class, 'logoff']);
     
