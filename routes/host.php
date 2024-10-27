@@ -1,6 +1,8 @@
 <?php
 
-use App\Controllers\HostController;
+use App\Host\HostController;
+use App\Host\HostService as Host;
+use App\User\UserService as User;
 
 // Home
 $app->get('/', [HostController::class, 'index']);
@@ -15,12 +17,13 @@ $app->get('/uplink', [HostController::class, 'uplink']);
 $app->get('/boot', [HostController::class, 'boot']);
 $app->get('/scan', [HostController::class, 'scan']);
 
+if(User::auth()) {
+    $app->get('/logon', [HostController::class, 'logon']);
+    $app->get('/connect', [HostController::class, 'connect']);
+    $app->get('/telnet', [HostController::class, 'connect']);
+}
 
-$app->get('/logon', [HostController::class, 'logon']);
-$app->get('/connect', [HostController::class, 'connect']);
-$app->get('/telnet', [HostController::class, 'connect']);
-
-if(host()->guest()) {
+if(Host::guest()) {
 
     $app->get('/dump', [HostController::class, 'dump']);
     $app->get('/set', [HostController::class, 'set']);
@@ -28,10 +31,10 @@ if(host()->guest()) {
 }
 
 
-if(host()->auth()) {
+if(Host::auth()) {
     // Host
     $app->get('/echo', [HostController::class, 'echo']);
-    $app->get('/logoff', [HostController::class, 'logoff']);
-    $app->get('/exit', [HostController::class, 'logoff']);
+    $app->get('/logout', [HostController::class, 'logout']);
+    $app->get('/exit', [HostController::class, 'logout']);
     
 }

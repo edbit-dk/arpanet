@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Controllers\Traits;
+namespace App\Host\File;
 
-use App\Models\File;
-use App\Models\Folder;
-use App\Models\User;
-use App\Models\Host;
+use App\Host\File\FileModel as File;
+use App\Host\Folder\FolderModel as Folder;
+use App\User\UserModel as User;
+use App\Host\HostModel as Host;
 
-trait FileTrait
+class FileService
 {
-    public function file($user_id, $host_id, $folder_id, $file_name, $content)
+    public static function create($user_id, $host_id, $folder_id, $file_name, $content): FileModel  
     {
         // Fetch the current authenticated user
         $user = User::find($user_id);
@@ -43,7 +43,7 @@ trait FileTrait
             $file->save();
 
             echo 'SUCCESS: File created successfully';
-            exit;
+            return $file;
         } else {
             echo 'ERROR: Unauthorized';
             exit;

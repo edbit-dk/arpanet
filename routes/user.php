@@ -1,8 +1,9 @@
 <?php
 
-use App\Controllers\UserController;
+use App\User\UserController;
+use App\User\UserService as User;
 
-if(auth()->check()) {
+if(User::auth()) {
 
      // Auth
      $app->get('/password', [UserController::class, 'password']);
@@ -14,7 +15,7 @@ if(auth()->check()) {
 
 }
 
-if(!auth()->check()) {
+if(!User::auth()) {
      $app->get('/login', [UserController::class, 'login']);
      $app->get('/newuser', [UserController::class, 'newuser']);
 }

@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App\Level;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Level extends Model
+class LevelModel extends Model
 {
+    protected $table = 'levels';
+
     public $timestamps = true;
     
 }

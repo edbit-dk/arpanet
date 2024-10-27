@@ -1,8 +1,9 @@
 <?php
 
-namespace Custom;
+namespace Lib;
 
-class View{
+class View
+{
     /**
      * Template being rendered.
      */

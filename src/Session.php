@@ -1,23 +1,23 @@
 <?php
 
-namespace Custom;
+namespace Lib;
 
 class Session
 {
 
-    public $cacheExpire = null;
-    public $cacheLimiter = null;
+    public static $cacheExpire = null;
+    public static $cacheLimiter = null;
 
-    public function start()
+    public static function start()
     {
         if (session_status() === PHP_SESSION_NONE) {
 
-            if ($this->cacheLimiter !== null) {
-                session_cache_limiter($this->cacheLimiter);
+            if (self::$cacheLimiter !== null) {
+                session_cache_limiter(self::$cacheLimiter);
             }
 
-            if ($this->cacheExpire !== null) {
-                session_cache_expire($this->cacheExpire);
+            if (self::$cacheExpire !== null) {
+                session_cache_expire(self::$cacheExpire);
             }
 
             session_start();
@@ -28,9 +28,9 @@ class Session
      * @param string $key
      * @return mixed
      */
-    public function get(string $key)
+    public static function get(string $key)
     {
-        if ($this->has($key)) {
+        if (self::has($key)) {
             return $_SESSION[$key];
         }
 
@@ -42,25 +42,26 @@ class Session
      * @param mixed $value
      * @return Session
      */
-    public function set(string $key, $value): Session
+    public static function set(string $key, $value)
     {
         $_SESSION[$key] = $value;
-        return $this;
+        return new static;
     }
 
-    public function remove(string $key): void
+    public static function remove(string $key): void
     {
-        if ($this->has($key)) {
+        if (self::has($key)) {
             unset($_SESSION[$key]);
         }
     }
 
-    public function clear(): void
+    public static function clear(): void
     {
         session_unset();
+        session_destroy();
     }
 
-    public function has(string $key): bool
+    public static function has(string $key): bool
     {
         return array_key_exists($key, $_SESSION);
     }

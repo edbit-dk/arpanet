@@ -1,14 +1,16 @@
 <?php
 
-namespace App\Models;
+namespace App\Host\Type;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-use App\Models\Host;
+use App\Host\HostModel as Host;
 
-class Type extends Model
+class TypeModel extends Model
 {
+    protected $table = 'types';
+
     public $timestamps = true;
 
     public function host(): BelongsTo   

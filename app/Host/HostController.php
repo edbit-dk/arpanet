@@ -1,19 +1,16 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Host;
 
-use Custom\Controller;
-use App\Controllers\Traits\DebugTrait;
-use App\Controllers\Traits\FileTrait;
-use App\Services\FileService;
+use Lib\Controller;
 
-use App\Models\Host;
-use App\Models\Level;
+use App\Host\File\FileService as File;
+
+use App\User\UserService as User;
+use App\Host\HostService as Host;
 
 class HostController extends Controller
 {
-
-    use DebugTrait, FileTrait;
 
     public function index()
     {
@@ -22,11 +19,11 @@ class HostController extends Controller
 
     public function connect() 
     {
-        $this->logoff();
+        Host::logoff();
 
         $data = strtoupper(request()->get('data'));
 
-        $server = host()->connect($data);
+        $server = Host::connect($data);
         
         if(!$server) {
             echo 'ERROR: ACCESS DENIED.';
@@ -47,8 +44,8 @@ class HostController extends Controller
         $file_content = str_replace("'", '', trim($input[0]));
         $file_name = trim($input[1]);
 
-        $file = $this->file(
-            auth()->user()->id, 
+        $file = File::create(
+            User::data()->id, 
             host()->server()->id,
             0,
             $file_name,
@@ -58,38 +55,14 @@ class HostController extends Controller
         var_dump($file );
     }
 
-    public function create() 
-    {
-        $data = request()->get('data');
-
-        $input = explode(' ', trim($data));
-
-        $name = $input[0];
-
-        $level = Level::inRandomOrder()->first();
-
-        $pass_length = rand($level->min, $level->max);
-        
-        $admin_pass = wordlist(config('views') . '/lists/wordlist.txt', $pass_length , 1)[0];
-        
-        $host = Host::create([
-            'host_name' => $name,
-            'password' =>  strtolower($admin_pass),
-            'level_id' => $level->id,
-            'ip' => random_ip()
-        ]);
-
-        echo 'OK';
-    }
-
     public function scan() 
     {
         $nodes = '';
 
-        if(host()->auth() OR host()->guest()) {
-            $servers = host()->server()->nodes()->get();
+        if(Host::auth() OR Host::guest()) {
+            $servers = Host::data()->nodes()->get();
         } else {
-            $servers  = Host::inRandomOrder()->limit(5)->get();
+            $servers  = Host::random();
         }
 
         echo "Scanning...\n";
@@ -105,18 +78,6 @@ class HostController extends Controller
             echo "$server->id. $server->host_name [$server->org] ($type)\n";
         }
         
-    }
-
-    public function logoff() 
-    {
-
-        $this->host->logout();
-        unset($_SESSION['debug_pass']);
-        unset($_SESSION['debug_attempts']);
-        unset($_SESSION['user_blocked']);
-        unset($_SESSION['dump']);
-        unset($_SESSION['root']);
-        unset($_SESSION['maint']);
     }
 
     public function help()
@@ -166,7 +127,7 @@ class HostController extends Controller
             return $this->server();
         }
 
-        if(auth()->check()) {
+        if(User::auth()) {
             return $this->termlink();
         }
 
@@ -180,12 +141,12 @@ class HostController extends Controller
         if(host()->guest()) {
             view('terminal/auth.txt');
             
-            $name = host()->server()->host_name;
-            $server_ip = host()->server()->ip;
-            $level = host()->server()->level->id;
+            $name = host()->data()->host_name;
+            $server_ip = host()->data()->ip;
+            $level = host()->data()->level->id;
 
             echo <<< EOT
-                      -Server $server_ip-
+                       -Server $server_ip-
                       
             <$name>
             Password Required             [SECURITY: $level]
@@ -203,10 +164,10 @@ class HostController extends Controller
     {
         view('terminal/auth.txt');
 
-        $server_name = host()->server()->host_name;
-        $org= host()->server()->org;
+        $server_name = host()->data()->host_name;
+        $org= host()->data()->org;
 
-        $username = auth()->user()->user_name;
+        $username = auth()->data()->user_name;
 
         echo <<< EOT
                   -$server_name ($org)-
@@ -217,6 +178,11 @@ class HostController extends Controller
 
         return;
 
+    }
+
+    public function logout() 
+    {
+        return Host::logoff();
     }
 
     public function version() 
@@ -246,7 +212,7 @@ class HostController extends Controller
 
         !!! NEWUSER: BACKUP ACCESS CODE !!!
 
-        1. Type LOGON for more commands.
+        1. Type LOGIN for authentication.
         2. Type NEWUSER to create an account.
         3. Type HELP for a command list.
       

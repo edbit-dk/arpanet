@@ -1,6 +1,6 @@
 <?php
 
-namespace Custom;
+namespace Lib;
 
 
 class App 

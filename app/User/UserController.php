@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Controllers;
+namespace App\User;
 
-use Custom\Controller;
+use Lib\Controller;
 
-use App\Models\User;
+use App\User\UserModel as User;
 
 class UserController extends Controller
 {
@@ -196,7 +196,7 @@ class UserController extends Controller
 
         sleep(1);
 
-        $this->user->login($user_name, $password);
+        User::login($user_name, $password);
         
         echo "Security Access Code Sequence Accepted.\n";
         exit;
@@ -211,7 +211,7 @@ class UserController extends Controller
         }
         
         if(host()->guest()) {
-            host()->logout();
+            host()->logoff();
             exit;
         }
         

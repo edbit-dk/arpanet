@@ -1,15 +1,17 @@
 <?php
 
-namespace App\Models;
+namespace App\Host\File;
 
 use Illuminate\Database\Eloquent\Model;
 
-use App\Models\User;
-use App\Models\Host;
-use App\Models\Folder;
+use App\User\UserModel as User;
+use App\Host\HostModel as Host;
+use App\Host\Folder\FolderModel as Folder;
 
-class File extends Model
+class FileModel extends Model
 {
+    protected $table = 'files';
+
     // A file belongs to a user (owner)
     public function user()
     {

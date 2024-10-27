@@ -166,7 +166,7 @@ function handleUserInput() {
     const command = parts[0];
     const args = parts.slice(1).join(' ');
 
-    // Block newuser and logon commands if uplink is not set
+    // Block newuser and logon/login commands if uplink is not set
     if (['newuser', 'logon', 'login'].includes(command) && !sessionStorage.getItem('uplink')) {
         loadText("ERROR: Uplink Required!");
         return; // Stop the process if uplink is not set
@@ -194,8 +194,8 @@ function handleUserInput() {
             $('#command-input').attr('type', 'text'); // Ensure input is set to text for username
             return;
         }
-        handleLogon(args); // Handle logon command with username provided
-    } else if (['logout', 'logoff', 'reboot', 'dc', 'restart', 'start', 'autoexec', 'exit'].includes(command)) {
+        handleLogon(args, command); // Pass command as argument
+    } else if (['logout', 'reboot', 'dc', 'restart', 'start', 'autoexec', 'exit'].includes(command)) {
         loadText("Please wait...");
         sendCommand(command, args); // Send the command to the server
         setTimeout(function() {
@@ -209,12 +209,6 @@ function handleUserInput() {
     }
 }
 
-
-// Function to set text and background color
-function setTheme(color) {
-    $('#theme-color').attr('href', stylesheets + color + '-crt.css');
-    localStorage.setItem('theme', color);
-}
 
 // Function to handle the NEWUSER command
 function handleNewUser(username) {
@@ -238,7 +232,7 @@ function handleNewUser(username) {
 }
 
 // Function to handle the LOGON command
-function handleLogon(username) {
+function handleLogon(username, command = 'logon') {
     if (!sessionStorage.getItem('uplink')) {
         loadText("ERROR: Uplink Required!");
         return;
@@ -254,10 +248,10 @@ function handleLogon(username) {
     if (isPasswordPrompt) return; // Already prompting for password, do nothing
     isPasswordPrompt = true;
     usernameForLogon = username;
+    currentCommand = command; // Track the actual command used
     loadText("ENTER PASSWORD:");
     $('#command-input').attr('type', 'password'); // Change input to password
 }
-
 
 // Function to handle password prompt
 function handlePasswordPrompt() {
@@ -265,7 +259,7 @@ function handlePasswordPrompt() {
     userPassword = password;
 
     if (usernameForLogon) {
-        sendCommand('logon', usernameForLogon + ' ' + password);
+        sendCommand(currentCommand, usernameForLogon + ' ' + password); // Send correct command
         usernameForLogon = '';
     } else if (usernameForNewUser) {
         sendCommand('newuser', usernameForNewUser + ' ' + password);
@@ -296,6 +290,12 @@ function handlePasswordPromptResponse(response) {
         }
     }
     $('#command-input').val('');
+}
+
+// Function to set text and background color
+function setTheme(color) {
+    $('#theme-color').attr('href', stylesheets + color + '-crt.css');
+    localStorage.setItem('theme', color);
 }
 
 // Function to append command to terminal window
@@ -334,9 +334,6 @@ function loadText(text) {
 
     displayNextLetter();
 }
-
-
-
 
 // Function to simulate CRT effect
 function simulateCRT(text, container) {

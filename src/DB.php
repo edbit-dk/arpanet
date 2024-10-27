@@ -1,8 +1,8 @@
 <?php
 
-namespace Custom;
+namespace Lib;
 
-use Custom\Database;
+use Lib\Database;
 
 use PDO;
 

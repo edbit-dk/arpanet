@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Models;
+namespace App\User;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-use App\Models\Host;
-use App\Models\File;
-use App\Models\Folder;
+use App\Host\HostModel as Host;
+use App\Host\File\FileModel as File;
+use App\Host\Folder\FolderModel as Folder;
 
-class User extends Model
+class UserModel extends Model
 {
+    protected $table = 'users';
     public $timestamps = true;
     
     protected $fillable = [

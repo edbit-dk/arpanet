@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace App\Log;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Help extends Model
+class LogModel extends Model
 {
-    protected $table = 'help';
-
+    protected $table = 'logs';
     public $timestamps = true;
     
 }

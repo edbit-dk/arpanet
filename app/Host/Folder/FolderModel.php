@@ -1,14 +1,17 @@
 <?php
 
-namespace App\Models;
+namespace App\Host\Folder;
 
 use Illuminate\Database\Eloquent\Model;
 
-use App\Models\File;
-use App\Models\User;
+use App\Host\HostModel as Host;
+use App\Host\File\FileModel as File;
+use App\User\UserModel as User;
 
-class Folder extends Model
+class FolderModel extends Model
 {
+    protected $table = 'folders';
+
     // A folder belongs to a user (owner)
     public function user()
     {
@@ -36,12 +39,12 @@ class Folder extends Model
     // A folder can have many subfolders (self-referencing one-to-many relationship)
     public function subfolders()
     {
-        return $this->hasMany(Folder::class, 'parent_id');
+        return $this->hasMany(FolderModel::class, 'parent_id');
     }
 
     // A folder can belong to a parent folder
     public function parentFolder()
     {
-        return $this->belongsTo(Folder::class, 'parent_id');
+        return $this->belongsTo(FolderModel::class, 'parent_id');
     }
 }

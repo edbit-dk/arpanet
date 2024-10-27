@@ -1,11 +1,8 @@
 <?php
 
-namespace App\Controllers\Traits;
+namespace App\Host\Debug;
 
-use App\Models\Host;
-use App\Models\User;
-
-trait DebugTrait 
+class DebugService
 {
 
     public function dump()
@@ -148,7 +145,7 @@ trait DebugTrait
         }
     
         if(strpos('HALT', $command) !== false) {
-            $this->user->logout();
+           // $this->user->logout();
             
             echo 'SHUTTING DOWN...';
             exit;

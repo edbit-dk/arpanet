@@ -1,6 +1,6 @@
 <?php
 
-use App\Controllers\TestController;
+use App\Test\TestController;
 
 $app->get('/test', [TestController::class, 'index']);
 
