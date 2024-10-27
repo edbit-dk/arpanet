@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Providers\Controller;
+use Custom\Controller;
 use App\Controllers\Traits\DebugTrait;
 use App\Controllers\Traits\FileTrait;
 use App\Services\FileService;
@@ -170,9 +170,7 @@ class HostController extends Controller
             return $this->termlink();
         }
 
-        $welcome = view('terminal/welcome.txt');
-
-        echo $welcome;
+        view('terminal/welcome.txt');
     }
 
     public function termlink() 
@@ -180,14 +178,13 @@ class HostController extends Controller
         $server_id = false;
 
         if(host()->guest()) {
-            $auth =  view('terminal/auth.txt');
+            view('terminal/auth.txt');
             
             $name = host()->server()->host_name;
             $server_ip = host()->server()->ip;
             $level = host()->server()->level->id;
 
             echo <<< EOT
-            $auth
                       -Server $server_ip-
                       
             <$name>
@@ -204,7 +201,7 @@ class HostController extends Controller
 
     public function server() 
     {
-        $termlink =  view('terminal/auth.txt');
+        view('terminal/auth.txt');
 
         $server_name = host()->server()->host_name;
         $org= host()->server()->org;
@@ -212,7 +209,6 @@ class HostController extends Controller
         $username = auth()->user()->user_name;
 
         echo <<< EOT
-        $termlink
                   -$server_name ($org)-
 
         Welcome, $username 

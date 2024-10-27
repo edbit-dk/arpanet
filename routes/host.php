@@ -2,7 +2,6 @@
 
 use App\Controllers\HostController;
 
-
 // Home
 $app->get('/', [HostController::class, 'index']);
 
@@ -16,6 +15,8 @@ $app->get('/uplink', [HostController::class, 'uplink']);
 $app->get('/boot', [HostController::class, 'boot']);
 $app->get('/scan', [HostController::class, 'scan']);
 
+
+$app->get('/logon', [HostController::class, 'logon']);
 $app->get('/connect', [HostController::class, 'connect']);
 $app->get('/telnet', [HostController::class, 'connect']);
 

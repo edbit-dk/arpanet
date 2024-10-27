@@ -2,8 +2,9 @@
 
 namespace App\Controllers;
 
+use Custom\Controller;
+
 use App\Models\User;
-use App\Providers\Controller;
 
 class UserController extends Controller
 {
@@ -44,7 +45,7 @@ class UserController extends Controller
        exit;
     }
 
-    public function logon() 
+    public function login() 
     {
         $data = parse_request('data');
 

@@ -1,21 +1,21 @@
 <?php
 
-$c = new App\Providers\Container();
+$c = new Custom\Container();
 
 $c->set('config', function() {
     return require BASE_PATH . '/config/settings.php';
 });
 
 $c->set('view', function($c) {
-    return new App\Providers\View($c->config['views']);
+    return new Custom\View($c->config['views']);
 });
 
 $c->set('request', function() {
-    return new App\Providers\Request();
+    return new Custom\Request();
 });
 
 $c->set('session', function() {
-    return new App\Providers\Session();
+    return new Custom\Session();
 });
 
 $capsule = new \Illuminate\Database\Capsule\Manager;
@@ -35,5 +35,5 @@ $c->set('host', function() {
     return new App\Services\HostService();
 });
 
-$app = new App\Providers\Router($c->request, $c);
+$app = new Custom\Router($c->request, $c);
 $app->notFound($c->config['views'] . '404.php');

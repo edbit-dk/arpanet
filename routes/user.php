@@ -15,5 +15,6 @@ if(auth()->check()) {
 }
 
 if(!auth()->check()) {
+     $app->get('/login', [UserController::class, 'login']);
      $app->get('/newuser', [UserController::class, 'newuser']);
 }

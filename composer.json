@@ -5,12 +5,13 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src"
+            "Custom\\":"src",
+            "App\\": "app"
         },
 
         "files": [
-            "src/helpers.php",
-            "src/functions.php"
+            "app/helpers.php",
+            "app/functions.php"
         ]
     }
 }

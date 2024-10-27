@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Providers;
+namespace Custom;
 
-use App\Providers\Database;
+use Custom\Database;
 
 use PDO;
 

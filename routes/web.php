@@ -1,10 +1,8 @@
 <?php
 
-use App\Controllers\DefaultController;
+use App\Controllers\TestController;
 
-
-// Default
-require BASE_PATH . '/routes/default.php';
+$app->get('/test', [TestController::class, 'index']);
 
 // User
 require BASE_PATH . '/routes/user.php';
