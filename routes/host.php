@@ -19,13 +19,12 @@ $app->get('/boot', [HostController::class, 'boot']);
 $app->get('/scan', [HostController::class, 'scan']);
 
 if(User::auth()) {
-    $app->get('/logon', [HostController::class, 'logon']);
     $app->get('/connect', [HostController::class, 'connect']);
     $app->get('/telnet', [HostController::class, 'connect']);
 }
 
 if(Host::guest()) {
-
+    $app->get('/logon', [HostController::class, 'logon']);
     $app->get('/dump', [DebugController::class, 'dump']);
     $app->get('/set', [DebugController::class, 'set']);
     $app->get('/run', [DebugController::class, 'run']);    

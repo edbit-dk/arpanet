@@ -180,6 +180,23 @@ class HostController extends Controller
 
     }
 
+    public function logon() 
+    {
+        $data = request()->get('data');
+
+        $input = explode(' ', $data);
+
+        if(Host::logon($input[0],  $input[1])) {
+            echo <<< EOT
+            Password Accepted. 
+            Please wait while system is accessed...
+            EOT;
+        } else {
+            echo 'ERROR: Access Denied.';
+        }
+        
+    }
+
     public function logout() 
     {
         return Host::logoff();
