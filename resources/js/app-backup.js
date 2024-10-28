@@ -134,7 +134,7 @@ function handleUserInput() {
 
     // Check if a username or password prompt is active
     if (isUsernamePrompt) {
-        // Handle username input for newuser or logon
+        // Handle username input for newuser or login/logon
         if (input) {
             if (currentCommand === 'newuser') {
                 usernameForNewUser = input;
@@ -142,7 +142,7 @@ function handleUserInput() {
                 isUsernamePrompt = false; // Username phase is over
                 isPasswordPrompt = true; // Move to password phase
                 $('#command-input').attr('type', 'password'); // Change input to password
-            } else if (currentCommand === 'logon') {
+            } else if (currentCommand === 'login' || currentCommand === 'logon') {
                 usernameForLogon = input;
                 loadText("ENTER PASSWORD:");
                 isUsernamePrompt = false; // Username phase is over
@@ -166,7 +166,7 @@ function handleUserInput() {
     const command = parts[0];
     const args = parts.slice(1).join(' ');
 
-    // Block newuser and logon/login commands if uplink is not set
+    // Block newuser and login/logon commands if uplink is not set
     if (['newuser', 'logon', 'login'].includes(command) && !sessionStorage.getItem('uplink')) {
         loadText("ERROR: Uplink Required!");
         return; // Stop the process if uplink is not set
@@ -190,12 +190,12 @@ function handleUserInput() {
         if (!args) {
             loadText("ENTER USERNAME:");
             isUsernamePrompt = true;
-            currentCommand = 'logon'; // Track the current command
+            currentCommand = command; // Track the current command as either 'logon' or 'login'
             $('#command-input').attr('type', 'text'); // Ensure input is set to text for username
             return;
         }
-        handleLogon(args, command); // Pass command as argument
-    } else if (['logout', 'reboot', 'dc', 'restart', 'start', 'autoexec', 'exit'].includes(command)) {
+        handleLogon(args); // Handle logon command with username provided
+    } else if (['logout', 'logoff', 'reboot', 'dc', 'restart', 'start', 'autoexec', 'exit'].includes(command)) {
         loadText("Please wait...");
         sendCommand(command, args); // Send the command to the server
         setTimeout(function() {
@@ -231,8 +231,8 @@ function handleNewUser(username) {
     $('#command-input').attr('type', 'password'); // Change input to password
 }
 
-// Function to handle the LOGON command
-function handleLogon(username, command = 'logon') {
+// Function to handle the LOGON/LOGIN command
+function handleLogon(username) {
     if (!sessionStorage.getItem('uplink')) {
         loadText("ERROR: Uplink Required!");
         return;
@@ -248,7 +248,6 @@ function handleLogon(username, command = 'logon') {
     if (isPasswordPrompt) return; // Already prompting for password, do nothing
     isPasswordPrompt = true;
     usernameForLogon = username;
-    currentCommand = command; // Track the actual command used
     loadText("ENTER PASSWORD:");
     $('#command-input').attr('type', 'password'); // Change input to password
 }
@@ -258,10 +257,10 @@ function handlePasswordPrompt() {
     const password = $('#command-input').val().trim();
     userPassword = password;
 
-    if (usernameForLogon) {
-        sendCommand(currentCommand, usernameForLogon + ' ' + password); // Send correct command
+    if (currentCommand === 'logon' || currentCommand === 'login') {
+        sendCommand(currentCommand, usernameForLogon + ' ' + password);
         usernameForLogon = '';
-    } else if (usernameForNewUser) {
+    } else if (currentCommand === 'newuser') {
         sendCommand('newuser', usernameForNewUser + ' ' + password);
         usernameForNewUser = '';
     }

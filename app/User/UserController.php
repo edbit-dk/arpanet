@@ -5,6 +5,7 @@ namespace App\User;
 use Lib\Controller;
 
 use App\User\UserModel as User;
+use App\User\UserService as Auth;
 
 class UserController extends Controller
 {
@@ -49,7 +50,7 @@ class UserController extends Controller
     {
         $data = parse_request('data');
 
-        if(!auth()->check()) {
+        if(!Auth::check()) {
 
             $this->validate($data);
 
@@ -173,8 +174,8 @@ class UserController extends Controller
             
             $this->reset();
 
-            $firstname = ucfirst(strtolower(wordlist($this->config['views'] . '/lists/namelist.txt', rand(5, 12) , 1)[0]));
-            $lastname = ucfirst(strtolower(wordlist($this->config['views']. '/lists/namelist.txt', rand(5, 12) , 1)[0]));
+            $firstname = ucfirst(strtolower(wordlist($this->config['database'] . 'namelist.txt', rand(5, 12) , 1)[0]));
+            $lastname = ucfirst(strtolower(wordlist($this->config['database']. 'namelist.txt', rand(5, 12) , 1)[0]));
         } else {
             echo 'ERROR: INPUT MISSING!';
             exit;

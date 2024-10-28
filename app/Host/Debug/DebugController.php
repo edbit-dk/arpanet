@@ -2,14 +2,14 @@
 
 namespace App\Host\Debug;
 
-class DebugService
+class DebugController
 {
 
     public function dump()
     {
         $data = request()->get('data');
 
-        $level = host()->server()->level;
+        $level = host()->data()->level;
         $min_level = $level->min;
         $max_level = $level->max;
 
@@ -22,7 +22,7 @@ class DebugService
     
             // min: 2 max: 15
             $_SESSION['word'] = rand($min_level, $max_level);
-            $_SESSION['debug_pass'] = wordlist(config('views') . '/lists/wordlist.txt', $_SESSION['word'] , 1)[0];
+            $_SESSION['debug_pass'] = wordlist(config('database') . 'wordlist.txt', $_SESSION['word'] , 1)[0];
         } 
         
         $word_length = $_SESSION['word']; 
@@ -34,12 +34,12 @@ class DebugService
         }
     
         if (!isset($_SESSION['dump'])) {
-            $word_list = wordlist(config('views') . '/lists/wordlist.txt', $word_length, $max_words);
+            $word_list = wordlist(config('database') . 'wordlist.txt', $word_length, $max_words);
             $data = array_merge([$debug_pass], $word_list);
     
             // Number of rows and columns in the memory dump
             $rows = 17;
-            $columns = 2;
+            $columns = 3;
     
             // Generate the memory dump
             $memoryDump = mem_dump($rows, $columns, $data, $word_length);
@@ -192,7 +192,7 @@ class DebugService
     
         if(strpos('DEBUG/ACCOUNTS.F', $command) !== false) {
             session()->set('debug', true);
-            echo view('terminal/attempts.txt') . "\n";
+            view('terminal/attempts.txt') . "\n";
             echo $this->dump();
             exit;
         }

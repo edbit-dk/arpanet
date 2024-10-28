@@ -216,7 +216,7 @@ class HostController extends Controller
         2. Type NEWUSER to create an account.
         3. Type HELP for a command list.
       
-        > LOGON 
+        > LOGIN 
         > NEWUSER
         _________________________________________
         EOT;

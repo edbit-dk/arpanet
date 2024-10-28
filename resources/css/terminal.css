@@ -1,0 +1,36 @@
+#terminal-wrapper {
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto; /* Add vertical scrolling if the content exceeds the height */
+    box-sizing: border-box; /* Ensure padding is included in the width/height */
+    padding: 1vw;
+  }
+  
+  #terminal {
+    white-space: pre-wrap; /* Preserve spaces and allow wrapping */
+    word-wrap: break-word; /* Break long words that don't fit */
+    overflow-wrap: break-word; /* Handle wrapping for long words */
+    width: 100%; /* Ensure text wraps within the available width */
+  }
+
+  #terminal-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+
+  #prompt {
+    display: flex;
+    align-items: center;
+    position: relative; /* Add relative positioning to parent */
+    background: #00935E;
+    margin-top: 10px; /* Space between the terminal content and prompt */
+    width: 99%;
+}
+
+#command-input {
+    background: none;
+    border: none;
+    outline: none;
+    position: relative; /* Use relative positioning */
+    margin-left: 2px; /* Add margin for spacing */
+    width: 100%;
+}

@@ -1,6 +1,7 @@
 <?php
 
 use App\Host\HostController;
+use App\Host\Debug\DebugController;
 use App\Host\HostService as Host;
 use App\User\UserService as User;
 
@@ -25,9 +26,9 @@ if(User::auth()) {
 
 if(Host::guest()) {
 
-    $app->get('/dump', [HostController::class, 'dump']);
-    $app->get('/set', [HostController::class, 'set']);
-    $app->get('/run', [HostController::class, 'run']);    
+    $app->get('/dump', [DebugController::class, 'dump']);
+    $app->get('/set', [DebugController::class, 'set']);
+    $app->get('/run', [DebugController::class, 'run']);    
 }
 
 
