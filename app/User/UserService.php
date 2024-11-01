@@ -3,12 +3,12 @@
 namespace App\User;
 
 use App\User\UserModel as User;
-
 use Lib\Session;
 
 class UserService 
 {
     private static $auth = 'user';
+
     public static function data() 
     {
         if(self::auth()) {
@@ -49,7 +49,8 @@ class UserService
         return false;
     }
 
-    public static function logout() {
+    public static function logout() 
+    {
         Session::clear();
     }
 

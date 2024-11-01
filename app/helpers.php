@@ -26,8 +26,12 @@ function session() {
     return app('session');
 }
 
-function auth() {
+function user() {
     return app('user');
+}
+
+function auth() {
+    return user()->data();
 }
 
 function host() {

@@ -1,8 +1,9 @@
 <?php
 
-use App\Test\TestController;
+use App\System\SystemController;
 
-$app->get('/test', [TestController::class, 'index']);
+$app->get('/test', [SystemController::class, 'test']);
+$app->get('/minify', [SystemController::class, 'minify']);
 
 // User
 require BASE_PATH . '/routes/user.php';

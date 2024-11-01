@@ -8,7 +8,7 @@ class App
     protected static $instance = null;
 
 
-    public static function getInstance(...$args)
+    public static function factory(...$args)
     {
         if (!isset(self::$instance[static::class])) {
             $class = static::class;
@@ -20,7 +20,7 @@ class App
 
     public static function __callStatic($method, $args) 
     {
-        $instance = self::getInstance();
+        $instance = self::factory();
         return call_user_func_array([$instance, $method], $args);
     }
 }

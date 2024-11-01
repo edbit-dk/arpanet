@@ -25,6 +25,17 @@ class HostService
             return Host::find(self::auth());
         }
 
+        return false;
+
+    }
+
+    public function hostname()
+    {
+        if(self::data()) {
+            return self::data()->host_name;
+        } 
+
+        return false;
     }
 
     public static function random($limit = 5) 

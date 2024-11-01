@@ -85,7 +85,7 @@ class HostController extends Controller
 
         $help = [];
 
-        if(auth()->check() && !host()->check()) {
+        if(user()->auth() && !host()->check()) {
             $help = require config('path') . '/storage/array/user.php';
         }
         

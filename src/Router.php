@@ -2,6 +2,8 @@
 
 namespace Lib;
 
+use Lib\Request;
+
 class Router
 {
     public $routes = [];

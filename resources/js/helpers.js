@@ -6,9 +6,8 @@ function handleRedirect(response) {
             loadText("Accessing Mainframe...");
 
             setTimeout(function() {
-                clearTerminal();
-                sendCommand('welcome', '');
-            }, 2000);
+                redirectTo('');
+            }, 1000);
 
         }, 2000);
     }
@@ -16,8 +15,7 @@ function handleRedirect(response) {
     if (response.startsWith("EXCACT")) {
         setTimeout(function() {
             setTimeout(function() {
-                clearTerminal();
-                sendCommand('welcome', '');
+                redirectTo('');
             }, 2500);
 
         }, 2000);
@@ -26,9 +24,8 @@ function handleRedirect(response) {
     if (response.startsWith("Password")) {
         setTimeout(function() {
             setTimeout(function() {
-                clearTerminal();
-                sendCommand('welcome', '');
-            }, 2500);
+                redirectTo('');
+            }, 1000);
 
         }, 2000);
     }
@@ -36,12 +33,11 @@ function handleRedirect(response) {
     if (response.startsWith("Security")) {
             setTimeout(function() {
 
-                loadText("Welcome to ARPANET!");
+                loadText("SUCCESS: Welcome to ARPANET");
 
                 setTimeout(function() {
-                    clearTerminal();
-                    sendCommand('welcome', '');
-                }, 2500);
+                    redirectTo('');
+                }, 2000);
 
             }, 2000);
     }

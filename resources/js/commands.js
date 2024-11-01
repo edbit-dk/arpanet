@@ -112,8 +112,7 @@ function handleUserInput() {
         loadText("Please wait...");
         sendCommand(command, args); // Send the command to the server
         setTimeout(function() {
-            clearTerminal();
-            sendCommand('welcome', '');
+            redirectTo('');
         }, 2500);
     } else if (command === 'color') {
         setTheme(args); // Handle color setting

@@ -20,8 +20,8 @@ $c->set('session', function() {
     return new Lib\Session();
 });
 
-$c->set('db', function($capsule) {
-    return $capsule;
+$c->set('db', function($db) {
+    return $db;
 });
 
 $c->set('user', function() {
@@ -32,10 +32,10 @@ $c->set('host', function() {
     return new App\Host\HostService();
 });
 
-$capsule = new \Illuminate\Database\Capsule\Manager;
-$capsule->addConnection($c->config['db']);
-$capsule->setAsGlobal();
-$capsule->bootEloquent();
+$db = new \Illuminate\Database\Capsule\Manager;
+$db->addConnection($c->config['db']);
+$db->setAsGlobal();
+$db->bootEloquent();
 
 $app = new Lib\Router($c->request, $c);
 $app->notFound($c->config['views'] . '404.php');

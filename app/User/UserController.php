@@ -20,11 +20,11 @@ class UserController extends Controller
     private function validate($input) 
     {
 
-        if (!session()->has($this->user_name)) {
+        if (!session()->has($this->user_name) && isset($input[0])) {
             session()->set($this->user_name, $input[0]);
         } 
 
-        if (!session()->has($this->password)) {
+        if (!session()->has($this->password) && isset($input[1])) {
             session()->set($this->password, $input[1]);
         } 
 
@@ -33,16 +33,16 @@ class UserController extends Controller
     // sysadmin571_bypass /: 
     public function sysadmin()
     {
-       $user = host()->server()->user(auth()->user()->id);
+       $user = host()->data()->user(auth()->id);
 
        if($user) {
             host()->logon($user->user_name, $user->password);
        } else {
-            auth()->user()->hosts()->attach(host()->server()->id);
+            user()->hosts()->attach(host()->data()->id);
        }
 
-       echo "Password Accepted.\n";
        echo bootup();
+       echo "SUCCESS: Password Accepted\n";
        exit;
     }
 
@@ -61,7 +61,7 @@ class UserController extends Controller
 
                 $this->reset();
 
-                if($this->user->login($user_name, $password)) {
+                if(Auth::login($user_name, $password)) {
                     echo "Security Access Code Sequence Accepted.\n"; 
                     echo "Trying...";
                     sleep(1);
@@ -98,7 +98,7 @@ class UserController extends Controller
                 // Reset login attempts on successful login
                 $this->host->reset();
                 
-                echo "Password Accepted.\nPlease wait while system is accessed...\n+0025 XP ";
+                echo "SUCCESS: Password Accepted.\nPlease wait while system is accessed...\n+0025 XP ";
                 exit;
     
             } else {
@@ -126,7 +126,7 @@ class UserController extends Controller
 
     public function user() 
     {
-        $user = auth()->user();
+        $user = auth();
 
         echo "ACCESS CODE: {$user->access_code} \n";
         echo "SIGNUP: {$user->created_at} \n";
@@ -148,7 +148,7 @@ class UserController extends Controller
             exit;
         }
 
-        auth()->user()->update([
+        auth()->update([
             'password' => $input[0]
         ]);
 
@@ -206,17 +206,10 @@ class UserController extends Controller
     public function logout() 
     {
 
-        if(host()->auth()) {
-            host()->logout();
-            exit;
-        }
+        host()->logoff();
         
-        if(host()->guest()) {
-            host()->logoff();
-            exit;
-        }
-        
-        auth()->logout();
+        user()->logout();
+
         sleep(1);
         echo "GOODBYE...\n";
     

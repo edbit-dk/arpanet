@@ -2,6 +2,11 @@
 
 namespace App\Host\Debug;
 
+use App\Host\HostService as Host;
+use App\User\UserService as Auth;
+use Lib\Session;
+use Lib\Request;
+
 class DebugController
 {
 
@@ -9,7 +14,7 @@ class DebugController
     {
         $data = request()->get('data');
 
-        $level = host()->data()->level;
+        $level = Host::data()->level;
         $min_level = $level->min;
         $max_level = $level->max;
 
@@ -18,22 +23,24 @@ class DebugController
         $max_words = rand($min_level, $max_level);
         $max_attempts = 4;
     
-        if (!isset($_SESSION['debug_pass'])) {
+        if (!Session::has('debug_pass')) {
     
             // min: 2 max: 15
-            $_SESSION['word'] = rand($min_level, $max_level);
-            $_SESSION['debug_pass'] = wordlist(config('database') . 'wordlist.txt', $_SESSION['word'] , 1)[0];
+            Session::set('word', rand($min_level, $max_level));
+            Session::set('debug_pass',
+            wordlist(config('database') . 'wordlist.txt', Session::get('word'), 1)[0]
+            );
         } 
         
-        $word_length = $_SESSION['word']; 
-        $debug_pass = $_SESSION['debug_pass'];
+        $word_length = Session::get('word'); 
+        $debug_pass = Session::get('debug_pass');
     
         // Initialize attempts if not already set
-        if (!isset($_SESSION['debug_attempts'])) {
-            $_SESSION['debug_attempts'] = $max_attempts;
+        if (!Session::has('debug_attempts')) {
+            Session::set('debug_attempts', $max_attempts);
         }
     
-        if (!isset($_SESSION['dump'])) {
+        if (!Session::has('dump')) {
             $word_list = wordlist(config('database') . 'wordlist.txt', $word_length, $max_words);
             $data = array_merge([$debug_pass], $word_list);
     
@@ -45,74 +52,77 @@ class DebugController
             $memoryDump = mem_dump($rows, $columns, $data, $word_length);
     
             // Format and output the memory dump with memory paths
-            if (!isset($_SESSION['debug'])) {
+            if (!Session::has('debug')) {
                 view('/terminal/debug.txt');
             }
+            $attempts = Session::get('debug_attempts');
+            echo "{$attempts} ATTEMPT(S) LEFT: # # # # \n \n";
     
-            echo "{$_SESSION['debug_attempts']} ATTEMPT(S) LEFT: # # # # \n \n";
-    
-            $_SESSION['dump'] = format_dump($memoryDump);
-            echo $_SESSION['dump'];
+            Session::set('dump', format_dump($memoryDump));
+            echo Session::get('dump');
             exit;
         } else {
     
             if ($data != $debug_pass) {
                 $match = count_match_chars($data, $debug_pass);
-                $_SESSION['dump'] = str_replace($data, dot_replacer($data), $_SESSION['dump']);
+                Session::set('dump', 
+                    str_replace($data, dot_replacer($data), Session::get('dump'))
+                );
     
                 if(preg_match('/\([^()]*\)|\{[^{}]*\}|\[[^\[\]]*\]|<[^<>]*>/', $data)) {
                     echo "Dud Removed.\n";
                     echo "Tries Reset.\n";
-    
-                    if($_SESSION['debug_attempts'] < 4) {
-                        $_SESSION['debug_attempts']++;
+                    
+                    $debug_attempts = Session::get('debug_attempts');
+                    if(Session::get('debug_attempts') < 4) {
+                        Session::set('debug_attempts', $debug_attempts++);
                     }
                 }
     
                 if(preg_match('/^[a-zA-Z]+$/', $data)) {
-                    $_SESSION['debug_attempts']--;
+                    $debug_attempts = Session::get('debug_attempts');
+                    Session::set('debug_attempts', $debug_attempts--);
                 }
-    
-                if(!isset($_SESSION['user_blocked'])) {
+
+                if(!Session::has('user_blocked')) {
                     echo "Entry denied.\n";
                     echo "{$match}/{$word_length} correct.\n";
                     echo "Likeness={$match}.\n \n";
 
-                    $attemps_left = str_char_repeat($_SESSION['debug_attempts']);
+                    $attemps_left = str_char_repeat(Session::get('debug_attempts'));
     
-                    echo "{$_SESSION['debug_attempts']} ATTEMPT(S) LEFT: {$attemps_left} \n \n";
+                    echo "{$attemps_left} ATTEMPT(S) LEFT: {$attemps_left} \n \n";
                 }
 
-                if ($_SESSION['debug_attempts'] === 1) {
+                if (Session::get('debug_attempts') === 1) {
                     echo "!!! WARNING: LOCKOUT IMMINENT !!!\n\n";
                 }
 
     
-                if ($_SESSION['debug_attempts'] <= 0) {
-                    $_SESSION['user_blocked'] = true;
+                if (Session::get('debug_attempts') <= 0) {
+                    Session::set('user_blocked', true);
                     echo "ERROR: TERMINAL LOCKED.\nPlease contact an administrator\n";
                     exit;
                 }
     
-                echo $_SESSION['dump'];
+                echo Session::get('dump');
                 exit;
             } else {
                 
                 // Store the new user credentials
-                $server_id = host()->server()->id;
-                if(!auth()->user()->host($server_id)) {
-                    auth()->user()->hosts()->attach($server_id);
+                $server_id = Host::data()->id;
+                if(!Auth::data()->host($server_id)) {
+                    Auth::data()->hosts()->attach($server_id);
                 }
 
-                host()->debug($debug_pass, auth()->user()->id);
+                Host::debug($debug_pass, Auth::data()->id);
 
                 // Reset login attempts on successful login
-                unset($_SESSION['debug_attempts']);
-                unset($_SESSION['user_blocked']);
-                unset($_SESSION['debug_pass']);
-                unset($_SESSION['word']);
-                unset($_SESSION['dump']);
-                
+                Session::remove('debug_attempts');
+                Session::remove('user_blocked');
+                Session::remove('debug_pass');
+                Session::remove('word');
+                Session::remove('dump');
     
                 echo "EXCACT MATCH!\n";
                 echo "+0050 XP \n";
@@ -139,14 +149,13 @@ class DebugController
         }
     
         if(strpos('FILE/PROTECTION=OWNER:RWED ACCOUNTS.F', $command) !== false) {
-            session()->set('root', true);
+            Session::set('root', true);
             echo "Root (5A8) \n";
             exit;
         }
     
         if(strpos('HALT', $command) !== false) {
-           // $this->user->logout();
-            
+            Auth::logout();
             echo 'SHUTTING DOWN...';
             exit;
         }
@@ -158,7 +167,7 @@ class DebugController
         }
     
         if(strpos('HALT RESTART/MAINT', $command) !== false) {
-            session()->set('maint', true);
+            Session::set('maint', true);
             echo view('terminal/maint.txt') . "\n";
             exit;
         }
@@ -192,6 +201,7 @@ class DebugController
     
         if(strpos('DEBUG/ACCOUNTS.F', $command) !== false) {
             session()->set('debug', true);
+            Session::set('debug', true);
             view('terminal/attempts.txt') . "\n";
             echo $this->dump();
             exit;

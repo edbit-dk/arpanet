@@ -16,7 +16,7 @@ class Request
         $this->method = $_SERVER['REQUEST_METHOD'];
 
         // Parse the URI
-        $this->uri = $this->run();
+        $this->uri = $this->request();
 
         // Parse query parameters (if any)
         $this->query = $_GET;
@@ -33,7 +33,7 @@ class Request
      *
      * @return string
      */
-    private function run(): string
+    private function request(): string
     {
         $cwd = basename(dirname(getcwd()));
         $uri = basename($_SERVER['REQUEST_URI']);
