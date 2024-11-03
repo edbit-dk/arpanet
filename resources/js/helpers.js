@@ -33,7 +33,7 @@ function handleRedirect(response) {
     if (response.startsWith("Security")) {
             setTimeout(function() {
 
-                loadText("SUCCESS: Welcome to ARPANET");
+                loadText("SUCCESS: Welcome to ARPANET.");
 
                 setTimeout(function() {
                     redirectTo('');

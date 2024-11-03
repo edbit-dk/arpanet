@@ -6,6 +6,7 @@ use Lib\Controller;
 
 use App\User\UserModel as User;
 use App\User\UserService as Auth;
+use App\Host\HostService as Host;
 
 class UserController extends Controller
 {
@@ -33,12 +34,13 @@ class UserController extends Controller
     // sysadmin571_bypass /: 
     public function sysadmin()
     {
-       $user = host()->data()->user(auth()->id);
+        Host::data()->user(auth()->id);
+       $user = Host::data()->user(Auth::data()->id);
 
        if($user) {
-            host()->logon($user->user_name, $user->password);
+            Host::logon($user->user_name, $user->password);
        } else {
-            user()->hosts()->attach(host()->data()->id);
+            Auth::data()->hosts()->attach(Host::data()->id);
        }
 
        echo bootup();

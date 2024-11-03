@@ -81,7 +81,7 @@ function handleUserInput() {
 
     // Block newuser and login/logon commands if uplink is not set
     if (['newuser', 'logon', 'login'].includes(command) && !sessionStorage.getItem('uplink')) {
-        loadText("ERROR: Uplink Required!");
+        loadText("ERROR: Uplink Required.");
         return; // Stop the process if uplink is not set
     }
 

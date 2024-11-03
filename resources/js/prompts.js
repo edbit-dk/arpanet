@@ -2,7 +2,7 @@
 // Function to handle the LOGON/LOGIN command
 function handleLogon(username) {
     if (!sessionStorage.getItem('uplink')) {
-        loadText("ERROR: Uplink Required!");
+        loadText("ERROR: Uplink Required.");
         return;
     }
 
@@ -23,7 +23,7 @@ function handleLogon(username) {
 // Function to handle the NEWUSER command
 function handleNewUser(username) {
     if (!sessionStorage.getItem('uplink')) {
-        loadText("ERROR: Uplink Required!");
+        loadText("ERROR: Uplink Required.");
         return;
     }
 
