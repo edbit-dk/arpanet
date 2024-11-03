@@ -10,9 +10,6 @@ if(User::auth()) {
      $app->get('/user', [UserController::class, 'user']);
      $app->get('/logout', [UserController::class, 'logout']);
 
-     // Sysadmin
-     $app->get('/sysadmin571_bypass', [UserController::class, 'sysadmin']);
-
 }
 
 if(!User::auth()) {

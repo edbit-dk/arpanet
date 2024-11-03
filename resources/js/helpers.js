@@ -30,6 +30,15 @@ function handleRedirect(response) {
         }, 2000);
     }
 
+    if (response.startsWith("SUCCESS")) {
+        setTimeout(function() {
+            setTimeout(function() {
+                redirectTo('');
+            }, 1000);
+
+        }, 2000);
+    }
+
     if (response.startsWith("Security")) {
             setTimeout(function() {
 

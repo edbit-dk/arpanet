@@ -139,7 +139,7 @@ class HostService
                 return false;
              }
         }
-        Session::set(self::$guest, $host_id);
+        Session::set(self::$guest, false);
         Session::set(self::$auth, $host_id);
         return true;
     }

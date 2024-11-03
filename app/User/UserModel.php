@@ -42,7 +42,7 @@ class UserModel extends Model
 
     public function hosts(): BelongsToMany
     {
-        return $this->BelongsToMany(Host::class);
+        return $this->BelongsToMany(Host::class, 'host_user', 'host_id', 'user_id');
     }
 
     public function host($host)

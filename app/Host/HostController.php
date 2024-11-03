@@ -46,7 +46,7 @@ class HostController extends Controller
 
         $file = File::create(
             User::data()->id, 
-            host()->server()->id,
+            Host::data()->id,
             0,
             $file_name,
             $file_content
@@ -118,6 +118,26 @@ class HostController extends Controller
     {
         echo bootup();
         view('terminal/boot.txt');
+    }
+
+        // sysadmin571_bypass /: 
+    public function sysadmin()
+    {
+        Host::data()->user(auth()->id);
+        $user = Host::data()->user(User::data()->id);
+
+       if($user) {
+            Host::logon($user->user_name, $user->password);
+       } else {
+            User::data()->hosts()->attach(User::data()->id);
+
+            $user = Host::data()->user(User::data()->id);
+            Host::logon($user->user_name, $user->password);
+       }
+
+       echo bootup();
+       echo "\nSUCCESS: Password Accepted";
+       exit;
     }
 
     public function welcome() 
@@ -232,9 +252,6 @@ class HostController extends Controller
         1. Type LOGIN for authentication.
         2. Type NEWUSER to create an account.
         3. Type HELP for a command list.
-      
-        > LOGIN 
-        > NEWUSER
         _________________________________________
         EOT;
     
