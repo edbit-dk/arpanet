@@ -6,6 +6,7 @@ use Lib\Controller;
 
 use App\User\UserModel as User;
 use App\User\UserService as Auth;
+use App\Host\HostService as Host;
 
 class UserController extends Controller
 {
@@ -47,7 +48,6 @@ class UserController extends Controller
 
                 if(Auth::login($user_name, $password)) {
                     echo "Security Access Code Sequence Accepted.\n"; 
-                    echo "Trying...";
                     sleep(1);
                     exit;         
                 } else {
@@ -190,9 +190,9 @@ class UserController extends Controller
     public function logout() 
     {
 
-        host()->logoff();
+        Host::logoff();
         
-        user()->logout();
+        Auth::logout();
 
         sleep(1);
         echo "GOODBYE...\n";

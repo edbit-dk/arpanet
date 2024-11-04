@@ -1,7 +1,7 @@
 <?php
 return [
     'UPLINK' => '- CONNECT TO NETWORK',
-    'LOGON' => '- <USERNAME>',
+    'LOGIN' => '- <USERNAME>',
     'NEWUSER' => '- <USERNAME>',
     'VERSION' => '- UOS VERSION',
     'COLOR' => '- <GREEN|WHITE|YELLOW> TERMINAL'

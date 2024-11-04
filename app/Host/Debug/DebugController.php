@@ -64,7 +64,12 @@ class DebugController
         } else {
     
             if ($data != $debug_pass) {
+
+                $debug_attempts = Session::get('debug_attempts');
+                Session::set('debug_attempts', $debug_attempts--);
+
                 $match = count_match_chars($data, $debug_pass);
+
                 Session::set('dump', 
                     str_replace($data, dot_replacer($data), Session::get('dump'))
                 );
@@ -73,15 +78,10 @@ class DebugController
                     echo "Dud Removed.\n";
                     echo "Tries Reset.\n";
                     
-                    $debug_attempts = Session::get('debug_attempts');
                     if(Session::get('debug_attempts') < 4) {
+                        $debug_attempts = Session::get('debug_attempts');
                         Session::set('debug_attempts', $debug_attempts++);
                     }
-                }
-    
-                if(preg_match('/^[a-zA-Z]+$/', $data)) {
-                    $debug_attempts = Session::get('debug_attempts');
-                    Session::set('debug_attempts', $debug_attempts--);
                 }
 
                 if(!Session::has('user_blocked')) {
@@ -89,9 +89,9 @@ class DebugController
                     echo "{$match}/{$word_length} correct.\n";
                     echo "Likeness={$match}.\n \n";
 
-                    $attemps_left = str_char_repeat(Session::get('debug_attempts'));
+                    $attempts_left = str_char_repeat($debug_attempts);
     
-                    echo "{$attemps_left} ATTEMPT(S) LEFT: {$attemps_left} \n \n";
+                    echo "{$debug_attempts} ATTEMPT(S) LEFT: {$attempts_left} \n \n";
                 }
 
                 if (Session::get('debug_attempts') === 1) {

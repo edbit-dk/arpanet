@@ -43,6 +43,11 @@ class HostService
         return Host::inRandomOrder()->limit($limit)->get();
     }
 
+    public static function netstat() 
+    {
+        return Host::where('ip','0.0.0.0')->orWhere('ip','1.1.1.1')->get();
+    }
+
     public static function create() 
     {
         $data = request()->get('data');
@@ -147,7 +152,7 @@ class HostService
     public static function attempt($host_id)
     {
         if(isset($host_id)) {
-            Session::set(self::$guest, $host_id);
+            Session::set(self::$guest, false);
             Session::set(self::$auth, $host_id);
             return self::data();
         }
@@ -203,16 +208,6 @@ class HostService
 
     public static function logoff() 
     {
-        if(Session::has(self::$auth)) {
-            Session::remove(self::$auth); 
-            exit;
-        }  
-        
-        if(!Session::has(self::$auth) && Session::has(self::$guest)) {
-            Session::remove(self::$guest); 
-            exit;
-        } 
-
         unset($_SESSION['debug_pass']);
         unset($_SESSION['debug_attempts']);
         unset($_SESSION['user_blocked']);
@@ -220,7 +215,16 @@ class HostService
         unset($_SESSION['root']);
         unset($_SESSION['maint']);
 
-        sleep(1);
+        if(self::auth()) {
+            Session::remove(self::$auth); 
+            exit;
+        }  
+        
+        if(!self::auth() && self::guest()) {
+            Session::remove(self::$guest); 
+            exit;
+        } 
+
     }
 
 }

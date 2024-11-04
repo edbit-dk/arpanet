@@ -1,1 +1,1 @@
-ERROR: UNKNOWN COMMAND
+ERROR: Unknown Command

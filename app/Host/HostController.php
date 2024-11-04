@@ -3,6 +3,7 @@
 namespace App\Host;
 
 use Lib\Controller;
+use Lib\Session;
 
 use App\Host\File\FileService as File;
 
@@ -19,17 +20,15 @@ class HostController extends Controller
 
     public function connect() 
     {
-        Host::logoff();
-
         $data = strtoupper(request()->get('data'));
 
         $server = Host::connect($data);
         
         if(!$server) {
-            echo 'ERROR: ACCESS DENIED.';
+            echo 'ERROR: Unknown Host';
             exit;
         } else {
-            echo "Contacting Host...";
+            echo "Trying...";
             exit;
         }
 
@@ -62,7 +61,7 @@ class HostController extends Controller
         if(Host::auth() OR Host::guest()) {
             $servers = Host::data()->nodes()->get();
         } else {
-            $servers  = Host::random();
+            $servers  = Host::netstat();
         }
 
         echo "Scanning...\n";
@@ -74,8 +73,7 @@ class HostController extends Controller
             } else {
                 $type = 'UNKNOWN';
             }
-
-            echo "$server->id. $server->host_name [$server->org] ($type)\n";
+            echo "$server->id. $server->host_name [$server->org] - $type\n";
         }
         
     }
@@ -85,15 +83,15 @@ class HostController extends Controller
 
         $help = [];
 
-        if(user()->auth() && !host()->check()) {
+        if(User::auth() && !Host::auth()) {
             $help = require config('path') . '/storage/array/user.php';
         }
         
-        if(host()->auth()) {
+        if(Host::auth()) {
             $help = require config('path') . '/storage/array/host.php';
         }
 
-        if(host()->check()) {
+        if(Host::guest()) {
             $help = require config('path') . '/storage/array/guest.php';
         }
 
@@ -143,8 +141,8 @@ class HostController extends Controller
     public function welcome() 
     {
 
-        if(host()->auth()) {
-            return $this->server();
+        if(Host::auth()) {
+            return $this->host();
         }
 
         if(User::auth()) {
@@ -156,14 +154,13 @@ class HostController extends Controller
 
     public function termlink() 
     {
-        $server_id = false;
 
-        if(host()->guest()) {
+        if(Host::guest()) {
             view('terminal/auth.txt');
             
-            $name = host()->data()->host_name;
-            $server_ip = host()->data()->ip;
-            $level = host()->data()->level->id;
+            $name = Host::data()->host_name;
+            $server_ip = Host::data()->ip;
+            $level = Host::data()->level->id;
 
             echo <<< EOT
                        -Server $server_ip-
@@ -180,14 +177,14 @@ class HostController extends Controller
 
     }
 
-    public function server() 
+    public function host() 
     {
         view('terminal/auth.txt');
 
-        $server_name = host()->data()->host_name;
-        $org= host()->data()->org;
+        $server_name = Host::data()->host_name;
+        $org= Host::data()->org;
 
-        $username = auth()->data()->user_name;
+        $username = User::data()->user_name;
 
         echo <<< EOT
                   -$server_name ($org)-
@@ -236,7 +233,7 @@ class HostController extends Controller
     
         $access_code = "{$code_1}-{$code_2}-{$code_3}-{$code_4}"; 
 
-        session()->set('access_code', $access_code);
+        Session::set('access_code', $access_code);
     
         echo <<< EOT
         

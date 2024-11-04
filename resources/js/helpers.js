@@ -1,22 +1,22 @@
 // Function to handle redirect
 function handleRedirect(response) {
 
-    if (response.startsWith("Contacting")) {
+    if (response.startsWith("Trying")) {
         setTimeout(function() {
-            loadText("Accessing Mainframe...");
+            loadText("SUCCESS: Connecting to Host");
 
             setTimeout(function() {
                 redirectTo('');
             }, 1000);
 
-        }, 2000);
+        }, 1000);
     }
 
     if (response.startsWith("EXCACT")) {
         setTimeout(function() {
             setTimeout(function() {
                 redirectTo('');
-            }, 2500);
+            }, 1000);
 
         }, 2000);
     }
@@ -27,7 +27,7 @@ function handleRedirect(response) {
                 redirectTo('');
             }, 1000);
 
-        }, 2000);
+        }, 1000);
     }
 
     if (response.startsWith("SUCCESS")) {
@@ -36,19 +36,19 @@ function handleRedirect(response) {
                 redirectTo('');
             }, 1000);
 
-        }, 2000);
+        }, 1000);
     }
 
     if (response.startsWith("Security")) {
             setTimeout(function() {
 
-                loadText("SUCCESS: Welcome to ARPANET.");
+                loadText("SUCCESS: WELCOME to ARPANET");
 
                 setTimeout(function() {
                     redirectTo('');
-                }, 2000);
+                }, 1000);
 
-            }, 2000);
+            }, 1000);
     }
 }
 
@@ -56,5 +56,5 @@ function handleRedirect(response) {
 function redirectTo(url) {
     setTimeout(function() {
         window.location.href = url;
-    }, 2500);
+    }, 2000);
 }

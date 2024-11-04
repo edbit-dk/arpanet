@@ -113,7 +113,7 @@ function handleUserInput() {
         sendCommand(command, args); // Send the command to the server
         setTimeout(function() {
             redirectTo('');
-        }, 2500);
+        }, 2000);
     } else if (command === 'color') {
         setTheme(args); // Handle color setting
     } else {

@@ -16,9 +16,9 @@ $app->get('/welcome', [HostController::class, 'welcome']);
 $app->get('/help', [HostController::class, 'help']);
 $app->get('/uplink', [HostController::class, 'uplink']);
 $app->get('/boot', [HostController::class, 'boot']);
-$app->get('/scan', [HostController::class, 'scan']);
 
 if(User::auth()) {
+    $app->get('/scan', [HostController::class, 'scan']);
     $app->get('/connect', [HostController::class, 'connect']);
     $app->get('/telnet', [HostController::class, 'connect']);
 }
@@ -32,7 +32,6 @@ if(Host::guest()) {
     // Sysadmin
     $app->get('/sysadmin571_bypass', [HostController::class, 'sysadmin']);
 }
-
 
 if(Host::auth()) {
     // Host

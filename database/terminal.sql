@@ -100,11 +100,8 @@ CREATE TABLE `hosts` (
 --
 
 INSERT INTO `hosts` (`id`, `user_id`, `password`, `host_name`, `org`, `ip`, `active`, `type_id`, `level_id`, `created_at`, `updated_at`) VALUES
-(1, 1, 'robco', 'MILNET', 'US MILITARY', '98.46.221.126', 1, 1, 5, '1984-10-22 16:18:50', NULL),
-(2, 1, 'robco', 'USENET', 'Duke University', '191.78.206.214', 1, 3, 2, '1980-10-09 16:19:42', NULL),
-(3, 1, 'robco', 'SATNET', 'ARPA', '124.12.251.233', 1, 5, 4, '1973-10-02 16:22:26', NULL),
-(4, 1, 'robco', 'BITNET', 'IBM', '203.209.131.14', 1, 2, 3, '1985-10-03 16:26:56', NULL),
-(5, 1, 'robco', 'ARPANET', 'US Military', '0.0.0.0', 1, 4, 1, '1969-10-10 16:29:25', NULL);
+(1, 1, 'robco', 'MILNET', 'US MILITARY', '1.1.1.1', 1, 1, 5, '1984-10-22 16:18:50', NULL),
+(2, 1, 'robco', 'ARPANET', 'US Military', '0.0.0.0', 1, 4, 1, '1969-10-10 16:29:25', NULL);
 
 -- --------------------------------------------------------
 
