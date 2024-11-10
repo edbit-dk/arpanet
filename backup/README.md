@@ -1,2 +1,0 @@
-# terminal
-Retro vintage terminal

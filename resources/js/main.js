@@ -1,5 +1,6 @@
 // Array to store command history
-let stylesheets = 'public/css/';
+let path_public = 'public/';
+let stylesheets = path_public + 'css/';
 let commandHistory = [];
 let historyIndex = -1;
 let currentDirectory = ''; // Variable to store the current directory

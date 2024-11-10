@@ -66,7 +66,7 @@ class DebugController
             if ($data != $debug_pass) {
 
                 $debug_attempts = Session::get('debug_attempts');
-                Session::set('debug_attempts', $debug_attempts--);
+                Session::set('debug_attempts', --$debug_attempts);
 
                 $match = count_match_chars($data, $debug_pass);
 
@@ -80,7 +80,7 @@ class DebugController
                     
                     if(Session::get('debug_attempts') < 4) {
                         $debug_attempts = Session::get('debug_attempts');
-                        Session::set('debug_attempts', $debug_attempts++);
+                        Session::set('debug_attempts', ++$debug_attempts);
                     }
                 }
 

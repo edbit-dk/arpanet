@@ -2,7 +2,6 @@
 return [
     'ACCOUNTS' => '',
     'LOGOUT' => '',
-    'LOGOFF' => '',
     'FIND' => '',
     'CONNECT' => '<HOST ID>',
     'DIR' => '',
