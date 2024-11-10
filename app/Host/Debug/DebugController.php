@@ -66,7 +66,6 @@ class DebugController
             if ($data != $debug_pass) {
 
                 $debug_attempts = Session::get('debug_attempts');
-                Session::set('debug_attempts', --$debug_attempts);
 
                 $match = count_match_chars($data, $debug_pass);
 
@@ -78,10 +77,12 @@ class DebugController
                     echo "Dud Removed.\n";
                     echo "Tries Reset.\n";
                     
-                    if(Session::get('debug_attempts') < 4) {
-                        $debug_attempts = Session::get('debug_attempts');
+                    if($debug_attempts < 4) {
                         Session::set('debug_attempts', ++$debug_attempts);
                     }
+                    
+                } else {
+                    Session::set('debug_attempts', --$debug_attempts);
                 }
 
                 if(!Session::has('user_blocked')) {
@@ -126,7 +127,7 @@ class DebugController
     
                 echo "EXCACT MATCH!\n";
                 echo "+0050 XP \n";
-                echo "LOADING...";
+                echo "Please wait while system is accessed...";
             }
     
         }
@@ -196,7 +197,7 @@ class DebugController
         }
     
         if(strpos('LIST/ACCOUNTS.F', $command) !== false) {
-            return listAccounts();
+            //return listAccounts();
         }
     
         if(strpos('DEBUG/ACCOUNTS.F', $command) !== false) {
