@@ -20,6 +20,9 @@ class HostController extends Controller
 
     public function connect() 
     {
+
+        Host::logoff();
+        
         $data = strtoupper(request()->get('data'));
 
         $server = Host::connect($data);
