@@ -10,7 +10,16 @@
       <span id="user">></span> 
     <?php endif; ?>
       <input type="text" id="command-input" autofocus spellcheck="false" autocomplete="off">
-      <a target="_blank" style="color:black" href="public/music">music</a>
+      <button style="background-color: #00FF00;" id="play-button">music</button>
     </div>
+
+    <script>
+       // Playlist of songs
+      const playlist = [
+        <?php foreach($_SESSION['music'] as $music): ?>
+          <?php echo "'$music',"; ?>
+        <?php endforeach ?>
+      ];
+    </script>
 
 <?php include 'template/footer.php'; ?>

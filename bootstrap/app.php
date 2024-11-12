@@ -32,10 +32,16 @@ $c->set('host', function() {
     return new App\Host\HostService();
 });
 
+$config = $c->config;
+
 $db = new \Illuminate\Database\Capsule\Manager;
-$db->addConnection($c->config['db']);
+$db->addConnection($config['db']);
 $db->setAsGlobal();
 $db->bootEloquent();
 
 $app = new Lib\Router($c->request, $c);
-$app->notFound($c->config['views'] . '404.php');
+$app->notFound($config['views'] . '404.php');
+
+shuffle( $config['music']);
+
+Lib\Session::set('music', $config['music']);

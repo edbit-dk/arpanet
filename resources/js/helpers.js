@@ -55,6 +55,7 @@ function handleRedirect(response) {
 // Function to redirect to a specific query string
 function redirectTo(url) {
     setTimeout(function() {
-        window.location.href = url;
+       window.location.href = url;
+      // $('#page').load(location.href + ' #page>*',"");
     }, 2000);
 }

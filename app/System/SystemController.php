@@ -15,6 +15,7 @@ class SystemController extends Controller
         $js .= file_get_contents(BASE_PATH . '/resources/js/helpers.js');
         $js .= file_get_contents(BASE_PATH . '/resources/js/prompts.js');
         $js .= file_get_contents(BASE_PATH . '/resources/js/terminal.js');
+        $js .= file_get_contents(BASE_PATH . '/resources/js/music.js');
 
         $css = file_get_contents(BASE_PATH . '/resources/css/main.css');
         $css .= file_get_contents(BASE_PATH . '/resources/css/bootstrap.css');

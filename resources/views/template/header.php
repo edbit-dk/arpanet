@@ -9,4 +9,4 @@
         <link rel="stylesheet" href="<?php base_url() ?>/css/app.min.css"></link>
         <link id="theme-color" rel="stylesheet" href="<?php base_url() ?>/css/green-crt.css">
     </head>
-        <body>
+        <body id="page">
