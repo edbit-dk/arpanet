@@ -5,8 +5,8 @@ audio.loop = false; // Disable looping for queuing purposes
 // Check if the user has previously interacted from localStorage
 let userInteracted = localStorage.getItem('music') === 'true';
 
-// Event listener for the play button
-document.getElementById('play-button').addEventListener('click', () => {
+// Function to toggle play/pause
+function toggleMusic() {
   if (audio.paused) {
     // If audio is paused, start playing
     audio.play().then(() => {
@@ -21,24 +21,30 @@ document.getElementById('play-button').addEventListener('click', () => {
     console.log('Audio paused.');
     document.getElementById('play-button').textContent = 'play'; // Update button text
   }
-});
+}
+
+// Event listener for the play button
+document.getElementById('play-button').addEventListener('click', toggleMusic);
+
+// Event listener for keydown event (when user starts typing)
+document.addEventListener('keydown', toggleMusic);
 
 // Event listener for when the current song ends
 audio.addEventListener('ended', () => {
-    currentSongIndex++;
-    if (currentSongIndex < playlist.length) {
-      audio.src = playlist[currentSongIndex]; // Set the next song in the playlist
-      audio.play().catch(error => {
-        console.warn('Playback failed:', error);
-      });
-    } else {
-      // Restart the playlist from the beginning
-      currentSongIndex = 0;
-      audio.src = playlist[currentSongIndex];
-      audio.play().catch(error => {
-        console.warn('Playback failed:', error);
-      });
-    }
+  currentSongIndex++;
+  if (currentSongIndex < playlist.length) {
+    audio.src = playlist[currentSongIndex]; // Set the next song in the playlist
+    audio.play().catch(error => {
+      console.warn('Playback failed:', error);
+    });
+  } else {
+    // Restart the playlist from the beginning
+    currentSongIndex = 0;
+    audio.src = playlist[currentSongIndex];
+    audio.play().catch(error => {
+      console.warn('Playback failed:', error);
+    });
+  }
 });
 
 // Try to autoplay the audio on page load if the user has interacted before
