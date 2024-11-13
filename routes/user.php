@@ -9,6 +9,7 @@ if(User::auth()) {
      $app->get('/password', [UserController::class, 'password']);
      $app->get('/user', [UserController::class, 'user']);
      $app->get('/logout', [UserController::class, 'logout']);
+     $app->get('/connection', [UserController::class, 'connection']);
 
 }
 

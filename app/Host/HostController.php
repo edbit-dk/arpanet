@@ -22,12 +22,14 @@ class HostController extends Controller
     {
 
         Host::logoff();
+        $server = '';
         
-        $data = strtoupper(request()->get('data'));
+        if(request()->get('data')) {
+            $data = strtoupper(request()->get('data'));
+            $server = Host::connect($data);
+        }
 
-        $server = Host::connect($data);
-        
-        if(!$server) {
+        if(empty($server)) {
             echo 'ERROR: Unknown Host';
             exit;
         } else {

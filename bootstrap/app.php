@@ -42,7 +42,7 @@ $db->bootEloquent();
 $app = new Lib\Router($c->request, $c);
 $app->notFound($config['views'] . '404.php');
 
-shuffle( $config['music']);
+// shuffle( $config['music']);
 
 Lib\Session::set('music', $config['music']);
 

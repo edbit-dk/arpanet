@@ -3,7 +3,7 @@
     max-height: 80vh;
     overflow-y: auto; /* Add vertical scrolling if the content exceeds the height */
     box-sizing: border-box; /* Ensure padding is included in the width/height */
-    padding: 1vw;
+    padding: 1.5vw;
   }
   
   #terminal {
@@ -23,7 +23,7 @@
     position: relative; /* Add relative positioning to parent */
     background: #00935E;
     margin-top: 10px; /* Space between the terminal content and prompt */
-    width: 99%;
+    width: 100%;
 }
 
 #command-input {

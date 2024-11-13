@@ -108,6 +108,11 @@ class UserController extends Controller
         }
     }
 
+    public function connection()
+    {
+        echo strtoupper(auth()->user_name) . '@' .  host()->hostname() . '>';
+    }
+
     public function user() 
     {
         $user = auth();

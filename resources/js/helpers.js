@@ -4,7 +4,6 @@ function handleRedirect(response) {
     if (response.startsWith("Trying")) {
         setTimeout(function() {
             loadText("SUCCESS: Connecting to Host");
-
             setTimeout(function() {
                 redirectTo('');
             }, 1000);
@@ -54,8 +53,8 @@ function handleRedirect(response) {
 
 // Function to redirect to a specific query string
 function redirectTo(url) {
-    setTimeout(function() {
-       window.location.href = url;
-      // $('#page').load(location.href + ' #page>*',"");
-    }, 1000);
+      // window.location.href = url;
+    clearTerminal();
+    sendCommand('welcome', '');
+    $('#user').load('connection');
 }

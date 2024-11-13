@@ -33,9 +33,9 @@ class HostService
     {
         if(self::data()) {
             return self::data()->host_name;
-        } 
-
-        return false;
+        } else {
+            return '.';
+        }
     }
 
     public static function random($limit = 5) 
@@ -111,7 +111,7 @@ class HostService
         ->where('active', 1)
         ->first();
 
-        if (!$host) {
+        if (empty($host)) {
             return false;
         } else {
            Session::set(self::$guest, $host->id);
@@ -217,12 +217,12 @@ class HostService
 
         if(self::auth()) {
             Session::remove(self::$auth); 
-            exit;
+            return;
         }  
         
         if(!self::auth() && self::guest()) {
             Session::remove(self::$guest); 
-            exit;
+            return;
         } 
 
     }
