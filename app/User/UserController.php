@@ -110,7 +110,12 @@ class UserController extends Controller
 
     public function connection()
     {
-        echo strtoupper(auth()->user_name) . '@' .  host()->hostname() . '>';
+        if(!empty(user()->username())) {
+            echo user()->username() . '@' .  host()->hostname() . '>';
+        } else {
+            echo '>';
+        }
+
     }
 
     public function user() 

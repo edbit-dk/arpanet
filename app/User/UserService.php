@@ -17,6 +17,15 @@ class UserService
         return false;
     }
 
+    public function username()
+    {
+        if(self::data()) {
+            return self::data()->user_name;
+        } else {
+            return false;
+        }
+    }
+
     public static function check()
     {
         return self::auth();
