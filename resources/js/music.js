@@ -26,19 +26,6 @@ function toggleMusic() {
 // Event listener for the play button (click to play/pause)
 document.getElementById('play-button').addEventListener('click', toggleMusic);
 
-// Event listener for keydown event (only start music if it's not playing)
-document.addEventListener('keydown', () => {
-  if (audio.paused) {
-    // Start playing if audio is paused
-    audio.play().then(() => {
-      console.log('Audio started playing from keydown.');
-      document.getElementById('play-button').textContent = 'stop'; // Update button text
-    }).catch(error => {
-      console.error('Playback failed:', error);
-    });
-  }
-});
-
 // Event listener for when the current song ends
 audio.addEventListener('ended', () => {
   currentSongIndex++;

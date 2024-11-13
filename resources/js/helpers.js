@@ -18,7 +18,7 @@ function handleRedirect(response) {
                 redirectTo('');
             }, 1000);
 
-        }, 2000);
+        }, 1000);
     }
 
     if (response.startsWith("Password")) {
@@ -42,7 +42,7 @@ function handleRedirect(response) {
     if (response.startsWith("Security")) {
             setTimeout(function() {
 
-                loadText("SUCCESS: WELCOME to ARPANET");
+                loadText("SUCCESS: Welcome to Arpanet");
 
                 setTimeout(function() {
                     redirectTo('');
@@ -57,5 +57,5 @@ function redirectTo(url) {
     setTimeout(function() {
        window.location.href = url;
       // $('#page').load(location.href + ' #page>*',"");
-    }, 2000);
+    }, 1000);
 }
