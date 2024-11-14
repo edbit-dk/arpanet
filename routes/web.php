@@ -1,9 +1,7 @@
 <?php
 
-use App\System\SystemController;
-
-$app->get('/test', [SystemController::class, 'test']);
-$app->get('/minify', [SystemController::class, 'minify']);
+// System
+require BASE_PATH . '/routes/system.php';
 
 // User
 require BASE_PATH . '/routes/user.php';

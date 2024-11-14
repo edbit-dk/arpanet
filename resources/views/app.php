@@ -3,7 +3,9 @@
   <button style="background-color: #00935E;" id="play-button">MUSIC</button>
   <button style="background-color: #00935E;" onclick="location.href='teleterm.txt'" target="_blank" type="button">HELP</button>
     <div id="terminal"></div>
-    <div id="prompt">
+  </div>
+
+  <div id="prompt">
     <?php if(user()->auth()): ?>
       <span id="user"><?php echo strtoupper(auth()->user_name) ?>@<?php echo host()->hostname() ?>></span> 
       <?php else: ?> 
@@ -11,7 +13,7 @@
     <?php endif; ?>
       <input type="text" id="command-input" autofocus spellcheck="false" autocomplete="off">
     </div>
-  </div>
+    
     <script>
        // Playlist of songs
       const playlist = [

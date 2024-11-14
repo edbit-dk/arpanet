@@ -22,8 +22,9 @@
     align-items: center;
     position: relative; /* Add relative positioning to parent */
     background: #00935E;
-    margin-top: 10px; /* Space between the terminal content and prompt */
+    margin-top: 5px; /* Space between the terminal content and prompt */
     width: 100%;
+    padding: 0px 1.5vw 0px 1.5vw;
 }
 
 #command-input {

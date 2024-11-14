@@ -33,4 +33,9 @@ class SystemController extends Controller
         
     }
 
+    public function echo()
+    {
+        echo request()->get('data');
+    }
+
 }
