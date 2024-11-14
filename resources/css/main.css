@@ -1,7 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=VT323);
 
 body, input, pre {
-  font-family: 'VT323', Arial, Helvetica, sans-serif;;
+  font-family: 'VT323', sans-serif;
   -webkit-font-smoothing: none;
   font-size: 5.5vw;
   line-height: 1.2;

@@ -198,7 +198,7 @@ class HostService
         }
 
         if (Session::has('user_blocked')) {
-            echo "ERROR: TERMIAL LOCKED. Please contact an administrator!";
+            echo "ERROR: TERMIAL LOCKED. Please contact an Administrator!";
         }
 
         if($block) {

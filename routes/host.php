@@ -26,6 +26,7 @@ if(User::auth()) {
 if(Host::guest()) {
     $app->get('/logon', [HostController::class, 'logon']);
     $app->get('/dump', [DebugController::class, 'dump']);
+    $app->get('/mem', [DebugController::class, 'dump']);
     $app->get('/set', [DebugController::class, 'set']);
     $app->get('/run', [DebugController::class, 'run']);  
     

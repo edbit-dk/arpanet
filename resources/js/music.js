@@ -11,7 +11,7 @@ function toggleMusic() {
     // If audio is paused, start playing
     audio.play().then(() => {
       console.log('Audio started playing.');
-      document.getElementById('play-button').textContent = 'stop'; // Update button text
+      document.getElementById('play-button').textContent = 'STOP MUSIC'; // Update button text
     }).catch(error => {
       console.error('Playback failed:', error);
     });
@@ -19,7 +19,7 @@ function toggleMusic() {
     // If audio is playing, pause it
     audio.pause();
     console.log('Audio paused.');
-    document.getElementById('play-button').textContent = 'play'; // Update button text
+    document.getElementById('play-button').textContent = 'PLAY MUSIC'; // Update button text
   }
 }
 
