@@ -83,22 +83,23 @@ function handleUserInput() {
         sessionStorage.setItem('uplink', true);
         sendCommand(command, args);
     } else if (command === 'newuser') {
-        if (!args) {
+        if (args) {
+            // Directly handle with the provided username
+            handleNewUser(args);
+        } else {
+            // Prompt for username if not provided
             loadText("ENTER USERNAME NOW:");
             isUsernamePrompt = true;
             currentCommand = 'newuser';
             $('#command-input').attr('type', 'text');
-            return;
         }
-        handleNewUser(args);
     } else if (command === 'logon' || command === 'login') {
         if (args) {
-            // Handle both 'login [username]' and 'logon [username]'
             usernameForLogon = args;
             loadText("ENTER PASSWORD:");
             isUsernamePrompt = false;
             isPasswordPrompt = true;
-            currentCommand = command; // Sets currentCommand to 'login' or 'logon'
+            currentCommand = command;
             $('#command-input').attr('type', 'password');
             return;
         } else {
@@ -109,6 +110,7 @@ function handleUserInput() {
             return;
         }
     } else if (['logout', 'logoff', 'reboot', 'dc', 'restart', 'start', 'autoexec', 'exit'].includes(command)) {
+        sessionStorage.setItem('uplink', false);
         loadText("Please wait...");
         sendCommand(command, args);
         setTimeout(function () {
@@ -122,7 +124,7 @@ function handleUserInput() {
 }
 
 
-
+/*
 // Function to autocomplete command
 function autocompleteCommand() {
     const inputElement = $('#command-input');
@@ -146,3 +148,4 @@ function autocompleteCommand() {
         }
     });
 }
+*/

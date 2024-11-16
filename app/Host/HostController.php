@@ -13,15 +13,10 @@ use App\Host\HostService as Host;
 class HostController extends Controller
 {
 
-    public function index()
-    {
-        view('app.php');
-    }
-
     public function connect() 
     {
 
-        Host::logoff();
+        Host::reset();
         $server = '';
         
         if(request()->get('data')) {
@@ -37,6 +32,18 @@ class HostController extends Controller
             exit;
         }
 
+    }
+
+    public function dir()
+    {
+        File::list(Host::data()->id);
+    }
+
+    public function open()
+    {
+        $data = explode(' ', request()->get('data'));
+
+        File::open($data[0], Host::data()->id);
     }
 
     public function echo()
@@ -83,46 +90,6 @@ class HostController extends Controller
         
     }
 
-    public function help()
-    {
-
-        $help = [];
-
-        if(User::auth() && !Host::auth()) {
-            $help = require config('path') . '/storage/array/user.php';
-        }
-        
-        if(Host::auth()) {
-            $help = require config('path') . '/storage/array/host.php';
-        }
-
-        if(Host::guest()) {
-            $help = require config('path') . '/storage/array/guest.php';
-        }
-
-       if(empty($help)) {
-            $help = require config('path') . '/storage/array/visitor.php';
-       }
-        
-        $output = "HELP:\n";
-        foreach ($help as $cmd => $text) {
-            $output .= " $cmd $text\n";
-        }
-        echo $output;
-    }
-
-    public function reboot() 
-    {
-        echo bootup();
-        view('terminal/boot.txt');
-    } 
-    
-    public function boot() 
-    {
-        echo bootup();
-        view('terminal/boot.txt');
-    }
-
         // sysadmin571_bypass /: 
     public function sysadmin()
     {
@@ -143,121 +110,57 @@ class HostController extends Controller
        exit;
     }
 
-    public function welcome() 
-    {
-
-        if(Host::auth()) {
-            return $this->host();
-        }
-
-        if(User::auth()) {
-            return $this->termlink();
-        }
-
-        view('terminal/welcome.txt');
-    }
-
-    public function termlink() 
-    {
-
-        if(Host::guest()) {
-            view('terminal/auth.txt');
-            
-            $name = Host::data()->host_name;
-            $server_ip = Host::data()->ip;
-            $level = Host::data()->level->id;
-
-            echo <<< EOT
-                       -Server $server_ip-
-                      
-            <$name>
-            Password Required             [SECURITY: $level]
-            ___________________________________________
-            EOT;
-
-        } else {
-            view('terminal/termlink.txt');
-            exit;
-        }
-
-    }
-
-    public function host() 
-    {
-        view('terminal/auth.txt');
-
-        $server_name = Host::data()->host_name;
-        $org= Host::data()->org;
-
-        $username = User::data()->user_name;
-
-        echo <<< EOT
-                  -$server_name ($org)-
-
-        Welcome, $username 
-        __________________________________________
-        EOT;
-
-        return;
-
-    }
-
     public function logon() 
     {
         $data = request()->get('data');
 
         $input = explode(' ', $data);
 
+        // Initialize login attempts if not set
+        Host::attempts();
+
+        // Check if the user is already blocked
+        Host::blocked();
+
         if(Host::logon($input[0],  $input[1])) {
             echo <<< EOT
-            Password Accepted. 
+            SUCCESS: Password Accepted. 
             Please wait while system is accessed...
             EOT;
         } else {
-            echo 'ERROR: Access Denied.';
+             // Calculate remaining attempts
+             $attempts_left = Host::attempts(true);
+    
+             if ($attempts_left == 1) {
+                 echo "WARNING: LOCKOUT IMMINENT !!!\n";
+             }
+ 
+             // Block the user after 4 failed attempts
+             if ($attempts_left == 0) {
+
+                Host::blocked(true);
+
+                echo <<< EOT
+                ERROR: Access Denied.
+                TERMINAL LOCKED.
+                Please contact an Administrator.
+                EOT;
+                exit;
+
+             } else {
+                echo <<< EOT
+                ERROR: Wrong Username.
+                Attempts Remaining: {$attempts_left}
+                EOT;
+                exit;
+             }
         }
         
     }
 
-    public function logout() 
+    public function logoff() 
     {
         return Host::logoff();
-    }
-
-    public function version() 
-    {
-        view('terminal/version.txt');
-    }
-
-    public function uplink() 
-    {
-        $code_1 = random_str(6, 'AXYZ01234679');
-        $code_2 = random_str(6, 'AXYZ01234679');
-        $code_3 = random_str(6, 'AXYZ01234679');
-        $code_4 = random_str(6, 'AXYZ01234679');
-    
-        $access_code = "{$code_1}-{$code_2}-{$code_3}-{$code_4}"; 
-
-        Session::set('access_code', $access_code);
-    
-        echo <<< EOT
-        
-        Uplink with central ARPANET initiated.
-        Security Access Code Sequence:
-    
-        ***********************************
-        >>> {$access_code} <<<
-        ***********************************
-
-        !!! NEWUSER: BACKUP ACCESS CODE !!!
-
-        1. Type LOGIN for authentication.
-        2. Type NEWUSER to create an account.
-        3. Type HELP for a command list.
-        _________________________________________
-        EOT;
-    
-        return;
     }
 
 }

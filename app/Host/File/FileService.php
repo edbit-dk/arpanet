@@ -50,7 +50,28 @@ class FileService
         }
     }
 
-    public function list($host_id)
+    public static function list($host_id, $user_id = '')
+    {
+        $files = File::where('host_id', $host_id)
+        ->orWhere('user_id', $user_id)
+        ->get();
+
+        // Loop through each top-level folder and format the structure
+        foreach ($files as $file) {
+            echo "[" . $file->file_name . "]\n";
+        }
+    }
+
+    public static function open($file_name = '', $host_id = '')
+    {
+        $file = File::where('host_id', $host_id)
+        ->where('file_name', $file_name)
+        ->first();
+
+        echo $file->content;
+    }
+
+    public static function files($host_id)
     {
         // Find the host
         $host = Host::find($host_id);
@@ -71,12 +92,12 @@ class FileService
 
         // Loop through each top-level folder and format the structure
         foreach ($folders as $folder) {
-            $output .= $this->format($folder);
+            $output .= self::format($folder);
         }
     }
 
     // Helper function to recursively format folder structure with files
-    private function format($folder, $indent = 0)
+    private static function format($folder, $indent = 0)
     {
          // Create indentation based on folder level
          $indentation = str_repeat("  ", $indent);
@@ -89,7 +110,7 @@ class FileService
  
          // Recursively add subfolders
          foreach ($folder->subfolders as $subfolder) {
-             $output .= $this->format($subfolder, $indent + 1);
+             $output .= self::format($subfolder, $indent + 1);
          }
  
          return $output;

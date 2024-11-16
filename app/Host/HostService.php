@@ -34,7 +34,7 @@ class HostService
         if(self::data()) {
             return self::data()->host_name;
         } else {
-            return '.';
+            return '';
         }
     }
 
@@ -179,7 +179,7 @@ class HostService
 
         if($attempt) {
             $attempts = Session::get('logon_attempts');
-            Session::set('logon_attempts', $attempts--);
+            Session::set('logon_attempts', --$attempts);
         }
 
         return Session::get('logon_attempts');
@@ -189,40 +189,40 @@ class HostService
     {
         Session::remove('logon_attempts');
         Session::remove('user_blocked');
+        Session::remove('debug_pass');
+        Session::remove('debug_attempts');
+        Session::remove('dump');
+        Session::remove('root');
+        Session::remove('maint');
+
+        if(self::auth()) {
+            Session::remove(self::$auth); 
+        }  
     }
 
     public static function blocked($block = false)
     {
-        if (!Session::has('user_blocked')) {
-            Session::set('user_blocked', false);
+        if($block) {
+            Session::set('user_blocked', true);
         }
 
         if (Session::has('user_blocked')) {
-            echo "ERROR: TERMIAL LOCKED. Please contact an Administrator!";
-        }
-
-        if($block) {
-            Session::set('user_blocked', true);
+            echo <<< EOT
+            ERROR: Access Denied.
+            TERMINAL LOCKED.
+            Please contact an Administrator.
+            EOT;
+            exit;
         }
     }
 
     public static function logoff() 
     {
-        unset($_SESSION['debug_pass']);
-        unset($_SESSION['debug_attempts']);
-        unset($_SESSION['user_blocked']);
-        unset($_SESSION['dump']);
-        unset($_SESSION['root']);
-        unset($_SESSION['maint']);
-
-        if(self::auth()) {
-            Session::remove(self::$auth); 
-            return;
-        }  
+        self::reset();
         
-        if(!self::auth() && self::guest()) {
+        if(self::guest()) {
             Session::remove(self::$guest); 
-            return;
+            exit;
         } 
 
     }

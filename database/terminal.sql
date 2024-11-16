@@ -30,10 +30,10 @@ SET time_zone = "+00:00";
 CREATE TABLE `files` (
   `id` bigint UNSIGNED NOT NULL,
   `file_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `content` text COLLATE utf8mb4_general_ci NOT NULL,
-  `folder_id` bigint UNSIGNED NOT NULL,
-  `user_id` bigint UNSIGNED NOT NULL,
-  `host_id` bigint UNSIGNED NOT NULL,
+  `content` text COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `folder_id` bigint UNSIGNED DEFAULT NULL,
+  `user_id` bigint UNSIGNED DEFAULT NULL,
+  `host_id` bigint UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

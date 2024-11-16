@@ -27,18 +27,19 @@ function handleNewUser(username) {
         return;
     }
 
-    if (!usernameForNewUser && !username) {
-        loadText("ENTER USERNAME NOW:");
-        isUsernamePrompt = true;
-        $('#command-input').attr('type', 'text'); // Switch input to text for username
+    if (!username) {
+        // This shouldn't happen since args should be checked in handleUserInput()
+        loadText("ERROR: USERNAME REQUIRED.");
         return;
+    } else {
+        // Assign the provided username
+        usernameForNewUser = username;
     }
 
-    if (isPasswordPrompt) return; // Already prompting for password, do nothing
+    // Proceed to password prompt
     isPasswordPrompt = true;
-    usernameForNewUser = username;
     loadText("ENTER PASSWORD NOW:");
-    $('#command-input').attr('type', 'password'); // Change input to password
+    $('#command-input').attr('type', 'password');
 }
 
 // Function to handle password prompt

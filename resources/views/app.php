@@ -7,7 +7,7 @@
 
   <div id="prompt">
     <?php if(user()->auth()): ?>
-      <span id="user"><?php echo strtoupper(auth()->user_name) ?>@<?php echo host()->hostname() ?>></span> 
+      <span id="user">@<?php echo host()->hostname() ?>></span> 
       <?php else: ?> 
       <span id="user">></span> 
     <?php endif; ?>
@@ -17,7 +17,7 @@
     <script>
        // Playlist of songs
       const playlist = [
-        <?php foreach($_SESSION['music'] as $music): ?>
+        <?php foreach(session()->get('music') as $music): ?>
           <?php echo "'$music',"; ?>
         <?php endforeach ?>
       ];
