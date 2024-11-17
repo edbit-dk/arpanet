@@ -14,6 +14,7 @@ function toggleMusic() {
       document.getElementById('play-button').textContent = 'STOP MUSIC'; // Update button text
     }).catch(error => {
       console.error('Playback failed:', error);
+      alert('Audio playback failed. Please try again or interact with the page.');
     });
   } else {
     // If audio is playing, pause it
@@ -24,7 +25,14 @@ function toggleMusic() {
 }
 
 // Event listener for the play button (click to play/pause)
-document.getElementById('play-button').addEventListener('click', toggleMusic);
+document.getElementById('play-button').addEventListener('click', () => {
+  // Ensure the audio context is in a `running` state
+  if (audio.context && audio.context.state === 'suspended') {
+    audio.context.resume().then(toggleMusic).catch(console.error);
+  } else {
+    toggleMusic();
+  }
+});
 
 // Event listener for when the current song ends
 audio.addEventListener('ended', () => {
@@ -33,6 +41,7 @@ audio.addEventListener('ended', () => {
     audio.src = playlist[currentSongIndex]; // Set the next song in the playlist
     audio.play().catch(error => {
       console.warn('Playback failed:', error);
+      alert('Audio playback failed for the next track. Please try again.');
     });
   } else {
     // Restart the playlist from the beginning
@@ -47,10 +56,9 @@ audio.addEventListener('ended', () => {
 // Try to autoplay the audio on page load if the user has interacted before
 if (userInteracted) {
   document.addEventListener('click', () => {
-    if (audio.paused) {
-      audio.play().catch(error => {
-        console.warn('Autoplay blocked or failed:', error);
-      });
-    }
+    audio.play().catch(error => {
+      console.warn('Autoplay blocked or failed:', error);
+      alert('Autoplay is blocked by your browser. Please press play to start the music.');
+    });
   }, { once: true }); // Ensures this event listener only runs once after interaction
 }

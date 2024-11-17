@@ -8,3 +8,8 @@ body, input, pre {
   text-shadow: 0 0 5px #C8C8C8;
   background-color: #000000;
 }
+
+.btn-input {
+  background-color: #00935E;
+  color: #000000;
+}

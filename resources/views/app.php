@@ -1,7 +1,7 @@
 <?php include 'template/header.php'; ?>
   <div id="terminal-wrapper">
-  <button style="background-color: #00935E;" id="play-button">MUSIC</button>
-  <button style="background-color: #00935E;" onclick="location.href='teleterm.txt'" target="_blank" type="button">HELP</button>
+  <button class="btn-input" id="play-button">MUSIC</button>
+  <button class="btn-input" onclick="location.href='teleterm.txt'" target="_blank" type="button">HELP</button>
     <div id="terminal"></div>
   </div>
 
