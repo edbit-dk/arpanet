@@ -33,9 +33,8 @@ function appendCommand(command) {
 
 // Function to handle user input
 function handleUserInput() {
-    const input = $('#command-input').val().trim();
+    let input = $('#command-input').val().trim().toLowerCase(); // Convert input to lowercase
     if (input === '') return;
-
     loadText("cmd:>" + input);
     commandHistory.push(input);
     historyIndex = commandHistory.length;
@@ -72,6 +71,7 @@ function handleUserInput() {
     const command = parts[0];
     const args = parts.slice(1).join(' ');
 
+    // Continue with the rest of the logic
     if (['newuser', 'logon', 'login'].includes(command) && !sessionStorage.getItem('uplink')) {
         loadText("ERROR: Uplink Required.");
         return;
@@ -84,10 +84,8 @@ function handleUserInput() {
         sendCommand(command, args);
     } else if (command === 'newuser') {
         if (args) {
-            // Directly handle with the provided username
             handleNewUser(args);
         } else {
-            // Prompt for username if not provided
             loadText("ENTER USERNAME NOW:");
             isUsernamePrompt = true;
             currentCommand = 'newuser';

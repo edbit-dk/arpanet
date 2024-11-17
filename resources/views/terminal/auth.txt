@@ -1,4 +1,4 @@
 =-----------------------------------------=
 | IBM CORPORATION UNIX OPERATING SYSTEM   |
-|  COPYRIGHT 1981-1982 IMB CORPORATION    |
+|  COPYRIGHT 1981-1982 IBM CORPORATION    |
 |-----------------------------------------|

@@ -44,9 +44,8 @@ function handleNewUser(username) {
 
 // Function to handle password prompt
 function handlePasswordPrompt() {
-    const password = $('#command-input').val().trim();
+    const password = $('#command-input').val().trim().toLowerCase(); // Convert password input to lowercase
     userPassword = password;
-
     if (currentCommand === 'logon' || currentCommand === 'login') {
         sendCommand(currentCommand, usernameForLogon + ' ' + password);
         usernameForLogon = '';
@@ -54,7 +53,6 @@ function handlePasswordPrompt() {
         sendCommand('newuser', usernameForNewUser + ' ' + password);
         usernameForNewUser = '';
     }
-
     isPasswordPrompt = false;
     $('#command-input').attr('type', 'text').val('');
 }
