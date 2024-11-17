@@ -1,14 +1,25 @@
 let currentSongIndex = 0;
-const audio = new Audio(playlist[currentSongIndex]);
-audio.loop = false; // Disable looping for queuing purposes
+let audio;
 
-// Check if the user has previously interacted from localStorage
-let userInteracted = localStorage.getItem('music') === 'true';
+// Function to create the audio element only after user interaction
+function initializeAudio() {
+  if (!audio) {
+    audio = new Audio(playlist[currentSongIndex]);
+    audio.loop = false; // Disable looping for queuing purposes
 
-// Function to toggle play/pause (for the button)
+    audio.addEventListener('ended', handleAudioEnded);
+    console.log('Audio element initialized.');
+  }
+}
+
+// Function to handle play/pause toggle
 function toggleMusic() {
+  if (!audio) {
+    console.log('Initializing audio for the first time.');
+    initializeAudio();
+  }
+
   if (audio.paused) {
-    // If audio is paused, start playing
     audio.play().then(() => {
       console.log('Audio started playing.');
       document.getElementById('play-button').textContent = 'STOP MUSIC'; // Update button text
@@ -17,7 +28,6 @@ function toggleMusic() {
       alert('Audio playback failed. Please try again or interact with the page.');
     });
   } else {
-    // If audio is playing, pause it
     audio.pause();
     console.log('Audio paused.');
     document.getElementById('play-button').textContent = 'PLAY MUSIC'; // Update button text
@@ -26,39 +36,36 @@ function toggleMusic() {
 
 // Event listener for the play button (click to play/pause)
 document.getElementById('play-button').addEventListener('click', () => {
-  // Ensure the audio context is in a `running` state
-  if (audio.context && audio.context.state === 'suspended') {
-    audio.context.resume().then(toggleMusic).catch(console.error);
-  } else {
-    toggleMusic();
-  }
+  initializeAudio();
+  toggleMusic();
 });
 
-// Event listener for when the current song ends
-audio.addEventListener('ended', () => {
+// Function to handle when the current song ends
+function handleAudioEnded() {
   currentSongIndex++;
   if (currentSongIndex < playlist.length) {
-    audio.src = playlist[currentSongIndex]; // Set the next song in the playlist
+    audio.src = playlist[currentSongIndex];
     audio.play().catch(error => {
       console.warn('Playback failed:', error);
       alert('Audio playback failed for the next track. Please try again.');
     });
   } else {
-    // Restart the playlist from the beginning
     currentSongIndex = 0;
     audio.src = playlist[currentSongIndex];
     audio.play().catch(error => {
       console.warn('Playback failed:', error);
     });
   }
-});
+}
 
-// Try to autoplay the audio on page load if the user has interacted before
-if (userInteracted) {
-  document.addEventListener('click', () => {
+// Ensure user interaction is recorded
+document.addEventListener('click', () => {
+  if (!audio || audio.paused) {
+    console.log('Attempting to play audio after user interaction.');
+    initializeAudio();
     audio.play().catch(error => {
       console.warn('Autoplay blocked or failed:', error);
       alert('Autoplay is blocked by your browser. Please press play to start the music.');
     });
-  }, { once: true }); // Ensures this event listener only runs once after interaction
-}
+  }
+}, { once: true }); // This listener runs once to ensure interaction is captured

@@ -93,6 +93,7 @@ function clearTerminal() {
 
 // Function to set text and background color
 function setTheme(color) {
-    $('#theme-color').attr('href', stylesheets + color + '-crt.css');
+    const hash = btoa(color);
+    $('#theme-color').attr('href', stylesheets + color + '-crt.css?v=' + hash);
     localStorage.setItem('theme', color);
 }

@@ -21,7 +21,6 @@
     display: flex;
     align-items: center;
     position: relative; /* Add relative positioning to parent */
-    background: #00935E;
     margin-top: 5px; /* Space between the terminal content and prompt */
     width: 100%;
     padding: 0px 1.5vw 0px 1.5vw;
@@ -34,4 +33,5 @@
     position: relative; /* Use relative positioning */
     margin-left: 2px; /* Add margin for spacing */
     width: 100%;
+    border: solid;
 }

@@ -6,10 +6,10 @@ return [
     'views' =>  BASE_PATH . '/resources/views/',
     'database' => BASE_PATH . '/database/',
     'music' => [
-        'public/music/80s_pop.ogg',
-        'public/music/80s_pad.ogg',
-        'public/music/80s_disco.ogg',
-        'public/music/80s_synth.ogg'
+        'public/music/80s_pop.mp3',
+        'public/music/80s_pad.mp3',
+        'public/music/80s_disco.mp3',
+        'public/music/80s_synth.mp3'
     ],
     'db' => [
         'driver' => 'mysql',
