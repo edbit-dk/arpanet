@@ -58,6 +58,7 @@ function handleAudioEnded() {
   }
 }
 
+/*
 // Ensure user interaction is recorded
 document.addEventListener('click', () => {
   if (!audio || audio.paused) {
@@ -69,3 +70,4 @@ document.addEventListener('click', () => {
     });
   }
 }, { once: true }); // This listener runs once to ensure interaction is captured
+*/

@@ -38,14 +38,14 @@ function handleRedirect(response) {
         }, 1000);
     }
 
-    if (response.startsWith("Security")) {
+    if (response.startsWith("Authentication")) {
             setTimeout(function() {
 
-                loadText("SUCCESS: Welcome to Arpanet");
+                loadText("Welcome to ARPANET");
 
                 setTimeout(function() {
                     redirectTo('');
-                }, 1000);
+                }, 2000);
 
             }, 1000);
     }

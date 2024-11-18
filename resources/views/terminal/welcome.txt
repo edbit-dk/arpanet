@@ -7,5 +7,5 @@ This terminal allows access to ARPANET
 operated by the US Military, stretching 
 from US to UK and Norway by sattelite.
 
-Type UPLINK to access central ARPANET.
+UPLINK to access central ARPANET.
 ____________________________________________

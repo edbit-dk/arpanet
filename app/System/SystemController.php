@@ -59,23 +59,39 @@ class SystemController extends Controller
         Session::set('access_code', $access_code);
     
         echo <<< EOT
-        
         Uplink with central ARPANET initiated.
-        Security Access Code Sequence:
-    
+        
+        ENTER Security Access Code Sequence:
         ***********************************
         >>> {$access_code} <<<
         ***********************************
-
-        !!! NEWUSER: BACKUP ACCESS CODE !!!
-
-        1. Type LOGIN for authentication.
-        2. Type NEWUSER to create an account.
-        3. Type HELP for a command list.
-        _________________________________________
         EOT;
     
         return;
+    }
+
+    public function enter()
+    {
+        $data = parse_request('data');
+
+        if(Session::get('access_code') == $data[0]) {
+            echo <<< EOT
+            Security Access Code Sequence Accepted.
+
+            1. Type LOGIN for authentication.
+            2. Type NEWUSER to create an account.
+            3. Type HELP for a command list.
+            _________________________________________
+            EOT;
+        
+            return;
+        } else {
+            echo "Incorrect Security Access Code Entered.\n";
+            echo "Access Denied.\n";
+            echo "Please enter correct code.\n";
+            echo "Internal Security Procedures Activated.\n";
+        }
+
     }
 
     public function help()
@@ -138,14 +154,14 @@ class SystemController extends Controller
         if(Host::guest()) {
             view('terminal/auth.txt');
             
-            $name = Host::data()->host_name;
-            $server_ip = Host::data()->ip;
+            $host_name = Host::data()->host_name;
+            $host_ip = Host::data()->ip;
             $level = Host::data()->level->id;
 
             echo <<< EOT
-                       -Server $server_ip-
+                       -Server $host_ip-
                       
-            <$name>
+            Connected to: $host_name
             Password Required             [SECURITY: $level]
             ___________________________________________
             EOT;

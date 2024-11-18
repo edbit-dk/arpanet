@@ -33,8 +33,9 @@ function appendCommand(command) {
 
 // Function to handle user input
 function handleUserInput() {
-    let input = $('#command-input').val().trim().toLowerCase(); // Convert input to lowercase
+    let input = $('#command-input').val().trim();
     if (input === '') return;
+
     loadText("cmd:>" + input);
     commandHistory.push(input);
     historyIndex = commandHistory.length;
@@ -68,10 +69,9 @@ function handleUserInput() {
     }
 
     const parts = input.split(' ');
-    const command = parts[0];
+    const command = parts[0].toLowerCase(); // Only the command is transformed to lowercase
     const args = parts.slice(1).join(' ');
 
-    // Continue with the rest of the logic
     if (['newuser', 'logon', 'login'].includes(command) && !sessionStorage.getItem('uplink')) {
         loadText("ERROR: Uplink Required.");
         return;
@@ -111,15 +111,14 @@ function handleUserInput() {
         sessionStorage.setItem('uplink', false);
         loadText("Please wait...");
         sendCommand(command, args);
-        setTimeout(function () {
-            redirectTo('');
-        }, 2000);
+        setTimeout(function() { redirectTo(''); }, 2000);
     } else if (command === 'color') {
         setTheme(args);
     } else {
         sendCommand(command, args);
     }
 }
+
 
 
 /*

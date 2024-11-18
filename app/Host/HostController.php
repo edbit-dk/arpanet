@@ -76,7 +76,10 @@ class HostController extends Controller
             $servers  = Host::netstat();
         }
 
-        echo "Scanning...\n";
+        echo "Searching Comlinks...\n";
+        echo "Searching...\n";
+        echo "Searching ARPANET...\n";
+        echo "Active ARPANET Stations:\n";
 
         foreach ($servers as $server) {
 
