@@ -154,14 +154,14 @@ class SystemController extends Controller
         if(Host::guest()) {
             view('terminal/auth.txt');
             
-            $host_name = Host::data()->host_name;
+            $host_name = Host::hostname();
             $host_ip = Host::data()->ip;
             $level = Host::data()->level->id;
 
             echo <<< EOT
                        -Server $host_ip-
                       
-            Connected to: $host_name
+            Connected to $host_name
             Password Required             [SECURITY: $level]
             ___________________________________________
             EOT;
@@ -178,12 +178,12 @@ class SystemController extends Controller
         view('terminal/auth.txt');
 
         $server_name = Host::data()->host_name;
-        $org= Host::data()->org;
+        $org = Host::data()->org;
 
         $username = User::data()->user_name;
 
         echo <<< EOT
-                  -$server_name ($org)-
+                  -$server_name, $org-
 
         Welcome, $username 
         __________________________________________

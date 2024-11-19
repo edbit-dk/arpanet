@@ -3,7 +3,6 @@ function handleRedirect(response) {
 
     if (response.startsWith("Trying")) {
         setTimeout(function() {
-            loadText("SUCCESS: Connecting to Host");
             setTimeout(function() {
                 redirectTo('');
             }, 1000);
@@ -37,6 +36,15 @@ function handleRedirect(response) {
 
         }, 1000);
     }
+
+    if (response.includes("TERMINAL LOCKED")) {
+        setTimeout(function() {
+            setTimeout(function() {
+                redirectTo('');
+            }, 2000);
+
+        }, 1000);
+}
 
     if (response.startsWith("Authentication")) {
             setTimeout(function() {

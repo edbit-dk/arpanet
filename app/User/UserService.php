@@ -17,7 +17,7 @@ class UserService
         return false;
     }
 
-    public function username()
+    public static function username()
     {
         if(self::data()) {
             return self::data()->user_name;

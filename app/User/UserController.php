@@ -60,10 +60,10 @@ class UserController extends Controller
 
     public function connection()
     {
-        if(!empty(user()->username())) {
+        if(Host::auth() && !empty(user()->username())) {
             echo host()->hostname() . '>';
         } else {
-            echo '>';
+            echo '@>';
         }
 
     }
@@ -148,8 +148,6 @@ class UserController extends Controller
 
     public function logout() 
     {
-
-        Host::logoff();
         
         Auth::logout();
 

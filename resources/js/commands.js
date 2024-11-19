@@ -1,23 +1,30 @@
 
 // Function to send command to server
 function sendCommand(command, data, queryString = '') {
-    const query = window.location.search; // Get the current URL query string
+    const query = window.location.search;
     const route = command.split(" ")[0];
-    $.ajax({
-        type: 'GET',
-        url: route.toLowerCase() + queryString,
-        data: {
-            data: data,
-            query: query
-        },
-        success: function(response) {
-            if (isPasswordPrompt) {
-                handlePasswordPromptResponse(response); // Handle password prompt response
-            } else {
-                loadText(response); // Load response text into terminal
-                handleRedirect(response); // Handle redirect if needed
+
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: 'GET',
+            url: route.toLowerCase() + queryString,
+            data: {
+                data: data,
+                query: query
+            },
+            success: function(response) {
+                if (isPasswordPrompt) {
+                    handlePasswordPromptResponse(response); // Handle password prompt response
+                } else {
+                    loadText(response); // Load response text into terminal
+                    handleRedirect(response); // Handle redirect if needed
+                }
+                resolve(response); // Resolve the promise with the response
+            },
+            error: function(err) {
+                reject(err); // Reject the promise in case of an error
             }
-        }
+        });
     });
 }
 
@@ -108,10 +115,18 @@ function handleUserInput() {
             return;
         }
     } else if (['logout', 'logoff', 'reboot', 'dc', 'restart', 'start', 'autoexec', 'exit'].includes(command)) {
-        sessionStorage.setItem('uplink', false);
-        loadText("Please wait...");
-        sendCommand(command, args);
-        setTimeout(function() { redirectTo(''); }, 2000);
+        sendCommand(command, args)
+            .then(response => {
+                if (!response.includes("ERROR")) {
+                    setTimeout(function() {
+                        sessionStorage.setItem('uplink', false);
+                        redirectTo('');
+                    }, 1000);
+                }
+            })
+            .catch(err => {
+                console.error("Command failed", err);
+            });
     } else if (command === 'color') {
         setTheme(args);
     } else {

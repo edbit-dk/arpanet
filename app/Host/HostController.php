@@ -15,12 +15,10 @@ class HostController extends Controller
 
     public function connect() 
     {
-
-        Host::reset();
         $server = '';
         
         if(request()->get('data')) {
-            $data = strtoupper(request()->get('data'));
+            $data = request()->get('data');
             $server = Host::connect($data);
         }
 
@@ -141,13 +139,8 @@ class HostController extends Controller
              // Block the user after 4 failed attempts
              if ($attempts_left == 0) {
 
+                Host::logoff();
                 Host::blocked(true);
-
-                echo <<< EOT
-                ERROR: Access Denied.
-                TERMINAL LOCKED.
-                Please contact an Administrator.
-                EOT;
                 exit;
 
              } else {
@@ -161,9 +154,15 @@ class HostController extends Controller
         
     }
 
+    public function mail()
+    {
+        
+    }
+
     public function logoff() 
     {
-        return Host::logoff();
+        Host::logoff();
+        echo "%connection closed.";
     }
 
 }

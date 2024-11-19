@@ -11,8 +11,8 @@ use Lib\Session;
 class HostService 
 {
 
-    private static $auth = 'host';
-    private static $guest = 'guest';
+    private static $auth = 'host_auth';
+    private static $guest = 'host_guest';
     private static $max_attempts = 4; // Maximum number of allowed login attempts
 
     public static function data() 
@@ -29,7 +29,7 @@ class HostService
 
     }
 
-    public function hostname()
+    public static function hostname()
     {
         if(self::data()) {
             return self::data()->host_name;
@@ -114,17 +114,23 @@ class HostService
         if (empty($host)) {
             return false;
         } else {
-           Session::set(self::$guest, $host->id);
-           return true;
+            self::reset();
+            self::logoff();
+            Session::set(self::$guest, $host->id);
+            return true;
         }
 
     }
 
-    public static function logon($username, $password) {
+    public static function logon($username, $password = '') {
 
         $host = false;
         $user = false;
         $host_id = self::data()->id;
+
+        if(empty($password)) {
+            $password = null;
+        }
 
         $host = Host::where('id',  $host_id)
             ->where('password', $password)
@@ -143,6 +149,9 @@ class HostService
             if(!$user) {
                 return false;
              }
+
+             Session::set('session', Session::get('user'));
+             Session::set('user', $user->id);
         }
         Session::set(self::$guest, false);
         Session::set(self::$auth, $host_id);
@@ -193,11 +202,7 @@ class HostService
         Session::remove('debug_attempts');
         Session::remove('dump');
         Session::remove('root');
-        Session::remove('maint');
-
-        if(self::auth()) {
-            Session::remove(self::$auth); 
-        }  
+        Session::remove('maint'); 
     }
 
     public static function blocked($block = false)
@@ -208,9 +213,12 @@ class HostService
 
         if (Session::has('user_blocked')) {
             echo <<< EOT
-            ERROR: Access Denied.
+            *** ACCESS DENIED ***
+                
             TERMINAL LOCKED.
             Please contact an Administrator.
+
+            %connection terminated by remote host
             EOT;
             exit;
         }
@@ -218,13 +226,14 @@ class HostService
 
     public static function logoff() 
     {
-        self::reset();
-        
-        if(self::guest()) {
-            Session::remove(self::$guest); 
-            exit;
-        } 
+        if(Session::has('session')) {
+            $session = Session::get('session');
+            Session::set('user', $session);
+        }
 
+        self::reset();
+        Session::remove(self::$guest);
+        Session::remove(self::$auth); 
     }
 
 }
