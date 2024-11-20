@@ -4,7 +4,7 @@ namespace App\Host;
 
 use App\Host\HostModel as Host;
 use App\User\UserModel as User;
-use App\Level\LevelModel as Level;
+use App\User\Level\LevelModel as Level;
 
 use Lib\Session;
 

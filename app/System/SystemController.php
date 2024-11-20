@@ -183,7 +183,7 @@ class SystemController extends Controller
         $username = User::data()->user_name;
 
         echo <<< EOT
-                  -$server_name, $org-
+        $server_name, $org
 
         Welcome, $username 
         __________________________________________

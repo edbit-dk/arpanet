@@ -67,11 +67,12 @@ class HostController extends Controller
     public function scan() 
     {
         $nodes = '';
+        $access = '';
 
         if(Host::auth() OR Host::guest()) {
-            $servers = Host::data()->nodes()->get();
+            $hosts = Host::data()->nodes()->get();
         } else {
-            $servers  = Host::netstat();
+            $hosts  = Host::netstat();
         }
 
         echo "Searching Comlinks...\n";
@@ -79,14 +80,19 @@ class HostController extends Controller
         echo "Searching ARPANET...\n";
         echo "Active ARPANET Stations:\n";
 
-        foreach ($servers as $server) {
+        foreach ($hosts as $host) {
 
-            if(isset($server->type->name)) {
-                $type = $server->type->name;
+            if(isset($host->type->name)) {
+                $type = $host->type->name;
             } else {
                 $type = 'UNKNOWN';
             }
-            echo "$server->id. $server->host_name [$server->org] - $type\n";
+
+            if(!empty($host->user(User::auth()))) {
+                $access = '*';
+            }
+            
+            echo "$access $host->host_name, $host->org ($type)\n";
         }
         
     }

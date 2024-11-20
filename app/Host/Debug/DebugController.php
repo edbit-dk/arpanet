@@ -126,9 +126,9 @@ class DebugController
                 Session::remove('dump');
     
                 echo "EXCACT MATCH!\n";
-                echo "+0050 XP \n";
-                echo "Adding user to host accounts...";
-                echo "Please wait while system is accessed...";
+                echo "+0050 XP\n";
+                echo "Adding user to host accounts...\n";
+                echo "Please wait while system is accessed...\n";
             }
     
         }

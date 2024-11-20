@@ -65,7 +65,7 @@ CREATE TABLE `help` (
   `cmd` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `input` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `info` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `auth` tinyint(1) DEFAULT '0'
+  `is_auth` tinyint(1) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -100,8 +100,8 @@ CREATE TABLE `hosts` (
 --
 
 INSERT INTO `hosts` (`id`, `user_id`, `password`, `host_name`, `org`, `ip`, `active`, `type_id`, `level_id`, `created_at`, `updated_at`) VALUES
-(1, 1, 'robco', 'MILNET', 'US MILITARY', '1.1.1.1', 1, 1, 5, '1984-10-22 16:18:50', NULL),
-(2, 1, 'robco', 'ARPANET', 'US Military', '0.0.0.0', 1, 4, 1, '1969-10-10 16:29:25', NULL);
+(1, 1, 'robco', 'milnet', 'DOD', '1.1.1.1', 1, 1, 5, '1984-10-22 16:18:50', NULL),
+(2, 1, 'robco', 'arpanet', 'DOD', '0.0.0.0', 1, 4, 1, '1969-10-10 16:29:25', NULL);
 
 -- --------------------------------------------------------
 
