@@ -60,11 +60,17 @@ class UserController extends Controller
 
     public function connection()
     {
-        if(Host::auth() && !empty(user()->username())) {
+        if(Host::auth()) {
             echo host()->hostname() . '>';
-        } else {
-            echo '@>';
+            exit;
         }
+
+        if(Host::guest()) {
+            echo host()->data()->ip . '>';
+            exit;
+        }
+
+        echo '@>';
 
     }
 
@@ -143,7 +149,7 @@ class UserController extends Controller
 
         Auth::login($user_name, $password);
         
-        echo "Security Access Code Sequence Accepted.\n";
+        echo "Authentication successful.\n";
     }
 
     public function logout() 

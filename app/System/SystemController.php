@@ -59,8 +59,8 @@ class SystemController extends Controller
         Session::set('access_code', $access_code);
     
         echo <<< EOT
-        Uplink with central ARPANET initiated.
-        
+        Uplink with central ARPANET initiated...
+
         ENTER Security Access Code Sequence:
         ***********************************
         >>> {$access_code} <<<
@@ -81,7 +81,6 @@ class SystemController extends Controller
             1. Type LOGIN for authentication.
             2. Type NEWUSER to create an account.
             3. Type HELP for a command list.
-            _________________________________________
             EOT;
         
             return;
@@ -141,8 +140,12 @@ class SystemController extends Controller
             return $this->host();
         }
 
-        if(User::auth()) {
+        if(Host::guest()) {
             return $this->termlink();
+        }
+
+        if(User::auth()) {
+            return view('terminal/termlink.txt');
         }
 
         view('terminal/welcome.txt');
@@ -150,26 +153,18 @@ class SystemController extends Controller
 
     public function termlink() 
     {
-
-        if(Host::guest()) {
-            view('terminal/auth.txt');
+        view('terminal/auth.txt');
             
-            $host_name = Host::hostname();
-            $host_ip = Host::data()->ip;
-            $level = Host::data()->level->id;
+        $host_name = Host::hostname();
+        $host_ip = Host::data()->ip;
+        $level = Host::data()->level->id;
 
-            echo <<< EOT
-                       -Server $host_ip-
+        echo <<< EOT
+                   -Server $host_ip-
                       
-            Connected to $host_name
-            Password Required             [SECURITY: $level]
-            ___________________________________________
-            EOT;
-
-        } else {
-            view('terminal/termlink.txt');
-            exit;
-        }
+        Connected to: $host_name
+        Password Required             [SECURITY: $level]
+        EOT;
 
     }
 
@@ -177,16 +172,17 @@ class SystemController extends Controller
     {
         view('terminal/auth.txt');
 
-        $server_name = Host::data()->host_name;
-        $org = Host::data()->org;
+        $host = Host::data();
+        $host_name = strtoupper($host->host_name);
+        $org = $host->org;
+        $type = $host->type->name;
 
         $username = User::data()->user_name;
 
         echo <<< EOT
-        $server_name, $org
+        $host_name - $org ($type)
 
         Welcome, $username 
-        __________________________________________
         EOT;
 
         return;

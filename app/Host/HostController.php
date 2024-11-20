@@ -92,28 +92,28 @@ class HostController extends Controller
                 $access = '*';
             }
             
-            echo "$access $host->host_name, $host->org ($type)\n";
+            echo "$access $host->host_name@$host->ip\n";
         }
         
     }
 
-        // sysadmin571_bypass /: 
+    // sysadmin571_bypass /: 
     public function sysadmin()
     {
-        Host::data()->user(auth()->id);
-        $user = Host::data()->user(User::data()->id);
+        $host = Host::data();
+        $user = User::data()->host($host->id);
 
        if($user) {
-            Host::logon($user->user_name, $user->password);
+            Host::logon(User::username(), User::data()->password);
        } else {
-            User::data()->hosts()->attach(User::data()->id);
 
-            $user = Host::data()->user(User::data()->id);
-            Host::logon($user->user_name, $user->password);
+            User::data()->hosts()->attach($host->id);
+
+            Host::logon(User::username(), User::data()->password);
        }
 
+       echo "SUCCESS: Authentication accepted.\n";
        echo bootup();
-       echo "\nSUCCESS: Password Accepted";
        exit;
     }
 

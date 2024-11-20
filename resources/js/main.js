@@ -15,6 +15,7 @@ let currentCommand = '';
 $(document).ready(function() {
     // Load the saved theme when the document is ready
     loadSavedTheme();
+    $('#user').load('connection');
 
     // Check if 'boot' command has been sent during the current session
     if (!sessionStorage.getItem('boot')) {

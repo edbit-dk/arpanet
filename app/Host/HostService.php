@@ -133,6 +133,7 @@ class HostService
         }
 
         $host = Host::where('id',  $host_id)
+            ->where('user_id', Session::get('user'))
             ->where('password', $password)
             ->first();
 
@@ -150,10 +151,11 @@ class HostService
                 return false;
              }
 
-             Session::set('session', Session::get('user'));
-             Session::set('user', $user->id);
+            Session::set('session', Session::get('user'));
+            Session::set('user', $user->id);
+
         }
-        Session::set(self::$guest, false);
+        
         Session::set(self::$auth, $host_id);
         return true;
     }
@@ -214,10 +216,8 @@ class HostService
         if (Session::has('user_blocked')) {
             echo <<< EOT
             *** ACCESS DENIED ***
-                
             TERMINAL LOCKED.
             Please contact an Administrator.
-
             %connection terminated by remote host
             EOT;
             exit;
@@ -232,8 +232,13 @@ class HostService
         }
 
         self::reset();
-        Session::remove(self::$guest);
-        Session::remove(self::$auth); 
+
+        if(self::auth()) {
+            Session::remove(self::$auth);
+        } else {
+            Session::remove(self::$guest); 
+        }
+
     }
 
 }
