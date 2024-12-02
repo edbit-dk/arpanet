@@ -33,6 +33,9 @@ class UserController extends Controller
 
     public function login() 
     {
+        // Check if the user is already blocked
+        Host::blocked();
+        
         $data = parse_request('data');
 
         if(!Auth::check()) {
@@ -108,6 +111,9 @@ class UserController extends Controller
 
     public function newuser() 
     {
+        // Check if the user is already blocked
+        Host::blocked();
+
         $data = parse_request('data');
 
         if(empty($data)) {

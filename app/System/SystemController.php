@@ -49,6 +49,9 @@ class SystemController extends Controller
 
     public function uplink() 
     {
+         // Check if the user is already blocked
+         Host::blocked();
+
         $code_1 = random_str(6, 'AXYZ01234679');
         $code_2 = random_str(6, 'AXYZ01234679');
         $code_3 = random_str(6, 'AXYZ01234679');
@@ -74,21 +77,48 @@ class SystemController extends Controller
     {
         $data = parse_request('data');
 
+        // Initialize login attempts if not set
+        Host::attempts();
+
+        // Check if the user is already blocked
+        Host::blocked();
+
         if(Session::get('access_code') == $data[0]) {
             echo <<< EOT
             Security Access Code Sequence Accepted.
+
+            *** NETWORK STATUS: ONLINE ***
 
             1. Type LOGIN for authentication.
             2. Type NEWUSER to create an account.
             3. Type HELP for a command list.
             EOT;
-        
-            return;
+            exit;
+
         } else {
-            echo "Incorrect Security Access Code Entered.\n";
-            echo "Access Denied.\n";
-            echo "Please enter correct code.\n";
-            echo "Internal Security Procedures Activated.\n";
+
+            // Calculate remaining attempts
+            $attempts_left = Host::attempts(true);
+    
+            if ($attempts_left == 1) {
+                echo "!!! WARNING: LOCKOUT IMMINENT !!!\n\n";
+            }
+
+            // Block the user after 4 failed attempts
+            if ($attempts_left == 0) {
+
+               Host::blocked(true);
+               exit;
+
+            } else {
+                echo <<< EOT
+                ERROR: Incorrect Security Access Code.
+                Please ENTER correct code.
+                Attempts left: {$attempts_left}
+                Internal Security Procedures Activated.
+                EOT;
+            }
+            
         }
 
     }
