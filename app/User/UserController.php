@@ -70,7 +70,7 @@ class UserController extends Controller
             exit;
         }
 
-        echo '@>';
+        echo '>';
 
     }
 

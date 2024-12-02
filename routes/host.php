@@ -1,6 +1,7 @@
 <?php
 
 use App\Host\HostController;
+use App\Host\File\FileController;
 use App\Host\Debug\DebugController;
 use App\Host\HostService as Host;
 use App\User\UserService as User;
@@ -26,13 +27,12 @@ if(Host::guest()) {
 }
 
 if(Host::auth() && User::username() != 'guest') {
-    $app->get('/echo', [HostController::class, 'echo']);
-    $app->get('/mail', [HostController::class, 'mail']);
-    $app->get('/dir', [HostController::class, 'dir']);
-    $app->get('/ls', [HostController::class, 'dir']);
-    $app->get('/more', [HostController::class, 'open']);
-    $app->get('/open', [HostController::class, 'open']);
-    $app->get('/echo', [HostController::class, 'echo']);
+    $app->get('/mail', [FileController::class, 'mail']);
+    $app->get('/dir', [FileController::class, 'dir']);
+    $app->get('/ls', [FileController::class, 'dir']);
+    $app->get('/more', [FileController::class, 'open']);
+    $app->get('/open', [FileController::class, 'open']);
+    $app->get('/echo', [FileController::class, 'echo']);
 }
 
 if(Host::auth() OR Host::guest()) {

@@ -218,6 +218,7 @@ class HostService
             *** ACCESS DENIED ***
             TERMINAL LOCKED.
             Please contact an Administrator.
+            
             %connection terminated by remote host
             EOT;
             exit;

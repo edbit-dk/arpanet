@@ -56,9 +56,14 @@ class FileService
         ->orWhere('user_id', $user_id)
         ->get();
 
+        if($files->isEmpty()) {
+            echo 'ERROR: Access Denied.';
+            exit;
+        }
+
         // Loop through each top-level folder and format the structure
         foreach ($files as $file) {
-            echo "[" . $file->file_name . "]\n";
+            echo "$file->id. [" . $file->file_name . "]\n";
         }
     }
 
@@ -66,6 +71,7 @@ class FileService
     {
         $file = File::where('host_id', $host_id)
         ->where('file_name', $file_name)
+        ->orWhere('id', $file_name)
         ->first();
 
         echo $file->content;

@@ -10,11 +10,17 @@ let usernameForLogon = ''; // Variable to store the username for logon
 let usernameForNewUser = ''; // Variable to store the username for new user
 let isUsernamePrompt = false;
 let currentCommand = '';
+let commands = [];
 
 // Event listener for when the DOM content is loaded
 $(document).ready(function() {
     // Load the saved theme when the document is ready
     loadSavedTheme();
+
+    //Check commands available
+    listCommands();
+
+    //Check current connection
     $('#user').load('connection');
 
     // Check if 'boot' command has been sent during the current session
@@ -63,6 +69,56 @@ $('#command-input').keydown(function(e) {
         }
     } else if (e.key === 'Tab') {
         e.preventDefault(); // Prevent default tab behavior
-        autocompleteCommand(); // Call autocomplete function on Tab key press
+        autocomplete(); // Call autocomplete function on Tab key press
     }
 });
+
+// Fetch commands from the server based on the user's status
+function listCommands() {
+    fetch('/help?data=auto')
+        .then(response => response.json())
+        .then(data => {
+            commands = data; // Store commands for autocomplete
+        })
+        .catch(error => console.error('Error fetching commands:', error));
+}
+
+
+function autocomplete() {
+    const inputField = $('#command-input');
+    const currentText = inputField.val().trim();
+
+    // Find commands that match the current input
+    const matches = availableCommands.filter(cmd => cmd.startsWith(currentText));
+
+    if (matches.length === 1) {
+        // If only one match, autocomplete the input
+        inputField.val(matches[0]);
+    } else if (matches.length > 1) {
+        // If multiple matches, find the common prefix
+        const commonPrefix = findCommonPrefix(matches);
+        if (commonPrefix.length > currentText.length) {
+            // Autocomplete the input to the common prefix
+            inputField.val(commonPrefix);
+        } else {
+            // Show all matches in the terminal as suggestions
+            loadText(`${matches.join(' ')}`);
+        }
+    } else {
+        // No matches
+        loadText('');
+    }
+}
+
+// Utility function to find the common prefix of an array of strings
+function findCommonPrefix(strings) {
+    if (!strings.length) return '';
+    let prefix = strings[0];
+    for (let i = 1; i < strings.length; i++) {
+        while (!strings[i].startsWith(prefix)) {
+            prefix = prefix.slice(0, -1);
+            if (!prefix) break;
+        }
+    }
+    return prefix;
+}
