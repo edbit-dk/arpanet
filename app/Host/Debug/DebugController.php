@@ -20,13 +20,13 @@ class DebugController
 
         $data = trim(strtoupper($data));
         // min: 5 max: 17
-        $max_words = rand($min_level, $max_level);
+        $max_words = $max_level;
         $max_attempts = 4;
     
         if (!Session::has('debug_pass')) {
     
             // min: 2 max: 15
-            Session::set('word', rand($min_level, $max_level));
+            Session::set('word', $min_level);
             Session::set('debug_pass',
             wordlist(config('database') . 'wordlist.txt', Session::get('word'), 1)[0]
             );

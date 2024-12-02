@@ -50,12 +50,6 @@ class HostController extends Controller
 
         foreach ($hosts as $host) {
 
-            if(isset($host->type->name)) {
-                $type = $host->type->name;
-            } else {
-                $type = 'UNKNOWN';
-            }
-
             if(!empty($host->user(User::auth()))) {
                 $access = '*';
             }

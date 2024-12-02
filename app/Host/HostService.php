@@ -215,8 +215,7 @@ class HostService
 
         if (Session::has('user_blocked')) {
             echo <<< EOT
-            *** ACCESS DENIED ***
-            TERMINAL LOCKED.
+            *** TERMINAL LOCKED ***
             Please contact an Administrator.
             %connection terminated.
             EOT;

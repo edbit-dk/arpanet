@@ -69,12 +69,17 @@ class FileService
 
     public static function open($file_name = '', $host_id = '')
     {
+
         $file = File::where('host_id', $host_id)
         ->where('file_name', $file_name)
         ->orWhere('id', $file_name)
         ->first();
 
-        echo $file->content;
+        if(empty($file->content)) {
+            echo 'ERROR: File not Found.';
+        } else {
+            echo $file->content;
+        }
     }
 
     public static function files($host_id)

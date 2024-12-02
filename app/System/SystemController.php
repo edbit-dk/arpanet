@@ -205,12 +205,11 @@ class SystemController extends Controller
         $host = Host::data();
         $host_name = strtoupper($host->host_name);
         $org = $host->org;
-        $type = $host->type->name;
 
         $username = User::data()->user_name;
 
         echo <<< EOT
-        $host_name - $org ($type)
+        $host_name | $org
 
         Welcome, $username 
         EOT;
