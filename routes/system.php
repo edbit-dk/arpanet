@@ -17,7 +17,6 @@ $app->get('/version', [SystemController::class, 'version']);
 $app->get('/termlink', [SystemController::class, 'termlink']);
 $app->get('/welcome', [SystemController::class, 'welcome']);
 $app->get('/uplink', [SystemController::class, 'uplink']);
-$app->get('/enter', [SystemController::class, 'enter']);
 $app->get('/boot', [SystemController::class, 'boot']);
 
 //$app->get('/help', [SystemController::class, 'help']);

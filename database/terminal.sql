@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Vært: localhost
--- Genereringstid: 21. 10 2024 kl. 21:23:59
+-- Genereringstid: 03. 12 2024 kl. 22:56:20
 -- Serverversion: 8.0.39
--- PHP-version: 8.2.24
+-- PHP-version: 8.2.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,14 +29,21 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `files` (
   `id` bigint UNSIGNED NOT NULL,
-  `file_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `content` text COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `file_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `folder_id` bigint UNSIGNED DEFAULT NULL,
   `user_id` bigint UNSIGNED DEFAULT NULL,
   `host_id` bigint UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Data dump for tabellen `files`
+--
+
+INSERT INTO `files` (`id`, `file_name`, `content`, `folder_id`, `user_id`, `host_id`, `created_at`, `updated_at`) VALUES
+(1, 'Letter from Doctor Stanislaus Braun', 'A Letter to the Overseer from Dr. Stanislaus Braun:\r\n\r\nIf you are reading this, emergency Vault \r\ninternmentprocedures have been initiated and you \r\nand your control group have been sealed into \r\nyour Vault. Congratulations! You are now a vital \r\npart of the most ambitious program ever undertaken \r\nby Vault-Tec.\r\n \r\nIf you have not yet read your sealed orders, do so \r\nnow. They will outline the experimental protocols \r\nassigned to your control group. Please remember \r\nthat deviation from these protocols in any way \r\nwill jeopardize the success of the program, \r\nand may be considered grounds for termination \r\nby Vault-Tec Corporation (as outlined in your \r\nEmployment Agreement)\r\n \r\nYour Vault may or may not have been selected \r\nto receive a G.E.C.K. module. \r\nPlease see Attachment A for details.\r\n \r\nDoctor Stanislaus Braun\r\nDirector, Societal Preservation Program\r\nVault-Tec Corporation', NULL, NULL, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -46,7 +53,7 @@ CREATE TABLE `files` (
 
 CREATE TABLE `folders` (
   `id` bigint UNSIGNED NOT NULL,
-  `folder_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `folder_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `parent_id` bigint UNSIGNED DEFAULT NULL,
   `user_id` bigint UNSIGNED NOT NULL,
   `host_id` bigint UNSIGNED NOT NULL,
@@ -65,15 +72,19 @@ CREATE TABLE `help` (
   `cmd` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `input` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `info` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `is_auth` tinyint(1) DEFAULT '0'
+  `is_user` tinyint(1) DEFAULT '0',
+  `is_host` tinyint(1) DEFAULT '0',
+  `is_visitor` tinyint(1) DEFAULT '0',
+  `is_guest` tinyint(1) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Data dump for tabellen `help`
 --
 
-INSERT INTO `help` (`id`, `cmd`, `input`, `info`, `auth`) VALUES
-(1, 'HELP', '[CMD]', '(Detailed info about command)', 0);
+INSERT INTO `help` (`id`, `cmd`, `input`, `info`, `is_user`, `is_host`, `is_visitor`, `is_guest`) VALUES
+(1, 'help', '[cmd]', 'shows info about command', 0, 0, 1, 0),
+(2, 'uplink', '[code]', 'connect to ARPANET', 0, 0, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -86,10 +97,9 @@ CREATE TABLE `hosts` (
   `user_id` bigint DEFAULT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT 'robco',
   `host_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `org` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `org` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `active` tinyint(1) DEFAULT '1',
-  `type_id` int DEFAULT NULL,
   `level_id` int NOT NULL DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
@@ -99,9 +109,9 @@ CREATE TABLE `hosts` (
 -- Data dump for tabellen `hosts`
 --
 
-INSERT INTO `hosts` (`id`, `user_id`, `password`, `host_name`, `org`, `ip`, `active`, `type_id`, `level_id`, `created_at`, `updated_at`) VALUES
-(1, 1, 'robco', 'milnet', 'DOD', '1.1.1.1', 1, 1, 5, '1984-10-22 16:18:50', NULL),
-(2, 1, 'robco', 'arpanet', 'DOD', '0.0.0.0', 1, 4, 1, '1969-10-10 16:29:25', NULL);
+INSERT INTO `hosts` (`id`, `user_id`, `password`, `host_name`, `org`, `ip`, `active`, `level_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 'robco', 'milnet', 'Department of Defense', '1.1.1.1', 1, 5, '1984-10-22 16:18:50', NULL),
+(2, 1, 'robco', 'arpanet', 'Department of Defense', '0.0.0.0', 1, 1, '1969-10-10 16:29:25', NULL);
 
 -- --------------------------------------------------------
 
@@ -150,9 +160,9 @@ INSERT INTO `levels` (`id`, `rep`, `xp_req`, `xp_reward`, `min`, `max`) VALUES
 (0, 'NONE', 0, 1, 2, 3),
 (1, 'Novice', 15, 2, 4, 5),
 (2, 'Skilled', 25, 3, 6, 8),
-(3, 'Advanced', 50, 4, 9, 10),
-(4, 'Expert', 75, 5, 11, 12),
-(5, 'Master', 100, 10, 13, 15);
+(3, 'Advanced', 50, 4, 8, 10),
+(4, 'Expert', 75, 5, 10, 12),
+(5, 'Master', 100, 10, 12, 15);
 
 -- --------------------------------------------------------
 
@@ -168,30 +178,6 @@ CREATE TABLE `logs` (
   `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Struktur-dump for tabellen `types`
---
-
-CREATE TABLE `types` (
-  `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `info` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Data dump for tabellen `types`
---
-
-INSERT INTO `types` (`id`, `name`, `info`) VALUES
-(1, 'Military', 'Central'),
-(2, 'Education', 'Global'),
-(3, 'BBS', 'Global'),
-(4, 'Scientific', 'Global'),
-(5, 'Telecom', 'Global'),
-(6, '[REDACTED]', NULL);
 
 -- --------------------------------------------------------
 
@@ -221,9 +207,10 @@ CREATE TABLE `users` (
 -- Data dump for tabellen `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `user_name`, `password`, `access_code`, `firstname`, `lastname`, `active`, `level_id`, `xp`, `rep`, `last_login`, `created_at`, `updated_at`) VALUES
-(1, 'sysadmin@teleterm.net', 'sysadmin', 'robco', 'Z62749-9XZZ9A-1A0YZ6-773Y1A', 'System', 'Admin', 1, 5, 100, 'MASTER', NULL, NULL, NULL),
-(2, 'admin@teleterm.net', 'admin', 'robco', 'Z62749-9XZZ9A-1A0YZ6-773Y1A', 'Host', 'Admin', 1, 5, 100, 'MASTER', NULL, NULL, NULL);
+INSERT INTO `users` (`id`, `email`, `user_name`, `password`, `access_code`, `firstname`, `lastname`, `role`, `active`, `level_id`, `xp`, `rep`, `last_login`, `created_at`, `updated_at`) VALUES
+(1, 'sysadmin@teleterm.net', 'sysadmin', 'robco', 'Z62749-9XZZ9A-1A0YZ6-773Y1A', 'System', 'Admin', NULL, 1, 5, 100, 'MASTER', NULL, NULL, NULL),
+(2, 'admin@teleterm.net', 'admin', 'robco', 'Z62749-9XZZ9A-1A0YZ6-773Y1A', 'Host', 'Admin', NULL, 1, 5, 100, 'MASTER', NULL, NULL, NULL),
+(3, NULL, 'thom855j', 'c.m.lange', '371464-1Z901A-Z9X663-YXY9Z6', 'Slaughter', 'Wigglesworth', NULL, 1, 0, 0, 'UNKNOWN', NULL, '2024-11-20 16:20:17', '2024-11-20 16:20:17');
 
 --
 -- Begrænsninger for dumpede tabeller
@@ -289,12 +276,6 @@ ALTER TABLE `logs`
   ADD UNIQUE KEY `id` (`id`);
 
 --
--- Indeks for tabel `types`
---
-ALTER TABLE `types`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indeks for tabel `users`
 --
 ALTER TABLE `users`
@@ -311,7 +292,7 @@ ALTER TABLE `users`
 -- Tilføj AUTO_INCREMENT i tabel `files`
 --
 ALTER TABLE `files`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `folders`
@@ -323,7 +304,7 @@ ALTER TABLE `folders`
 -- Tilføj AUTO_INCREMENT i tabel `help`
 --
 ALTER TABLE `help`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `hosts`
@@ -356,16 +337,10 @@ ALTER TABLE `logs`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- Tilføj AUTO_INCREMENT i tabel `types`
---
-ALTER TABLE `types`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
 -- Tilføj AUTO_INCREMENT i tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Begrænsninger for dumpede tabeller

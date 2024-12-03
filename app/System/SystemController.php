@@ -49,13 +49,6 @@ class SystemController extends Controller
 
     public function uplink() 
     {
-
-    
-        return;
-    }
-
-    public function enter()
-    {
         $data = parse_request('data');
 
         // Initialize login attempts if not set
@@ -66,13 +59,13 @@ class SystemController extends Controller
 
         if(Session::get('access_code') == $data[0]) {
             echo <<< EOT
-            Security Access Code Sequence Accepted.
+                Security Access Code Sequence Accepted.
 
-            *** NETWORK STATUS: ONLINE ***
-
-            1. Type LOGIN for authentication.
-            2. Type NEWUSER to create an account.
-            3. Type HELP for a command list.
+                --------NETWORK STATUS: ONLINE--------
+                1. Type LOGIN for authentication.
+                2. Type NEWUSER to create an account.
+                3. Type HELP for a command list.
+                --------------------------------------
             EOT;
             exit;
 
@@ -93,15 +86,17 @@ class SystemController extends Controller
 
             } else {
                 echo <<< EOT
-                ERROR: Incorrect Security Access Code.
-                Please ENTER correct code.
-                Attempts left: {$attempts_left}
-                Internal Security Procedures Activated.
+                    ERROR: Incorrect Security Access Code.
+                    --------------------------------------
+                    Please enter correct code.
+                    Type UPLINK [code].
+                    Attempts left: {$attempts_left}
+                    Internal Security Procedures Activated.
+                    --------------------------------------
                 EOT;
             }
             
         }
-
     }
 
     public function help()
@@ -171,12 +166,12 @@ class SystemController extends Controller
         Session::set('access_code', $access_code);
     
         echo <<< EOT
-        *** NETWORK STATUS: OFFLINE ***
-        Uplink with central ARPANET initiated.
-        Enter Security Access Code Sequence:
-        ***********************************
-        >>> {$access_code} <<<
-        ***********************************
+            ------NETWORK STATUS: OFFLINE------
+            Uplink to central ARPANET initiated.
+            Enter Security Access Code Sequence:
+            -----------------------------------
+            >>> {$access_code} <<<
+            -----------------------------------
         EOT;
     }
 
@@ -208,7 +203,7 @@ class SystemController extends Controller
         $username = User::data()->user_name;
 
         echo <<< EOT
-        $host_name | $org
+        -$host_name | $org-
 
         Welcome, $username 
         EOT;

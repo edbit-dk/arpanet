@@ -1,4 +1,4 @@
 =------------------------------------------=
-| WELCOME TO IBM CORPORATION (TM) TERMLINK |
+| Welcome to IBM Corporation (TM) Termlink |
 |------------------------------------------|
 

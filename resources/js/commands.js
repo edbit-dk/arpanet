@@ -43,7 +43,7 @@ function handleUserInput() {
     let input = $('#command-input').val().trim();
     if (input === '') return;
 
-    loadText("cmd:>" + input);
+    loadText("cmd: " + input);
     commandHistory.push(input);
     historyIndex = commandHistory.length;
     $('#command-input').val('');
