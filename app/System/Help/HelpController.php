@@ -49,7 +49,7 @@ class HelpController extends Controller
 
         if(!empty($this->data[0])) {
 
-            $help = Help::where($type,1)->where('cmd',$this->data[0])->first();
+            $help = Help::where($type,1)->where('cmd','LIKE', '%' . $this->data[0] . '%')->first();
 
             if(empty($help)) {
                 echo 'ERROR: Unknown Command.';

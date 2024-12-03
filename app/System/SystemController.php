@@ -99,34 +99,6 @@ class SystemController extends Controller
         }
     }
 
-    public function help()
-    {
-
-        $help = [];
-
-        if(User::auth() && !Host::auth()) {
-            $help = require config('path') . '/storage/array/user.php';
-        }
-        
-        if(Host::auth()) {
-            $help = require config('path') . '/storage/array/host.php';
-        }
-
-        if(Host::guest()) {
-            $help = require config('path') . '/storage/array/guest.php';
-        }
-
-       if(empty($help)) {
-            $help = require config('path') . '/storage/array/visitor.php';
-       }
-        
-        $output = "HELP:\n";
-        foreach ($help as $cmd => $text) {
-            $output .= " $cmd $text\n";
-        }
-        echo $output;
-    }
-
     public function reboot() 
     {
         echo bootup();

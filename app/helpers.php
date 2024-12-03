@@ -54,7 +54,7 @@ function base_url() {
 
 function parse_request($data = '') {
 
-    $data = request()->get($data);
+    $data = trim(request()->get($data));
 
     if(is_null($data)) {
         $data = '';

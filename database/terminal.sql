@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Vært: localhost
--- Genereringstid: 03. 12 2024 kl. 22:56:20
+-- Genereringstid: 03. 12 2024 kl. 23:30:31
 -- Serverversion: 8.0.39
 -- PHP-version: 8.2.25
 
@@ -84,7 +84,12 @@ CREATE TABLE `help` (
 
 INSERT INTO `help` (`id`, `cmd`, `input`, `info`, `is_user`, `is_host`, `is_visitor`, `is_guest`) VALUES
 (1, 'help', '[cmd]', 'shows info about command', 0, 0, 1, 0),
-(2, 'uplink', '[code]', 'connect to ARPANET', 0, 0, 1, 0);
+(2, 'uplink', '<access code>', 'connect to ARPANET', 0, 0, 1, 0),
+(3, 'version', '{}', 'UOS version', 1, 1, 1, 1),
+(4, 'color', '<GREEN|WHITE|YELLOW>', 'terminal color', 0, 0, 0, 0),
+(5, 'newuser', '<username>', 'create ARPANET account', 0, 0, 1, 0),
+(6, 'login', '<username>', 'auth ARPANET user', 0, 0, 1, 1),
+(7, 'logout', '{}', 'logout ARPANET user', 1, 1, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -304,7 +309,7 @@ ALTER TABLE `folders`
 -- Tilføj AUTO_INCREMENT i tabel `help`
 --
 ALTER TABLE `help`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `hosts`
