@@ -14,6 +14,7 @@ class HelpController extends Controller
 {
 
     private $commands;
+    private $response;
     private $data;
 
     private function cmd($type)
@@ -24,10 +25,10 @@ class HelpController extends Controller
 
         if($this->data[0] == 'auto') {
             foreach ($this->commands as $item) {
-                $this->commands[] = $item->cmd;
+                $this->response[] = $item->cmd;
             }
 
-            echo json_encode($this->commands);
+            echo json_encode($this->response);
             exit;
         }
 

@@ -1,4 +1,6 @@
                                 TeleTerm
+    This terminal allows access to ARPANET (1969-1990), the transcontinental network 
+    operated by the US Military, stretching from US to UK and Norway by sattelite.
 
     TeleTerm is a simulation of a stylized arpanet/usenet, circa 1985-1990.
     It is a full multi-user simulation, including 100+ simulated hosts

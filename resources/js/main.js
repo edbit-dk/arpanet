@@ -11,6 +11,7 @@ let usernameForNewUser = ''; // Variable to store the username for new user
 let isUsernamePrompt = false;
 let currentCommand = '';
 let commands = [];
+let cmd = '';
 
 // Event listener for when the DOM content is loaded
 $(document).ready(function() {
@@ -75,10 +76,14 @@ $('#command-input').keydown(function(e) {
 
 // Fetch commands from the server based on the user's status
 function listCommands() {
-    fetch('/help?data=auto')
+    fetch('help?data=auto')
         .then(response => response.json())
         .then(data => {
-            commands = data; // Store commands for autocomplete
+            if (Array.isArray(data)) {
+                commands = data.filter(item => typeof item === 'string'); // Keep only strings
+            } else {
+                console.error('Invalid commands data:', data);
+            }
         })
         .catch(error => console.error('Error fetching commands:', error));
 }
@@ -89,7 +94,8 @@ function autocomplete() {
     const currentText = inputField.val().trim();
 
     // Find commands that match the current input
-    const matches = availableCommands.filter(cmd => cmd.startsWith(currentText));
+    const matches = commands.filter(cmd => typeof cmd === 'string' && cmd.startsWith(currentText));
+
 
     if (matches.length === 1) {
         // If only one match, autocomplete the input

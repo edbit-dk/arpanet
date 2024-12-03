@@ -49,26 +49,7 @@ class SystemController extends Controller
 
     public function uplink() 
     {
-         // Check if the user is already blocked
-         Host::blocked();
 
-        $code_1 = random_str(6, 'AXYZ01234679');
-        $code_2 = random_str(6, 'AXYZ01234679');
-        $code_3 = random_str(6, 'AXYZ01234679');
-        $code_4 = random_str(6, 'AXYZ01234679');
-    
-        $access_code = "{$code_1}-{$code_2}-{$code_3}-{$code_4}"; 
-
-        Session::set('access_code', $access_code);
-    
-        echo <<< EOT
-        Uplink with central ARPANET initiated...
-
-        ENTER Security Access Code Sequence:
-        ***********************************
-        >>> {$access_code} <<<
-        ***********************************
-        EOT;
     
         return;
     }
@@ -179,6 +160,24 @@ class SystemController extends Controller
         }
 
         view('terminal/welcome.txt');
+
+        $code_1 = random_str(6, 'AXYZ01234679');
+        $code_2 = random_str(6, 'AXYZ01234679');
+        $code_3 = random_str(6, 'AXYZ01234679');
+        $code_4 = random_str(6, 'AXYZ01234679');
+    
+        $access_code = "{$code_1}-{$code_2}-{$code_3}-{$code_4}"; 
+
+        Session::set('access_code', $access_code);
+    
+        echo <<< EOT
+        *** NETWORK STATUS: OFFLINE ***
+        Uplink with central ARPANET initiated.
+        Enter Security Access Code Sequence:
+        ***********************************
+        >>> {$access_code} <<<
+        ***********************************
+        EOT;
     }
 
     public function termlink() 
