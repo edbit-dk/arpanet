@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Vært: localhost
--- Genereringstid: 03. 12 2024 kl. 23:30:31
+-- Genereringstid: 04. 12 2024 kl. 14:11:18
 -- Serverversion: 8.0.39
 -- PHP-version: 8.2.25
 
@@ -89,7 +89,16 @@ INSERT INTO `help` (`id`, `cmd`, `input`, `info`, `is_user`, `is_host`, `is_visi
 (4, 'color', '<GREEN|WHITE|YELLOW>', 'terminal color', 0, 0, 0, 0),
 (5, 'newuser', '<username>', 'create ARPANET account', 0, 0, 1, 0),
 (6, 'login', '<username>', 'auth ARPANET user', 0, 0, 1, 1),
-(7, 'logout', '{}', 'logout ARPANET user', 1, 1, 0, 1);
+(7, 'logout', '{}', 'logout ARPANET user', 1, 1, 0, 1),
+(8, 'user', '{}', 'list user info', 1, 1, 0, 1),
+(9, 'scan', '{}', 'list connected nodes', 1, 1, 0, 1),
+(10, 'connect', '<host>', 'connect to host', 1, 0, 0, 0),
+(11, 'set', '<command>', 'TERMINAL/INQUIRE, FILE/PROTECTION=OWNER:RWED ACCOUNTS.F, HALT RESTART/MAINT', 0, 0, 0, 1),
+(12, 'run', '<command>', 'DEBUG/ACCOUNTS.F', 0, 0, 0, 1),
+(13, 'mem', '[dump]', 'run memory dump', 0, 0, 0, 1),
+(14, 'dir', '{}', 'list files on host', 1, 1, 0, 0),
+(15, 'more', '<filename>', 'read files', 1, 1, 0, 0),
+(16, 'mail', '<subject> <user> < <body>', 'send emails to other users', 1, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -214,8 +223,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `email`, `user_name`, `password`, `access_code`, `firstname`, `lastname`, `role`, `active`, `level_id`, `xp`, `rep`, `last_login`, `created_at`, `updated_at`) VALUES
 (1, 'sysadmin@teleterm.net', 'sysadmin', 'robco', 'Z62749-9XZZ9A-1A0YZ6-773Y1A', 'System', 'Admin', NULL, 1, 5, 100, 'MASTER', NULL, NULL, NULL),
-(2, 'admin@teleterm.net', 'admin', 'robco', 'Z62749-9XZZ9A-1A0YZ6-773Y1A', 'Host', 'Admin', NULL, 1, 5, 100, 'MASTER', NULL, NULL, NULL),
-(3, NULL, 'thom855j', 'c.m.lange', '371464-1Z901A-Z9X663-YXY9Z6', 'Slaughter', 'Wigglesworth', NULL, 1, 0, 0, 'UNKNOWN', NULL, '2024-11-20 16:20:17', '2024-11-20 16:20:17');
+(2, 'admin@teleterm.net', 'admin', 'robco', 'Z62749-9XZZ9A-1A0YZ6-773Y1A', 'Host', 'Admin', NULL, 1, 5, 100, 'MASTER', NULL, NULL, NULL);
 
 --
 -- Begrænsninger for dumpede tabeller
@@ -309,13 +317,13 @@ ALTER TABLE `folders`
 -- Tilføj AUTO_INCREMENT i tabel `help`
 --
 ALTER TABLE `help`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `hosts`
 --
 ALTER TABLE `hosts`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `host_node`

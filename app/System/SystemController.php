@@ -156,10 +156,10 @@ class SystemController extends Controller
         $level = Host::data()->level->id;
 
         echo <<< EOT
-                 -Server $host_ip-
-                      
-        Connected to: $host_name
-        Password Required                [LEVEL: $level]
+            -Server $host_ip-
+                        
+            Connected to: $host_name
+            Password Required   [LEVEL: $level]
         EOT;
 
     }
@@ -175,9 +175,9 @@ class SystemController extends Controller
         $username = User::data()->user_name;
 
         echo <<< EOT
-        -$host_name | $org-
+            -$host_name | $org-
 
-        Welcome, $username 
+            Welcome, $username 
         EOT;
 
         return;
