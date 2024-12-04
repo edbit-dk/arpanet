@@ -48,30 +48,6 @@ class HostService
         return Host::where('ip','0.0.0.0')->orWhere('ip','1.1.1.1')->get();
     }
 
-    public static function create() 
-    {
-        $data = request()->get('data');
-
-        $input = explode(' ', trim($data));
-
-        $name = $input[0];
-
-        $level = Level::inRandomOrder()->first();
-
-        $pass_length = rand($level->min, $level->max);
-        
-        $admin_pass = wordlist(config('views') . '/lists/wordlist.txt', $pass_length , 1)[0];
-        
-        $host = Host::create([
-            'host_name' => $name,
-            'password' =>  strtolower($admin_pass),
-            'level_id' => $level->id,
-            'ip' => random_ip()
-        ]);
-
-        echo 'OK';
-    }
-
     public static function check() 
     {
         if(self::auth() OR self::guest()) {
@@ -103,13 +79,25 @@ class HostService
         return false;
     }
 
-    public static function connect($data)
+    public static function try($data)
     {
         $host = Host::where('id', $data)
         ->orWhere('ip', $data)
         ->orWhere('host_name', $data)
         ->where('active', 1)
         ->first();
+
+        if (empty($host)) {
+            return false;
+        } else {
+            return $host;
+        }
+
+    }
+
+    public static function connect($data)
+    {
+        $host = self::try($data);
 
         if (empty($host)) {
             return false;

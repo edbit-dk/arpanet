@@ -3,23 +3,72 @@
 namespace App\Host;
 
 use Lib\Controller;
-use Lib\Session;
 
-use App\Host\File\FileService as File;
+use App\System\Level\LevelModel as Level;
+use App\Host\HostModel;
 
 use App\User\UserService as User;
 use App\Host\HostService as Host;
+use App\Host\File\FileService as File;
 
 class HostController extends Controller
 {
 
+    public static function create() 
+    {
+        $data = request()->get('data');
+
+        $input = explode(' ', trim($data));
+
+        $name = $input[0];
+
+        $level = Level::inRandomOrder()->first();
+
+        $pass_length = rand($level->min, $level->max);
+        
+        $admin_pass = wordlist(config('database') . '/wordlist.txt', $pass_length , 1)[0];
+        
+        $host = HostModel::create([
+            'host_name' => $name,
+            'password' =>  strtolower($admin_pass),
+            'level_id' => $level->id,
+            'ip' => random_ip()
+        ]);
+
+        dd($host);
+    }
+
     public function connect() 
     {
         $server = '';
-        
+
         if(request()->get('data')) {
             $data = request()->get('data');
-            $server = Host::connect($data);
+        } else {
+            echo 'ERROR: Hostname Missing.';
+            exit;
+        }
+
+        if(Host::guest() OR Host::auth()) {
+            $hosts = Host::data()->nodes()->get();
+
+            foreach($hosts as $host) {
+                if(Host::try($host->id)) {
+                   $server = Host::connect($data);
+                   break;
+                }
+            }
+
+        } else {
+
+            $hosts = Host::netstat();
+
+            foreach($hosts as $host) {
+                if(Host::try($host->id)) {
+                   $server = Host::connect($data);
+                   break;
+                }
+            }
         }
 
         if(empty($server)) {
@@ -34,8 +83,9 @@ class HostController extends Controller
 
     public function scan() 
     {
-        $nodes = '';
         $access = '';
+        $nodes = '';
+        $hosts = '';
 
         if(Host::auth() OR Host::guest()) {
             $hosts = Host::data()->nodes()->get();
@@ -46,15 +96,24 @@ class HostController extends Controller
         echo "Searching Comlinks...\n";
         echo "Searching...\n";
         echo "Searching ARPANET...\n";
-        echo "Active ARPANET Stations:\n";
+
+        if(!$hosts->isEmpty()) {
+            echo "Active ARPANET Hosts:\n";
+        } else {
+            echo "ERROR: Not Found.\n";
+        }
 
         foreach ($hosts as $host) {
 
             if(!empty($host->user(User::auth()))) {
                 $access = '*';
             }
+
+            if($host->user_id == User::auth()) {
+                $access = '!';
+            }
             
-            echo "$access $host->host_name@$host->ip\n";
+            echo "$access [$host->host_name | $host->org]\n";
         }
         
     }

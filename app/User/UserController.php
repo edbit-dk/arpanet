@@ -68,11 +68,6 @@ class UserController extends Controller
             exit;
         }
 
-        if(Host::guest()) {
-            echo host()->data()->ip . '>';
-            exit;
-        }
-
         echo '>';
 
     }

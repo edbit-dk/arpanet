@@ -1,6 +1,6 @@
 <?php
 
-namespace App\User\Level;
+namespace App\System\Level;
 
 use Illuminate\Database\Eloquent\Model;
 

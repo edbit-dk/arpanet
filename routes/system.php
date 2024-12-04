@@ -19,8 +19,6 @@ $app->get('/welcome', [SystemController::class, 'welcome']);
 $app->get('/uplink', [SystemController::class, 'uplink']);
 $app->get('/boot', [SystemController::class, 'boot']);
 
-//$app->get('/help', [SystemController::class, 'help']);
-
 if(!User::auth()) {
     $app->get('/help', [HelpController::class, 'visitor']);
 }

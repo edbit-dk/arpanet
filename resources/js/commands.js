@@ -43,6 +43,11 @@ function handleUserInput() {
     let input = $('#command-input').val().trim();
     if (input === '') return;
 
+    // Check if the input is "?" and change it to "help"
+    if (input === '?') {
+        input = 'help';
+    }
+
     loadText("cmd: " + input);
     commandHistory.push(input);
     historyIndex = commandHistory.length;
@@ -133,31 +138,3 @@ function handleUserInput() {
         sendCommand(command, args);
     }
 }
-
-
-
-/*
-// Function to autocomplete command
-function autocompleteCommand() {
-    const inputElement = $('#command-input');
-    let input = inputElement.val().trim();
-    if (input === '') return;
-
-    $.ajax({
-        type: 'GET',
-        url: 'auto.php',
-        data: { input: input },
-        success: function(response) {
-            const suggestions = JSON.parse(response);
-            if (suggestions.length > 0) {
-                const suggestion = suggestions[0];
-                const lastSpaceIndex = input.lastIndexOf(' ');
-                const prefix = input.substring(0, lastSpaceIndex + 1);
-                const suffix = input.substring(lastSpaceIndex + 1);
-                inputElement.val(prefix + suggestion);
-                inputElement[0].setSelectionRange(prefix.length + suggestion.length, prefix.length + suggestion.length);
-            }
-        }
-    });
-}
-*/

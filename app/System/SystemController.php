@@ -59,7 +59,7 @@ class SystemController extends Controller
 
         if(Session::get('access_code') == $data[0]) {
             echo <<< EOT
-                Security Access Code Sequence Accepted.
+            Security Access Code Sequence Accepted.
 
                 --------NETWORK STATUS: ONLINE--------
                 1. Type LOGIN for authentication.
@@ -156,10 +156,10 @@ class SystemController extends Controller
         $level = Host::data()->level->id;
 
         echo <<< EOT
-                   -Server $host_ip-
+                 -Server $host_ip-
                       
         Connected to: $host_name
-        Password Required             [SECURITY: $level]
+        Password Required                [LEVEL: $level]
         EOT;
 
     }

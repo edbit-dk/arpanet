@@ -5,7 +5,6 @@ namespace App\Host\Debug;
 use App\Host\HostService as Host;
 use App\User\UserService as Auth;
 use Lib\Session;
-use Lib\Request;
 
 class DebugController
 {

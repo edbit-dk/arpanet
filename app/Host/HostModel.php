@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 use App\User\UserModel as User;
-use App\User\Level\LevelModel as Level;
+use App\System\Level\LevelModel as Level;
 use App\Host\File\FileModel as File;
 use App\Host\Folder\FolderModel as Folder;
 
