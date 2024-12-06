@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Host\HostModel as Host;
 use App\Host\File\FileModel as File;
 use App\Host\Folder\FolderModel as Folder;
+use App\System\Mission\MissionModel as Mission;
 
 class UserModel extends Model
 {
@@ -48,6 +49,13 @@ class UserModel extends Model
     public function host($host)
     {
         return $this->hosts()->where('host_id', $host)->first();
+    }
+
+    public function missions() 
+    {
+        return $this->belongsToMany(Mission::class, 'user_missions')
+                    ->withPivot('status', 'started_at', 'completed_at')
+                    ->withTimestamps();
     }
 
 }
