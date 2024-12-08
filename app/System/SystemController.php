@@ -58,6 +58,7 @@ class SystemController extends Controller
         Host::blocked();
 
         if(Session::get('access_code') == $data[0]) {
+            sleep(1);
             echo <<< EOT
             Security Access Code Sequence Accepted.
 
