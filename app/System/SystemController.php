@@ -141,9 +141,9 @@ class SystemController extends Controller
             ------NETWORK STATUS: OFFLINE------
             Uplink to central ARPANET initiated.
             Enter Security Access Code Sequence:
-            -----------------------------------
+            ===================================
             >>> {$access_code} <<<
-            -----------------------------------
+            ===================================
         EOT;
     }
 
@@ -159,7 +159,7 @@ class SystemController extends Controller
             -Server $host_ip-
                         
             Connected to: $host_name
-            Password Required   [LEVEL: $level]
+            Password Required [LEVEL: $level]
         EOT;
 
     }

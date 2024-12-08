@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Vært: localhost:3306
--- Genereringstid: 06. 12 2024 kl. 14:00:35
--- Serverversion: 10.6.20-MariaDB-cll-lve
--- PHP-version: 8.3.14
+-- Vært: localhost
+-- Genereringstid: 08. 12 2024 kl. 00:39:43
+-- Serverversion: 8.0.39
+-- PHP-version: 8.2.24
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `edbitdk_teleterm`
+-- Database: `terminal`
 --
 
 -- --------------------------------------------------------
@@ -28,14 +28,14 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `emails` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `sender` varchar(255) NOT NULL,
   `recipient` varchar(255) NOT NULL,
   `subject` varchar(255) NOT NULL,
   `body` text NOT NULL,
-  `timestamp` datetime DEFAULT current_timestamp(),
-  `is_read` tinyint(1) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+  `timestamp` datetime DEFAULT CURRENT_TIMESTAMP,
+  `is_read` tinyint(1) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -44,12 +44,12 @@ CREATE TABLE `emails` (
 --
 
 CREATE TABLE `files` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `file_name` varchar(255) NOT NULL,
-  `content` text DEFAULT NULL,
-  `folder_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `host_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `file_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `content` text COLLATE utf8mb4_general_ci,
+  `folder_id` bigint UNSIGNED DEFAULT NULL,
+  `user_id` bigint UNSIGNED DEFAULT NULL,
+  `host_id` bigint UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -59,7 +59,7 @@ CREATE TABLE `files` (
 --
 
 INSERT INTO `files` (`id`, `file_name`, `content`, `folder_id`, `user_id`, `host_id`, `created_at`, `updated_at`) VALUES
-(1, 'Letter from Doctor Stanislaus Braun', 'A Letter to the Overseer from Dr. Stanislaus Braun:\r\n\r\nIf you are reading this, emergency Vault \r\ninternmentprocedures have been initiated and you \r\nand your control group have been sealed into \r\nyour Vault. Congratulations! You are now a vital \r\npart of the most ambitious program ever undertaken \r\nby Vault-Tec.\r\n \r\nIf you have not yet read your sealed orders, do so \r\nnow. They will outline the experimental protocols \r\nassigned to your control group. Please remember \r\nthat deviation from these protocols in any way \r\nwill jeopardize the success of the program, \r\nand may be considered grounds for termination \r\nby Vault-Tec Corporation (as outlined in your \r\nEmployment Agreement)\r\n \r\nYour Vault may or may not have been selected \r\nto receive a G.E.C.K. module. \r\nPlease see Attachment A for details.\r\n \r\nDoctor Stanislaus Braun\r\nDirector, Societal Preservation Program\r\nVault-Tec Corporation', NULL, NULL, 1, NULL, NULL);
+(1, 'Letter from Doctor Stanislaus Braun', 'A Letter to the Overseer from Dr. Stanislaus Braun:\r\n\r\nIf you are reading this, emergency Vault \r\ninternmentprocedures have been initiated and you and your control group have been sealed into your Vault. Congratulations! You are now a vital part of the most ambitious program ever undertaken by Vault-Tec.\r\n \r\nIf you have not yet read your sealed orders, do so now. They will outline the experimental protocols assigned to your control group. Please remember \r\nthat deviation from these protocols in any way will jeopardize the success of the program, and may be considered grounds for termination by Vault-Tec Corporation (as outlined in your \r\nEmployment Agreement)\r\n \r\nYour Vault may or may not have been selected to receive a G.E.C.K. module. \r\nPlease see Attachment A for details.\r\n \r\nDoctor Stanislaus Braun\r\nDirector, Societal Preservation Program\r\nVault-Tec Corporation', NULL, NULL, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -68,11 +68,11 @@ INSERT INTO `files` (`id`, `file_name`, `content`, `folder_id`, `user_id`, `host
 --
 
 CREATE TABLE `folders` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `folder_name` varchar(255) NOT NULL,
-  `parent_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `host_id` bigint(20) UNSIGNED NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `folder_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `parent_id` bigint UNSIGNED DEFAULT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `host_id` bigint UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -84,14 +84,14 @@ CREATE TABLE `folders` (
 --
 
 CREATE TABLE `help` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `cmd` varchar(255) DEFAULT NULL,
-  `input` varchar(255) DEFAULT NULL,
-  `info` varchar(255) DEFAULT NULL,
-  `is_user` tinyint(1) DEFAULT 0,
-  `is_host` tinyint(1) DEFAULT 0,
-  `is_visitor` tinyint(1) DEFAULT 0,
-  `is_guest` tinyint(1) DEFAULT 0
+  `id` bigint UNSIGNED NOT NULL,
+  `cmd` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `input` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `info` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `is_user` tinyint(1) DEFAULT '0',
+  `is_host` tinyint(1) DEFAULT '0',
+  `is_visitor` tinyint(1) DEFAULT '0',
+  `is_guest` tinyint(1) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -99,7 +99,7 @@ CREATE TABLE `help` (
 --
 
 INSERT INTO `help` (`id`, `cmd`, `input`, `info`, `is_user`, `is_host`, `is_visitor`, `is_guest`) VALUES
-(1, 'help', '[cmd]', 'shows info about command', 0, 0, 1, 0),
+(1, 'help', '[cmd]', 'shows info about command', 1, 1, 1, 1),
 (2, 'uplink', '<access code>', 'connect to ARPANET', 0, 0, 1, 0),
 (3, 'version', '{}', 'UOS version', 1, 1, 1, 1),
 (4, 'color', '<GREEN|WHITE|YELLOW>', 'terminal color', 0, 0, 0, 0),
@@ -109,7 +109,7 @@ INSERT INTO `help` (`id`, `cmd`, `input`, `info`, `is_user`, `is_host`, `is_visi
 (8, 'telnet', '<host>', 'connect to host', 1, 1, 0, 1),
 (9, 'ls', '{}', 'list files on host', 0, 1, 0, 0),
 (10, 'cat', '<filename>', 'display file content', 0, 1, 0, 0),
-(11, 'mail', '<subject> <user> < <body>', 'send email to user', 1, 1, 0, 1),
+(11, 'mail', '<subject> <user> < <body>', 'email user', 1, 1, 0, 1),
 (12, 'user', '{}', 'list user info', 1, 1, 0, 1),
 (13, 'scan', '{}', 'list connected nodes', 1, 1, 0, 1),
 (14, 'set', '<command>', 'TERMINAL/INQUIRE, FILE/PROTECTION=OWNER:RWED ACCOUNTS.F, HALT RESTART/MAINT', 0, 0, 0, 1),
@@ -123,14 +123,14 @@ INSERT INTO `help` (`id`, `cmd`, `input`, `info`, `is_user`, `is_host`, `is_visi
 --
 
 CREATE TABLE `hosts` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) DEFAULT NULL,
-  `password` varchar(255) DEFAULT 'robco',
-  `host_name` varchar(255) DEFAULT NULL,
-  `org` varchar(255) DEFAULT NULL,
-  `ip` varchar(255) DEFAULT NULL,
-  `active` tinyint(1) DEFAULT 1,
-  `level_id` int(11) NOT NULL DEFAULT 0,
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_general_ci DEFAULT 'robco',
+  `host_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `org` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `ip` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `active` tinyint(1) DEFAULT '1',
+  `level_id` int NOT NULL DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -150,9 +150,9 @@ INSERT INTO `hosts` (`id`, `user_id`, `password`, `host_name`, `org`, `ip`, `act
 --
 
 CREATE TABLE `host_node` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `node_id` int(11) NOT NULL,
-  `host_id` int(11) NOT NULL
+  `id` bigint UNSIGNED NOT NULL,
+  `node_id` int NOT NULL,
+  `host_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -162,10 +162,17 @@ CREATE TABLE `host_node` (
 --
 
 CREATE TABLE `host_user` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `host_id` int(11) NOT NULL
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` int NOT NULL,
+  `host_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Data dump for tabellen `host_user`
+--
+
+INSERT INTO `host_user` (`id`, `user_id`, `host_id`) VALUES
+(1, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -174,12 +181,12 @@ CREATE TABLE `host_user` (
 --
 
 CREATE TABLE `levels` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `rep` varchar(255) DEFAULT NULL,
-  `xp_req` int(11) NOT NULL DEFAULT 0,
-  `xp_reward` int(11) NOT NULL DEFAULT 0,
-  `min` int(11) NOT NULL DEFAULT 3,
-  `max` int(11) NOT NULL
+  `id` bigint UNSIGNED NOT NULL,
+  `rep` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `xp_req` int NOT NULL DEFAULT '0',
+  `xp_reward` int NOT NULL DEFAULT '0',
+  `min` int NOT NULL DEFAULT '3',
+  `max` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -201,12 +208,12 @@ INSERT INTO `levels` (`id`, `rep`, `xp_req`, `xp_reward`, `min`, `max`) VALUES
 --
 
 CREATE TABLE `logs` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `host_id` int(11) NOT NULL,
-  `info` text DEFAULT NULL,
-  `ip` varchar(255) DEFAULT NULL,
-  `code` varchar(255) DEFAULT NULL,
-  `type` varchar(255) DEFAULT NULL
+  `id` bigint UNSIGNED NOT NULL,
+  `host_id` int NOT NULL,
+  `info` text COLLATE utf8mb4_general_ci,
+  `ip` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `code` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `type` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -216,16 +223,16 @@ CREATE TABLE `logs` (
 --
 
 CREATE TABLE `missions` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `title` varchar(255) NOT NULL,
   `description` text NOT NULL,
   `trigger_event` varchar(50) NOT NULL,
-  `conditions` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`conditions`)),
-  `rewards` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`rewards`)),
+  `conditions` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `rewards` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `status` enum('inactive','active','completed') DEFAULT 'inactive',
-  `next_mission_id` int(11) DEFAULT NULL,
-  `email_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+  `next_mission_id` int DEFAULT NULL,
+  `email_id` int DEFAULT NULL
+) ;
 
 -- --------------------------------------------------------
 
@@ -234,18 +241,18 @@ CREATE TABLE `missions` (
 --
 
 CREATE TABLE `users` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `user_name` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  `access_code` varchar(255) NOT NULL,
-  `firstname` varchar(255) DEFAULT NULL,
-  `lastname` varchar(255) DEFAULT NULL,
-  `role` varchar(255) DEFAULT NULL,
-  `active` tinyint(1) DEFAULT 1,
-  `level_id` int(11) NOT NULL DEFAULT 0,
-  `xp` int(11) NOT NULL DEFAULT 0,
-  `rep` varchar(255) NOT NULL DEFAULT 'UNKNOWN',
+  `id` bigint UNSIGNED NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `user_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `access_code` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `firstname` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `lastname` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `role` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `active` tinyint(1) DEFAULT '1',
+  `level_id` int NOT NULL DEFAULT '0',
+  `xp` int NOT NULL DEFAULT '0',
+  `rep` varchar(255) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'UNKNOWN',
   `last_login` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
@@ -267,13 +274,13 @@ INSERT INTO `users` (`id`, `email`, `user_name`, `password`, `access_code`, `fir
 --
 
 CREATE TABLE `user_missions` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `mission_id` int(11) NOT NULL,
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `mission_id` int NOT NULL,
   `status` enum('inactive','active','completed') DEFAULT 'inactive',
   `started_at` datetime DEFAULT NULL,
   `completed_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Begrænsninger for dumpede tabeller
@@ -374,73 +381,73 @@ ALTER TABLE `user_missions`
 -- Tilføj AUTO_INCREMENT i tabel `emails`
 --
 ALTER TABLE `emails`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `files`
 --
 ALTER TABLE `files`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `folders`
 --
 ALTER TABLE `folders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `help`
 --
 ALTER TABLE `help`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `hosts`
 --
 ALTER TABLE `hosts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `host_node`
 --
 ALTER TABLE `host_node`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `host_user`
 --
 ALTER TABLE `host_user`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `levels`
 --
 ALTER TABLE `levels`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `missions`
 --
 ALTER TABLE `missions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `user_missions`
 --
 ALTER TABLE `user_missions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- Begrænsninger for dumpede tabeller
