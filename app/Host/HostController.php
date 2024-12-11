@@ -78,7 +78,7 @@ class HostController extends Controller
         if(Host::auth() OR Host::guest()) {
             $hosts = Host::data()->nodes;
         } else {
-            $hosts  = Host::netstat();
+            $hosts = Host::netstat();
         }
 
         echo "Searching Comlinks...\n";
@@ -87,6 +87,7 @@ class HostController extends Controller
 
         if(!$hosts->isEmpty()) {
             echo "Active Hosts:\n";
+            echo '--------------------------------------------';
         } else {
             echo "ERROR: Access Denied.\n";
         }
@@ -104,8 +105,10 @@ class HostController extends Controller
             }
             $host_name = strtoupper($host->host_name);
             
-            echo <<< EOT
-            $access $host_name | $host->org \n
+            echo <<<EOT
+            $access $host_name
+            $host->org
+            --------------------------------------------
             EOT;
         }
         

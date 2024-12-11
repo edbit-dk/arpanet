@@ -55,7 +55,7 @@ function handleUserInput() {
         input = 'help';
     }
 
-    if(!sessionStorage.getItem('uplink') && isUplinkCode(input)) {
+    if(isUplinkCode(input)) {
         input = 'uplink ' + input;
     }
 

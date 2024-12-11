@@ -155,6 +155,7 @@ class SystemController extends Controller
                         
             Connected to: $host_name
             Password Required [LEVEL: $level]
+        ____________________________________________
         EOT;
 
     }
@@ -172,7 +173,8 @@ class SystemController extends Controller
         echo <<< EOT
             -$host_name | $org-
 
-            Welcome, $username 
+            Welcome, $username
+        ____________________________________________ 
         EOT;
 
         return;
