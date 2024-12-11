@@ -37,11 +37,6 @@ class SystemController extends Controller
         print_r(file_get_contents(BASE_PATH . '/public/css/app.min.css'));
     }
 
-    public function test()
-    {
-        
-    }
-
     public function version() 
     {
         view('terminal/version.txt');
@@ -89,8 +84,7 @@ class SystemController extends Controller
                 echo <<< EOT
                     ERROR: Incorrect Security Access Code.
                     --------------------------------------
-                    Please enter correct code.
-                    Type UPLINK [code].
+                    Please enter correct access code.
                     Attempts left: {$attempts_left}
                     Internal Security Procedures Activated.
                     --------------------------------------
@@ -152,7 +146,7 @@ class SystemController extends Controller
     {
         view('terminal/auth.txt');
             
-        $host_name = Host::hostname();
+        $host_name = strtoupper(Host::hostname());
         $host_ip = Host::data()->ip;
         $level = Host::data()->level->id;
 

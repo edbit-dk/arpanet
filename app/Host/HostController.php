@@ -72,7 +72,7 @@ class HostController extends Controller
         }
 
         if(empty($server)) {
-            echo 'ERROR: Unknown Host';
+            echo 'ERROR: Access Denied.';
             exit;
         } else {
             echo "Trying...";
@@ -83,12 +83,11 @@ class HostController extends Controller
 
     public function scan() 
     {
-        $access = '';
         $nodes = '';
         $hosts = '';
 
         if(Host::auth() OR Host::guest()) {
-            $hosts = Host::data()->nodes()->get();
+            $hosts = Host::data()->with('users', 'nodes')->get()->first()->nodes;
         } else {
             $hosts  = Host::netstat();
         }
@@ -98,22 +97,25 @@ class HostController extends Controller
         echo "Searching ARPANET...\n";
 
         if(!$hosts->isEmpty()) {
-            echo "Active ARPANET Hosts:\n";
+            echo "Active Hosts:\n";
         } else {
-            echo "ERROR: Not Found.\n";
+            echo "ERROR: Access Denied.\n";
         }
 
         foreach ($hosts as $host) {
 
-            if(!empty($host->user(User::auth()))) {
+            $access = '';
+
+            if($host->user(User::auth())) {
                 $access = '*';
             }
 
             if($host->user_id == User::auth()) {
                 $access = '!';
             }
+            $host_name = strtoupper($host->host_name);
             
-            echo "$access [$host->host_name | $host->org]\n";
+            echo "$access $host_name | $host->org\n";
         }
         
     }
@@ -133,7 +135,7 @@ class HostController extends Controller
             Host::logon(User::username(), User::data()->password);
        }
 
-       echo "SUCCESS: Authentication accepted.\n";
+       echo "SUCCESS: Authentication Accepted.\n";
        echo bootup();
        exit;
     }

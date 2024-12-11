@@ -44,6 +44,11 @@ class HostModel extends Model
     {
         return $this->BelongsToMany(User::class, 'host_user', 'host_id', 'user_id');
     }
+    
+    public function host($host)
+    {
+        return $this->users()->where('host_id', $host)->first();
+    }
 
     public function user($user)
     {

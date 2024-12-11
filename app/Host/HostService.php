@@ -45,7 +45,7 @@ class HostService
 
     public static function netstat() 
     {
-        return Host::where('ip','0.0.0.0')->orWhere('ip','1.1.1.1')->get();
+        return Host::where('ip','0.0.0.0')->orWhere('ip','1.1.1.1')->with('users')->get();
     }
 
     public static function check() 
