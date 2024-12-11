@@ -40,7 +40,7 @@ class HelpController extends Controller
                 $input = $item->input;
                 $info = $item->info;
 
-                echo "$cmd $input\n";
+                echo "  $cmd $input\n";
             }
 
             exit;
@@ -59,8 +59,11 @@ class HelpController extends Controller
             $cmd = strtoupper($help->cmd);
             $input = $help->input;
             $info = $help->info;
-
-            echo "$cmd $input\n $info";
+            
+            echo <<< EOT
+            $cmd $input
+                $info
+            EOT;
             exit;
         }
     }

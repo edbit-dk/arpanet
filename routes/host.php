@@ -39,5 +39,6 @@ if(Host::auth() OR Host::guest()) {
     $app->get('/logoff', [HostController::class, 'logoff']);
     $app->get('/exit', [HostController::class, 'logoff']);
     $app->get('/quit', [HostController::class, 'logoff']);
+    $app->get('/dc', [HostController::class, 'logoff']);
     $app->get('/close', [HostController::class, 'logoff']);
 }

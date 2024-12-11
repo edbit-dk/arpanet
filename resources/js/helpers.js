@@ -55,5 +55,5 @@ function redirectTo(url) {
       // window.location.href = url;
     clearTerminal();
     sendCommand('welcome', '');
-    $('#user').load('connection');
+   // $('#user').load('connection');
 }

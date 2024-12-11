@@ -50,7 +50,7 @@ class UserController extends Controller
                 $this->reset();
 
                 if(Auth::login($user_name, $password)) {
-                    echo "Authentication successful.\n"; 
+                    echo "Authentication Accepted.\n"; 
                     sleep(1);
                     exit;         
                 } else {
@@ -59,17 +59,6 @@ class UserController extends Controller
                 }
             }
         }
-    }
-
-    public function connection()
-    {
-        if(Host::auth()) {
-            echo host()->hostname() . '>';
-            exit;
-        }
-
-        echo '>';
-
     }
 
     public function user() 

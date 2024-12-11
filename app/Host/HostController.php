@@ -45,30 +45,19 @@ class HostController extends Controller
         if(request()->get('data')) {
             $data = request()->get('data');
         } else {
-            echo 'ERROR: Hostname Missing.';
+            echo 'ERROR: Host Missing.';
             exit;
         }
 
         if(Host::guest() OR Host::auth()) {
-            $hosts = Host::data()->nodes()->get();
 
-            foreach($hosts as $host) {
-                if(Host::try($host->id)) {
-                   $server = Host::connect($data);
-                   break;
-                }
+            if(Host::data()->node($data)) {
+                $server = Host::connect($data);
             }
 
         } else {
 
-            $hosts = Host::netstat();
-
-            foreach($hosts as $host) {
-                if(Host::try($host->id)) {
-                   $server = Host::connect($data);
-                   break;
-                }
-            }
+            $server = Host::connect($data);
         }
 
         if(empty($server)) {
@@ -87,7 +76,7 @@ class HostController extends Controller
         $hosts = '';
 
         if(Host::auth() OR Host::guest()) {
-            $hosts = Host::data()->with('users', 'nodes')->get()->first()->nodes;
+            $hosts = Host::data()->nodes;
         } else {
             $hosts  = Host::netstat();
         }
@@ -104,7 +93,7 @@ class HostController extends Controller
 
         foreach ($hosts as $host) {
 
-            $access = '';
+            $access = ' ';
 
             if($host->user(User::auth())) {
                 $access = '*';
@@ -115,7 +104,9 @@ class HostController extends Controller
             }
             $host_name = strtoupper($host->host_name);
             
-            echo "$access $host_name | $host->org\n";
+            echo <<< EOT
+            $access $host_name | $host->org \n
+            EOT;
         }
         
     }

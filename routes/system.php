@@ -10,15 +10,20 @@ use App\User\UserService as User;
 // Home
 $app->get('/', [SystemController::class, 'index']);
 
-$app->get('/test', [SystemController::class, 'test']);
+// Default
 $app->get('/minify', [SystemController::class, 'minify']);
-
 $app->get('/version', [SystemController::class, 'version']);
 $app->get('/termlink', [SystemController::class, 'termlink']);
-$app->get('/welcome', [SystemController::class, 'welcome']);
-$app->get('/uplink', [SystemController::class, 'uplink']);
-$app->get('/boot', [SystemController::class, 'boot']);
 
+// Start
+$app->get('/uplink', [SystemController::class, 'uplink']);
+$app->get('/welcome', [SystemController::class, 'welcome']);
+
+// Boot
+$app->get('/boot', [SystemController::class, 'boot']);
+$app->get('/reboot', [SystemController::class, 'boot']);
+
+// Help
 if(!User::auth()) {
     $app->get('/help', [HelpController::class, 'visitor']);
 }

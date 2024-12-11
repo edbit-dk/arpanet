@@ -137,8 +137,8 @@ class HostService
 
             if(!$user) {
                 return false;
-             }
-
+            }
+             
             Session::set('session', Session::get('user'));
             Session::set('user', $user->id);
 

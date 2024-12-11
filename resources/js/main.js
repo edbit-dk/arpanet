@@ -21,9 +21,6 @@ $(document).ready(function() {
     //Check commands available
     listCommands();
 
-    //Check current connection
-    $('#user').load('connection');
-
     // Check if 'boot' command has been sent during the current session
     if (!sessionStorage.getItem('boot')) {
 

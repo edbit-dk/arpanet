@@ -36,7 +36,14 @@ function appendCommand(command) {
     scrollToBottom(); 
 }
 
+// Function to validate the string pattern
+function isUplinkCode(input) {
+    // Check if the input is 27 characters long and matches the alphanumeric pattern (allowing dashes)
+    const pattern = /^[A-Za-z0-9\-]{27}$/;
 
+    // Test the input against the pattern
+    return pattern.test(input);
+}
 
 // Function to handle user input
 function handleUserInput() {
@@ -46,6 +53,10 @@ function handleUserInput() {
     // Check if the input is "?" and change it to "help"
     if (input === '?') {
         input = 'help';
+    }
+
+    if(!sessionStorage.getItem('uplink') && isUplinkCode(input)) {
+        input = 'uplink ' + input;
     }
 
     loadText("cmd: " + input);
@@ -119,7 +130,7 @@ function handleUserInput() {
             $('#command-input').attr('type', 'text');
             return;
         }
-    } else if (['logout', 'logoff', 'reboot', 'dc', 'restart', 'start', 'autoexec', 'exit'].includes(command)) {
+    } else if (['logout', 'logoff', 'reboot', 'dc', 'restart', 'start', 'exit'].includes(command)) {
         sendCommand(command, args)
             .then(response => {
                 if (!response.includes("ERROR")) {
