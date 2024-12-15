@@ -81,7 +81,7 @@ class UserController extends Controller
         $input = parse_request('data');
 
         if(empty($data)) {
-            echo 'ERROR: MISSING INPUT';
+            echo 'ERROR: Missing Input.';
             exit;
         }
 
@@ -89,7 +89,7 @@ class UserController extends Controller
             'password' => $input[0]
         ]);
 
-        echo 'SUCCESS! PASSWORD UPDATED';
+        echo 'Password Updated.';
         exit;
     }
 
@@ -148,7 +148,7 @@ class UserController extends Controller
         Auth::logout();
 
         sleep(1);
-        echo "GOODBYE.\n";
+        echo "Goodbye.\n";
     
     }
 

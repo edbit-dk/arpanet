@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Vært: localhost
--- Genereringstid: 11. 12 2024 kl. 20:47:39
+-- Genereringstid: 15. 12 2024 kl. 23:23:54
 -- Serverversion: 8.0.39
 -- PHP-version: 8.2.25
 
@@ -49,7 +49,6 @@ CREATE TABLE `files` (
   `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `folder_id` bigint UNSIGNED DEFAULT NULL,
   `user_id` bigint UNSIGNED DEFAULT NULL,
-  `host_id` bigint UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -58,8 +57,8 @@ CREATE TABLE `files` (
 -- Data dump for tabellen `files`
 --
 
-INSERT INTO `files` (`id`, `file_name`, `content`, `folder_id`, `user_id`, `host_id`, `created_at`, `updated_at`) VALUES
-(1, 'Letter from Doctor Stanislaus Braun', 'A Letter to the Overseer from Dr. Stanislaus Braun:\r\n\r\nIf you are reading this, emergency Vault \r\ninternmentprocedures have been initiated and you and your control group have been sealed into your Vault. Congratulations! You are now a vital part of the most ambitious program ever undertaken by Vault-Tec.\r\n \r\nIf you have not yet read your sealed orders, do so now. They will outline the experimental protocols assigned to your control group. Please remember \r\nthat deviation from these protocols in any way will jeopardize the success of the program, and may be considered grounds for termination by Vault-Tec Corporation (as outlined in your \r\nEmployment Agreement)\r\n \r\nYour Vault may or may not have been selected to receive a G.E.C.K. module. \r\nPlease see Attachment A for details.\r\n \r\nDoctor Stanislaus Braun\r\nDirector, Societal Preservation Program\r\nVault-Tec Corporation', NULL, NULL, 1, NULL, NULL);
+INSERT INTO `files` (`id`, `file_name`, `content`, `folder_id`, `user_id`, `created_at`, `updated_at`) VALUES
+(1, 'Letter_from_Doctor_Stanislaus_Braun', 'A Letter to the Overseer from Dr. Stanislaus Braun:\r\n\r\nIf you are reading this, emergency Vault \r\ninternmentprocedures have been initiated and you and your control group have been sealed into your Vault. Congratulations! You are now a vital part of the most ambitious program ever undertaken by Vault-Tec.\r\n \r\nIf you have not yet read your sealed orders, do so now. They will outline the experimental protocols assigned to your control group. Please remember \r\nthat deviation from these protocols in any way will jeopardize the success of the program, and may be considered grounds for termination by Vault-Tec Corporation (as outlined in your \r\nEmployment Agreement)\r\n \r\nYour Vault may or may not have been selected to receive a G.E.C.K. module. \r\nPlease see Attachment A for details.\r\n \r\nDoctor Stanislaus Braun\r\nDirector, Societal Preservation Program\r\nVault-Tec Corporation', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -142,11 +141,30 @@ CREATE TABLE `hosts` (
 INSERT INTO `hosts` (`id`, `user_id`, `password`, `host_name`, `org`, `ip`, `active`, `level_id`, `created_at`, `updated_at`) VALUES
 (1, 1, 'robco', 'milnet', 'US Military (PRIVATE)', '1.1.1.1', 1, 5, '1984-10-22 16:18:50', NULL),
 (2, 1, 'robco', 'nsfnet', 'Academic Research (PUBLIC)', '0.0.0.0', 1, 1, '1969-10-10 16:29:25', NULL),
-(3, 1, 'robco', 'ucla', 'University of California, Los Angeles', '0.0.0.1', 1, 1, '1985-10-22 16:18:50', NULL),
+(3, 1, 'robco', 'ucla', 'University of California, LA', '0.0.0.1', 1, 1, '1985-10-22 16:18:50', NULL),
 (4, 1, 'robco', 'arc', 'Stanford Research Institute', '0.0.0.2', 1, 1, '1985-10-22 16:18:50', NULL),
-(5, 1, 'robco', 'ucsb', 'University of California, Santa Barbara ', '0.0.0.3', 1, 1, '1985-10-22 16:18:50', NULL),
+(5, 1, 'robco', 'ucsb', 'University of California, SB ', '0.0.0.3', 1, 1, '1985-10-22 16:18:50', NULL),
 (6, 1, 'robco', 'uusc', 'University of Utah School of Computing', '0.0.0.4', 1, 1, '1985-10-22 16:18:50', NULL),
-(7, 1, 'robco', 'spsdd', 'Seattle Public School', '0.0.0.5', 1, 1, '1985-10-22 16:18:50', NULL);
+(7, 1, 'robco', 'spsdd', 'Seattle Public School District Datanet', '0.0.0.5', 1, 1, '1985-10-22 16:18:50', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur-dump for tabellen `host_file`
+--
+
+CREATE TABLE `host_file` (
+  `id` bigint UNSIGNED NOT NULL,
+  `file_id` int NOT NULL,
+  `host_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Data dump for tabellen `host_file`
+--
+
+INSERT INTO `host_file` (`id`, `file_id`, `host_id`) VALUES
+(1, 1, 7);
 
 -- --------------------------------------------------------
 
@@ -168,7 +186,8 @@ INSERT INTO `host_node` (`id`, `node_id`, `host_id`) VALUES
 (1, 3, 2),
 (2, 4, 2),
 (3, 5, 2),
-(4, 6, 2);
+(4, 6, 2),
+(5, 7, 2);
 
 -- --------------------------------------------------------
 
@@ -319,8 +338,7 @@ ALTER TABLE `emails`
 ALTER TABLE `files`
   ADD PRIMARY KEY (`id`),
   ADD KEY `folder_id` (`folder_id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `host_id` (`host_id`);
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indeks for tabel `folders`
@@ -344,6 +362,12 @@ ALTER TABLE `help`
 ALTER TABLE `hosts`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id` (`id`);
+
+--
+-- Indeks for tabel `host_file`
+--
+ALTER TABLE `host_file`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indeks for tabel `host_node`
@@ -429,10 +453,16 @@ ALTER TABLE `hosts`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
+-- Tilføj AUTO_INCREMENT i tabel `host_file`
+--
+ALTER TABLE `host_file`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- Tilføj AUTO_INCREMENT i tabel `host_node`
 --
 ALTER TABLE `host_node`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `host_user`
@@ -479,8 +509,7 @@ ALTER TABLE `user_missions`
 --
 ALTER TABLE `files`
   ADD CONSTRAINT `files_ibfk_1` FOREIGN KEY (`folder_id`) REFERENCES `folders` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `files_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `files_ibfk_3` FOREIGN KEY (`host_id`) REFERENCES `hosts` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `files_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Begrænsninger for tabel `folders`

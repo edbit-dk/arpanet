@@ -29,7 +29,8 @@ if(Host::guest()) {
 if(Host::auth() && User::username() != 'guest') {
     $app->get('/mail', [FileController::class, 'mail']);
     $app->get('/dir', [FileController::class, 'dir']);
-    $app->get('/ls', [FileController::class, 'dir']);
+    $app->get('/ls', [FileController::class, 'ls']);
+    $app->get('/cat', [FileController::class, 'cat']);
     $app->get('/more', [FileController::class, 'open']);
     $app->get('/open', [FileController::class, 'open']);
     $app->get('/echo', [FileController::class, 'echo']);

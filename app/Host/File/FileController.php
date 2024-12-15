@@ -14,14 +14,38 @@ class FileController extends Controller
 
     public function dir()
     {
-        File::list(Host::data()->id, User::auth());
+        return File::list(Host::data()->id, User::auth());
+    }
+
+    public function ls()
+    {
+        $files = Host::data()->files()->get();
+
+        if($files->isEmpty()) {
+            echo 'ERROR: Access Denied.';
+            exit;
+        }
+
+        // Loop through each top-level folder and format the structure
+        foreach ($files as $file) {
+            echo "$file->id. [" . $file->file_name . "]\n";
+        }
+    }
+
+    public function cat()
+    {
+        $data = parse_request('data');
+
+        $file = Host::data()->file($data);
+        
+        dd($file->content);
     }
 
     public function open()
     {
         $data = explode(' ', request()->get('data'));
 
-        File::open($data[0], Host::data()->id);
+        return File::open($data[0], Host::data()->id);
     }
 
     public function echo()

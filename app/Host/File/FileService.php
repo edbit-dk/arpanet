@@ -49,6 +49,7 @@ class FileService
             exit;
         }
     }
+    
 
     public static function list($host_id, $user_id = '')
     {
@@ -70,8 +71,8 @@ class FileService
     public static function open($file_name = '', $host_id = '')
     {
 
-        $file = File::where('host_id', $host_id)
-        ->where('file_name', $file_name)
+        $file = File::where('file_name', $file_name)
+        ->orWhere('host_id', $host_id)
         ->orWhere('id', $file_name)
         ->first();
 

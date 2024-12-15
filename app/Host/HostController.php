@@ -51,7 +51,7 @@ class HostController extends Controller
 
         if(Host::guest() OR Host::auth()) {
 
-            if(Host::data()->node($data)) {
+            if(Host::data()->node(Host::try($data)->id)) {
                 $server = Host::connect($data);
             }
 
@@ -129,7 +129,7 @@ class HostController extends Controller
             Host::logon(User::username(), User::data()->password);
        }
 
-       echo "SUCCESS: Authentication Accepted.\n";
+       echo "Authentication Accepted.\n";
        echo bootup();
        exit;
     }
@@ -148,7 +148,7 @@ class HostController extends Controller
 
         if(Host::logon($input[0],  $input[1])) {
             echo <<< EOT
-            SUCCESS: Password Accepted. 
+            Password Accepted. 
             Please wait while system is accessed...
             EOT;
         } else {
@@ -169,7 +169,7 @@ class HostController extends Controller
              } else {
                 echo <<< EOT
                 ERROR: Wrong Username.
-                Attempts Remaining: {$attempts_left}
+                Attempts Left: {$attempts_left}
                 EOT;
                 exit;
              }
