@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Vært: localhost
--- Genereringstid: 15. 12 2024 kl. 23:23:54
+-- Genereringstid: 17. 12 2024 kl. 20:30:53
 -- Serverversion: 8.0.39
 -- PHP-version: 8.2.25
 
@@ -113,7 +113,8 @@ INSERT INTO `help` (`id`, `cmd`, `input`, `info`, `is_user`, `is_host`, `is_visi
 (13, 'scan', '{}', 'list connected nodes', 1, 1, 0, 1),
 (14, 'set', '<command>', 'TERMINAL/INQUIRE, FILE/PROTECTION=OWNER:RWED ACCOUNTS.F, HALT RESTART/MAINT', 0, 0, 0, 1),
 (15, 'run', '<command>', 'DEBUG/ACCOUNTS.F', 0, 0, 0, 1),
-(16, 'mem', '[dump]', 'run memory dump', 0, 0, 0, 1);
+(16, 'mem', '[dump]', 'run memory dump', 0, 0, 0, 1),
+(17, 'music', '<start>|<stop>|<next>', 'play music', 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -444,7 +445,7 @@ ALTER TABLE `folders`
 -- Tilføj AUTO_INCREMENT i tabel `help`
 --
 ALTER TABLE `help`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `hosts`
