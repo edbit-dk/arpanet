@@ -1,7 +1,7 @@
 <?php include 'template/header.php'; ?>
   <div id="terminal-wrapper">
-  <button id="play-button">MUSIC</button>
-  <button onclick="location.href='teleterm.txt'" target="_blank" type="button">HELP</button>
+  <button style="display: none;" id="play-button">MUSIC</button>
+  <button style="display: none;" onclick="location.href='teleterm.txt'" target="_blank" type="button">HELP</button>
     <div id="terminal"></div>
   </div>
 

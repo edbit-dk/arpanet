@@ -57,12 +57,42 @@ function handleUserInput() {
 
     if (input === 'mem') {
         clearTerminal();
+        return;
     }
 
-    if(isUplinkCode(input)) {
+    if (isUplinkCode(input)) {
         input = 'uplink ' + input;
     }
 
+    // Handle "music start", "music stop", and "music next" commands
+    if (input === 'music start') {
+        console.log('Command received: music start');
+        document.getElementById('play-button').click(); // Simulate a button click to start music
+        $('#command-input').val('');
+        return;
+    }
+
+    if (input === 'music stop') {
+        console.log('Command received: music stop');
+        if (audio && !audio.paused) {
+            document.getElementById('play-button').click(); // Simulate a button click to stop music
+        }
+        $('#command-input').val('');
+        return;
+    }
+
+    if (input === 'music next') {
+        console.log('Command received: music next');
+        if (audio) {
+            playNextSong(); // Call the function to skip to the next song
+        } else {
+            console.log('Audio not initialized. Use "music start" first.');
+        }
+        $('#command-input').val('');
+        return;
+    }
+
+    // Normal command handling
     loadText("cmd: " + input);
     commandHistory.push(input);
     historyIndex = commandHistory.length;
@@ -138,7 +168,7 @@ function handleUserInput() {
         sendCommand(command, args)
             .then(response => {
                 if (!response.includes("ERROR")) {
-                    setTimeout(function() {
+                    setTimeout(function () {
                         sessionStorage.setItem('uplink', false);
                         redirectTo('');
                     }, 1000);
@@ -153,3 +183,4 @@ function handleUserInput() {
         sendCommand(command, args);
     }
 }
+

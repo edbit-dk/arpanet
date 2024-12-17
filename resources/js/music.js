@@ -12,17 +12,34 @@ function initializeAudio() {
   }
 }
 
-// Function to handle play/pause toggle
-function toggleMusic() {
-  if (!audio) {
-    console.log('Initializing audio for the first time.');
-    initializeAudio();
+// Function to play the next song
+function playNextSong() {
+  if (playlist.length === 0) {
+    console.log('Playlist is empty.');
+    return;
   }
+
+  currentSongIndex = (currentSongIndex + 1) % playlist.length; // Move to the next song, wrap around if needed
+  audio.src = playlist[currentSongIndex];
+  audio.play()
+    .then(() => {
+      console.log(`Playing next song: ${playlist[currentSongIndex]}`);
+      document.getElementById('play-button').textContent = 'MUSIC STOP';
+    })
+    .catch(error => {
+      console.error('Playback failed:', error);
+      alert('Audio playback failed. Please try again or interact with the page.');
+    });
+}
+
+// Function to toggle play/pause for music
+function toggleMusic() {
+  initializeAudio();
 
   if (audio.paused) {
     audio.play().then(() => {
       console.log('Audio started playing.');
-      document.getElementById('play-button').textContent = 'STOP MUSIC'; // Update button text
+      document.getElementById('play-button').textContent = 'MUSIC STOP'; // Update button text
     }).catch(error => {
       console.error('Playback failed:', error);
       alert('Audio playback failed. Please try again or interact with the page.');
@@ -30,44 +47,14 @@ function toggleMusic() {
   } else {
     audio.pause();
     console.log('Audio paused.');
-    document.getElementById('play-button').textContent = 'PLAY MUSIC'; // Update button text
+    document.getElementById('play-button').textContent = 'MUSIC PLAY'; // Update button text
   }
 }
-
-// Event listener for the play button (click to play/pause)
-document.getElementById('play-button').addEventListener('click', () => {
-  initializeAudio();
-  toggleMusic();
-});
 
 // Function to handle when the current song ends
 function handleAudioEnded() {
-  currentSongIndex++;
-  if (currentSongIndex < playlist.length) {
-    audio.src = playlist[currentSongIndex];
-    audio.play().catch(error => {
-      console.warn('Playback failed:', error);
-      alert('Audio playback failed for the next track. Please try again.');
-    });
-  } else {
-    currentSongIndex = 0;
-    audio.src = playlist[currentSongIndex];
-    audio.play().catch(error => {
-      console.warn('Playback failed:', error);
-    });
-  }
+  playNextSong(); // Automatically play the next song when the current one ends
 }
 
-/*
-// Ensure user interaction is recorded
-document.addEventListener('click', () => {
-  if (!audio || audio.paused) {
-    console.log('Attempting to play audio after user interaction.');
-    initializeAudio();
-    audio.play().catch(error => {
-      console.warn('Autoplay blocked or failed:', error);
-      alert('Autoplay is blocked by your browser. Please press play to start the music.');
-    });
-  }
-}, { once: true }); // This listener runs once to ensure interaction is captured
-*/
+// Event listener for the play button
+document.getElementById('play-button').addEventListener('click', toggleMusic);
