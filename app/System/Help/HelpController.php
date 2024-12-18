@@ -62,7 +62,7 @@ class HelpController extends Controller
             
             echo <<< EOT
             $cmd $input
-                $info
+            - $info
             EOT;
             exit;
         }

@@ -1,2 +1,1 @@
-ERROR: Unknown Command. 
-    HELP for command list.
+ERROR: Unknown Command - type ? for a list

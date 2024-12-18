@@ -101,7 +101,7 @@ INSERT INTO `help` (`id`, `cmd`, `input`, `info`, `is_user`, `is_host`, `is_visi
 (1, 'help', '[cmd]', 'shows info about command', 1, 1, 1, 1),
 (2, 'uplink', '<access code>', 'connect to ARPANET', 0, 0, 1, 0),
 (3, 'version', '{}', 'UOS version', 1, 1, 1, 1),
-(4, 'color', '<GREEN|WHITE|YELLOW>', 'terminal color', 0, 0, 0, 0),
+(4, 'color', '<green|white|yellow|blue>', 'terminal color', 1, 1, 1, 1),
 (5, 'newuser', '<username>', 'create ARPANET account', 0, 0, 1, 0),
 (6, 'login', '<username>', 'auth ARPANET user', 0, 0, 1, 1),
 (7, 'logout', '{}', 'logout ARPANET user', 1, 1, 0, 1),
@@ -114,7 +114,7 @@ INSERT INTO `help` (`id`, `cmd`, `input`, `info`, `is_user`, `is_host`, `is_visi
 (14, 'set', '<command>', 'TERMINAL/INQUIRE, FILE/PROTECTION=OWNER:RWED ACCOUNTS.F, HALT RESTART/MAINT', 0, 0, 0, 1),
 (15, 'run', '<command>', 'DEBUG/ACCOUNTS.F', 0, 0, 0, 1),
 (16, 'mem', '[dump]', 'run memory dump', 0, 0, 0, 1),
-(17, 'music', '<start>|<stop>|<next>', 'play music', 1, 1, 1, 1);
+(17, 'music', '<start|stop|next>', 'play music', 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 

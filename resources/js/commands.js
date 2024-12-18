@@ -50,6 +50,12 @@ function handleUserInput() {
     let input = $('#command-input').val().trim();
     if (input === '') return;
 
+    // Normal command handling
+    loadText("cmd: " + input);
+    commandHistory.push(input);
+    historyIndex = commandHistory.length;
+    $('#command-input').val('');    
+
     // Check if the input is "?" and change it to "help"
     if (input === '?') {
         input = 'help';
@@ -91,12 +97,6 @@ function handleUserInput() {
         $('#command-input').val('');
         return;
     }
-
-    // Normal command handling
-    loadText("cmd: " + input);
-    commandHistory.push(input);
-    historyIndex = commandHistory.length;
-    $('#command-input').val('');
 
     if (isUsernamePrompt) {
         if (input) {
