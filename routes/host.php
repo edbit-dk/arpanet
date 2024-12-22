@@ -10,6 +10,7 @@ $app->get('/host-create', [HostController::class, 'create']);
 
 if(User::auth()) {
     $app->get('/scan', [HostController::class, 'scan']);
+    $app->get('/netstat', [HostController::class, 'scan']);
     $app->get('/connect', [HostController::class, 'connect']);
     $app->get('/telnet', [HostController::class, 'connect']);
 }
@@ -19,6 +20,7 @@ if(Host::guest()) {
     $app->get('/logon', [HostController::class, 'logon']);
     $app->get('/dump', [DebugController::class, 'dump']);
     $app->get('/mem', [DebugController::class, 'dump']);
+    $app->get('/debug', [DebugController::class, 'dump']);
     $app->get('/set', [DebugController::class, 'set']);
     $app->get('/run', [DebugController::class, 'run']);  
     
@@ -29,10 +31,11 @@ if(Host::guest()) {
 if(Host::auth() && User::username() != 'guest') {
     $app->get('/mail', [FileController::class, 'mail']);
     $app->get('/dir', [FileController::class, 'dir']);
-    $app->get('/ls', [FileController::class, 'ls']);
+    $app->get('/ls', [FileController::class, 'dir']);
+    $app->get('/type', [FileController::class, 'cat']);
     $app->get('/cat', [FileController::class, 'cat']);
-    $app->get('/more', [FileController::class, 'open']);
-    $app->get('/open', [FileController::class, 'open']);
+    $app->get('/more', [FileController::class, 'cat']);
+    $app->get('/open', [FileController::class, 'cat']);
     $app->get('/echo', [FileController::class, 'echo']);
 }
 

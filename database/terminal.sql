@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Vært: localhost
--- Genereringstid: 17. 12 2024 kl. 20:30:53
+-- Genereringstid: 22. 12 2024 kl. 23:07:49
 -- Serverversion: 8.0.39
 -- PHP-version: 8.2.25
 
@@ -100,20 +100,20 @@ CREATE TABLE `help` (
 INSERT INTO `help` (`id`, `cmd`, `input`, `info`, `is_user`, `is_host`, `is_visitor`, `is_guest`) VALUES
 (1, 'help', '[cmd]', 'shows info about command', 1, 1, 1, 1),
 (2, 'uplink', '<access code>', 'connect to ARPANET', 0, 0, 1, 0),
-(3, 'version', '{}', 'UOS version', 1, 1, 1, 1),
+(3, 'ver', NULL, 'UOS version', 1, 1, 1, 1),
 (4, 'color', '<green|white|yellow|blue>', 'terminal color', 1, 1, 1, 1),
 (5, 'newuser', '<username>', 'create ARPANET account', 0, 0, 1, 0),
 (6, 'login', '<username>', 'auth ARPANET user', 0, 0, 1, 1),
-(7, 'logout', '{}', 'logout ARPANET user', 1, 1, 0, 1),
+(7, 'logout', NULL, 'logout ARPANET user', 1, 1, 0, 1),
 (8, 'telnet', '<host>', 'connect to host', 1, 1, 0, 1),
-(9, 'ls', '{}', 'list files on host', 0, 1, 0, 0),
-(10, 'cat', '<filename>', 'display file content', 0, 1, 0, 0),
+(9, 'ls', NULL, 'list files on host', 0, 1, 0, 0),
+(10, 'more', '<filename>', 'print/dump contents of file', 0, 1, 0, 0),
 (11, 'mail', '<subject> <user> < <body>', 'email user', 1, 1, 0, 1),
-(12, 'user', '{}', 'list user info', 1, 1, 0, 1),
-(13, 'scan', '{}', 'list connected nodes', 1, 1, 0, 1),
+(12, 'user', NULL, 'list user info', 1, 1, 0, 1),
+(13, 'netstat', NULL, 'list connected nodes', 1, 1, 0, 1),
 (14, 'set', '<command>', 'TERMINAL/INQUIRE, FILE/PROTECTION=OWNER:RWED ACCOUNTS.F, HALT RESTART/MAINT', 0, 0, 0, 1),
 (15, 'run', '<command>', 'DEBUG/ACCOUNTS.F', 0, 0, 0, 1),
-(16, 'mem', '[dump]', 'run memory dump', 0, 0, 0, 1),
+(16, 'debug', '[dump]', 'run memory dump', 0, 0, 0, 1),
 (17, 'music', '<start|stop|next>', 'play music', 1, 1, 1, 1);
 
 -- --------------------------------------------------------
@@ -140,13 +140,18 @@ CREATE TABLE `hosts` (
 --
 
 INSERT INTO `hosts` (`id`, `user_id`, `password`, `host_name`, `org`, `ip`, `active`, `level_id`, `created_at`, `updated_at`) VALUES
-(1, 1, 'robco', 'milnet', 'US Military (PRIVATE)', '1.1.1.1', 1, 5, '1984-10-22 16:18:50', NULL),
-(2, 1, 'robco', 'nsfnet', 'Academic Research (PUBLIC)', '0.0.0.0', 1, 1, '1969-10-10 16:29:25', NULL),
-(3, 1, 'robco', 'ucla', 'University of California, LA', '0.0.0.1', 1, 1, '1985-10-22 16:18:50', NULL),
-(4, 1, 'robco', 'arc', 'Stanford Research Institute', '0.0.0.2', 1, 1, '1985-10-22 16:18:50', NULL),
-(5, 1, 'robco', 'ucsb', 'University of California, SB ', '0.0.0.3', 1, 1, '1985-10-22 16:18:50', NULL),
-(6, 1, 'robco', 'uusc', 'University of Utah School of Computing', '0.0.0.4', 1, 1, '1985-10-22 16:18:50', NULL),
-(7, 1, 'robco', 'spsdd', 'Seattle Public School District Datanet', '0.0.0.5', 1, 1, '1985-10-22 16:18:50', NULL);
+(1, 1, 'robco', 'milnet', 'Military Network (UNCLASSIFIED)', '1.1.1.0', 1, 2, '1984-10-22 16:18:50', NULL),
+(2, 1, 'robco', 'nsfnet', 'Academic Research Network', '0.0.0.0', 1, 1, '1969-10-10 16:29:25', NULL),
+(3, 1, 'robco', 'usenet', 'Newsgroup Network', '3.3.3.3', 1, 1, '1979-10-22 16:18:50', NULL),
+(4, 1, 'robco', 'poseidonet', 'Poseidon Energy Network', '4.4.4.4', 1, 1, '2077-10-22 16:18:50', NULL),
+(5, 1, 'robco', 'ucla', 'University of California, LA', '0.0.0.1', 1, 1, '1985-10-22 16:18:50', NULL),
+(6, 1, 'robco', 'arc', 'Stanford Research Institute', '0.0.0.2', 1, 1, '1985-10-22 16:18:50', NULL),
+(7, 1, 'robco', 'ucsb', 'University of California, SB ', '0.0.0.3', 1, 1, '1985-10-22 16:18:50', NULL),
+(8, 1, 'robco', 'uusc', 'University of Utah School of Computing', '0.0.0.4', 1, 1, '1985-10-22 16:18:50', NULL),
+(9, 1, 'robco', 'spsdd', 'Seattle Public School District Datanet', '0.0.0.5', 1, 1, '1985-10-22 16:18:50', NULL),
+(10, 1, 'robco', 'dsnet1', 'Military Network (CONFIDENTIAL)', '1.1.1.1', 1, 3, '1983-10-22 16:18:50', NULL),
+(11, 1, 'robco', 'dsnet2', 'Military Network (SECRET)', '1.1.1.2', 1, 4, '1983-10-22 16:18:50', NULL),
+(12, 1, 'robco', 'dsnet3', 'Military Network (TOP SECRET)', '1.1.1.3', 1, 5, '1983-10-22 16:18:50', NULL);
 
 -- --------------------------------------------------------
 
@@ -184,11 +189,14 @@ CREATE TABLE `host_node` (
 --
 
 INSERT INTO `host_node` (`id`, `node_id`, `host_id`) VALUES
-(1, 3, 2),
-(2, 4, 2),
-(3, 5, 2),
-(4, 6, 2),
-(5, 7, 2);
+(1, 5, 2),
+(2, 6, 2),
+(3, 7, 2),
+(4, 8, 2),
+(5, 9, 2),
+(6, 10, 1),
+(7, 11, 1),
+(8, 12, 1);
 
 -- --------------------------------------------------------
 
@@ -213,7 +221,12 @@ INSERT INTO `host_user` (`id`, `user_id`, `host_id`) VALUES
 (4, 1, 4),
 (5, 1, 5),
 (6, 1, 6),
-(7, 1, 7);
+(7, 1, 7),
+(8, 1, 8),
+(9, 1, 9),
+(10, 1, 10),
+(11, 1, 11),
+(12, 1, 12);
 
 -- --------------------------------------------------------
 
@@ -451,7 +464,7 @@ ALTER TABLE `help`
 -- Tilføj AUTO_INCREMENT i tabel `hosts`
 --
 ALTER TABLE `hosts`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `host_file`
@@ -463,13 +476,13 @@ ALTER TABLE `host_file`
 -- Tilføj AUTO_INCREMENT i tabel `host_node`
 --
 ALTER TABLE `host_node`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `host_user`
 --
 ALTER TABLE `host_user`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `levels`

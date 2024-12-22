@@ -61,8 +61,7 @@ class HelpController extends Controller
             $info = $help->info;
             
             echo <<< EOT
-            $cmd $input
-            - $info
+            $cmd $input  $info
             EOT;
             exit;
         }

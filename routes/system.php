@@ -12,7 +12,7 @@ $app->get('/', [SystemController::class, 'index']);
 
 // Default
 $app->get('/minify', [SystemController::class, 'minify']);
-$app->get('/version', [SystemController::class, 'version']);
+$app->get('/ver', [SystemController::class, 'version']);
 $app->get('/termlink', [SystemController::class, 'termlink']);
 
 // Start

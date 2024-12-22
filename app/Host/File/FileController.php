@@ -14,11 +14,6 @@ class FileController extends Controller
 
     public function dir()
     {
-        return File::list(Host::data()->id, User::auth());
-    }
-
-    public function ls()
-    {
         $files = Host::data()->files()->get();
 
         if($files->isEmpty()) {
@@ -38,7 +33,7 @@ class FileController extends Controller
 
         $file = Host::data()->file($data);
         
-        dd($file->content);
+        echo $file->content;
     }
 
     public function open()

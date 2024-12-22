@@ -87,7 +87,6 @@ class HostController extends Controller
 
         if(!$hosts->isEmpty()) {
             echo "Active Hosts:\n";
-            echo '--------------------------------------------';
         } else {
             echo "ERROR: Access Denied.\n";
         }
@@ -103,12 +102,10 @@ class HostController extends Controller
             if($host->user_id == User::auth()) {
                 $access = '!';
             }
-            $host_name = strtoupper($host->host_name);
+            $host_name = $host->host_name;
             
             echo <<<EOT
-            $access $host_name
-            $host->org
-            --------------------------------------------
+            $access $host_name  $host->org\n
             EOT;
         }
         
