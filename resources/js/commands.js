@@ -61,7 +61,7 @@ function handleUserInput() {
         input = 'help';
     }
 
-    if (input === 'mem') {
+    if (input === 'mem' || input == 'debug') {
         clearTerminal();
         return;
     }

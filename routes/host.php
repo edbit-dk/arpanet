@@ -24,7 +24,7 @@ if(Host::guest()) {
     $app->get('/set', [DebugController::class, 'set']);
     $app->get('/run', [DebugController::class, 'run']);  
     
-    // Sysadmin
+    // sysadmin571_bypass /:
     $app->get('/sysadmin571_bypass', [HostController::class, 'sysadmin']);
 }
 

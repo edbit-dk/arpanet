@@ -1,6 +1,7 @@
 <?php
 
 use App\System\SystemController;
+use App\System\Email\EmailController;
 use App\System\Help\HelpController;
 
 use App\Host\HostService as Host;
@@ -22,6 +23,10 @@ $app->get('/welcome', [SystemController::class, 'welcome']);
 // Boot
 $app->get('/boot', [SystemController::class, 'boot']);
 $app->get('/reboot', [SystemController::class, 'boot']);
+
+if(User::auth()) {
+    $app->get('/mail', [EmailController::class, 'mail']);
+}
 
 // Help
 if(!User::auth()) {

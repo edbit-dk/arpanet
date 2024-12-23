@@ -63,7 +63,7 @@ class FileController extends Controller
         var_dump($file );
     }
 
-    public function mail()
+    public function ftp()
     {
         
     }
