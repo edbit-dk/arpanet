@@ -46,7 +46,7 @@ $app->notFound($config['views'] . '404.php');
 
 Lib\Session::set('music', $config['music']);
 
-$css = hash_file('md5', $config['path'] . '/public/css/app.min.css');
-$js = hash_file('md5', $config['path'] . '/public/js/app.min.js');
+$css = filemtime($config['path'] . '/public/css/app.min.css');
+$js = filemtime($config['path'] . '/public/js/app.min.js');
 $hash = $css . $js;
 Lib\Session::set('hash', $hash);

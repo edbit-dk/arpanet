@@ -48,20 +48,21 @@ function isUplinkCode(input) {
 // Function to handle user input
 function handleUserInput() {
     let input = $('#command-input').val().trim();
-    if (input === '') return;
+    if (input === '' && !(isPasswordPrompt || isUsernamePrompt)) return;
+    // Prevent empty commands unless it's a password prompt
 
     // Normal command handling
     loadText("cmd: " + input);
     commandHistory.push(input);
     historyIndex = commandHistory.length;
-    $('#command-input').val('');    
+    $('#command-input').val('');
 
     // Check if the input is "?" and change it to "help"
     if (input === '?') {
         input = 'help';
     }
 
-    if (input === 'mem' || input == 'debug') {
+    if (input === 'mem' || input === 'debug') {
         clearTerminal();
         return;
     }
@@ -102,7 +103,7 @@ function handleUserInput() {
         if (input) {
             if (currentCommand === 'newuser') {
                 usernameForNewUser = input;
-                loadText("ENTER PASSWORD NOW:");
+                loadText("ENTER PASSWORD:");
                 isUsernamePrompt = false;
                 isPasswordPrompt = true;
                 $('#command-input').attr('type', 'password');
@@ -121,6 +122,7 @@ function handleUserInput() {
     }
 
     if (isPasswordPrompt) {
+        // Allow an empty password
         handlePasswordPrompt();
         return;
     }
@@ -183,4 +185,5 @@ function handleUserInput() {
         sendCommand(command, args);
     }
 }
+
 

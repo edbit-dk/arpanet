@@ -1,4 +1,3 @@
-
 // Function to handle the LOGON/LOGIN command
 function handleLogon(username) {
     if (!sessionStorage.getItem('uplink')) {
@@ -44,18 +43,24 @@ function handleNewUser(username) {
 
 // Function to handle password prompt
 function handlePasswordPrompt() {
-    const password = $('#command-input').val().trim().toLowerCase(); // Convert password input to lowercase
-    userPassword = password;
+    const password = $('#command-input').val().trim(); // Capture the password input
+    userPassword = password; // Save the (possibly empty) password
+
+    // Determine the current command and send the appropriate request
     if (currentCommand === 'logon' || currentCommand === 'login') {
         sendCommand(currentCommand, usernameForLogon + ' ' + password);
-        usernameForLogon = '';
+        usernameForLogon = ''; // Clear the username for logon
     } else if (currentCommand === 'newuser') {
         sendCommand('newuser', usernameForNewUser + ' ' + password);
-        usernameForNewUser = '';
+        usernameForNewUser = ''; // Clear the username for new user creation
     }
+
+    // Reset prompt state and input type
     isPasswordPrompt = false;
     $('#command-input').attr('type', 'text').val('');
 }
+
+
 
 // Function to handle password prompt response
 function handlePasswordPromptResponse(response) {
@@ -71,9 +76,9 @@ function handlePasswordPromptResponse(response) {
         }, 2500);
     } else {
         if (usernameForLogon) {
-            sendCommand('logon', usernameForLogon + ' ' + userPassword);
+            sendCommand('logon', usernameForLogon + ' ' + (userPassword || ""));
         } else if (usernameForNewUser) {
-            sendCommand('newuser', usernameForNewUser + ' ' + userPassword);
+            sendCommand('newuser', usernameForNewUser + ' ' + (userPassword || ""));
         }
     }
     $('#command-input').val('');

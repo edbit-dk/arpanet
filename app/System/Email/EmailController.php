@@ -41,11 +41,13 @@ class EmailController extends Controller
     public function list()
     {
         $id = 1;
-        $emails = Email::where('recipient', User::auth())->get();
+        $emails = Email::where('recipient', User::auth())->orWhere('recipient', User::username())->get();
+
+        dd($emails);
 
         foreach ($emails as $email) {
             $id++;
-            echo "$id $email->subject";
+            echo "[$id $email->subject]\n";
         }
             
     }
