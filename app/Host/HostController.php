@@ -64,7 +64,7 @@ class HostController extends Controller
             echo 'ERROR: Access Denied.';
             exit;
         } else {
-            echo "Trying...";
+            echo 'Trying...';
             exit;
         }
 
@@ -83,10 +83,10 @@ class HostController extends Controller
 
         echo "Searching Comlinks...\n";
         echo "Searching...\n";
-        echo "Searching ARPANET...\n";
+        echo "Searching ARPANET...\n\n";
 
         if(!$hosts->isEmpty()) {
-            echo "Active Hosts:\n";
+            echo "Local Hosts:\n";
         } else {
             echo "ERROR: Access Denied.\n";
         }
@@ -105,7 +105,7 @@ class HostController extends Controller
             $host_name = $host->host_name;
             
             echo <<<EOT
-            $access $host_name  $host->org\n
+            $access $host_name: $host->org\n
             EOT;
         }
         

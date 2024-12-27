@@ -103,20 +103,20 @@ function handleUserInput() {
         if (input) {
             if (currentCommand === 'newuser') {
                 usernameForNewUser = input;
-                loadText("ENTER PASSWORD:");
+                loadText("password:");
                 isUsernamePrompt = false;
                 isPasswordPrompt = true;
                 $('#command-input').attr('type', 'password');
             } else if (currentCommand === 'login' || currentCommand === 'logon') {
                 usernameForLogon = input;
-                loadText("ENTER PASSWORD:");
+                loadText("password:");
                 isUsernamePrompt = false;
                 isPasswordPrompt = true;
                 $('#command-input').attr('type', 'password');
             }
             return;
         } else {
-            loadText("ERROR: WRONG USERNAME!");
+            loadText("ERROR: Wrong Username!");
             return;
         }
     }
@@ -145,7 +145,7 @@ function handleUserInput() {
         if (args) {
             handleNewUser(args);
         } else {
-            loadText("ENTER USERNAME NOW:");
+            loadText("username:");
             isUsernamePrompt = true;
             currentCommand = 'newuser';
             $('#command-input').attr('type', 'text');
@@ -153,14 +153,14 @@ function handleUserInput() {
     } else if (command === 'logon' || command === 'login') {
         if (args) {
             usernameForLogon = args;
-            loadText("ENTER PASSWORD:");
+            loadText("password:");
             isUsernamePrompt = false;
             isPasswordPrompt = true;
             currentCommand = command;
             $('#command-input').attr('type', 'password');
             return;
         } else {
-            loadText("ENTER USERNAME:");
+            loadText("username:");
             isUsernamePrompt = true;
             currentCommand = command;
             $('#command-input').attr('type', 'text');

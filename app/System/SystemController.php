@@ -54,14 +54,10 @@ class SystemController extends Controller
 
         if(Session::get('access_code') == $data[0]) {
             sleep(1);
+            Session::set('uplink', true);
+
             echo <<< EOT
             Security Access Code Sequence Accepted.
-
-                --------NETWORK STATUS: ONLINE--------
-                1. Type LOGIN for authentication.
-                2. Type NEWUSER to create an account.
-                3. Type HELP for a command list.
-                --------------------------------------
             EOT;
             exit;
 
@@ -82,12 +78,11 @@ class SystemController extends Controller
 
             } else {
                 echo <<< EOT
-                    ERROR: Incorrect Security Access Code.
-                    --------------------------------------
-                    Please enter correct access code.
-                    Attempts left: {$attempts_left}
-                    Internal Security Procedures Activated.
-                    --------------------------------------
+                ERROR: Incorrect Security Access Code.
+
+                Please enter correct access code.
+                Attempts left: {$attempts_left}
+                Internal Security Procedures Activated.
                 EOT;
             }
             
@@ -108,7 +103,6 @@ class SystemController extends Controller
 
     public function welcome() 
     {
-
         if(Host::auth()) {
             return $this->host();
         }
@@ -117,11 +111,11 @@ class SystemController extends Controller
             return $this->termlink();
         }
 
-        if(User::auth()) {
-            return view('terminal/termlink.txt');
+        if(Session::get('uplink')) {
+            return $this->login();
         }
 
-        view('terminal/welcome.txt');
+        view('terminal/start.txt');
 
         $code_1 = random_str(6, 'AXYZ01234679');
         $code_2 = random_str(6, 'AXYZ01234679');
@@ -133,37 +127,59 @@ class SystemController extends Controller
         Session::set('access_code', $access_code);
     
         echo <<< EOT
-            ------NETWORK STATUS: OFFLINE------
-            Uplink to central ARPANET initiated.
-            Enter Security Access Code Sequence:
-            ===================================
-            >>> {$access_code} <<<
-            ===================================
+        Welcome to IBM Corporation (TM) TELETERM.
+
+        This terminal allows access to ARPANET (1969-1990), 
+        the transcontinental network operated by the 
+        US Government, stretching from US to UK and 
+        Norway by sattelite.
+
+        Uplink to central ARPANET initiated...
+
+        Enter Security Access Code Sequence: 
+        {$access_code}
+        EOT;
+    }
+
+    public function login()
+    {
+        $port = $_SERVER['SERVER_PORT'];
+        $date = date('H:i l, F j, Y', time());
+        $users = User::count();
+        $hosts = Host::count();
+
+        echo <<< EOT
+        Connected to TELETERM port {$port}
+
+        It is {$date}.
+        There are {$users} local users. There are {$hosts} hosts on the network.
+    
+        More commands available after LOGIN. 
+        Type HELP for detailed command list.
+        Type NEWUSER to create an account. 
+        Type EXIT/LOGOUT to interrupt connection.
         EOT;
     }
 
     public function termlink() 
     {
-        view('terminal/auth.txt');
+        //view('terminal/auth.txt');
             
         $host_name = strtoupper(Host::hostname());
         $host_ip = Host::data()->ip;
         $level = Host::data()->level->id;
 
         echo <<< EOT
-        -Server $host_ip-
+        -System $host_ip-
 
-        Connected to $host_name
+        Welcome to $host_name
         Password Required [LEVEL $level]
-        ____________________________________________
         EOT;
 
     }
 
     public function host() 
     {
-        view('terminal/auth.txt');
-
         $host = Host::data();
         $host_name = strtoupper($host->host_name);
         $org = $host->org;
@@ -171,11 +187,9 @@ class SystemController extends Controller
         $username = strtoupper(User::data()->user_name);
 
         echo <<< EOT
-        -$host_name-
-        $org
+        -$host_name: $org-
 
         Welcome, $username
-        ____________________________________________ 
         EOT;
 
         return;

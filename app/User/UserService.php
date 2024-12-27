@@ -63,4 +63,9 @@ class UserService
         Session::clear();
     }
 
+    public static function count()
+    {
+        return User::count();
+    }
+
 }

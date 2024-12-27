@@ -139,7 +139,7 @@ class UserController extends Controller
 
         Auth::login($user_name, $password);
         
-        echo "Authentication successful.\n";
+        echo "Authentication Accepted.\n";
     }
 
     public function logout() 

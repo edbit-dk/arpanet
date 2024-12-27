@@ -204,9 +204,7 @@ class HostService
         if (Session::has('user_blocked')) {
             echo <<< EOT
                 ERROR: Terminal Locked.
-                --------------------------------
                 Please contact an Administrator.
-                --------------------------------
             EOT;
             exit;
         }
@@ -227,6 +225,11 @@ class HostService
             Session::remove(self::$guest); 
         }
 
+    }
+
+    public static function count()
+    {
+        return Host::count();
     }
 
 }

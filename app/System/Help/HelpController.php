@@ -40,7 +40,7 @@ class HelpController extends Controller
                 $input = $item->input;
                 $info = $item->info;
 
-                echo "  $cmd $input\n";
+                echo "$cmd $input  $info\n";
             }
 
             exit;

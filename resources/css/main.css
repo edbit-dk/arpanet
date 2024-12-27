@@ -1,10 +1,11 @@
-@import url(https://fonts.googleapis.com/css?family=VT323);
+/* @import url(https://fonts.googleapis.com/css?family=VT323); */
 
 body, input, pre, button {
-  font-family: 'VT323', sans-serif;
+  /* font-family: 'VT323', sans-serif; */
+  font-family: "Wumpus Mono", monospace; 
   -webkit-font-smoothing: none;
-  font-size: 5.5vw;
-  line-height: 1.2;
+  font-size: 15px;
+  line-height: normal;
   text-shadow: 0 0 5px #C8C8C8;
   background-color: #000000;
 }

@@ -1,10 +1,5 @@
 =------------------------------------------=
-| Welcome to IBM Corporation (TM) Termlink |
+| Welcome to IBM Corporation (TM) TELETERM |
 |------------------------------------------|
-
-This terminal allows access to ARPANET 
-(1969-1990), the transcontinental network 
-operated by the US Government, stretching 
-from US to UK and Norway by sattelite.
 
 TERMINAL

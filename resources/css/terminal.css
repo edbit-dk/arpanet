@@ -3,7 +3,7 @@
     max-height: 80vh;
     overflow-y: auto; /* Add vertical scrolling if the content exceeds the height */
     box-sizing: border-box; /* Ensure padding is included in the width/height */
-    padding: 1.5vw;
+    padding: 1.5vw 0 0 1.5vw;
   }
   
   #terminal {
@@ -33,5 +33,5 @@
     position: relative; /* Use relative positioning */
     margin-left: 2px; /* Add margin for spacing */
     width: 100%;
-    border: solid;
+   /* border: solid; */
 }

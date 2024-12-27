@@ -28,7 +28,7 @@ function handleRedirect(response) {
         }, 1000);
     }
 
-    if (response.startsWith("SUCCESS")) {
+    if (response.startsWith("SUCCESS") || response.startsWith("Security")) {
         setTimeout(function() {
             setTimeout(function() {
                 redirectTo('');
@@ -43,7 +43,7 @@ function handleRedirect(response) {
                 loadText("Welcome to ARPANET");
 
                 setTimeout(function() {
-                    redirectTo('');
+                    sendCommand('scan', '');
                 }, 2000);
 
             }, 1000);
