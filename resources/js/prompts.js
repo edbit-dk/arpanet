@@ -6,7 +6,7 @@ function handleLogon(username) {
     }
 
     if (!usernameForLogon && !username) {
-        loadText("ENTER USERNAME:");
+        loadText("username:");
         isUsernamePrompt = true;
         $('#command-input').attr('type', 'text'); // Switch input to text for username
         return;
@@ -15,7 +15,7 @@ function handleLogon(username) {
     if (isPasswordPrompt) return; // Already prompting for password, do nothing
     isPasswordPrompt = true;
     usernameForLogon = username;
-    loadText("ENTER PASSWORD:");
+    loadText("password:");
     $('#command-input').attr('type', 'password'); // Change input to password
 }
 
@@ -28,7 +28,7 @@ function handleNewUser(username) {
 
     if (!username) {
         // This shouldn't happen since args should be checked in handleUserInput()
-        loadText("ERROR: USERNAME REQUIRED.");
+        loadText("ERROR: Username Required.");
         return;
     } else {
         // Assign the provided username
@@ -37,7 +37,7 @@ function handleNewUser(username) {
 
     // Proceed to password prompt
     isPasswordPrompt = true;
-    loadText("ENTER PASSWORD NOW:");
+    loadText("password:");
     $('#command-input').attr('type', 'password');
 }
 
