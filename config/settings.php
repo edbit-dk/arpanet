@@ -5,6 +5,7 @@ return [
     'errors' => true,
     'views' =>  BASE_PATH . '/resources/views/',
     'database' => BASE_PATH . '/database/',
+    'timezone' => 'Europe/Copenhagen',
     'music' => [
         'public/sound/80s_pop.mp3',
         'public/sound/80s_pad.mp3',

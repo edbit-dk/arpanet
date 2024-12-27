@@ -10,7 +10,7 @@ $c->set('config', function() {
 
 $config = $c->config;
 
-date_default_timezone_set('Europe/Copenhagen');
+date_default_timezone_set($config['timezone']);
 
 $c->set('view', function($c) {
     return new Lib\View($c->config['views']);
