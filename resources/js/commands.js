@@ -62,11 +62,6 @@ function handleUserInput() {
         input = 'help';
     }
 
-    if (input === 'mem' || input === 'debug') {
-        clearTerminal();
-        return;
-    }
-
     if (isUplinkCode(input)) {
         input = 'uplink ' + input;
     }

@@ -83,10 +83,10 @@ class HostController extends Controller
 
         echo "Searching Comlinks...\n";
         echo "Searching...\n";
-        echo "Searching ARPANET...\n\n";
+        echo "Searching ARPANET...\n";
 
         if(!$hosts->isEmpty()) {
-            echo "Local Hosts:\n";
+            echo "Active Connections:\n\n";
         } else {
             echo "ERROR: Access Denied.\n";
         }
@@ -158,7 +158,6 @@ class HostController extends Controller
              // Block the user after 4 failed attempts
              if ($attempts_left == 0) {
 
-                Host::logoff();
                 Host::blocked(true);
                 exit;
 

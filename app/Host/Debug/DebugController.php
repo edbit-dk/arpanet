@@ -45,7 +45,7 @@ class DebugController
     
             // Number of rows and columns in the memory dump
             $rows = 17;
-            $columns = 3;
+            $columns = 4;
     
             // Generate the memory dump
             $memoryDump = mem_dump($rows, $columns, $data, $word_length);

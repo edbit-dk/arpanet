@@ -203,8 +203,8 @@ class HostService
 
         if (Session::has('user_blocked')) {
             echo <<< EOT
-                ERROR: Terminal Locked.
-                Please contact an Administrator.
+            ERROR: Terminal Locked.
+            Please contact an Administrator.
             EOT;
             exit;
         }
