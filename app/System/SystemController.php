@@ -151,7 +151,7 @@ class SystemController extends Controller
         echo <<< EOT
         Connected to TELETERM port {$port}
 
-        It is {$date}.
+        Local time is {$date}.
         There are {$users} local users. There are {$hosts} hosts on the network.
     
         More commands available after LOGIN. 
@@ -170,7 +170,7 @@ class SystemController extends Controller
         $level = Host::data()->level->id;
 
         echo <<< EOT
-        -System $host_ip-
+        -TCP/IP $host_ip-
 
         Welcome to $host_name
         Password Required [LEVEL $level]

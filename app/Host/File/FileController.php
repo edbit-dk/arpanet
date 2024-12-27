@@ -38,7 +38,7 @@ class FileController extends Controller
 
     public function open()
     {
-        $data = explode(' ', request()->get('data'));
+        $data = parse_request('data');
 
         return File::open($data[0], Host::data()->id);
     }
