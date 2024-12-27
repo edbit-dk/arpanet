@@ -172,8 +172,9 @@ class SystemController extends Controller
         echo <<< EOT
         -TCP/IP $host_ip-
 
-        Welcome to $host_name
-        Password Required [LEVEL $level]
+        Connected to $host_name [LEVEL $level]
+
+        login:
         EOT;
 
     }
