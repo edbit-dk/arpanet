@@ -78,6 +78,11 @@ function scrollToBottom() {
     $('#terminal-wrapper').scrollTop($('#terminal-wrapper')[0].scrollHeight);
 }
 
+// Function to clear terminal
+function clearTerminal() {
+    $('#terminal').empty();
+}
+
 // Function to load the saved theme from localStorage
 function loadSavedTheme() {
     const savedTheme = localStorage.getItem('theme');
@@ -86,14 +91,24 @@ function loadSavedTheme() {
     }
 }
 
-// Function to clear terminal
-function clearTerminal() {
-    $('#terminal').empty();
-}
-
 // Function to set text and background color
 function setTheme(color) {
     const hash = btoa(color);
     $('#theme-color').attr('href', stylesheets + color + '-crt.css?v=' + hash);
     localStorage.setItem('theme', color);
 }
+
+// Function to set terminal font
+function setTermMode(mode) {
+    $("#page").toggleClass(mode);
+    localStorage.setItem('mode', mode);
+}
+
+// Function to load the saved theme from localStorage
+function loadSavedTermMode() {
+    const savedTerm = localStorage.getItem('mode');
+    if (savedTerm) {
+        setTermMode(savedTerm);
+    }
+}
+

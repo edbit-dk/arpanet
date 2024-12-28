@@ -10,9 +10,15 @@
         <link id="theme-color" rel="stylesheet" href="<?php base_url() ?>/css/green-crt.css?v=<?php echo($_SESSION['hash']) ?>">
     <style>
     @font-face {
-    font-family: 'Wumpus Mono';
-    src: url('<?php base_url() ?>/fonts/WumpusMono-Regular.woff2') format( 'woff2' ),url('<?php base_url() ?>/fonts/WumpusMono-Regular.woff') format( 'woff' )
+        font-family: "RIT-V300";
+        src: url('<?php base_url() ?>/fonts/RIT-V300.ttf') format('truetype');
+    }
+
+    @font-face {
+        font-family: "RX-9000";
+        src: url('<?php base_url() ?>/fonts/RX-9000.woff2') format( 'woff2' ),
+             url('<?php base_url() ?>/fonts/RX-9000.woff') format( 'woff' );
     }
     </style>
     </head>
-        <body id="page">
+        <body class="rit-v300" id="page">

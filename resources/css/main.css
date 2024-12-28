@@ -1,11 +1,18 @@
-/* @import url(https://fonts.googleapis.com/css?family=VT323); */
+
+.rit-v300 * {
+  font-family: "RIT-V300", sans-serif;
+  font-size: 20px;
+}
+
+.rx-9000 * {
+  font-family: "RX-9000", monospace;
+  font-size: 15px;
+}
 
 body, input, pre, button {
-  /* font-family: 'VT323', sans-serif; */
-  font-family: "Wumpus Mono", monospace; 
   -webkit-font-smoothing: none;
-  font-size: 15px;
   line-height: normal;
   text-shadow: 0 0 5px #C8C8C8;
   background-color: #000000;
 }
+

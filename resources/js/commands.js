@@ -68,14 +68,14 @@ function handleUserInput() {
 
     // Handle "music start", "music stop", and "music next" commands
     if (input === 'music start') {
-        console.log('Command received: music start');
+        console.log('music start');
         document.getElementById('play-button').click(); // Simulate a button click to start music
         $('#command-input').val('');
         return;
     }
 
     if (input === 'music stop') {
-        console.log('Command received: music stop');
+        console.log('music stop');
         if (audio && !audio.paused) {
             document.getElementById('play-button').click(); // Simulate a button click to stop music
         }
@@ -84,11 +84,11 @@ function handleUserInput() {
     }
 
     if (input === 'music next') {
-        console.log('Command received: music next');
+        console.log('music next');
         if (audio) {
             playNextSong(); // Call the function to skip to the next song
         } else {
-            console.log('Audio not initialized. Use "music start" first.');
+            console.log('Use "music start" first.');
         }
         $('#command-input').val('');
         return;
@@ -125,6 +125,11 @@ function handleUserInput() {
     const parts = input.split(' ');
     const command = parts[0].toLowerCase(); // Only the command is transformed to lowercase
     const args = parts.slice(1).join(' ');
+
+    if(command === 'mode') {
+        setTermMode(args);
+        return;
+    }
 
     if (['newuser', 'logon', 'login'].includes(command) && !sessionStorage.getItem('uplink')) {
         loadText("ERROR: Uplink Required.");

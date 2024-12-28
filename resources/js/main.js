@@ -18,6 +18,9 @@ $(document).ready(function() {
     // Load the saved theme when the document is ready
     loadSavedTheme();
 
+    // Load the saved term when the document is ready
+    loadSavedTermMode();
+
     //Check commands available
     listCommands();
 

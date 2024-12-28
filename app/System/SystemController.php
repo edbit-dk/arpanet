@@ -128,6 +128,7 @@ class SystemController extends Controller
         Welcome to IBM Corporation (TM) TELETERM.
 
         Uplink to central ARPANET initiated...
+        
         Enter Security Access Code Sequence: 
         {$access_code}
         EOT;
