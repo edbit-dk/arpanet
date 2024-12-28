@@ -115,8 +115,6 @@ class SystemController extends Controller
             return $this->login();
         }
 
-        view('terminal/start.txt');
-
         $code_1 = random_str(6, 'AXYZ01234679');
         $code_2 = random_str(6, 'AXYZ01234679');
         $code_3 = random_str(6, 'AXYZ01234679');
@@ -129,13 +127,7 @@ class SystemController extends Controller
         echo <<< EOT
         Welcome to IBM Corporation (TM) TELETERM.
 
-        This terminal allows access to ARPANET (1969-1990), 
-        the transcontinental network operated by the 
-        US Government, stretching from US to UK and 
-        Norway by sattelite.
-
         Uplink to central ARPANET initiated...
-
         Enter Security Access Code Sequence: 
         {$access_code}
         EOT;
