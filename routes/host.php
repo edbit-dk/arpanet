@@ -3,6 +3,7 @@
 use App\Host\HostController;
 use App\Host\File\FileController;
 use App\Host\Debug\DebugController;
+use App\System\Email\EmailController;
 use App\Host\HostService as Host;
 use App\User\UserService as User;
 
@@ -29,7 +30,6 @@ if(Host::guest()) {
 }
 
 if(Host::auth() && User::username() != 'guest') {
-    $app->get('/mail', [FileController::class, 'mail']);
     $app->get('/dir', [FileController::class, 'dir']);
     $app->get('/ls', [FileController::class, 'dir']);
     $app->get('/type', [FileController::class, 'cat']);

@@ -33,7 +33,8 @@ CREATE TABLE `emails` (
   `recipient` varchar(255) NOT NULL,
   `subject` varchar(255) NOT NULL,
   `body` text NOT NULL,
-  `timestamp` datetime DEFAULT CURRENT_TIMESTAMP,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
   `is_read` tinyint(1) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -114,7 +115,7 @@ INSERT INTO `help` (`id`, `cmd`, `input`, `info`, `is_user`, `is_host`, `is_visi
 (14, 'set', '<command>', 'TERMINAL/INQUIRE, FILE/PROTECTION=OWNER:RWED ACCOUNTS.F, HALT RESTART/MAINT', 0, 0, 0, 1),
 (15, 'run', '<command>', 'DEBUG/ACCOUNTS.F', 0, 0, 0, 1),
 (16, 'debug', '[dump]', 'run memory dump', 0, 0, 0, 1),
-(17, 'music', '<start|stop|next>', 'play music', 1, 1, 1, 1);
+(17, 'music', '<start|stop|next>', 'play music', 1, 1, 1, 1),
 (18, 'mode', '<rit-v300|rx-9000>', 'change terminal mode', 1, 1, 1, 1);
 
 -- --------------------------------------------------------

@@ -12,23 +12,32 @@ class EmailController extends Controller
 {
     public function mail()
     {
-       $data = parse_request('data');
+        $data = parse_request('data');
 
-       switch ($data[0]) {
-        case 'l':
+        $command = $data[0];
+        if(isset($data[1])) {
+            unset($data[0]);
+            $args = $data;
+            $options = explode('<', trim(request()->get('data')));
+        } else {
+            $args = '';
+        }
+
+       switch ($command) {
+        case ($command == '-l' || $command == 'list'):
             $this->list();
             break;
 
-        case 's':
-            $this->send($data[1]);
+        case ($command == '-s' || $command == 'send'):
+            $this->send($options);
             break;
 
-        case 'r':
-            $this->read($data[1]);
+        case ($command == '-r' || $command == 'read'):
+            $this->read($args);
             break;
 
-        case 'd':
-            $this->delete($data[1]);
+        case ($command == '-d' || $command == 'delete'):
+            $this->delete($args);
             break;
         
         default:
@@ -43,8 +52,6 @@ class EmailController extends Controller
         $id = 1;
         $emails = Email::where('recipient', User::auth())->orWhere('recipient', User::username())->get();
 
-        dd($emails);
-
         foreach ($emails as $email) {
             $id++;
             echo "[$id $email->subject]\n";
@@ -54,7 +61,20 @@ class EmailController extends Controller
 
     public function send($data)
     {
-        echo 'send ' . $data;
+        $options = explode(' ',trim($data[0]));
+        $body = trim($data[1]);
+        $subject = $options[1];
+        $sender = User::username();
+        $to = $options[2];
+
+        Email::create([
+            'sender' => $sender,
+            'recipient' => $to,
+            'subject' => $subject,
+            'body' => $body
+        ]);
+
+        echo 'Email Sent.';
     }
 
     public function read($data)
