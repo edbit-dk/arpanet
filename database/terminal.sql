@@ -115,6 +115,7 @@ INSERT INTO `help` (`id`, `cmd`, `input`, `info`, `is_user`, `is_host`, `is_visi
 (15, 'run', '<command>', 'DEBUG/ACCOUNTS.F', 0, 0, 0, 1),
 (16, 'debug', '[dump]', 'run memory dump', 0, 0, 0, 1),
 (17, 'music', '<start|stop|next>', 'play music', 1, 1, 1, 1);
+(18, 'mode', '<rit-v300|rx-9000>', 'change terminal mode', 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 

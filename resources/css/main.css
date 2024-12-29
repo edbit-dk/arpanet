@@ -6,12 +6,12 @@
 
 .rx-9000 * {
   font-family: "RX-9000", monospace;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 body, input, pre, button {
   -webkit-font-smoothing: none;
-  line-height: normal;
+  line-height: 1.2;
   text-shadow: 0 0 5px #C8C8C8;
   background-color: #000000;
 }

@@ -144,7 +144,7 @@ class HostController extends Controller
 
         if(Host::logon($input[0],  $input[1])) {
             echo <<< EOT
-            Password Accepted. 
+            Password Verified. 
             Please wait while system is accessed...
             EOT;
         } else {
