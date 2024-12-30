@@ -30,7 +30,10 @@ class SystemController extends Controller
         $css .= file_get_contents(BASE_PATH . '/resources/css/bootstrap.css');
         $css .= file_get_contents(BASE_PATH . '/resources/css/terminal.css');
 
+        file_put_contents(BASE_PATH . '/public/js/app.js', $js);
         file_put_contents(BASE_PATH . '/public/js/app.min.js', minify_js($js));
+
+        file_put_contents(BASE_PATH . '/public/css/app.css', $css);
         file_put_contents(BASE_PATH . '/public/css/app.min.css', minify_css($css));
 
         print_r(file_get_contents(BASE_PATH . '/public/js/app.min.js'));
