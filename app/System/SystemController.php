@@ -19,12 +19,12 @@ class SystemController extends Controller
     public function minify()
     {
 
-        $js = file_get_contents(BASE_PATH . '/resources/js/main.js');
-        $js .= file_get_contents(BASE_PATH . '/resources/js/commands.js');
-        $js .= file_get_contents(BASE_PATH . '/resources/js/helpers.js');
-        $js .= file_get_contents(BASE_PATH . '/resources/js/prompts.js');
-        $js .= file_get_contents(BASE_PATH . '/resources/js/terminal.js');
-        $js .= file_get_contents(BASE_PATH . '/resources/js/music.js');
+        $js = file_get_contents(BASE_PATH . '/resources/js/live/main.js');
+        $js .= file_get_contents(BASE_PATH . '/resources/js/live/commands.js');
+        $js .= file_get_contents(BASE_PATH . '/resources/js/live/helpers.js');
+        $js .= file_get_contents(BASE_PATH . '/resources/js/live/prompts.js');
+        $js .= file_get_contents(BASE_PATH . '/resources/js/live/terminal.js');
+        $js .= file_get_contents(BASE_PATH . '/resources/js/live/music.js');
 
         $css = file_get_contents(BASE_PATH . '/resources/css/main.css');
         $css .= file_get_contents(BASE_PATH . '/resources/css/bootstrap.css');
