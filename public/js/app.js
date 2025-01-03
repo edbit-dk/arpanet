@@ -317,65 +317,7 @@ function handleUserInput() {
 }
 
 
-// Function to handle redirect
-function handleRedirect(response) {
-
-    if (response.startsWith("Trying")) {
-        setTimeout(function() {
-            setTimeout(function() {
-                redirectTo('');
-            }, 1000);
-
-        }, 1000);
-    }
-
-    if (response.startsWith("EXCACT")) {
-        setTimeout(function() {
-            setTimeout(function() {
-                redirectTo('');
-            }, 1000);
-
-        }, 1000);
-    }
-
-    if (response.startsWith("Password")) {
-        setTimeout(function() {
-            setTimeout(function() {
-                redirectTo('');
-            }, 1000);
-
-        }, 1000);
-    }
-
-    if (response.startsWith("SUCCESS") || response.startsWith("Security")) {
-        setTimeout(function() {
-            setTimeout(function() {
-                redirectTo('');
-            }, 1000);
-
-        }, 1000);
-    }
-
-    if (response.startsWith("Authentication")) {
-            setTimeout(function() {
-
-                loadText("Welcome to ARPANET");
-
-                setTimeout(function() {
-                    sendCommand('scan', '');
-                }, 2000);
-
-            }, 1000);
-    }
-}
-
-// Function to redirect to a specific query string
-function redirectTo(url) {
-      // window.location.href = url;
-    clearTerminal();
-    sendCommand('welcome', '');
-   // $('#user').load('connection');
-}// Function to handle the LOGON/LOGIN command
+// Function to handle the LOGON/LOGIN command
 function handleLogon(username) {
     if (!sessionStorage.getItem('uplink')) {
         loadText("ERROR: Uplink Required.");
@@ -603,7 +545,65 @@ function loadSavedTermMode() {
     }
 }
 
-let currentSongIndex = 0;
+// Function to handle redirect
+function handleRedirect(response) {
+
+    if (response.startsWith("Trying")) {
+        setTimeout(function() {
+            setTimeout(function() {
+                redirectTo('');
+            }, 1000);
+
+        }, 1000);
+    }
+
+    if (response.startsWith("EXCACT")) {
+        setTimeout(function() {
+            setTimeout(function() {
+                redirectTo('');
+            }, 1000);
+
+        }, 1000);
+    }
+
+    if (response.startsWith("Password")) {
+        setTimeout(function() {
+            setTimeout(function() {
+                redirectTo('');
+            }, 1000);
+
+        }, 1000);
+    }
+
+    if (response.startsWith("SUCCESS") || response.startsWith("Security")) {
+        setTimeout(function() {
+            setTimeout(function() {
+                redirectTo('');
+            }, 1000);
+
+        }, 1000);
+    }
+
+    if (response.startsWith("Authentication")) {
+            setTimeout(function() {
+
+                loadText("Welcome to ARPANET");
+
+                setTimeout(function() {
+                    sendCommand('scan', '');
+                }, 2000);
+
+            }, 1000);
+    }
+}
+
+// Function to redirect to a specific query string
+function redirectTo(url) {
+      // window.location.href = url;
+    clearTerminal();
+    sendCommand('welcome', '');
+   // $('#user').load('connection');
+}let currentSongIndex = 0;
 let audio;
 
 // Function to create the audio element only after user interaction

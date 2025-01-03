@@ -25,7 +25,6 @@ body, input, pre, button {
     max-height: 80vh;
     overflow-y: auto; /* Add vertical scrolling if the content exceeds the height */
     box-sizing: border-box; /* Ensure padding is included in the width/height */
-    padding: 1.5vw 0 0 1.5vw;
   }
   
   #terminal {
@@ -45,7 +44,6 @@ body, input, pre, button {
     position: relative; /* Add relative positioning to parent */
     margin-top: 5px; /* Space between the terminal content and prompt */
     width: 100%;
-    padding: 0px 1.5vw 0px 1.5vw;
 }
 
 #command-input {

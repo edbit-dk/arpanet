@@ -21,9 +21,9 @@ class SystemController extends Controller
 
         $js = file_get_contents(BASE_PATH . '/resources/js/live/main.js');
         $js .= file_get_contents(BASE_PATH . '/resources/js/live/commands.js');
-        $js .= file_get_contents(BASE_PATH . '/resources/js/live/helpers.js');
         $js .= file_get_contents(BASE_PATH . '/resources/js/live/prompts.js');
         $js .= file_get_contents(BASE_PATH . '/resources/js/live/terminal.js');
+        $js .= file_get_contents(BASE_PATH . '/resources/js/live/helpers.js');
         $js .= file_get_contents(BASE_PATH . '/resources/js/live/music.js');
 
         $css = file_get_contents(BASE_PATH . '/resources/css/main.css');
@@ -128,7 +128,7 @@ class SystemController extends Controller
         Session::set('access_code', $access_code);
     
         echo <<< EOT
-        Welcome to IBM Corporation (TM) TELETERM.
+        Welcome to TELETERM.
 
         Uplink to central ARPANET initiated...
         
