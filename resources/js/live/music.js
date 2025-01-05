@@ -1,6 +1,3 @@
-let currentSongIndex = 0;
-let audio;
-
 // Function to create the audio element only after user interaction
 function initializeAudio() {
   if (!audio) {
@@ -32,6 +29,11 @@ function playNextSong() {
     });
 }
 
+// Function to handle when the current song ends
+function handleAudioEnded() {
+  playNextSong(); // Automatically play the next song when the current one ends
+}
+
 // Function to toggle play/pause for music
 function toggleMusic() {
   initializeAudio();
@@ -51,10 +53,4 @@ function toggleMusic() {
   }
 }
 
-// Function to handle when the current song ends
-function handleAudioEnded() {
-  playNextSong(); // Automatically play the next song when the current one ends
-}
 
-// Event listener for the play button
-document.getElementById('play-button').addEventListener('click', toggleMusic);

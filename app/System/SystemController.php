@@ -20,10 +20,12 @@ class SystemController extends Controller
     {
 
         $js = file_get_contents(BASE_PATH . '/resources/js/live/main.js');
+        $js .= file_get_contents(BASE_PATH . '/resources/js/live/events.js');
+        $js .= file_get_contents(BASE_PATH . '/resources/js/live/helpers.js');
+        $js .= file_get_contents(BASE_PATH . '/resources/js/live/input.js');
         $js .= file_get_contents(BASE_PATH . '/resources/js/live/commands.js');
         $js .= file_get_contents(BASE_PATH . '/resources/js/live/prompts.js');
         $js .= file_get_contents(BASE_PATH . '/resources/js/live/terminal.js');
-        $js .= file_get_contents(BASE_PATH . '/resources/js/live/helpers.js');
         $js .= file_get_contents(BASE_PATH . '/resources/js/live/music.js');
 
         $css = file_get_contents(BASE_PATH . '/resources/css/main.css');

@@ -1,4 +1,3 @@
-
 // Function to send command to server
 function sendCommand(command, data, queryString = '') {
     const query = window.location.search;
@@ -28,7 +27,6 @@ function sendCommand(command, data, queryString = '') {
     });
 }
 
-
 // Function to append command to terminal window
 function appendCommand(command) {
     const commandElement = $('<div>').addClass('command-prompt').html(command);
@@ -36,153 +34,45 @@ function appendCommand(command) {
     scrollToBottom(); 
 }
 
-// Function to validate the string pattern
-function isUplinkCode(input) {
-    // Check if the input is 27 characters long and matches the alphanumeric pattern (allowing dashes)
-    const pattern = /^[A-Za-z0-9\-]{27}$/;
-
-    // Test the input against the pattern
-    return pattern.test(input);
+// Fetch commands from the server based on the user's status
+function listCommands() {
+    fetch('help?data=auto')
+        .then(response => response.json())
+        .then(data => {
+            if (Array.isArray(data)) {
+                commands = data.filter(item => typeof item === 'string'); // Keep only strings
+            } else {
+                console.error('Invalid commands data:', data);
+            }
+        })
+        .catch(error => console.error('Error fetching commands:', error));
 }
 
-// Function to handle user input
-function handleUserInput() {
-    let input = $('#command-input').val().trim();
-    if (input === '' && !(isPasswordPrompt || isUsernamePrompt)) return;
-    // Prevent empty commands unless it's a password prompt
 
-    // Normal command handling
-    loadText("cmd: " + input);
-    commandHistory.push(input);
-    historyIndex = commandHistory.length;
-    $('#command-input').val('');
+function autocomplete() {
+    const inputField = $('#command-input');
+    const currentText = inputField.val().trim();
 
-    // Check if the input is "?" and change it to "help"
-    if (input === '?') {
-        input = 'help';
-    }
+    // Find commands that match the current input
+    const matches = commands.filter(cmd => typeof cmd === 'string' && cmd.startsWith(currentText));
 
-    if (isUplinkCode(input)) {
-        input = 'uplink ' + input;
-    }
 
-    // Handle "music start", "music stop", and "music next" commands
-    if (input === 'music start') {
-        console.log('music start');
-        document.getElementById('play-button').click(); // Simulate a button click to start music
-        $('#command-input').val('');
-        return;
-    }
-
-    if (input === 'music stop') {
-        console.log('music stop');
-        if (audio && !audio.paused) {
-            document.getElementById('play-button').click(); // Simulate a button click to stop music
-        }
-        $('#command-input').val('');
-        return;
-    }
-
-    if (input === 'music next') {
-        console.log('music next');
-        if (audio) {
-            playNextSong(); // Call the function to skip to the next song
+    if (matches.length === 1) {
+        // If only one match, autocomplete the input
+        inputField.val(matches[0]);
+    } else if (matches.length > 1) {
+        // If multiple matches, find the common prefix
+        const commonPrefix = findCommonPrefix(matches);
+        if (commonPrefix.length > currentText.length) {
+            // Autocomplete the input to the common prefix
+            inputField.val(commonPrefix);
         } else {
-            console.log('Use "music start" first.');
+            // Show all matches in the terminal as suggestions
+            loadText(`${matches.join(' ')}`);
         }
-        $('#command-input').val('');
-        return;
-    }
-
-    if (isUsernamePrompt) {
-        if (input) {
-            if (currentCommand === 'newuser') {
-                usernameForNewUser = input;
-                loadText("password:");
-                isUsernamePrompt = false;
-                isPasswordPrompt = true;
-                $('#command-input').attr('type', 'password');
-            } else if (currentCommand === 'login' || currentCommand === 'logon') {
-                usernameForLogon = input;
-                loadText("password:");
-                isUsernamePrompt = false;
-                isPasswordPrompt = true;
-                $('#command-input').attr('type', 'password');
-            }
-            return;
-        } else {
-            loadText("ERROR: Wrong Username!");
-            return;
-        }
-    }
-
-    if (isPasswordPrompt) {
-        // Allow an empty password
-        handlePasswordPrompt();
-        return;
-    }
-
-    const parts = input.split(' ');
-    const command = parts[0].toLowerCase(); // Only the command is transformed to lowercase
-    const args = parts.slice(1).join(' ');
-
-    if(command === 'mode') {
-        setTermMode(args);
-        return;
-    }
-
-    if (['newuser', 'logon', 'login'].includes(command) && !sessionStorage.getItem('uplink')) {
-        loadText("ERROR: Uplink Required.");
-        return;
-    }
-
-    if (command === 'clear' || command === 'cls') {
-        clearTerminal();
-    } else if (command === 'uplink') {
-        sessionStorage.setItem('uplink', true);
-        sendCommand(command, args);
-    } else if (command === 'newuser') {
-        if (args) {
-            handleNewUser(args);
-        } else {
-            loadText("username:");
-            isUsernamePrompt = true;
-            currentCommand = 'newuser';
-            $('#command-input').attr('type', 'text');
-        }
-    } else if (command === 'logon' || command === 'login') {
-        if (args) {
-            usernameForLogon = args;
-            loadText("password:");
-            isUsernamePrompt = false;
-            isPasswordPrompt = true;
-            currentCommand = command;
-            $('#command-input').attr('type', 'password');
-            return;
-        } else {
-            loadText("username:");
-            isUsernamePrompt = true;
-            currentCommand = command;
-            $('#command-input').attr('type', 'text');
-            return;
-        }
-    } else if (['logout', 'logoff', 'reboot', 'dc', 'restart', 'start', 'exit'].includes(command)) {
-        sendCommand(command, args)
-            .then(response => {
-                if (!response.includes("ERROR")) {
-                    setTimeout(function () {
-                        sessionStorage.setItem('uplink', false);
-                        redirectTo('');
-                    }, 1000);
-                }
-            })
-            .catch(err => {
-                console.error("Command failed", err);
-            });
-    } else if (command === 'color') {
-        setTheme(args);
     } else {
-        sendCommand(command, args);
+        // No matches
+        loadText('');
     }
 }
 

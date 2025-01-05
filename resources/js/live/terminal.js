@@ -1,4 +1,3 @@
-
 // Function to load text into terminal one letter at a time with 80-character line breaks
 function loadText(text) {
     let currentIndex = 0;

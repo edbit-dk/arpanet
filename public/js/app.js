@@ -12,6 +12,8 @@ let isUsernamePrompt = false;
 let currentCommand = '';
 let commands = [];
 let cmd = '';
+let currentSongIndex = 0;
+let audio;
 
 // Event listener for when the DOM content is loaded
 $(document).ready(function() {
@@ -43,7 +45,6 @@ $(document).ready(function() {
         }, 500);
     }
 });
-
 // Event listener for handling keydown events
 $('#command-input').keydown(function(e) {
     if (e.key === 'Enter') {
@@ -74,46 +75,76 @@ $('#command-input').keydown(function(e) {
     }
 });
 
-// Fetch commands from the server based on the user's status
-function listCommands() {
-    fetch('help?data=auto')
-        .then(response => response.json())
-        .then(data => {
-            if (Array.isArray(data)) {
-                commands = data.filter(item => typeof item === 'string'); // Keep only strings
-            } else {
-                console.error('Invalid commands data:', data);
-            }
-        })
-        .catch(error => console.error('Error fetching commands:', error));
+// Event listener for the play button
+document.getElementById('play-button').addEventListener('click', toggleMusic);
+
+// Function to handle redirect
+function handleRedirect(response) {
+
+    if (response.startsWith("Trying")) {
+        setTimeout(function() {
+            setTimeout(function() {
+                redirectTo('');
+            }, 1000);
+
+        }, 1000);
+    }
+
+    if (response.startsWith("EXCACT")) {
+        setTimeout(function() {
+            setTimeout(function() {
+                redirectTo('');
+            }, 1000);
+
+        }, 1000);
+    }
+
+    if (response.startsWith("Password")) {
+        setTimeout(function() {
+            setTimeout(function() {
+                redirectTo('');
+            }, 1000);
+
+        }, 1000);
+    }
+
+    if (response.startsWith("SUCCESS") || response.startsWith("Security")) {
+        setTimeout(function() {
+            setTimeout(function() {
+                redirectTo('');
+            }, 1000);
+
+        }, 1000);
+    }
+
+    if (response.startsWith("Authentication")) {
+            setTimeout(function() {
+
+                loadText("Welcome to ARPANET");
+
+                setTimeout(function() {
+                    sendCommand('scan', '');
+                }, 2000);
+
+            }, 1000);
+    }
 }
 
+// Function to redirect to a specific query string
+function redirectTo(url) {
+      // window.location.href = url;
+    clearTerminal();
+    sendCommand('welcome', '');
+   // $('#user').load('connection');
+}
 
-function autocomplete() {
-    const inputField = $('#command-input');
-    const currentText = inputField.val().trim();
+// Function to validate the string pattern
+function isUplinkCode(input) {
+    // Check if the input is 27 characters long and matches the alphanumeric pattern (allowing dashes)
+    const pattern = /^[A-Za-z0-9\-]{27}$/;
 
-    // Find commands that match the current input
-    const matches = commands.filter(cmd => typeof cmd === 'string' && cmd.startsWith(currentText));
-
-
-    if (matches.length === 1) {
-        // If only one match, autocomplete the input
-        inputField.val(matches[0]);
-    } else if (matches.length > 1) {
-        // If multiple matches, find the common prefix
-        const commonPrefix = findCommonPrefix(matches);
-        if (commonPrefix.length > currentText.length) {
-            // Autocomplete the input to the common prefix
-            inputField.val(commonPrefix);
-        } else {
-            // Show all matches in the terminal as suggestions
-            loadText(`${matches.join(' ')}`);
-        }
-    } else {
-        // No matches
-        loadText('');
-    }
+    // Test the input against the pattern
+    return pattern.test(input);
 }
 
 // Utility function to find the common prefix of an array of strings
@@ -128,53 +159,6 @@ function findCommonPrefix(strings) {
     }
     return prefix;
 }
-
-// Function to send command to server
-function sendCommand(command, data, queryString = '') {
-    const query = window.location.search;
-    const route = command.split(" ")[0];
-
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            type: 'GET',
-            url: route.toLowerCase() + queryString,
-            data: {
-                data: data,
-                query: query
-            },
-            success: function(response) {
-                if (isPasswordPrompt) {
-                    handlePasswordPromptResponse(response); // Handle password prompt response
-                } else {
-                    loadText(response); // Load response text into terminal
-                    handleRedirect(response); // Handle redirect if needed
-                }
-                resolve(response); // Resolve the promise with the response
-            },
-            error: function(err) {
-                reject(err); // Reject the promise in case of an error
-            }
-        });
-    });
-}
-
-
-// Function to append command to terminal window
-function appendCommand(command) {
-    const commandElement = $('<div>').addClass('command-prompt').html(command);
-    $('#terminal').append(commandElement);
-    scrollToBottom(); 
-}
-
-// Function to validate the string pattern
-function isUplinkCode(input) {
-    // Check if the input is 27 characters long and matches the alphanumeric pattern (allowing dashes)
-    const pattern = /^[A-Za-z0-9\-]{27}$/;
-
-    // Test the input against the pattern
-    return pattern.test(input);
-}
-
 // Function to handle user input
 function handleUserInput() {
     let input = $('#command-input').val().trim();
@@ -314,6 +298,82 @@ function handleUserInput() {
     } else {
         sendCommand(command, args);
     }
+}// Function to send command to server
+function sendCommand(command, data, queryString = '') {
+    const query = window.location.search;
+    const route = command.split(" ")[0];
+
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: 'GET',
+            url: route.toLowerCase() + queryString,
+            data: {
+                data: data,
+                query: query
+            },
+            success: function(response) {
+                if (isPasswordPrompt) {
+                    handlePasswordPromptResponse(response); // Handle password prompt response
+                } else {
+                    loadText(response); // Load response text into terminal
+                    handleRedirect(response); // Handle redirect if needed
+                }
+                resolve(response); // Resolve the promise with the response
+            },
+            error: function(err) {
+                reject(err); // Reject the promise in case of an error
+            }
+        });
+    });
+}
+
+// Function to append command to terminal window
+function appendCommand(command) {
+    const commandElement = $('<div>').addClass('command-prompt').html(command);
+    $('#terminal').append(commandElement);
+    scrollToBottom(); 
+}
+
+// Fetch commands from the server based on the user's status
+function listCommands() {
+    fetch('help?data=auto')
+        .then(response => response.json())
+        .then(data => {
+            if (Array.isArray(data)) {
+                commands = data.filter(item => typeof item === 'string'); // Keep only strings
+            } else {
+                console.error('Invalid commands data:', data);
+            }
+        })
+        .catch(error => console.error('Error fetching commands:', error));
+}
+
+
+function autocomplete() {
+    const inputField = $('#command-input');
+    const currentText = inputField.val().trim();
+
+    // Find commands that match the current input
+    const matches = commands.filter(cmd => typeof cmd === 'string' && cmd.startsWith(currentText));
+
+
+    if (matches.length === 1) {
+        // If only one match, autocomplete the input
+        inputField.val(matches[0]);
+    } else if (matches.length > 1) {
+        // If multiple matches, find the common prefix
+        const commonPrefix = findCommonPrefix(matches);
+        if (commonPrefix.length > currentText.length) {
+            // Autocomplete the input to the common prefix
+            inputField.val(commonPrefix);
+        } else {
+            // Show all matches in the terminal as suggestions
+            loadText(`${matches.join(' ')}`);
+        }
+    } else {
+        // No matches
+        loadText('');
+    }
 }
 
 
@@ -402,7 +462,6 @@ function handlePasswordPromptResponse(response) {
     }
     $('#command-input').val('');
 }
-
 // Function to load text into terminal one letter at a time with 80-character line breaks
 function loadText(text) {
     let currentIndex = 0;
@@ -545,67 +604,6 @@ function loadSavedTermMode() {
     }
 }
 
-// Function to handle redirect
-function handleRedirect(response) {
-
-    if (response.startsWith("Trying")) {
-        setTimeout(function() {
-            setTimeout(function() {
-                redirectTo('');
-            }, 1000);
-
-        }, 1000);
-    }
-
-    if (response.startsWith("EXCACT")) {
-        setTimeout(function() {
-            setTimeout(function() {
-                redirectTo('');
-            }, 1000);
-
-        }, 1000);
-    }
-
-    if (response.startsWith("Password")) {
-        setTimeout(function() {
-            setTimeout(function() {
-                redirectTo('');
-            }, 1000);
-
-        }, 1000);
-    }
-
-    if (response.startsWith("SUCCESS") || response.startsWith("Security")) {
-        setTimeout(function() {
-            setTimeout(function() {
-                redirectTo('');
-            }, 1000);
-
-        }, 1000);
-    }
-
-    if (response.startsWith("Authentication")) {
-            setTimeout(function() {
-
-                loadText("Welcome to ARPANET");
-
-                setTimeout(function() {
-                    sendCommand('scan', '');
-                }, 2000);
-
-            }, 1000);
-    }
-}
-
-// Function to redirect to a specific query string
-function redirectTo(url) {
-      // window.location.href = url;
-    clearTerminal();
-    sendCommand('welcome', '');
-   // $('#user').load('connection');
-}let currentSongIndex = 0;
-let audio;
-
 // Function to create the audio element only after user interaction
 function initializeAudio() {
   if (!audio) {
@@ -637,6 +635,11 @@ function playNextSong() {
     });
 }
 
+// Function to handle when the current song ends
+function handleAudioEnded() {
+  playNextSong(); // Automatically play the next song when the current one ends
+}
+
 // Function to toggle play/pause for music
 function toggleMusic() {
   initializeAudio();
@@ -656,10 +659,4 @@ function toggleMusic() {
   }
 }
 
-// Function to handle when the current song ends
-function handleAudioEnded() {
-  playNextSong(); // Automatically play the next song when the current one ends
-}
 
-// Event listener for the play button
-document.getElementById('play-button').addEventListener('click', toggleMusic);
