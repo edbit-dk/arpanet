@@ -54,13 +54,25 @@ class EmailController extends Controller
 
         foreach ($emails as $email) {
             $id++;
-            echo "[$id $email->subject]\n";
+            echo "$email->id. [$email->subject]\n";
         }
             
     }
 
     public function send($data)
     {
+        if(empty($data)) {
+            $id = 1;
+            $emails = Email::where('sender', User::auth())->orWhere('sender', User::username())->get();
+
+            foreach ($emails as $email) {
+                $id++;
+                echo "$email->id. [$email->subject]\n";
+            }
+
+            exit;
+        }
+
         $options = explode(' ',trim($data[0]));
         $body = trim($data[1]);
         $subject = $options[1];
@@ -79,7 +91,14 @@ class EmailController extends Controller
 
     public function read($data)
     {
-        echo 'read ' . $data;
+        $email = Email::where('id', $data)->orWhere('subject', $data)->first();
+        
+        if(!empty($email)) {
+            echo $email->body;
+        } else {
+            echo "ERROR: No Email.";
+        }
+
     }
 
     public function delete($data)
