@@ -124,7 +124,7 @@ function handleUserInput() {
             .then(response => {
                 if (!response.includes("ERROR")) {
                     setTimeout(function () {
-                        sessionStorage.setItem('uplink', false);
+                        sessionStorage.removeItem('uplink');
                         redirectTo('');
                     }, 1000);
                 }

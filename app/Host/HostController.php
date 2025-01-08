@@ -82,11 +82,10 @@ class HostController extends Controller
         }
 
         echo "Searching Comlinks...\n";
-        echo "Searching...\n";
         echo "Searching ARPANET...\n";
 
         if(!$hosts->isEmpty()) {
-            echo "Active Connections:\n\n";
+            echo "Searching Active Hosts...\n\n";
         } else {
             echo "ERROR: Access Denied.\n";
         }

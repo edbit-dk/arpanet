@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Vært: localhost
--- Genereringstid: 22. 12 2024 kl. 23:07:49
+-- Genereringstid: 08. 01 2025 kl. 21:08:01
 -- Serverversion: 8.0.39
 -- PHP-version: 8.2.25
 
@@ -142,18 +142,18 @@ CREATE TABLE `hosts` (
 --
 
 INSERT INTO `hosts` (`id`, `user_id`, `password`, `host_name`, `org`, `ip`, `active`, `level_id`, `created_at`, `updated_at`) VALUES
-(1, 1, 'robco', 'milnet', 'Military Network (UNCLASSIFIED)', '1.1.1.0', 1, 2, '1984-10-22 16:18:50', NULL),
+(1, 1, 'robco', 'milnet', 'Military Defense Data Network (UNCLASSIFIED)', '1.1.1.0', 1, 2, '1984-10-22 16:18:50', NULL),
 (2, 1, 'robco', 'nsfnet', 'Academic Research Network', '0.0.0.0', 1, 1, '1969-10-10 16:29:25', NULL),
 (3, 1, 'robco', 'usenet', 'Newsgroup Network', '3.3.3.3', 1, 1, '1979-10-22 16:18:50', NULL),
 (4, 1, 'robco', 'poseidonet', 'Poseidon Energy Network', '4.4.4.4', 1, 1, '2077-10-22 16:18:50', NULL),
-(5, 1, 'robco', 'ucla', 'University of California, LA', '0.0.0.1', 1, 1, '1985-10-22 16:18:50', NULL),
-(6, 1, 'robco', 'arc', 'Stanford Research Institute', '0.0.0.2', 1, 1, '1985-10-22 16:18:50', NULL),
-(7, 1, 'robco', 'ucsb', 'University of California, SB ', '0.0.0.3', 1, 1, '1985-10-22 16:18:50', NULL),
+(5, 1, 'robco', 'ucla', 'University of California, Los Angeles', '0.0.0.1', 1, 1, '1985-10-22 16:18:50', NULL),
+(6, 1, 'robco', 'arc', 'Augmentation Research Center', '0.0.0.2', 1, 1, '1985-10-22 16:18:50', NULL),
+(7, 1, 'robco', 'ucsb', 'University of California, Santa Babara', '0.0.0.3', 1, 1, '1985-10-22 16:18:50', NULL),
 (8, 1, 'robco', 'uusc', 'University of Utah School of Computing', '0.0.0.4', 1, 1, '1985-10-22 16:18:50', NULL),
 (9, 1, 'robco', 'spsdd', 'Seattle Public School District Datanet', '0.0.0.5', 1, 1, '1985-10-22 16:18:50', NULL),
-(10, 1, 'robco', 'dsnet1', 'Military Network (CONFIDENTIAL)', '1.1.1.1', 1, 3, '1983-10-22 16:18:50', NULL),
-(11, 1, 'robco', 'dsnet2', 'Military Network (SECRET)', '1.1.1.2', 1, 4, '1983-10-22 16:18:50', NULL),
-(12, 1, 'robco', 'dsnet3', 'Military Network (TOP SECRET)', '1.1.1.3', 1, 5, '1983-10-22 16:18:50', NULL);
+(10, 1, 'robco', 'dsnet1', 'Defense Secure Network 1 (CONFIDENTIAL)', '1.1.1.1', 1, 3, '1983-10-22 16:18:50', NULL),
+(11, 1, 'robco', 'dsnet2', 'Defense Secure Network 2 (SECRET)', '1.1.1.2', 1, 4, '1983-10-22 16:18:50', NULL),
+(12, 1, 'robco', 'dsnet3', 'Defense Secure Network 3 (TOP SECRET)', '1.1.1.3', 1, 5, '1983-10-22 16:18:50', NULL);
 
 -- --------------------------------------------------------
 
@@ -172,7 +172,7 @@ CREATE TABLE `host_file` (
 --
 
 INSERT INTO `host_file` (`id`, `file_id`, `host_id`) VALUES
-(1, 1, 7);
+(1, 1, 4);
 
 -- --------------------------------------------------------
 
@@ -280,12 +280,12 @@ CREATE TABLE `logs` (
 
 CREATE TABLE `missions` (
   `id` int NOT NULL,
-  `title` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `description` text COLLATE utf8mb4_general_ci NOT NULL,
-  `trigger_event` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `trigger_event` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `conditions` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `rewards` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `status` enum('inactive','active','completed') COLLATE utf8mb4_general_ci DEFAULT 'inactive',
+  `status` enum('inactive','active','completed') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT 'inactive',
   `next_mission_id` int DEFAULT NULL,
   `email_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -320,7 +320,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `email`, `user_name`, `password`, `access_code`, `firstname`, `lastname`, `role`, `active`, `level_id`, `xp`, `rep`, `last_login`, `created_at`, `updated_at`) VALUES
 (1, 'sysadmin@teleterm.net', 'sysadmin', 'robco', 'Z62749-9XZZ9A-1A0YZ6-773Y1A', 'System', 'Admin', NULL, 1, 5, 100, 'MASTER', NULL, NULL, NULL),
-(2, 'admin@teleterm.net', 'admin', 'robco', 'Z62749-9XZZ9A-1A0YZ6-773Y1A', 'Host', 'Admin', NULL, 1, 5, 100, 'MASTER', NULL, NULL, NULL),
+(2, 'admin@teleterm.net', 'admin', 'robco', 'Z62749-9XZZ9A-1A0YZ6-773Y1A', 'Host', 'Admin', NULL, 1, 5, 100, 'MASTER', '2025-01-08 21:26:12', NULL, '2025-01-08 21:26:12'),
 (3, 'guest@teleterm.net', 'guest', NULL, '371464-1Z901A-Z9X663-YXY9Z6', 'Slaughter', 'Wigglesworth', NULL, 1, 0, 0, 'UNKNOWN', NULL, '2024-11-20 16:20:17', '2024-11-20 16:20:17');
 
 -- --------------------------------------------------------
@@ -442,7 +442,7 @@ ALTER TABLE `user_missions`
 -- Tilføj AUTO_INCREMENT i tabel `emails`
 --
 ALTER TABLE `emails`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `files`
@@ -460,7 +460,7 @@ ALTER TABLE `folders`
 -- Tilføj AUTO_INCREMENT i tabel `help`
 --
 ALTER TABLE `help`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `hosts`

@@ -36,18 +36,6 @@ function handleRedirect(response) {
 
         }, 1000);
     }
-
-    if (response.startsWith("Authentication")) {
-            setTimeout(function() {
-
-                loadText("Welcome to ARPANET");
-
-                setTimeout(function() {
-                    sendCommand('scan', '');
-                }, 2000);
-
-            }, 1000);
-    }
 }
 
 // Function to redirect to a specific query string

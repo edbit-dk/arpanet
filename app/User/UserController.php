@@ -50,7 +50,9 @@ class UserController extends Controller
                 $this->reset();
 
                 if(Auth::login($user_name, $password)) {
-                    echo "Authentication Accepted.\n"; 
+                    $last_login = Auth::data()->last_login;
+                    $username = strtoupper($user_name);
+                    echo "Logged in as user {$username}. Last login was {$last_login}\n"; 
                     sleep(1);
                     exit;         
                 } else {

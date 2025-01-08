@@ -134,8 +134,7 @@ class SystemController extends Controller
 
         Uplink to central ARPANET initiated...
         
-        Enter Security Access Code Sequence: 
-        {$access_code}
+        Enter Security Access Code Sequence: {$access_code}
         EOT;
     }
 
