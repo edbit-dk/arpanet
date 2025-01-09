@@ -9,7 +9,7 @@ the "TeleHack" game and other terminal-focused games.
 The main focus of the project is to educate about internet 
 history and technology.
 
-# ROADMAP 1.0
+# FEATURES 1.0
 * Authentication: login/register to platform
 * 
 

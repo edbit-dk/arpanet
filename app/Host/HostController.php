@@ -85,7 +85,7 @@ class HostController extends Controller
         echo "Searching ARPANET...\n";
 
         if(!$hosts->isEmpty()) {
-            echo "Searching Active Hosts...\n\n";
+            echo "Searching Hosts...\n\n";
         } else {
             echo "ERROR: Access Denied.\n";
         }
@@ -104,7 +104,7 @@ class HostController extends Controller
             $host_name = $host->host_name;
             
             echo <<<EOT
-            $access $host_name: $host->org\n
+            $access $host_name: $host->org, $host->location\n
             EOT;
         }
         

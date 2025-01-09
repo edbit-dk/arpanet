@@ -25,11 +25,11 @@ class SystemController extends Controller
         $js .= file_get_contents(BASE_PATH . '/resources/js/live/input.js');
         $js .= file_get_contents(BASE_PATH . '/resources/js/live/commands.js');
         $js .= file_get_contents(BASE_PATH . '/resources/js/live/prompts.js');
-        $js .= file_get_contents(BASE_PATH . '/resources/js/live/terminal.js');
+        $js .= file_get_contents(BASE_PATH . '/resources/js/dev/terminal.js');
         $js .= file_get_contents(BASE_PATH . '/resources/js/live/music.js');
 
-        $css = file_get_contents(BASE_PATH . '/resources/css/main.css');
-        $css .= file_get_contents(BASE_PATH . '/resources/css/bootstrap.css');
+        $css = file_get_contents(BASE_PATH . '/resources/css/reset.css');
+        $css .= file_get_contents(BASE_PATH . '/resources/css/main.css');
         $css .= file_get_contents(BASE_PATH . '/resources/css/terminal.css');
 
         file_put_contents(BASE_PATH . '/public/js/app.js', $js);
@@ -130,11 +130,12 @@ class SystemController extends Controller
         Session::set('access_code', $access_code);
     
         echo <<< EOT
-        Welcome to TELETERM.
+        Welcome to TELETERM
 
-        Uplink to central ARPANET initiated...
+        Uplink with central ARPANET initiated.
+        Enter Security Access Code Sequence: 
         
-        Enter Security Access Code Sequence: {$access_code}
+        {$access_code}
         EOT;
     }
 
@@ -146,7 +147,7 @@ class SystemController extends Controller
         $hosts = Host::count();
 
         echo <<< EOT
-        Connected to TELETERM port {$port}
+        Connected to ARPANET port {$port}
 
         Local time is {$date}.
         There are {$users} local users. There are {$hosts} hosts on the network.
