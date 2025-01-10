@@ -109,7 +109,7 @@ INSERT INTO `help` (`id`, `cmd`, `input`, `info`, `is_user`, `is_host`, `is_visi
 (8, 'telnet', '<host>', 'connect to host', 1, 1, 0, 1),
 (9, 'ls', NULL, 'list files on host', 0, 1, 0, 0),
 (10, 'more', '<filename>', 'print/dump contents of file', 0, 1, 0, 0),
-(11, 'mail', '<subject> <user> < <body>', 'email user', 1, 1, 0, 1),
+(11, 'mail', 'send|read|list|delete', 'email user: -s <subject> <user> < <body> | read email: -r <ID> | list emails: -l | delete email: -d <ID>', 1, 1, 0, 1),
 (12, 'user', NULL, 'list user info', 1, 1, 0, 1),
 (13, 'netstat', NULL, 'list connected nodes', 1, 1, 0, 1),
 (14, 'set', '<command>', 'TERMINAL/INQUIRE, FILE/PROTECTION=OWNER:RWED ACCOUNTS.F, HALT RESTART/MAINT', 0, 0, 0, 1),

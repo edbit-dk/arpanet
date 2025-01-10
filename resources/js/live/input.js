@@ -129,8 +129,10 @@ function handleUserInput() {
             .then(response => {
                 if (!response.includes("ERROR")) {
                     setTimeout(function () {
-                        sessionStorage.removeItem('auth');
-                        sessionStorage.removeItem('uplink');
+                        if(['logout', 'logoff'].includes(command)) {
+                            sessionStorage.removeItem('auth');
+                            sessionStorage.removeItem('uplink');
+                        }
                         redirectTo('');
                     }, 1000);
                 }

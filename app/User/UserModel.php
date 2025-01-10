@@ -9,6 +9,7 @@ use App\Host\HostModel as Host;
 use App\Host\File\FileModel as File;
 use App\Host\Folder\FolderModel as Folder;
 use App\System\Mission\MissionModel as Mission;
+use App\System\Email\EmailModel as Email;
 
 class UserModel extends Model
 {
@@ -33,6 +34,11 @@ class UserModel extends Model
     public function files()
     {
         return $this->hasMany(File::class);
+    }
+
+    public function emails()
+    {
+        return $this->hasMany(Email::class);
     }
 
     // A user can have many folders

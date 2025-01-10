@@ -139,7 +139,7 @@ class HostController extends Controller
         Host::attempts();
 
         // Check if the user is already blocked
-        Host::blocked();
+        User::blocked();
 
         if(Host::logon($input[0],  $input[1])) {
             echo <<< EOT
@@ -157,7 +157,7 @@ class HostController extends Controller
              // Block the user after 4 failed attempts
              if ($attempts_left == 0) {
 
-                Host::blocked(true);
+                User::blocked(true);
                 exit;
 
              } else {

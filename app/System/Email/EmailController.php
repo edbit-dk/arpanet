@@ -7,6 +7,7 @@ use Lib\Controller;
 use App\System\Email\EmailModel as Email;
 
 use App\User\UserService as User;
+use App\User\UserModel as Users;
 
 class EmailController extends Controller
 {
@@ -41,7 +42,7 @@ class EmailController extends Controller
             break;
         
         default:
-            # code...
+            $this->list();
             break;
        }
       
@@ -49,12 +50,13 @@ class EmailController extends Controller
 
     public function list()
     {
-        $id = 1;
-        $emails = Email::where('recipient', User::auth())->orWhere('recipient', User::username())->get();
+        $id = 0;
+        $emails = Email::where('recipient', User::auth())->get();
 
         foreach ($emails as $email) {
             $id++;
-            echo "$email->id. [$email->subject]\n";
+            $sender = Users::find($email->sender);
+            echo "$email->id [$sender->user_name, $email->created_at, $email->subject]\n";
         }
             
     }
@@ -63,11 +65,12 @@ class EmailController extends Controller
     {
         if(empty($data)) {
             $id = 1;
-            $emails = Email::where('sender', User::auth())->orWhere('sender', User::username())->get();
+            $emails = Email::where('sender', User::auth())->get();
 
             foreach ($emails as $email) {
                 $id++;
-                echo "$email->id. [$email->subject]\n";
+                $recipient =  Users::find($email->recipient);
+                echo "$email->id [$recipient->user_name, $email->created_at, $email->subject]\n";
             }
 
             exit;
@@ -76,34 +79,62 @@ class EmailController extends Controller
         $options = explode(' ',trim($data[0]));
         $body = trim($data[1]);
         $subject = $options[1];
-        $sender = User::username();
+        $sender = User::auth();
         $to = $options[2];
 
-        Email::create([
-            'sender' => $sender,
-            'recipient' => $to,
-            'subject' => $subject,
-            'body' => $body
-        ]);
+        if($recipient = Users::where('user_name', $to)->first()) {
+            Email::create([
+                'sender' => $sender,
+                'recipient' => $recipient->id,
+                'subject' => $subject,
+                'body' => $body
+            ]);
 
-        echo 'Email Sent.';
+            echo 'Email Sent.';
+        } else {
+            echo 'ERROR: Unknown Recipient.';
+        }
     }
 
     public function read($data)
     {
-        $email = Email::where('id', $data)->orWhere('subject', $data)->first();
+        $email = Email::where('id', $data)->first();
         
         if(!empty($email)) {
-            echo $email->body;
+
+            $from = Users::find($email->sender)->user_name;
+            $to = Users::find($email->recipient)->user_name;
+        
+            if(!$from) {
+                $from = 'UNKNOWN';
+            }
+
+            if(!$to) {
+                $to = 'UNKNOWN';
+            }
+
+            echo <<< EOT
+            From: $from
+            To: $to
+            Date: $email->created_at
+            Subject: $email->subject
+
+            $email->body
+            EOT;
         } else {
-            echo "ERROR: No Email.";
+            echo "ERROR: Unknown Email.";
         }
 
     }
 
     public function delete($data)
     {
-        echo 'delete ' . $data;
+        if(!empty($data)) {
+            Email::where('id', $data)->where('recipient', User::auth())->delete();
+            echo 'Email Deleted.';
+        } else {
+            echo 'ERROR: Unknown Email.';
+        }
     }
 
 }

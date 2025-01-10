@@ -280,8 +280,10 @@ function handleUserInput() {
             .then(response => {
                 if (!response.includes("ERROR")) {
                     setTimeout(function () {
-                        sessionStorage.removeItem('auth');
-                        sessionStorage.removeItem('uplink');
+                        if(['logout', 'logoff'].includes(command)) {
+                            sessionStorage.removeItem('auth');
+                            sessionStorage.removeItem('uplink');
+                        }
                         redirectTo('');
                     }, 1000);
                 }
@@ -309,6 +311,7 @@ function sendCommand(command, data, queryString = '') {
             },
             success: function(response) {
                 if (isPasswordPrompt) {
+                    console.log(response);
                     handlePasswordPromptResponse(response); // Handle password prompt response
                 } else {
                     loadText(response); // Load response text into terminal

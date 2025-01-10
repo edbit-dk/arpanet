@@ -5,6 +5,7 @@ namespace App\System\Email;
 use Illuminate\Database\Eloquent\Model;
 
 use App\System\Mission\MissionModel as Mission;
+use App\User\UserModel as User;
 
 class EmailModel extends Model 
 {
@@ -14,5 +15,10 @@ class EmailModel extends Model
     public function missions() 
     {
         return $this->hasMany(Mission::class, 'email_id');
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
     }
 }
