@@ -25,7 +25,7 @@ class SystemController extends Controller
         $js .= file_get_contents(BASE_PATH . '/resources/js/live/input.js');
         $js .= file_get_contents(BASE_PATH . '/resources/js/live/commands.js');
         $js .= file_get_contents(BASE_PATH . '/resources/js/live/prompts.js');
-        $js .= file_get_contents(BASE_PATH . '/resources/js/dev/terminal.js');
+        $js .= file_get_contents(BASE_PATH . '/resources/js/live/terminal.js');
         $js .= file_get_contents(BASE_PATH . '/resources/js/live/music.js');
 
         $css = file_get_contents(BASE_PATH . '/resources/css/reset.css');
@@ -51,15 +51,21 @@ class SystemController extends Controller
     {
         $data = parse_request('data');
 
+        if(empty($data[0]) && !Session::has('uplink')) {
+            User::blocked(false);
+            return $this->accesscode();
+        }
+
         // Initialize login attempts if not set
         Host::attempts();
 
         // Check if the user is already blocked
-        Host::blocked();
+        User::blocked();
 
         if(Session::get('access_code') == $data[0]) {
             sleep(1);
             Session::set('uplink', true);
+            Session::remove('access_code');
 
             echo <<< EOT
             Security Access Code Sequence Accepted.
@@ -78,7 +84,7 @@ class SystemController extends Controller
             // Block the user after 4 failed attempts
             if ($attempts_left == 0) {
 
-               Host::blocked(true);
+               User::blocked(true);
                exit;
 
             } else {
@@ -106,6 +112,27 @@ class SystemController extends Controller
         view('terminal/boot.txt');
     }
 
+    public function accesscode() 
+    {
+        $code_1 = random_str(6, 'AXYZ01234679');
+        $code_2 = random_str(6, 'AXYZ01234679');
+        $code_3 = random_str(6, 'AXYZ01234679');
+        $code_4 = random_str(6, 'AXYZ01234679');
+    
+        $access_code = "{$code_1}-{$code_2}-{$code_3}-{$code_4}"; 
+
+        Session::set('access_code', $access_code);
+
+        echo <<< EOT
+        Welcome to TELETERM
+
+        Uplink with central ARPANET initiated.
+        Enter Security Access Code Sequence: 
+        
+        {$access_code}
+        EOT;
+    }
+
     public function welcome() 
     {
         if(Host::auth()) {
@@ -120,23 +147,8 @@ class SystemController extends Controller
             return $this->login();
         }
 
-        $code_1 = random_str(6, 'AXYZ01234679');
-        $code_2 = random_str(6, 'AXYZ01234679');
-        $code_3 = random_str(6, 'AXYZ01234679');
-        $code_4 = random_str(6, 'AXYZ01234679');
-    
-        $access_code = "{$code_1}-{$code_2}-{$code_3}-{$code_4}"; 
+        return $this->accesscode();
 
-        Session::set('access_code', $access_code);
-    
-        echo <<< EOT
-        Welcome to TELETERM
-
-        Uplink with central ARPANET initiated.
-        Enter Security Access Code Sequence: 
-        
-        {$access_code}
-        EOT;
     }
 
     public function login()

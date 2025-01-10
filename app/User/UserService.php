@@ -39,6 +39,26 @@ class UserService
         return false;
     }
 
+    public static function blocked($block = false)
+    {
+
+        if($block) {
+            Session::set('user_blocked', true);
+        }
+
+        if (Session::has('user_blocked') && !$block) {
+            echo <<< EOT
+            ERROR: Terminal Locked.
+            Please contact an Administrator.
+            EOT;
+            exit;
+        }
+
+        if(!$block) {
+            Session::remove('user_blocked');
+        }
+    }
+
     public static function login($emailOrUsername, $password) 
     {
 
@@ -68,5 +88,6 @@ class UserService
     {
         return User::count();
     }
+    
 
 }

@@ -25,16 +25,20 @@ class UserController extends Controller
             session()->set($this->user_name, $input[0]);
         } 
 
-        if (isset($input[1])) {
-            session()->set($this->password, $input[1]);
-        } 
+        if(empty($input[1])) {
+            $password = '';
+        } else {
+            $password = $input[1];
+        }
+
+        session()->set($this->password, $password);
 
     }
 
     public function login() 
     {
         // Check if the user is already blocked
-        Host::blocked();
+        Auth::blocked();
         
         $data = parse_request('data');
 
@@ -52,7 +56,7 @@ class UserController extends Controller
                 if(Auth::login($user_name, $password)) {
                     $last_login = Auth::data()->last_login;
                     $username = strtoupper($user_name);
-                    echo "Logged in as user {$username}. Last login was {$last_login}\n"; 
+                    echo "Logged in as user {$username}.\nLast login: {$last_login}\n"; 
                     sleep(1);
                     exit;         
                 } else {
@@ -98,7 +102,7 @@ class UserController extends Controller
     public function newuser() 
     {
         // Check if the user is already blocked
-        Host::blocked();
+        Auth::blocked();
 
         $data = parse_request('data');
 

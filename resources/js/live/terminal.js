@@ -43,7 +43,7 @@ function loadText(text) {
             }
 
             scrollToBottom();
-            setTimeout(displayNextLetter, 5);
+            setTimeout(displayNextLetter, 1);
         } else {
             $('#command-input').focus();
         }
@@ -54,7 +54,7 @@ function loadText(text) {
 
 // Function to simulate CRT effect with 80-character line breaks
 function simulateCRT(text, container) {
-    const delay = 5;
+    const delay = 1;
     const inputField = $('#command-input').val('');
 
     let currentIndex = 0;

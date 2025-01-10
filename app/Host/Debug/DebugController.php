@@ -11,28 +11,28 @@ class DebugController
 
     public function dump()
     {
-        $data = request()->get('data');
+        $data = strtoupper(parse_request('data')[0]);
 
+        // Host vars
         $level = Host::data()->level;
+        $root_pass = Host::data()->password;
         $min_level = $level->min;
         $max_level = $level->max;
 
-        $data = trim(strtoupper($data));
+        // Number of rows and columns in the memory dump
+        $rows = 17;
+        $columns = 4;
+
         // min: 5 max: 17
         $max_words = $max_level;
         $max_attempts = 4;
     
-        if (!Session::has('debug_pass')) {
-    
-            // min: 2 max: 15
-            Session::set('word', $min_level);
-            Session::set('debug_pass',
-            wordlist(config('database') . 'wordlist.txt', Session::get('word'), 1)[0]
-            );
+        if (!Session::has('root_pass')) {
+            Session::set('root_pass', strtoupper($root_pass));
         } 
         
-        $word_length = Session::get('word'); 
-        $debug_pass = Session::get('debug_pass');
+        $pass_length = strlen($root_pass); 
+        $root_pass = Session::get('root_pass');
     
         // Initialize attempts if not already set
         if (!Session::has('debug_attempts')) {
@@ -40,15 +40,11 @@ class DebugController
         }
     
         if (!Session::has('dump')) {
-            $word_list = wordlist(config('database') . 'wordlist.txt', $word_length, $max_words);
-            $data = array_merge([$debug_pass], $word_list);
-    
-            // Number of rows and columns in the memory dump
-            $rows = 17;
-            $columns = 4;
+            $word_list = wordlist(config('database') . 'wordlist.txt', $pass_length, $max_words);
+            $data = array_merge([$root_pass], $word_list);
     
             // Generate the memory dump
-            $memoryDump = mem_dump($rows, $columns, $data, $word_length);
+            $memoryDump = mem_dump($rows, $columns, $data, $pass_length);
     
             // Format and output the memory dump with memory paths
             if (!Session::has('debug')) {
@@ -62,11 +58,11 @@ class DebugController
             exit;
         } else {
     
-            if ($data != $debug_pass) {
+            if ($data != $root_pass) {
 
                 $debug_attempts = Session::get('debug_attempts');
 
-                $match = count_match_chars($data, $debug_pass);
+                $match = count_match_chars($data, $root_pass);
 
                 Session::set('dump', 
                     str_replace($data, dot_replacer($data), Session::get('dump'))
@@ -86,7 +82,7 @@ class DebugController
 
                 if(!Session::has('user_blocked')) {
                     echo "Entry denied.\n";
-                    echo "{$match}/{$word_length} correct.\n";
+                    echo "{$match}/{$pass_length} correct.\n";
                     echo "Likeness={$match}.\n \n";
 
                     $attempts_left = str_char_repeat($debug_attempts);
@@ -101,7 +97,7 @@ class DebugController
     
                 if (Session::get('debug_attempts') <= 0) {
                     Session::set('user_blocked', true);
-                    echo "ERROR: TERMINAL LOCKED.\nPlease contact an administrator\n";
+                    echo "ERROR: TERMINAL LOCKED.\nPlease contact an Administrator\n";
                     exit;
                 }
     
@@ -115,13 +111,14 @@ class DebugController
                     Auth::data()->hosts()->attach($server_id);
                 }
 
-                Host::debug($debug_pass, Auth::data()->id);
+                $reset_root_pass = wordlist(config('database') . 'wordlist.txt', $min_level, 1)[0];
+                Host::debug($root_pass, Auth::data()->id);
+                Host::data()->update(['password' => $reset_root_pass]);
 
                 // Reset login attempts on successful login
                 Session::remove('debug_attempts');
                 Session::remove('user_blocked');
-                Session::remove('debug_pass');
-                Session::remove('word');
+                Session::remove('root_pass');
                 Session::remove('dump');
     
                 echo "EXCACT MATCH!\n";

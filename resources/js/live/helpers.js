@@ -4,6 +4,7 @@ function handleRedirect(response) {
     if (response.startsWith("Trying")) {
         setTimeout(function() {
             setTimeout(function() {
+                sessionStorage.setItem('host', true);
                 redirectTo('');
             }, 1000);
 

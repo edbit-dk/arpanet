@@ -89,6 +89,11 @@ function handleUserInput() {
         return;
     }
 
+    if (['logon', 'login', 'newuser'].includes(command) && sessionStorage.getItem('auth') && !sessionStorage.getItem('host')) {
+        loadText("ERROR: Logout Required.");
+        return;
+    }
+
     if (command === 'clear' || command === 'cls') {
         clearTerminal();
     } else if (command === 'uplink') {
@@ -124,6 +129,7 @@ function handleUserInput() {
             .then(response => {
                 if (!response.includes("ERROR")) {
                     setTimeout(function () {
+                        sessionStorage.removeItem('auth');
                         sessionStorage.removeItem('uplink');
                         redirectTo('');
                     }, 1000);

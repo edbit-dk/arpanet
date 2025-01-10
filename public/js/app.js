@@ -48,6 +48,7 @@ $(document).ready(function() {
 // Event listener for handling keydown events
 $('#command-input').keydown(function(e) {
     if (e.key === 'Enter') {
+        e.preventDefault(); // Prevent default tab behavior
         if (isPasswordPrompt) {
             handlePasswordPrompt(); // Handle password prompt on Enter key press
         } else {
@@ -84,6 +85,7 @@ function handleRedirect(response) {
     if (response.startsWith("Trying")) {
         setTimeout(function() {
             setTimeout(function() {
+                sessionStorage.setItem('host', true);
                 redirectTo('');
             }, 1000);
 
@@ -238,6 +240,11 @@ function handleUserInput() {
         return;
     }
 
+    if (['logon', 'login', 'newuser'].includes(command) && sessionStorage.getItem('auth') && !sessionStorage.getItem('host')) {
+        loadText("ERROR: Logout Required.");
+        return;
+    }
+
     if (command === 'clear' || command === 'cls') {
         clearTerminal();
     } else if (command === 'uplink') {
@@ -273,6 +280,7 @@ function handleUserInput() {
             .then(response => {
                 if (!response.includes("ERROR")) {
                     setTimeout(function () {
+                        sessionStorage.removeItem('auth');
                         sessionStorage.removeItem('uplink');
                         redirectTo('');
                     }, 1000);
@@ -410,15 +418,16 @@ function handleNewUser(username) {
 
 // Function to handle password prompt
 function handlePasswordPrompt() {
-    const password = $('#command-input').val().trim(); // Capture the password input
-    userPassword = password; // Save the (possibly empty) password
+    let password = $('#command-input').val(); // Capture the password input, allow it to be empty
+    if (!password) password = ""; // Explicitly set to an empty string if blank
+    userPassword = password;
 
     // Determine the current command and send the appropriate request
     if (currentCommand === 'logon' || currentCommand === 'login') {
-        sendCommand(currentCommand, usernameForLogon + ' ' + password);
+        sendCommand(currentCommand, usernameForLogon + ' ' + userPassword);
         usernameForLogon = ''; // Clear the username for logon
     } else if (currentCommand === 'newuser') {
-        sendCommand('newuser', usernameForNewUser + ' ' + password);
+        sendCommand('newuser', usernameForNewUser + ' ' + userPassword);
         usernameForNewUser = ''; // Clear the username for new user creation
     }
 
@@ -427,17 +436,16 @@ function handlePasswordPrompt() {
     $('#command-input').attr('type', 'text').val('');
 }
 
-
-
 // Function to handle password prompt response
 function handlePasswordPromptResponse(response) {
     if (response.startsWith("ERROR") || response.startsWith("WARNING")) {
         loadText(response);
         isPasswordPrompt = false;
         $('#command-input').attr('type', 'text');
-    } else if (response.startsWith("Password")) {
+    } else if (response.startsWith("Logged")) {
         loadText(response);
         setTimeout(function() {
+            sessionStorage.setItem('auth', true);
             clearTerminal();
             sendCommand('welcome', '');
         }, 2500);

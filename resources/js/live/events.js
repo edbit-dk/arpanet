@@ -1,6 +1,7 @@
 // Event listener for handling keydown events
 $('#command-input').keydown(function(e) {
     if (e.key === 'Enter') {
+        e.preventDefault(); // Prevent default tab behavior
         if (isPasswordPrompt) {
             handlePasswordPrompt(); // Handle password prompt on Enter key press
         } else {

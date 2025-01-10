@@ -188,26 +188,11 @@ class HostService
     {
         Session::remove('logon_attempts');
         Session::remove('user_blocked');
-        Session::remove('debug_pass');
+        Session::remove('root_pass');
         Session::remove('debug_attempts');
         Session::remove('dump');
         Session::remove('root');
         Session::remove('maint'); 
-    }
-
-    public static function blocked($block = false)
-    {
-        if($block) {
-            Session::set('user_blocked', true);
-        }
-
-        if (Session::has('user_blocked')) {
-            echo <<< EOT
-            ERROR: Terminal Locked.
-            Please contact an Administrator.
-            EOT;
-            exit;
-        }
     }
 
     public static function logoff() 
