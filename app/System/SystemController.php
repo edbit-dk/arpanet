@@ -161,7 +161,7 @@ class SystemController extends Controller
         $username = strtoupper(User::username());
         echo <<< EOT
         Last login: {$last_login} as $username
-        4.3 BSD UNIX (ARPANET) (0.0.0.0)
+        4.3 BSD UNIX 1986 (ARPANET) (0.0.0.0)
 
         Welcome to ARPANET
         EOT;
@@ -196,7 +196,7 @@ class SystemController extends Controller
         $org = $host->org;
         
         echo <<< EOT
-        4.3 BSD UNIX ($host_name) ($host_ip)
+        4.3 BSD UNIX 1986 ($host_name) ($host_ip)
         $org
         EOT;
 
@@ -214,7 +214,7 @@ class SystemController extends Controller
 
         echo <<< EOT
         Last login: {$last_login} as $username
-        4.3 BSD UNIX ($host_name) ($host_ip)
+        4.3 BSD UNIX 1986 ($host_name) ($host_ip)
         $org
 
         Welcome $username!
