@@ -143,12 +143,28 @@ class SystemController extends Controller
             return $this->termlink();
         }
 
+        if(User::auth()) {
+            return $this->home();
+        }
+
         if(Session::get('uplink')) {
             return $this->login();
         }
 
         return $this->accesscode();
 
+    }
+
+    public function home()
+    {
+        $last_login = date(config('date'), strtotime(User::data()->last_login));
+        $username = strtoupper(User::username());
+        echo <<< EOT
+        Last login: {$last_login} as $username
+        4.3 BSD UNIX (ARPANET) (0.0.0.0)
+
+        Welcome to ARPANET
+        EOT;
     }
 
     public function login()
@@ -174,17 +190,14 @@ class SystemController extends Controller
     public function termlink() 
     {
         //view('terminal/auth.txt');
-            
-        $host_name = strtoupper(Host::hostname());
-        $host_ip = Host::data()->ip;
-        $level = Host::data()->level->id;
-
+        $host = Host::data();    
+        $host_name = strtoupper($host->host_name);
+        $host_ip = $host->ip;
+        $org = $host->org;
+        
         echo <<< EOT
-        -TCP/IP $host_ip-
-
-        Connected to $host_name [LEVEL $level]
-
-        login:
+        4.3 BSD UNIX ($host_name) ($host_ip)
+        $org
         EOT;
 
     }
@@ -193,14 +206,18 @@ class SystemController extends Controller
     {
         $host = Host::data();
         $host_name = strtoupper($host->host_name);
+        $host_ip = $host->ip;
         $org = $host->org;
 
-        $username = strtoupper(User::data()->user_name);
+        $last_login = date(config('date'), strtotime(User::data()->last_login));
+        $username = strtoupper(User::username());
 
         echo <<< EOT
-        -$host_name: $org-
+        Last login: {$last_login} as $username
+        4.3 BSD UNIX ($host_name) ($host_ip)
+        $org
 
-        Welcome, $username
+        Welcome $username!
         EOT;
 
         return;

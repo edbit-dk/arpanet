@@ -81,7 +81,7 @@ class UserService
     public static function logout() 
     {
         self::data()->update(['last_login' => \Carbon\Carbon::now()]);
-        Session::clear();
+        Session::remove(self::$auth);
     }
 
     public static function count()

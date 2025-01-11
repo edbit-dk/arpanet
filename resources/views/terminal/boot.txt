@@ -1,12 +1,12 @@
 
 
-Initializing MF Boot Agent v2.3.0
+Initializing AT&T MF Boot Agent v2.3.0
 RETROS BIOS
 RBIOS-4.02.08.00 52EE5.E7.E8
-Copyright 1975-1977
+Copyright 1975-1977 AT&T
 Uppermem: 64 KB
 
-UNIX Operating System (UOS) v.85
-Copyright 1980-1989
+AT&T UNIX Operating System (TeleTerm) v.1
+Copyright 1975-1977 AT&T
 
 LOADING...

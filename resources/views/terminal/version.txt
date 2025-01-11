@@ -1,2 +1,2 @@
-IBM Unix Operating System (IBM UOS) v.85
-Copyright 1981-1982 IBM Corp.
+AT&T UNIX Operating System (TeleTerm) v.1
+Copyright 1975-1977 AT&T

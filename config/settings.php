@@ -2,6 +2,7 @@
 
 return [
     'path' => BASE_PATH,
+    'date' => 'D M j H:i:s',
     'errors' => true,
     'views' =>  BASE_PATH . '/resources/views/',
     'database' => BASE_PATH . '/database/',

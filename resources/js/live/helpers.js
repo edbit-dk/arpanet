@@ -29,6 +29,15 @@ function handleRedirect(response) {
         }, 1000);
     }
 
+    if (response.startsWith("Authentication")) {
+        setTimeout(function() {
+            setTimeout(function() {
+                redirectTo('');
+            }, 1000);
+
+        }, 1000);
+    }
+
     if (response.startsWith("SUCCESS") || response.startsWith("Security")) {
         setTimeout(function() {
             setTimeout(function() {

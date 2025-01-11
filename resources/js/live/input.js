@@ -51,13 +51,13 @@ function handleUserInput() {
         if (input) {
             if (currentCommand === 'newuser') {
                 usernameForNewUser = input;
-                loadText("password:");
+                loadText("Password:");
                 isUsernamePrompt = false;
                 isPasswordPrompt = true;
                 $('#command-input').attr('type', 'password');
             } else if (currentCommand === 'login' || currentCommand === 'logon') {
                 usernameForLogon = input;
-                loadText("password:");
+                loadText("Password:");
                 isUsernamePrompt = false;
                 isPasswordPrompt = true;
                 $('#command-input').attr('type', 'password');
@@ -111,14 +111,14 @@ function handleUserInput() {
     } else if (command === 'logon' || command === 'login') {
         if (args) {
             usernameForLogon = args;
-            loadText("password:");
+            loadText("Password:");
             isUsernamePrompt = false;
             isPasswordPrompt = true;
             currentCommand = command;
             $('#command-input').attr('type', 'password');
             return;
         } else {
-            loadText("username:");
+            loadText("login:");
             isUsernamePrompt = true;
             currentCommand = command;
             $('#command-input').attr('type', 'text');
@@ -131,7 +131,6 @@ function handleUserInput() {
                     setTimeout(function () {
                         if(['logout', 'logoff'].includes(command)) {
                             sessionStorage.removeItem('auth');
-                            sessionStorage.removeItem('uplink');
                         }
                         redirectTo('');
                     }, 1000);
