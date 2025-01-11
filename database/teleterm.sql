@@ -144,7 +144,7 @@ CREATE TABLE `hosts` (
 
 INSERT INTO `hosts` (`id`, `user_id`, `password`, `host_name`, `org`, `location`, `ip`, `active`, `level_id`, `created_at`, `updated_at`) VALUES
 (1, 1, 'robco', 'milnet', 'Military Defense Data Network (UNCLASSIFIED)', 'USA', '1.1.1.0', 1, 2, '1984-10-22 16:18:50', NULL),
-(2, 1, 'robco', 'nsfnet', 'Academic Research Network', 'Global', '0.0.0.0', 1, 1, '1969-10-10 16:29:25', NULL),
+(2, 1, 'robco', 'nsfnet', 'Academic Research Network', 'Global', '255.255.255.255', 1, 1, '1969-10-10 16:29:25', NULL),
 (3, 1, 'robco', 'usenet', 'Newsgroup Network', 'Global', '3.3.3.3', 1, 1, '1979-10-22 16:18:50', NULL),
 (4, 1, 'robco', 'poseidonet', 'Poseidon Energy Network', 'Boston', '4.4.4.4', 1, 1, '2077-10-22 16:18:50', NULL),
 (5, 1, 'robco', 'ucla', 'University of California', 'Los Angeles', '0.0.0.1', 1, 1, '1985-10-22 16:18:50', NULL),
