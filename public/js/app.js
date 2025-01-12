@@ -27,14 +27,14 @@ $(document).ready(function() {
     listCommands();
 
     // Check if 'boot' command has been sent during the current session
-    if (!sessionStorage.getItem('boot')) {
+    if (!localStorage.getItem('boot')) {
 
         setTimeout(function() {
             sendCommand('boot', ''); // Send 'boot' command
         }, 500);
         
         setTimeout(function() {
-            sessionStorage.setItem('boot', true); // Set 'boot' flag in sessionStorage
+            localStorage.setItem('boot', true); // Set 'boot' flag in sessionStorage
             clearTerminal();
             sendCommand('welcome', '');
         }, 10000);
@@ -168,7 +168,9 @@ function handleUserInput() {
     // Normal command handling
     loadText("cmd: " + input);
     commandHistory.push(input);
+    localStorage.setItem('history',commandHistory);
     historyIndex = commandHistory.length;
+    localStorage.setItem('index',historyIndex);
     $('#command-input').val('');
 
     // Check if the input is "?" and change it to "help"
@@ -245,7 +247,7 @@ function handleUserInput() {
         return;
     }
 
-    if (['newuser', 'logon', 'login'].includes(command) && !sessionStorage.getItem('uplink')) {
+    if (['newuser', 'logon', 'login'].includes(command) && !localStorage.getItem('uplink')) {
         loadText("ERROR: Uplink Required.");
         return;
     }
@@ -258,7 +260,7 @@ function handleUserInput() {
     if (command === 'clear' || command === 'cls') {
         clearTerminal();
     } else if (command === 'uplink') {
-        sessionStorage.setItem('uplink', true);
+        localStorage.setItem('uplink', true);
         sendCommand(command, args);
     } else if (command === 'newuser') {
         if (args) {
@@ -291,6 +293,7 @@ function handleUserInput() {
                 if (!response.includes("ERROR")) {
                     setTimeout(function () {
                         if(['logout', 'logoff'].includes(command)) {
+                            localStorage.removeItem('boot');
                             sessionStorage.removeItem('auth');
                         }
                         redirectTo('');

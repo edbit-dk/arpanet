@@ -170,7 +170,7 @@ class SystemController extends Controller
             return $this->home();
         }
 
-        if(Session::get('uplink')) {
+        if(Session::has('uplink')) {
             return $this->login();
         }
 

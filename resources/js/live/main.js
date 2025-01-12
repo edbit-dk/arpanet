@@ -27,14 +27,14 @@ $(document).ready(function() {
     listCommands();
 
     // Check if 'boot' command has been sent during the current session
-    if (!sessionStorage.getItem('boot')) {
+    if (!localStorage.getItem('boot')) {
 
         setTimeout(function() {
             sendCommand('boot', ''); // Send 'boot' command
         }, 500);
         
         setTimeout(function() {
-            sessionStorage.setItem('boot', true); // Set 'boot' flag in sessionStorage
+            localStorage.setItem('boot', true); // Set 'boot' flag in sessionStorage
             clearTerminal();
             sendCommand('welcome', '');
         }, 10000);
