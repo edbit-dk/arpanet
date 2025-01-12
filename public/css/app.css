@@ -354,7 +354,7 @@ template {
 
 .rx-9000 * {
   font-family: "RX-9000", monospace;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 body, input, pre, button {
@@ -367,6 +367,7 @@ body, input, pre, button {
 #terminal-wrapper {
     width: 100%;
     max-height: 80vh;
+    padding: 5px;
     overflow-y: auto; /* Add vertical scrolling if the content exceeds the height */
     box-sizing: border-box; /* Ensure padding is included in the width/height */
   }

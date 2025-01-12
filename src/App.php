@@ -2,7 +2,6 @@
 
 namespace Lib;
 
-
 class App 
 {
     protected static $instance = null;

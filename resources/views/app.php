@@ -3,13 +3,10 @@
   <button style="display: none;" id="play-button">MUSIC</button>
   <button style="display: none;" onclick="location.href='teleterm.txt'" target="_blank" type="button">HELP</button>
     <div id="terminal"></div>
-  </div>
-
-  <div id="prompt">
-    <div>
+    <div id="prompt">
       <span id="connection">></span> 
-</div>
       <input type="text" id="command-input" autofocus spellcheck="false" autocomplete="off">
+  </div>
   </div>
     
     <script>

@@ -46,7 +46,7 @@ class UserService
             Session::set('user_blocked', true);
         }
 
-        if (Session::has('user_blocked') && !$block) {
+        if (Session::has('user_blocked')) {
             echo <<< EOT
             ERROR: Terminal Locked.
             Please contact an Administrator.

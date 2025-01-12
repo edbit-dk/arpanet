@@ -44,7 +44,7 @@ class SystemController extends Controller
 
     public function version() 
     {
-        view('terminal/version.txt');
+        text('version.txt');
     }
 
     public function uplink() 
@@ -84,8 +84,8 @@ class SystemController extends Controller
             // Block the user after 4 failed attempts
             if ($attempts_left == 0) {
 
-               User::blocked(true);
-               exit;
+                User::blocked(true);
+                exit;
 
             } else {
                 echo <<< EOT
@@ -98,18 +98,12 @@ class SystemController extends Controller
             }
             
         }
-    }
-
-    public function reboot() 
-    {
-        echo bootup();
-        view('terminal/boot.txt');
     } 
     
     public function boot() 
     {
         echo bootup();
-        view('terminal/boot.txt');
+        text('boot.txt');
     }
 
     public function accesscode() 
@@ -212,7 +206,6 @@ class SystemController extends Controller
 
     public function termlink() 
     {
-        //view('terminal/auth.txt');
         $host = Host::data();    
         $host_name = strtoupper($host->host_name);
         $host_ip = $host->ip;

@@ -1,7 +1,0 @@
-[12-Jan-2025 01:49:50 Europe/Copenhagen] PHP Deprecated:  strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in C:\Ampps\www\terminal\app\System\SystemController.php on line 212
-[12-Jan-2025 02:22:04 Europe/Copenhagen] PHP Deprecated:  strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in C:\Ampps\www\terminal\app\System\SystemController.php on line 212
-[12-Jan-2025 02:22:28 Europe/Copenhagen] PHP Deprecated:  strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in C:\Ampps\www\terminal\app\System\SystemController.php on line 212
-[12-Jan-2025 02:22:31 Europe/Copenhagen] PHP Deprecated:  strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in C:\Ampps\www\terminal\app\System\SystemController.php on line 212
-[12-Jan-2025 02:22:39 Europe/Copenhagen] PHP Deprecated:  strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in C:\Ampps\www\terminal\app\System\SystemController.php on line 212
-[12-Jan-2025 02:25:10 Europe/Copenhagen] PHP Deprecated:  strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in C:\Ampps\www\terminal\app\System\SystemController.php on line 212
-[12-Jan-2025 02:26:27 Europe/Copenhagen] PHP Deprecated:  strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in C:\Ampps\www\terminal\app\System\SystemController.php on line 212

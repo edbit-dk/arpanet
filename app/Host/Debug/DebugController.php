@@ -48,7 +48,7 @@ class DebugController
     
             // Format and output the memory dump with memory paths
             if (!Session::has('debug')) {
-                view('/terminal/debug.txt');
+                text('debug.txt');
             }
             $attempts = Session::get('debug_attempts');
             echo "{$attempts} ATTEMPT(S) LEFT: # # # # \n \n";
@@ -160,13 +160,13 @@ class DebugController
     
         if(strpos('HALT RESTART', $command) !== false) {
             echo 'RESTARTING...';
-            echo view('terminal/boot.txt') . "\n";
+            text('boot.txt') . "\n";
             exit;
         }
     
         if(strpos('HALT RESTART/MAINT', $command) !== false) {
             Session::set('maint', true);
-            echo view('terminal/maint.txt') . "\n";
+            text('maint.txt') . "\n";
             exit;
         }
        
@@ -200,7 +200,7 @@ class DebugController
         if(strpos('DEBUG/ACCOUNTS.F', $command) !== false) {
             session()->set('debug', true);
             Session::set('debug', true);
-            view('terminal/attempts.txt') . "\n";
+            text('attempts.txt') . "\n";
             echo $this->dump();
             exit;
         }

@@ -1,2 +1,0 @@
-AT&T UNIX Operating System (TeleTerm) v.1
-Copyright 1975-1977 AT&T

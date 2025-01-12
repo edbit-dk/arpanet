@@ -42,9 +42,17 @@ function db() {
     return app('db');
 }
 
+function access() {
+    return app('access');
+}
+
 function view($name, $data = []) {
 
     return app('view')->render($name, $data);
+}
+
+function text($name) {
+    include config('public') . "/text/$name";
 }
 
 function base_url() {
