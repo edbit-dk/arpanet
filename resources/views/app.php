@@ -7,7 +7,7 @@
 
   <div id="prompt">
     <div>
-      <span id="connection"></span> 
+      <span id="connection">></span> 
 </div>
       <input type="text" id="command-input" autofocus spellcheck="false" autocomplete="off">
   </div>

@@ -38,29 +38,6 @@ class HostController extends Controller
         dd($host);
     }
 
-    public function connection()
-    {
-        if(Host::auth()) {
-            $hostname = Host::hostname(); 
-            $username = User::username();
-            echo "$username@$hostname$>";
-            exit;
-        }
-
-        if(Host::guest()) {
-            $hostname = Host::hostname(); 
-            echo "$hostname$>";
-            exit;
-        }
-
-        if(User::auth()) {
-            echo '@>';
-        } else {
-            echo '.>';
-        }
-
-    }
-
     public function connect() 
     {
         $server = '';

@@ -10,6 +10,7 @@ use App\User\UserService as User;
 
 // Home
 $app->get('/', [SystemController::class, 'index']);
+$app->get('/connection', [SystemController::class, 'connection']);
 
 // Default
 $app->get('/minify', [SystemController::class, 'minify']);
@@ -23,10 +24,6 @@ $app->get('/welcome', [SystemController::class, 'welcome']);
 // Boot
 $app->get('/boot', [SystemController::class, 'boot']);
 $app->get('/reboot', [SystemController::class, 'boot']);
-
-if(User::auth()) {
-    $app->get('/mail', [EmailController::class, 'mail']);
-}
 
 // Help
 if(!User::auth()) {

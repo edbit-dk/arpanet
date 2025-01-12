@@ -7,8 +7,6 @@ use App\System\Email\EmailController;
 use App\Host\HostService as Host;
 use App\User\UserService as User;
 
-$app->get('/connection', [HostController::class, 'connection']);
-
 $app->get('/host-create', [HostController::class, 'create']);
 
 if(User::auth()) {
@@ -16,6 +14,7 @@ if(User::auth()) {
     $app->get('/netstat', [HostController::class, 'scan']);
     $app->get('/connect', [HostController::class, 'connect']);
     $app->get('/telnet', [HostController::class, 'connect']);
+    $app->get('/mail', [EmailController::class, 'mail']);
 }
 
 if(Host::guest()) {
