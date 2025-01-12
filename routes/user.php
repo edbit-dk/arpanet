@@ -4,8 +4,6 @@ use App\User\UserController;
 use App\User\UserService as User;
 use App\Host\HostService as Host;
 
-$app->get('/connection', [UserController::class, 'connection']);
-
 if(User::auth()) {
      // Auth
      $app->get('/password', [UserController::class, 'password']);

@@ -53,7 +53,7 @@ function redirectTo(url) {
       // window.location.href = url;
     clearTerminal();
     sendCommand('welcome', '');
-   // $('#user').load('connection');
+    $('#connection').load('connection');
 }
 
 // Function to validate the string pattern

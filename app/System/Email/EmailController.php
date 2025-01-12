@@ -9,6 +9,8 @@ use App\System\Email\EmailModel as Email;
 use App\User\UserService as User;
 use App\User\UserModel as Users;
 
+use App\Host\HostModel as Hosts;
+
 class EmailController extends Controller
 {
     public function mail()
@@ -65,27 +67,42 @@ class EmailController extends Controller
     {
         if(empty($data)) {
             $id = 1;
-            $emails = Email::where('sender', User::auth())->get();
+            $emails = Email::where('sender', User::username())->get();
 
             foreach ($emails as $email) {
                 $id++;
-                $recipient =  Users::find($email->recipient);
-                echo "$email->id [$recipient->user_name, $email->created_at, $email->subject]\n";
+                echo "$email->id [$email->recipient, $email->created_at, $email->subject]\n";
             }
 
             exit;
         }
 
         $options = explode(' ',trim($data[0]));
+
         $body = trim($data[1]);
         $subject = $options[1];
-        $sender = User::auth();
-        $to = $options[2];
+        $sender = User::username();
 
-        if($recipient = Users::where('user_name', $to)->first()) {
+        if(isEmail($options[2])) {
+            $email = $options[2];
+            $mail = explode('@', $email);
+            $username = $mail[0];
+            $host = $mail[1];
+        } else {
+            $username = $options[2];
+        }
+
+        if(Users::where('user_name', $username)->exists()) {
+            
+            if(Hosts::where('host_name', $host)->exists()) {
+                $recipient = "$username@$host";
+            } else {
+                $recipient = $username;
+            }
+
             Email::create([
                 'sender' => $sender,
-                'recipient' => $recipient->id,
+                'recipient' => $recipient,
                 'subject' => $subject,
                 'body' => $body
             ]);

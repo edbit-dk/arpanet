@@ -13,7 +13,6 @@ function sendCommand(command, data, queryString = '') {
             },
             success: function(response) {
                 if (isPasswordPrompt) {
-                    console.log(response);
                     handlePasswordPromptResponse(response); // Handle password prompt response
                 } else {
                     loadText(response); // Load response text into terminal

@@ -1,5 +1,9 @@
 <?php
 
+function isEmail($email) {
+    return filter_var($email, FILTER_VALIDATE_EMAIL);
+}
+
 function request_url($url, $custom_query = 'query') {
 
     if(!empty($url)) {

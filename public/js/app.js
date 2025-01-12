@@ -42,6 +42,7 @@ $(document).ready(function() {
 
         setTimeout(function() {
             sendCommand('welcome', ''); // Send 'welcome' command if boot has been set
+            $('#connection').load('connection');
         }, 500);
     }
 });
@@ -134,7 +135,7 @@ function redirectTo(url) {
       // window.location.href = url;
     clearTerminal();
     sendCommand('welcome', '');
-   // $('#user').load('connection');
+    $('#connection').load('connection');
 }
 
 // Function to validate the string pattern
@@ -319,7 +320,6 @@ function sendCommand(command, data, queryString = '') {
             },
             success: function(response) {
                 if (isPasswordPrompt) {
-                    console.log(response);
                     handlePasswordPromptResponse(response); // Handle password prompt response
                 } else {
                     loadText(response); // Load response text into terminal

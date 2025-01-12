@@ -1,0 +1,5 @@
+/home
+/mail
+/log
+/bin
+/sys

@@ -42,6 +42,7 @@ $(document).ready(function() {
 
         setTimeout(function() {
             sendCommand('welcome', ''); // Send 'welcome' command if boot has been set
+            $('#connection').load('connection');
         }, 500);
     }
 });
