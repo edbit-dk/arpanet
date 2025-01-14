@@ -18,6 +18,10 @@ function config($name) {
     return app('config')[$name];
 }
 
+function timestamp($date) {
+    return date(config('date'), strtotime($date));
+}
+
 function request() {
     return app('request');
 }

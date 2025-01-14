@@ -6,7 +6,6 @@
         <title>TeleTerm</title>
         <link rel="icon" type="image/x-icon" href="<?php base_url() ?>/img/favicon.ico">
         <link rel="stylesheet" href="<?php base_url() ?>/css/app.min.css?v=<?php echo($_SESSION['hash']) ?>">
-        <link id="theme-color" rel="stylesheet" href="<?php base_url() ?>/css/green-crt.css?v=<?php echo($_SESSION['hash']) ?>">
     <style>
     @font-face {
         font-family: "RIT-V300";

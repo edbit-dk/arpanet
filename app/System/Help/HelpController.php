@@ -21,7 +21,16 @@ class HelpController extends Controller
     {
         $this->data = parse_request('data');
 
-        $this->commands = Help::where($type,1)->get();
+        $paginate = paginate($this->data[0], Help::where($type,1)->count());
+        $page = $paginate['page'];
+        $limit = $paginate['limit'];
+        $offset = $paginate['offset'];
+        $total = $paginate['total'];
+
+        $this->commands = Help::orderBy('id', 'asc')
+                        ->where($type,1)
+                        ->limit($limit)
+                        ->offset($offset)->get();
 
         if($this->data[0] == 'auto') {
             foreach ($this->commands as $item) {
@@ -32,7 +41,7 @@ class HelpController extends Controller
             exit;
         }
 
-        if(empty($this->data[0])) {
+        if(empty($this->data[0]) || is_numeric($this->data[0])) {
 
             foreach ($this->commands as $item) {
 
@@ -42,6 +51,7 @@ class HelpController extends Controller
 
                 echo "$cmd $input\n";
             }
+            echo "\nhelp {$page}/{$total}\n";
 
             exit;
 
@@ -61,7 +71,8 @@ class HelpController extends Controller
             $info = $help->info;
             
             echo <<< EOT
-            $cmd $input  $info
+            $cmd $input
+            $info
             EOT;
             exit;
         }

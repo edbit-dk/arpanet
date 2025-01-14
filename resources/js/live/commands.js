@@ -12,6 +12,7 @@ function sendCommand(command, data, queryString = '') {
                 query: query
             },
             success: function(response) {
+                loadSavedTheme();
                 if (isPasswordPrompt) {
                     handlePasswordPromptResponse(response); // Handle password prompt response
                 } else {

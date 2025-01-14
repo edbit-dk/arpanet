@@ -87,7 +87,6 @@ class UserService
     public static function count()
     {
         return User::count();
-    }
-    
+    }    
 
 }

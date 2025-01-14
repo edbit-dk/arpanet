@@ -1,7 +1,21 @@
 <?php
 
+function paginate($page, $count = 0, $perPage = 5) {
+    $page = isset($page) && is_numeric($page) ? intval($page) : 1;
+
+    // Pagination settings
+    $page = max(1, $page); // Ensure page is at least 1
+    $offset = ($page - 1) * $perPage; // Calculate offset for SQL query
+
+     // Total number
+     $total = ceil($count / $perPage);
+
+    return ['page' => $page, 'limit' => $perPage, 'offset' => $offset, 'total' => $total];
+}
+
 function isEmail($email) {
-    return filter_var($email, FILTER_VALIDATE_EMAIL);
+    //return filter_var($email, FILTER_VALIDATE_EMAIL);
+    return str_contains($email, '@');
 }
 
 function request_url($url, $custom_query = 'query') {

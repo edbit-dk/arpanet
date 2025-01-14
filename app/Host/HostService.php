@@ -45,7 +45,7 @@ class HostService
 
     public static function netstat() 
     {
-        return Host::where('id','<',5)->with('users')->get();
+        return Host::where('id','<=',5)->with('users')->get();
     }
 
     public static function check() 

@@ -7,6 +7,8 @@ use Lib\Session;
 
 use App\User\UserService as User;
 use App\Host\HostService as Host;
+use App\Host\HostModel as Hosts;
+use App\System\Email\EmailService as Mail;
 
 class SystemController extends Controller
 {
@@ -69,6 +71,7 @@ class SystemController extends Controller
 
             echo <<< EOT
             Security Access Code Sequence Accepted.
+            Accessing Mainframe...
             EOT;
             exit;
 
@@ -174,13 +177,23 @@ class SystemController extends Controller
 
     public function home()
     {
-        $last_login = date(config('date'), strtotime(User::data()->last_login));
+        $host = Hosts::find(1);
+        $os = $host->os;
+        $ip = $host->ip;
+        $org = $host->org;
+        $hostname = strtoupper($host->host_name);
+        $last_login = timestamp(User::data()->last_login);
         $username = strtoupper(User::username());
+
+        $mail = Mail::unread();
+
         echo <<< EOT
         Last login: {$last_login} as $username
-        4.3 BSD UNIX 1986 (ARPANET) (0.0.0.0)
+        $os ($hostname) ($ip)
+        $org
 
-        Welcome to ARPANET
+        Welcome to $hostname
+        $mail
         EOT;
     }
 
@@ -206,13 +219,14 @@ class SystemController extends Controller
 
     public function termlink() 
     {
-        $host = Host::data();    
+        $host = Host::data();
+        $os = $host->os;    
         $host_name = strtoupper($host->host_name);
         $host_ip = $host->ip;
         $org = $host->org;
         
         echo <<< EOT
-        4.3 BSD UNIX 1986 ($host_name) ($host_ip)
+        $os ($host_name) ($host_ip)
         $org
         EOT;
 
@@ -221,19 +235,27 @@ class SystemController extends Controller
     public function host() 
     {
         $host = Host::data();
+        $os = $host->os;
         $host_name = strtoupper($host->host_name);
         $host_ip = $host->ip;
         $org = $host->org;
+        $motd = '';
 
-        $last_login = date(config('date'), strtotime(User::data()->last_login));
+        $last_login = timestamp(User::data()->last_login);
         $username = strtoupper(User::username());
+
+        $mail = Mail::unread();
+
+        $motd = Mail::system();
 
         echo <<< EOT
         Last login: {$last_login} as $username
-        4.3 BSD UNIX 1986 ($host_name) ($host_ip)
+        $os ($host_name) ($host_ip)
         $org
 
         Welcome $username!
+        $mail
+        $motd
         EOT;
 
         return;
