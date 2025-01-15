@@ -142,6 +142,8 @@ class HostController extends Controller
         User::blocked();
 
         if(Host::logon($input[0],  $input[1])) {
+
+            Host::data()->users()->attach(User::id(), ['last_login' => \Carbon\Carbon::now()]);
             echo <<< EOT
             Password Verified. 
             Please wait while system is accessed...

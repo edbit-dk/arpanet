@@ -4,7 +4,10 @@ namespace App\Host;
 
 use App\Host\HostModel as Host;
 use App\User\UserModel as User;
+use App\User\UserService as Auth;
 use App\User\Level\LevelModel as Level;
+use App\System\Email\EmailModel as Email;
+use App\System\Email\EmailService as Mail;
 
 use Lib\Session;
 
@@ -27,6 +30,11 @@ class HostService
 
         return false;
 
+    }
+
+    public static function id()
+    {
+        return self::auth();
     }
 
     public static function hostname()
@@ -215,6 +223,30 @@ class HostService
     public static function count()
     {
         return Host::count();
+    }
+
+    public static function root()
+    {
+        $hostname = self::hostname();
+        $username = strtoupper(Auth::username());
+
+        $email = Email::where('sender', Mail::contact())
+        ->where('recipient', "system@$hostname")
+        ->where('is_read', 0);
+
+       $hostname = strtoupper($hostname);
+
+        if($email->exists()) {
+            $email->update(['is_read' => 1]);
+
+            $date = timestamp();
+            $note = "Note: $username has ROOT on $hostname as of $date";
+
+            self::data()->update([
+                'user_id' => Auth::id(),
+                'notes' => $note
+            ]);
+        }
     }
 
 }

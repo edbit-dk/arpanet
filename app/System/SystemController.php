@@ -135,7 +135,11 @@ class SystemController extends Controller
         if(Host::auth()) {
             $hostname = Host::hostname(); 
             $username = User::username();
-            echo "$username@$hostname$>";
+            if(Host::data()->user_id == User::id()) {
+                echo "$username@$hostname#>";
+            } else {  
+                echo "$username@$hostname$>";
+            }
             exit;
         }
 
@@ -239,14 +243,21 @@ class SystemController extends Controller
         $host_name = strtoupper($host->host_name);
         $host_ip = $host->ip;
         $org = $host->org;
-        $motd = '';
 
-        $last_login = timestamp(User::data()->last_login);
+        $last_login = timestamp(Host::data()
+                    ->users()
+                    ->wherePivot('user_id', User::id())
+                    ->wherePivot('host_id', Host::id())
+                    ->last_login);
         $username = strtoupper(User::username());
 
-        $mail = Mail::unread();
+        $emails = Mail::unread();
+        $mail = (!empty($emails)) ? $emails : false;
 
-        $motd = Mail::system();
+        $motd = (!empty($host->motd)) ? $host->motd : false;
+
+        Host::root();
+        $notes = (!empty($host->notes)) ? $host->notes : false;
 
         echo <<< EOT
         Last login: {$last_login} as $username
@@ -254,8 +265,9 @@ class SystemController extends Controller
         $org
 
         Welcome $username!
-        $mail
+        $mail       
         $motd
+        $notes
         EOT;
 
         return;

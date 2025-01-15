@@ -32,8 +32,12 @@ class FileController extends Controller
         $data = parse_request('data');
 
         $file = Host::data()->file($data);
-        
-        echo $file->content;
+
+        if($file) {
+            echo $file->content;
+        } else {
+            echo 'ERROR: Unknown File.';
+        }
     }
 
     public function open()

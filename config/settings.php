@@ -3,7 +3,7 @@
 return [
     'version' => 1.0,
     'path' => BASE_PATH,
-    'date' => 'D M j H:i:s',
+    'date' => 'D M j H:i:s Y',
     'email' => '',
     'errors' => true,
     'public' => BASE_PATH . '/public/',

@@ -16,13 +16,15 @@ class HostModel extends Model
     protected $table = 'hosts';
 
     protected $fillable = [
-		'username',
+		'user_id',
 		'password',
-        'name',
+        'host_name',
+        'location',
+        'motd',
+        'notes',
         'org',
 		'ip',
-		'status',
-        'nodes',
+		'active',
         'level_id'
     ];
 

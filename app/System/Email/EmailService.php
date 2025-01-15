@@ -212,20 +212,4 @@ class EmailService
             echo 'ERROR: Unknown Email.';
         }
     }
-
-    public static function system()
-    {
-        $hostname = Host::hostname();
-        $username = User::username();
-
-        $email = Email::where('sender', self::contact())
-        ->where('recipient', "system@$hostname")
-        ->where('is_read', 0);
-
-        if($email->exists()) {
-            Host::data()->update(['user_id' => User::auth()]);
-            $email->update(['is_read' => 1]);
-            return "System: $username is now ROOT on $hostname!";
-        }
-    }
 }

@@ -31,6 +31,11 @@ class UserService
         return self::auth();
     }
 
+    public static function id()
+    {
+        return self::auth();
+    }
+
     public static function auth() 
     {
         if(Session::has(self::$auth)) {

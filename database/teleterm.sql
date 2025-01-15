@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Vært: localhost
--- Genereringstid: 14. 01 2025 kl. 01:55:53
+-- Genereringstid: 15. 01 2025 kl. 14:34:50
 -- Serverversion: 8.0.39
 -- PHP-version: 8.2.25
 
@@ -60,7 +60,7 @@ CREATE TABLE `files` (
 --
 
 INSERT INTO `files` (`id`, `file_name`, `content`, `folder_id`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, 'Letter_from_Doctor_Stanislaus_Braun', 'A Letter to the Overseer from Dr. Stanislaus Braun:\r\n\r\nIf you are reading this, emergency Vault \r\ninternmentprocedures have been initiated and you and your control group have been sealed into your Vault. Congratulations! You are now a vital part of the most ambitious program ever undertaken by Vault-Tec.\r\n \r\nIf you have not yet read your sealed orders, do so now. They will outline the experimental protocols assigned to your control group. Please remember \r\nthat deviation from these protocols in any way will jeopardize the success of the program, and may be considered grounds for termination by Vault-Tec Corporation (as outlined in your \r\nEmployment Agreement)\r\n \r\nYour Vault may or may not have been selected to receive a G.E.C.K. module. \r\nPlease see Attachment A for details.\r\n \r\nDoctor Stanislaus Braun\r\nDirector, Societal Preservation Program\r\nVault-Tec Corporation', NULL, NULL, NULL, NULL);
+(1, 'letter.txt', 'A Letter to the Overseer from Dr. Stanislaus Braun:\r\n\r\nIf you are reading this, emergency Vault \r\ninternmentprocedures have been initiated and you and your control group have been sealed into your Vault. Congratulations! You are now a vital part of the most ambitious program ever undertaken by Vault-Tec.\r\n \r\nIf you have not yet read your sealed orders, do so now. They will outline the experimental protocols assigned to your control group. Please remember \r\nthat deviation from these protocols in any way will jeopardize the success of the program, and may be considered grounds for termination by Vault-Tec Corporation (as outlined in your \r\nEmployment Agreement)\r\n \r\nYour Vault may or may not have been selected to receive a G.E.C.K. module. \r\nPlease see Attachment A for details.\r\n \r\nDoctor Stanislaus Braun\r\nDirector, Societal Preservation Program\r\nVault-Tec Corporation', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -133,6 +133,8 @@ CREATE TABLE `hosts` (
   `org` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `location` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `os` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `motd` text COLLATE utf8mb4_general_ci,
+  `notes` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `active` tinyint(1) DEFAULT '1',
   `level_id` int NOT NULL DEFAULT '0',
@@ -144,20 +146,20 @@ CREATE TABLE `hosts` (
 -- Data dump for tabellen `hosts`
 --
 
-INSERT INTO `hosts` (`id`, `user_id`, `password`, `host_name`, `org`, `location`, `os`, `ip`, `active`, `level_id`, `created_at`, `updated_at`) VALUES
-(1, 1, 'robco', 'arpanet', 'Advanced Research Projects Agency Network', 'US, UK, Norway', '4.3 BSD UNIX 1986', '0.0.0.0', 1, 0, '1984-10-22 16:18:50', NULL),
-(2, 1, 'robco', 'milnet', 'Military Defense Data Network (UNCLASSIFIED)', 'USA', NULL, '1.1.1.0', 1, 2, '1984-10-22 16:18:50', NULL),
-(3, 1, 'robco', 'nsfnet', 'Academic Research Network', 'Global', 'DEC Vax-8600 4.3BSD', '1.0.0.0', 1, 1, '1969-10-10 16:29:25', NULL),
-(4, 1, 'robco', 'usenet', 'Newsgroup Network', 'Global', NULL, '3.3.3.3', 1, 1, '1979-10-22 16:18:50', NULL),
-(5, 1, 'WALK', 'poseidonet', 'Poseidon Energy Network', 'Boston', 'RobCo UOS', '4.4.4.4', 1, 1, '2077-10-22 16:18:50', '2025-01-10 10:51:02'),
-(6, 1, 'robco', 'ucla', 'University of California', 'Los Angeles', NULL, '0.0.0.1', 1, 1, '1985-10-22 16:18:50', NULL),
-(7, 1, 'robco', 'arc', 'Augmentation Research Center', 'Menlo Park, California', NULL, '0.0.0.2', 1, 1, '1985-10-22 16:18:50', NULL),
-(8, 1, 'robco', 'ucsb', 'University of California', 'Santa Babara', NULL, '0.0.0.3', 1, 1, '1985-10-22 16:18:50', NULL),
-(9, 1, 'robco', 'uusc', 'University of Utah School of Computing', 'Salt Lake City, Utah', NULL, '0.0.0.4', 1, 1, '1985-10-22 16:18:50', NULL),
-(10, 1, 'robco', 'spsdd', 'Public School District Datanet', 'Seattle', NULL, '0.0.0.5', 1, 1, '1985-10-22 16:18:50', NULL),
-(11, 1, 'robco', 'dsnet1', 'Defense Secure Network 1 (CONFIDENTIAL)', 'USA', NULL, '1.1.1.1', 1, 3, '1983-10-22 16:18:50', NULL),
-(12, 1, 'robco', 'dsnet2', 'Defense Secure Network 2 (SECRET)', 'USA', NULL, '1.1.1.2', 1, 4, '1983-10-22 16:18:50', NULL),
-(13, 1, 'robco', 'dsnet3', 'Defense Secure Network 3 (TOP SECRET)', 'USA', NULL, '1.1.1.3', 1, 5, '1983-10-22 16:18:50', NULL);
+INSERT INTO `hosts` (`id`, `user_id`, `password`, `host_name`, `org`, `location`, `os`, `motd`, `notes`, `ip`, `active`, `level_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 'robco', 'arpanet', 'Advanced Research Projects Agency Network', 'US, UK, Norway', '4.3 BSD UNIX 1986', NULL, NULL, '0.0.0.0', 1, 0, '1984-10-22 16:18:50', NULL),
+(2, 1, 'robco', 'milnet', 'Military Defense Data Network (UNCLASSIFIED)', 'USA', NULL, NULL, NULL, '1.1.1.0', 1, 2, '1984-10-22 16:18:50', NULL),
+(3, 1, 'robco', 'nsfnet', 'Academic Research Network', 'Global', 'DEC Vax-8600 4.3BSD', NULL, NULL, '1.0.0.0', 1, 1, '1969-10-10 16:29:25', NULL),
+(4, 1, 'robco', 'usenet', 'Newsgroup Network', 'Global', NULL, NULL, NULL, '3.3.3.3', 1, 1, '1979-10-22 16:18:50', NULL),
+(5, 2, 'WALK', 'poseidonet', 'Poseidon Energy Network', 'Boston', 'RobCo UOS v.84', '#\r\n# WARNING: You must have prior authorization to access this system.\r\n#          All connections are monitored. By connecting to\r\n#          this system you fully consent to all monitoring.\r\n#          Unauthorized access or use will be prosecuted \r\n#          to the full extend of the law.\r\n', 'Note: ADMIN has ROOT on POSEIDONET as of Wed Jan 15 13:22:49 2025', '4.4.4.4', 1, 1, '2077-10-22 16:18:50', '2025-01-15 13:22:49'),
+(6, 1, 'robco', 'ucla', 'University of California', 'Los Angeles', NULL, NULL, NULL, '0.0.0.1', 1, 1, '1985-10-22 16:18:50', NULL),
+(7, 1, 'robco', 'arc', 'Augmentation Research Center', 'Menlo Park, California', NULL, NULL, NULL, '0.0.0.2', 1, 1, '1985-10-22 16:18:50', NULL),
+(8, 1, 'robco', 'ucsb', 'University of California', 'Santa Babara', NULL, NULL, NULL, '0.0.0.3', 1, 1, '1985-10-22 16:18:50', NULL),
+(9, 1, 'robco', 'uusc', 'University of Utah School of Computing', 'Salt Lake City, Utah', NULL, NULL, NULL, '0.0.0.4', 1, 1, '1985-10-22 16:18:50', NULL),
+(10, 1, 'robco', 'spsdd', 'Public School District Datanet', 'Seattle', NULL, NULL, NULL, '0.0.0.5', 1, 1, '1985-10-22 16:18:50', NULL),
+(11, 1, 'robco', 'dsnet1', 'Defense Secure Network 1 (CONFIDENTIAL)', 'USA', NULL, NULL, NULL, '1.1.1.1', 1, 3, '1983-10-22 16:18:50', NULL),
+(12, 1, 'robco', 'dsnet2', 'Defense Secure Network 2 (SECRET)', 'USA', NULL, NULL, NULL, '1.1.1.2', 1, 4, '1983-10-22 16:18:50', NULL),
+(13, 1, 'robco', 'dsnet3', 'Defense Secure Network 3 (TOP SECRET)', 'USA', NULL, NULL, NULL, '1.1.1.3', 1, 5, '1983-10-22 16:18:50', NULL);
 
 -- --------------------------------------------------------
 
@@ -170,6 +172,13 @@ CREATE TABLE `host_file` (
   `file_id` int NOT NULL,
   `host_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Data dump for tabellen `host_file`
+--
+
+INSERT INTO `host_file` (`id`, `file_id`, `host_id`) VALUES
+(1, 1, 5);
 
 -- --------------------------------------------------------
 
@@ -206,27 +215,32 @@ INSERT INTO `host_node` (`id`, `node_id`, `host_id`) VALUES
 CREATE TABLE `host_user` (
   `id` bigint UNSIGNED NOT NULL,
   `user_id` int NOT NULL,
-  `host_id` int NOT NULL
+  `host_id` int NOT NULL,
+  `last_login` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Data dump for tabellen `host_user`
 --
 
-INSERT INTO `host_user` (`id`, `user_id`, `host_id`) VALUES
-(1, 1, 1),
-(2, 1, 2),
-(3, 1, 3),
-(4, 1, 4),
-(5, 1, 5),
-(6, 1, 6),
-(7, 1, 7),
-(8, 1, 8),
-(9, 1, 9),
-(10, 1, 10),
-(11, 1, 11),
-(12, 1, 12),
-(13, 2, 5);
+INSERT INTO `host_user` (`id`, `user_id`, `host_id`, `last_login`) VALUES
+(1, 1, 1, NULL),
+(2, 1, 2, NULL),
+(3, 1, 3, NULL),
+(4, 1, 4, NULL),
+(5, 1, 5, NULL),
+(6, 1, 6, NULL),
+(7, 1, 7, NULL),
+(8, 1, 8, NULL),
+(9, 1, 9, NULL),
+(10, 1, 10, NULL),
+(11, 1, 11, NULL),
+(12, 1, 12, NULL),
+(13, 2, 5, NULL),
+(14, 2, 5, NULL),
+(15, 2, 5, NULL),
+(16, 2, 5, NULL),
+(17, 2, 5, '2025-01-15 13:59:35');
 
 -- --------------------------------------------------------
 
@@ -318,7 +332,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `email`, `user_name`, `password`, `access_code`, `firstname`, `lastname`, `role`, `active`, `level_id`, `xp`, `rep`, `last_login`, `created_at`, `updated_at`) VALUES
 (1, 'sysadmin@teleterm.net', 'sysadmin', 'robco', 'Z62749-9XZZ9A-1A0YZ6-773Y1A', 'System', 'Admin', NULL, 1, 5, 100, 'MASTER', NULL, NULL, NULL),
-(2, 'admin@teleterm.net', 'admin', 'robco', 'Z62749-9XZZ9A-1A0YZ6-773Y1A', 'Host', 'Admin', NULL, 1, 5, 100, 'MASTER', '2025-01-14 02:24:57', NULL, '2025-01-14 02:24:57'),
+(2, 'admin@teleterm.net', 'admin', 'robco', 'Z62749-9XZZ9A-1A0YZ6-773Y1A', 'Host', 'Admin', NULL, 1, 5, 100, 'MASTER', '2025-01-15 13:50:49', NULL, '2025-01-15 13:50:49'),
 (3, 'guest@teleterm.net', 'guest', NULL, '371464-1Z901A-Z9X663-YXY9Z6', 'Slaughter', 'Wigglesworth', NULL, 1, 0, 0, 'UNKNOWN', '2025-01-10 12:09:49', '2024-11-20 16:20:17', '2025-01-10 12:09:49'),
 (4, 'system@teleterm.net', 'system', 'robco', '', 'System', 'Manager', 'system', 1, 5, 0, 'UNKNOWN', NULL, NULL, NULL);
 
@@ -471,7 +485,7 @@ ALTER TABLE `hosts`
 -- Tilføj AUTO_INCREMENT i tabel `host_file`
 --
 ALTER TABLE `host_file`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `host_node`
@@ -483,7 +497,7 @@ ALTER TABLE `host_node`
 -- Tilføj AUTO_INCREMENT i tabel `host_user`
 --
 ALTER TABLE `host_user`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `levels`

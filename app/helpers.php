@@ -18,8 +18,18 @@ function config($name) {
     return app('config')[$name];
 }
 
-function timestamp($date) {
-    return date(config('date'), strtotime($date));
+function timestamp($date = false) {
+
+    if(is_string($date)) {
+        return date(config('date'), strtotime($date));
+    } 
+
+    if(is_int($date)) {
+        return date(config('date'), $date);
+    }
+
+    return date(config('date'), time());
+    
 }
 
 function request() {
