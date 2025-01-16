@@ -49,7 +49,7 @@ class HostModel extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->BelongsToMany(User::class, 'host_user', 'host_id', 'user_id');
+        return $this->BelongsToMany(User::class, 'host_user', 'host_id', 'user_id')->withPivot('last_session');
     }
     
     public function host($host)

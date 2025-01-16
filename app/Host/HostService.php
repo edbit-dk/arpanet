@@ -34,7 +34,7 @@ class HostService
 
     public static function id()
     {
-        return self::auth();
+        return self::data()->id;
     }
 
     public static function hostname()
@@ -53,7 +53,7 @@ class HostService
 
     public static function netstat() 
     {
-        return Host::where('id','<=',5)->with('users')->get();
+        return Host::where('id','<=',4)->with('users')->get();
     }
 
     public static function check() 
@@ -151,8 +151,9 @@ class HostService
             Session::set('user', $user->id);
 
         }
-        
-        Session::set(self::$auth, $host_id);
+
+        self::attempt($host_id);
+
         return true;
     }
 
@@ -212,10 +213,12 @@ class HostService
 
         self::reset();
 
-        if(self::auth()) {
+        if (self::auth()) {
             Session::remove(self::$auth);
-        } else {
-            Session::remove(self::$guest); 
+        }
+
+        if(self::guest()) {
+            Session::remove(self::$guest);
         }
 
     }

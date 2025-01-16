@@ -46,7 +46,7 @@ class SystemController extends Controller
 
     public function version() 
     {
-        text('version.txt');
+        echo text('version.txt');
     }
 
     public function uplink() 
@@ -106,7 +106,7 @@ class SystemController extends Controller
     public function boot() 
     {
         echo bootup();
-        text('boot.txt');
+        echo text('boot.txt');
     }
 
     public function accesscode() 
@@ -159,12 +159,12 @@ class SystemController extends Controller
 
     public function welcome() 
     {
-        if(Host::auth()) {
-            return $this->host();
-        }
-
         if(Host::guest()) {
             return $this->termlink();
+        }
+
+        if(Host::auth()) {
+            return $this->host();
         }
 
         if(User::auth()) {
@@ -181,11 +181,10 @@ class SystemController extends Controller
 
     public function home()
     {
-        $host = Hosts::find(1);
-        $os = $host->os;
-        $ip = $host->ip;
-        $org = $host->org;
-        $hostname = strtoupper($host->host_name);
+        $os = text('version.txt');
+        $ip = '0.0.0.0';
+        $org = 'Advanced Research Projects Agency Network';
+        $hostname = 'ARPANET';
         $last_login = timestamp(User::data()->last_login);
         $username = strtoupper(User::username());
 
@@ -193,6 +192,7 @@ class SystemController extends Controller
 
         echo <<< EOT
         Last login: {$last_login} as $username
+
         $os ($hostname) ($ip)
         $org
 
@@ -243,13 +243,15 @@ class SystemController extends Controller
         $host_name = strtoupper($host->host_name);
         $host_ip = $host->ip;
         $org = $host->org;
-
-        $last_login = timestamp(Host::data()
-                    ->users()
-                    ->wherePivot('user_id', User::id())
-                    ->wherePivot('host_id', Host::id())
-                    ->last_login);
         $username = strtoupper(User::username());
+        $last_login = '';
+
+        $user = Host::data()->user(User::id());
+
+        if($host_user = Host::data()->user(User::id())) {
+            $date = timestamp($host_user->pivot->last_session);
+            $last_login = "$date as $username";
+        }
 
         $emails = Mail::unread();
         $mail = (!empty($emails)) ? $emails : false;
@@ -260,7 +262,8 @@ class SystemController extends Controller
         $notes = (!empty($host->notes)) ? $host->notes : false;
 
         echo <<< EOT
-        Last login: {$last_login} as $username
+        Last login: {$last_login}
+
         $os ($host_name) ($host_ip)
         $org
 

@@ -88,7 +88,7 @@ class EmailService
             if($email->is_read) {
                 $unread = '';
             }
-            echo "> $email->id [From: $email->sender | $date | $email->subject] $unread \n";
+            echo "> $email->id $email->sender [$email->subject | $date] $unread \n";
         }
     }
 

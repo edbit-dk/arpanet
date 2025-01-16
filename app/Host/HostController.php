@@ -40,7 +40,7 @@ class HostController extends Controller
 
     public function connect() 
     {
-        $server = '';
+        $host = false;
 
         if(request()->get('data')) {
             $data = request()->get('data');
@@ -49,18 +49,19 @@ class HostController extends Controller
             exit;
         }
 
-        if(Host::guest() OR Host::auth()) {
-
-            if(Host::data()->node(Host::try($data)->id)) {
-                $server = Host::connect($data);
-            }
-
-        } else {
-
-            $server = Host::connect($data);
+        if(Host::auth() == 0) {
+            $host = Host::connect($data);
         }
 
-        if(empty($server)) {
+        if(Host::auth() > 0) {
+            if(Host::data()->node(Host::try($data)->id)) {
+                $host = Host::connect($data);
+            } else {
+                $host = Host::connect($data);
+            }
+        } 
+
+        if(!$host) {
             echo 'ERROR: Access Denied.';
             exit;
         } else {
@@ -72,22 +73,23 @@ class HostController extends Controller
 
     public function scan() 
     {
-        $nodes = '';
-        $hosts = '';
+        $hosts = false;
 
-        if(Host::auth() OR Host::guest()) {
+        if(!Host::guest() && Host::auth()) {
             $hosts = Host::data()->nodes;
-        } else {
-            $hosts = Host::netstat();
+        } 
+
+        if(!Host::guest() && Host::auth() == 0) {
+            $hosts = Host::netstat(); 
         }
 
-        echo "Searching Comlinks...\n";
-        echo "Searching ARPANET...\n";
-
-        if(!$hosts->isEmpty()) {
+        if(!empty($hosts)) {
+            echo "Searching Comlinks...\n";
+            echo "Searching ARPANET...\n";
             echo "Searching Hosts...\n\n";
         } else {
             echo "ERROR: Access Denied.\n";
+            exit;
         }
 
         foreach ($hosts as $host) {
@@ -124,6 +126,7 @@ class HostController extends Controller
             Host::logon(User::username(), User::data()->password);
        }
 
+       Host::data()->users()->updateExistingPivot(User::id(),['last_session' => \Carbon\Carbon::now()]);
        echo "Authentication Accepted.\n";
        echo bootup();
        exit;
@@ -143,7 +146,7 @@ class HostController extends Controller
 
         if(Host::logon($input[0],  $input[1])) {
 
-            Host::data()->users()->attach(User::id(), ['last_login' => \Carbon\Carbon::now()]);
+            Host::data()->users()->updateExistingPivot(User::id(),['last_session' => \Carbon\Carbon::now()]);
             echo <<< EOT
             Password Verified. 
             Please wait while system is accessed...
@@ -153,7 +156,7 @@ class HostController extends Controller
              $attempts_left = Host::attempts(true);
     
              if ($attempts_left == 1) {
-                 echo "WARNING: LOCKOUT IMMINENT !!!\n";
+                 echo "!!! WARNING: LOCKOUT IMMINENT !!!\n\n";
              }
  
              // Block the user after 4 failed attempts
@@ -164,7 +167,7 @@ class HostController extends Controller
 
              } else {
                 echo <<< EOT
-                ERROR: Wrong Username.
+                *** ACCESS DENIED ***
                 Attempts Left: {$attempts_left}
                 EOT;
                 exit;

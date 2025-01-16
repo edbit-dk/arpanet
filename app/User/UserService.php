@@ -33,7 +33,7 @@ class UserService
 
     public static function id()
     {
-        return self::auth();
+        return self::data()->id;
     }
 
     public static function auth() 

@@ -28,7 +28,9 @@ function timestamp($date = false) {
         return date(config('date'), $date);
     }
 
-    return date(config('date'), time());
+    if($date) {
+        return date(config('date'), time());
+    }
     
 }
 
@@ -66,7 +68,7 @@ function view($name, $data = []) {
 }
 
 function text($name) {
-    include config('public') . "/text/$name";
+    return file_get_contents(config('public') . "text/$name");
 }
 
 function base_url() {
