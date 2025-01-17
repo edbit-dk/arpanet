@@ -77,6 +77,9 @@ class UserService
 
         if ($user->password == $password OR $user->access_code == $password) {
             Session::set(self::$auth, $user->id);
+            if(empty(self::data()->last_login)) {
+                self::data()->user(User::id())->update(['last_login' => \Carbon\Carbon::now()]);
+            }
             return true;
         }
 

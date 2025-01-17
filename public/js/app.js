@@ -242,7 +242,7 @@ function handleUserInput() {
     const command = parts[0].toLowerCase(); // Only the command is transformed to lowercase
     const args = parts.slice(1).join(' ');
 
-    if(command === 'mode') {
+    if(command === 'term') {
         setTermMode(args);
         return;
     }
@@ -287,14 +287,13 @@ function handleUserInput() {
             $('#command-input').attr('type', 'text');
             return;
         }
-    } else if (['logout', 'logoff', 'reboot', 'dc', 'restart', 'start', 'exit'].includes(command)) {
+    } else if (['logout', 'close', 'logoff', 'quit', 'dc', 'restart', 'exit', 'reboot', 'halt', 'halt restart', 'restart'].includes(command)) {
         sendCommand(command, args)
             .then(response => {
                 if (!response.includes("ERROR")) {
                     setTimeout(function () {
-                        if(['logout', 'logoff'].includes(command)) {
+                        if(['reboot', 'halt', 'halt restart', 'restart'].includes(command)) {
                             localStorage.removeItem('boot');
-                            sessionStorage.removeItem('auth');
                         }
                         redirectTo('');
                     }, 1000);
@@ -457,7 +456,7 @@ function handlePasswordPromptResponse(response) {
         loadText(response);
         isPasswordPrompt = false;
         $('#command-input').attr('type', 'text');
-    } else if (response.startsWith("Logged")) {
+    } else if (response.startsWith("Authentication successful") || response.startsWith("Password Verified")) {
         loadText(response);
         setTimeout(function() {
             sessionStorage.setItem('auth', true);
@@ -617,12 +616,12 @@ function setTheme(color) {
 // Function to set terminal font
 function setTermMode(mode) {
     $("#page").attr('class', mode);
-    localStorage.setItem('mode', mode);
+    localStorage.setItem('term', mode);
 }
 
 // Function to load the saved theme from localStorage
 function loadSavedTermMode() {
-    const savedTerm = localStorage.getItem('mode');
+    const savedTerm = localStorage.getItem('term');
     if (savedTerm) {
         setTermMode(savedTerm);
     }

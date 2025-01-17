@@ -9,15 +9,7 @@ use App\User\UserService as User;
 
 $app->get('/host-create', [HostController::class, 'create']);
 
-if(User::auth()) {
-    $app->get('/scan', [HostController::class, 'scan']);
-    $app->get('/netstat', [HostController::class, 'scan']);
-    $app->get('/connect', [HostController::class, 'connect']);
-    $app->get('/telnet', [HostController::class, 'connect']);
-    $app->get('/mail', [EmailController::class, 'mail']);
-}
-
-if(Host::guest()) {
+if(Host::guest() && User::auth()) {
     $app->get('/login', [HostController::class, 'logon']);
     $app->get('/logon', [HostController::class, 'logon']);
     $app->get('/dump', [DebugController::class, 'dump']);
@@ -31,6 +23,7 @@ if(Host::guest()) {
 }
 
 if(Host::auth() && User::username() != 'guest') {
+
     $app->get('/dir', [FileController::class, 'dir']);
     $app->get('/ls', [FileController::class, 'dir']);
     $app->get('/type', [FileController::class, 'cat']);
@@ -38,9 +31,17 @@ if(Host::auth() && User::username() != 'guest') {
     $app->get('/more', [FileController::class, 'cat']);
     $app->get('/open', [FileController::class, 'cat']);
     $app->get('/echo', [FileController::class, 'echo']);
+
+    $app->get('/scan', [HostController::class, 'scan']);
+    $app->get('/netstat', [HostController::class, 'scan']);
+    $app->get('/connect', [HostController::class, 'connect']);
+    $app->get('/telnet', [HostController::class, 'connect']);
+    $app->get('/mail', [EmailController::class, 'mail']);
+    
 }
 
 if(Host::auth() OR Host::guest()) {
+    $app->get('/logout', [HostController::class, 'logoff']);
     $app->get('/logoff', [HostController::class, 'logoff']);
     $app->get('/exit', [HostController::class, 'logoff']);
     $app->get('/quit', [HostController::class, 'logoff']);

@@ -142,12 +142,12 @@ function setTheme(color) {
 // Function to set terminal font
 function setTermMode(mode) {
     $("#page").attr('class', mode);
-    localStorage.setItem('mode', mode);
+    localStorage.setItem('term', mode);
 }
 
 // Function to load the saved theme from localStorage
 function loadSavedTermMode() {
-    const savedTerm = localStorage.getItem('mode');
+    const savedTerm = localStorage.getItem('term');
     if (savedTerm) {
         setTermMode(savedTerm);
     }

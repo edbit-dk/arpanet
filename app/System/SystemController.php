@@ -246,20 +246,18 @@ class SystemController extends Controller
         $username = strtoupper(User::username());
         $last_login = '';
 
-        $user = Host::data()->user(User::id());
-
         if($host_user = Host::data()->user(User::id())) {
             $date = timestamp($host_user->pivot->last_session);
             $last_login = "$date as $username";
         }
 
         $emails = Mail::unread();
-        $mail = (!empty($emails)) ? $emails : false;
+        $mail = $emails;
 
-        $motd = (!empty($host->motd)) ? $host->motd : false;
+        $motd = $host->motd;
 
         Host::root();
-        $notes = (!empty($host->notes)) ? $host->notes : false;
+        $notes = $host->notes;
 
         echo <<< EOT
         Last login: {$last_login}

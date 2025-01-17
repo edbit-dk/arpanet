@@ -80,7 +80,8 @@ class EmailService
         $emails = Email::where('recipient', self::contact());
 
         $count = $emails->count();
-        echo "$count message(s)\n";
+        $new = Email::where('recipient', self::contact())->where('is_read', 0)->count();
+        echo "$count message(s) | $new new message(s) \n";
 
         foreach ($emails->get() as $email) {
             $id++;
@@ -141,8 +142,9 @@ class EmailService
 
     }
 
-    public static function send($data)
+    public static function send($data, $system_mail = false)
     {
+
         if(empty($data)) {
             $id = 1;
             $emails = Email::where('sender', self::contact());
@@ -152,7 +154,7 @@ class EmailService
 
             foreach ($emails->get() as $email) {
                 $id++;
-                echo "> $email->id [To: $email->recipient, $email->created_at, $email->subject]\n";
+                echo "> $email->id $email->recipient [$email->subject | $email->created_at]\n";
             }
 
             exit;
@@ -168,7 +170,7 @@ class EmailService
         // Send email
         $body = trim($data[1]);
         $subject = $options[1];
-        $sender = self::contact();
+        $sender = ($system_mail) ? $system_mail : self::contact();
 
         if(isEmail(trim($options[2]))) {
             $email = $options[2];
@@ -195,7 +197,10 @@ class EmailService
                 'body' => $body
             ]);
 
-            echo 'Email Sent.';
+            if(!$system_mail) {
+                echo 'Email Sent.';
+            }
+            
         } else {
             echo 'ERROR: Unknown Recipient.';
         }

@@ -67,7 +67,7 @@ function handlePasswordPromptResponse(response) {
         loadText(response);
         isPasswordPrompt = false;
         $('#command-input').attr('type', 'text');
-    } else if (response.startsWith("Logged")) {
+    } else if (response.startsWith("Authentication successful") || response.startsWith("Password Verified")) {
         loadText(response);
         setTimeout(function() {
             sessionStorage.setItem('auth', true);

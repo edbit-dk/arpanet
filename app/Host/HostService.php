@@ -146,10 +146,13 @@ class HostService
             if(!$user) {
                 return false;
             }
-             
+            
             Session::set('session', Session::get('user'));
             Session::set('user', $user->id);
+        }
 
+        if(!Session::has('network')) {
+            Session::set('network', self::guest());
         }
 
         self::attempt($host_id);
@@ -162,6 +165,14 @@ class HostService
         if(isset($host_id)) {
             Session::set(self::$guest, false);
             Session::set(self::$auth, $host_id);
+
+            if($host_id != 0) {
+                $host_user = self::data()->user(Auth::id());
+                if(empty($host_user->pivot->last_session)) {
+                    $host_user->update(['last_login' => \Carbon\Carbon::now()]);
+                }
+            }
+
             return self::data();
         }
         return false;
@@ -209,16 +220,18 @@ class HostService
         if(Session::has('session')) {
             $session = Session::get('session');
             Session::set('user', $session);
+            Session::remove('session');
         }
 
         self::reset();
 
         if (self::auth()) {
-            Session::remove(self::$auth);
+            self::data()->user(Auth::id())->update(['last_login' => \Carbon\Carbon::now()]);
+            return Session::remove(self::$auth);
         }
 
         if(self::guest()) {
-            Session::remove(self::$guest);
+           return Session::remove(self::$guest);
         }
 
     }
@@ -230,25 +243,37 @@ class HostService
 
     public static function root()
     {
-        $hostname = self::hostname();
-        $username = strtoupper(Auth::username());
+        $host = self::hostname();
+        $user = Auth::username();
+        $contact = Mail::contact();
 
-        $email = Email::where('sender', Mail::contact())
-        ->where('recipient', "system@$hostname")
+        $email = Email::where('sender', $contact)
+        ->where('recipient', "system@$host")
         ->where('is_read', 0);
-
-       $hostname = strtoupper($hostname);
 
         if($email->exists()) {
             $email->update(['is_read' => 1]);
 
-            $date = timestamp();
-            $note = "Note: $username has ROOT on $hostname as of $date";
+            $root_hack = "#!/bin/bash echo '$user ALL=(ALL) ALL' >> /sys/passwd";
 
-            self::data()->update([
-                'user_id' => Auth::id(),
-                'notes' => $note
-            ]);
+            if(similar_text($root_hack, $email->first()->body) > 50) {
+                $date = timestamp();
+                $hostname = strtoupper($host);
+                $username = strtoupper($user);
+                $note = "Note: $username has ROOT on $hostname as of $date";
+    
+                self::data()->update([
+                    'user_id' => Auth::id(),
+                    'notes' => $note
+                ]);
+            } else {
+                $data = [
+                    0=> "send ERROR $contact", 
+                    1=> "SYSTEM ERROR: Unknown Command. Please use valid system commands!"
+                ];
+                Mail::send($data, "system@$host");
+            }
+
         }
     }
 

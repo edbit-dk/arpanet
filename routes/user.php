@@ -1,6 +1,9 @@
 <?php
 
 use App\User\UserController;
+use App\System\Email\EmailController;
+use App\Host\HostController;
+
 use App\User\UserService as User;
 use App\Host\HostService as Host;
 
@@ -12,9 +15,25 @@ if(User::auth()) {
 
 if(!User::auth()) {
      $app->get('/login', [UserController::class, 'login']);
+     $app->get('/logon', [UserController::class, 'login']);
      $app->get('/newuser', [UserController::class, 'newuser']);
 }
 
 if(User::auth() && !Host::auth() && !Host::guest()) {
+     $app->get('/mail', [EmailController::class, 'mail']);
+     $app->get('/scan', [HostController::class, 'scan']);
+     
+     $app->get('/netstat', [HostController::class, 'scan']);
+     $app->get('/scan', [HostController::class, 'scan']);
+     
+    $app->get('/connect', [HostController::class, 'connect']);
+    $app->get('/telnet', [HostController::class, 'connect']);
+
+     $app->get('/exit', [UserController::class, 'logout']);
      $app->get('/logout', [UserController::class, 'logout']);
+     $app->get('/logoff', [UserController::class, 'logout']);
+     $app->get('/exit', [UserController::class, 'logout']);
+     $app->get('/quit', [UserController::class, 'logout']);
+     $app->get('/dc', [UserController::class, 'logout']);
+     $app->get('/close', [UserController::class, 'logout']);
 }

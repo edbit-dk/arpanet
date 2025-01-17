@@ -81,7 +81,7 @@ function handleUserInput() {
     const command = parts[0].toLowerCase(); // Only the command is transformed to lowercase
     const args = parts.slice(1).join(' ');
 
-    if(command === 'mode') {
+    if(command === 'term') {
         setTermMode(args);
         return;
     }
@@ -126,14 +126,13 @@ function handleUserInput() {
             $('#command-input').attr('type', 'text');
             return;
         }
-    } else if (['logout', 'logoff', 'reboot', 'dc', 'restart', 'start', 'exit'].includes(command)) {
+    } else if (['logout', 'close', 'logoff', 'quit', 'dc', 'restart', 'exit', 'reboot', 'halt', 'halt restart', 'restart'].includes(command)) {
         sendCommand(command, args)
             .then(response => {
                 if (!response.includes("ERROR")) {
                     setTimeout(function () {
-                        if(['logout', 'logoff'].includes(command)) {
+                        if(['reboot', 'halt', 'halt restart', 'restart'].includes(command)) {
                             localStorage.removeItem('boot');
-                            sessionStorage.removeItem('auth');
                         }
                         redirectTo('');
                     }, 1000);
