@@ -111,7 +111,7 @@ class HostService
             return false;
         } else {
             self::reset();
-            self::logoff();
+            Session::set(self::$auth, false);
             Session::set(self::$guest, $host->id);
             return true;
         }
@@ -151,8 +151,8 @@ class HostService
             Session::set('user', $user->id);
         }
 
-        if(!Session::has('network')) {
-            Session::set('network', self::guest());
+         if(!Session::has('network')) {
+            Session::set('network', self::auth());
         }
 
         self::attempt($host_id);
@@ -168,7 +168,7 @@ class HostService
 
             if($host_id != 0) {
                 $host_user = self::data()->user(Auth::id());
-                if(empty($host_user->pivot->last_session)) {
+                if($host_user && empty($host_user->pivot->last_session)) {
                     $host_user->update(['last_login' => \Carbon\Carbon::now()]);
                 }
             }
@@ -225,13 +225,20 @@ class HostService
 
         self::reset();
 
+
         if (self::auth()) {
-            self::data()->user(Auth::id())->update(['last_login' => \Carbon\Carbon::now()]);
+
+            if($host_user = self::data()->user(Auth::id())) {
+                $host_user->update(['last_session' => \Carbon\Carbon::now()]);
+            }
+
             return Session::remove(self::$auth);
         }
 
         if(self::guest()) {
-           return Session::remove(self::$guest);
+            self::attempt(session::get('network'));
+            Session::remove('network');
+            return Session::remove(self::$guest);
         }
 
     }

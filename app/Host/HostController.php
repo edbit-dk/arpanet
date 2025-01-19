@@ -56,8 +56,6 @@ class HostController extends Controller
         if(Host::auth() > 0) {
             if(Host::data()->node(Host::try($data)->id)) {
                 $host = Host::connect($data);
-            } else {
-                $host = Host::connect($data);
             }
         } 
 
@@ -75,15 +73,15 @@ class HostController extends Controller
     {
         $hosts = false;
 
-        if(!Host::guest() && Host::auth()) {
-            $hosts = Host::data()->nodes;
-        } 
-
-        if(!Host::guest() && Host::auth() == 0) {
+        if(Host::auth() == 0) {
             $hosts = Host::netstat(); 
         }
 
-        if(!empty($hosts)) {
+        if(Host::auth()) {
+            $hosts = Host::data()->nodes;
+        } 
+
+        if(!$hosts->isEmpty()) {
             echo "Searching Comlinks...\n";
             echo "Searching ARPANET...\n";
             echo "Searching Hosts...\n\n";
@@ -101,7 +99,7 @@ class HostController extends Controller
             }
 
             if($host->user_id == User::auth()) {
-                $access = '!';
+                $access = '#';
             }
             $host_name = $host->host_name;
             
@@ -145,8 +143,6 @@ class HostController extends Controller
         User::blocked();
 
         if(Host::logon($input[0],  $input[1])) {
-
-            Host::data()->users()->updateExistingPivot(User::id(),['last_session' => \Carbon\Carbon::now()]);
             echo <<< EOT
             Password Verified. 
             Please wait while system is accessed...

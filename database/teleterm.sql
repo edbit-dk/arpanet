@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Vært: localhost
--- Genereringstid: 16. 01 2025 kl. 22:08:19
+-- Genereringstid: 17. 01 2025 kl. 16:31:25
 -- Serverversion: 8.0.39
 -- PHP-version: 8.2.25
 
@@ -45,8 +45,7 @@ CREATE TABLE `emails` (
 
 INSERT INTO `emails` (`id`, `user_id`, `sender`, `recipient`, `subject`, `body`, `created_at`, `updated_at`, `is_read`) VALUES
 (2, 2, 'admin', 'guest', 'News update', 'Test mail', '2025-01-10 21:49:11', '2025-01-10 21:49:11', 0),
-(4, 3, 'guest', 'admin', 'News answer', 'Test mail', '2025-01-10 21:49:11', '2025-01-14 01:05:12', 0),
-(7, 2, 'admin@poseidonet', 'system@poseidonet', 'ROOT', 'ROOT', '2025-01-14 01:20:21', '2025-01-15 12:22:49', 1);
+(4, 3, 'guest', 'admin', 'News answer', 'Test mail', '2025-01-10 21:49:11', '2025-01-17 11:24:59', 0);
 
 -- --------------------------------------------------------
 
@@ -115,18 +114,18 @@ INSERT INTO `help` (`id`, `cmd`, `input`, `info`, `is_user`, `is_host`, `is_visi
 (4, 'color', '<green|white|yellow|blue>', 'terminal color', 1, 1, 1, 1),
 (5, 'newuser', '<username>', 'create ARPANET account', 0, 0, 1, 0),
 (6, 'login', '<username>', 'auth ARPANET user', 0, 0, 1, 1),
-(7, 'logout', NULL, 'logout ARPANET user', 1, 1, 0, 1),
-(8, 'telnet', '<host>', 'connect to host', 1, 1, 0, 1),
+(7, 'logout', NULL, 'alias: exit, dc, quit, close\nleave host/ARPANET', 1, 1, 0, 1),
+(8, 'telnet', '<host>', 'connect to host', 1, 1, 0, 0),
 (9, 'ls', NULL, 'list files on host', 0, 1, 0, 0),
 (10, 'more', '<filename>', 'print/dump contents of file', 0, 1, 0, 0),
-(11, 'mail', '[send|read|list|delete]', 'email user: -s <subject> <user>[@host] < <body> \r\nlist emails: [-l] \r\nread email: [-r] <ID> \r\nsent emails: -s \r\nsent email: -s <ID> \r\ndelete email: -d <ID>', 1, 1, 0, 1),
+(11, 'mail', '[send|read|list|delete]', 'email user: -s <subject> <user>[@host] < <body> \r\nlist emails: [-l] \r\nread email: [-r] <ID> \r\nsent emails: -s \r\nsent email: -s <ID> \r\ndelete email: -d <ID>', 1, 1, 0, 0),
 (12, 'user', NULL, 'list user info', 1, 1, 0, 1),
 (13, 'netstat', NULL, 'list connected nodes', 1, 1, 0, 1),
 (14, 'set', '<command>', 'TERMINAL/INQUIRE, FILE/PROTECTION=OWNER:RWED ACCOUNTS.F, HALT RESTART/MAINT', 0, 0, 0, 1),
 (15, 'run', '<command>', 'DEBUG/ACCOUNTS.F', 0, 0, 0, 1),
 (16, 'debug', '[dump]', 'run memory dump', 0, 0, 0, 1),
 (17, 'music', '<start|stop|next>', 'play music', 1, 1, 1, 1),
-(18, 'mode', '<rit-v300|rx-9000>', 'change terminal mode', 1, 1, 1, 1);
+(18, 'term', '<rit-v300|rx-9000>', 'change terminal mode', 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -232,8 +231,8 @@ CREATE TABLE `host_user` (
 --
 
 INSERT INTO `host_user` (`id`, `user_id`, `host_id`, `last_session`) VALUES
-(1, 1, 1, '2025-01-16 23:06:08'),
-(2, 1, 2, '2025-01-16 23:03:55'),
+(1, 1, 1, NULL),
+(2, 1, 2, NULL),
 (3, 1, 3, NULL),
 (5, 1, 5, NULL),
 (6, 1, 6, NULL),
@@ -242,8 +241,7 @@ INSERT INTO `host_user` (`id`, `user_id`, `host_id`, `last_session`) VALUES
 (9, 1, 9, NULL),
 (10, 1, 10, NULL),
 (11, 1, 11, NULL),
-(12, 1, 12, NULL),
-(23, 2, 4, '2025-01-16 23:07:09');
+(12, 1, 12, NULL);
 
 -- --------------------------------------------------------
 
@@ -280,7 +278,8 @@ INSERT INTO `levels` (`id`, `rep`, `xp_req`, `xp_reward`, `min`, `max`) VALUES
 
 CREATE TABLE `logs` (
   `id` bigint UNSIGNED NOT NULL,
-  `host_id` int NOT NULL,
+  `host_id` bigint NOT NULL,
+  `user_id` bigint NOT NULL,
   `info` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -334,8 +333,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `email`, `user_name`, `password`, `access_code`, `firstname`, `lastname`, `role`, `active`, `level_id`, `xp`, `rep`, `last_login`, `created_at`, `updated_at`) VALUES
-(1, 'sysadmin@teleterm.net', 'sysadmin', 'robco', 'Z62749-9XZZ9A-1A0YZ6-773Y1A', 'System', 'Admin', NULL, 1, 5, 100, 'MASTER', NULL, NULL, NULL),
-(2, 'admin@teleterm.net', 'admin', 'robco', 'Z62749-9XZZ9A-1A0YZ6-773Y1A', 'Host', 'Admin', NULL, 1, 5, 100, 'MASTER', '2025-01-16 20:56:05', NULL, '2025-01-16 20:56:05'),
+(1, 'sysadmin@teleterm.net', 'sysadmin', 'robco', 'Z62749-9XZZ9A-1A0YZ6-773Y1A', 'System', 'Admin', NULL, 1, 5, 100, 'MASTER', '2025-01-17 12:23:40', NULL, '2025-01-17 12:23:40'),
+(2, 'admin@teleterm.net', 'admin', 'robco', 'Z62749-9XZZ9A-1A0YZ6-773Y1A', 'Host', 'Admin', NULL, 1, 5, 100, 'MASTER', '2025-01-17 13:13:26', NULL, '2025-01-17 13:13:26'),
 (3, 'guest@teleterm.net', 'guest', NULL, '371464-1Z901A-Z9X663-YXY9Z6', 'Slaughter', 'Wigglesworth', NULL, 1, 0, 0, 'UNKNOWN', '2025-01-10 12:09:49', '2024-11-20 16:20:17', '2025-01-10 12:09:49'),
 (4, 'system@teleterm.net', 'system', 'robco', '', 'System', 'Manager', 'system', 1, 5, 0, 'UNKNOWN', NULL, NULL, NULL);
 
@@ -458,7 +457,7 @@ ALTER TABLE `user_missions`
 -- Tilføj AUTO_INCREMENT i tabel `emails`
 --
 ALTER TABLE `emails`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Tilføj AUTO_INCREMENT i tabel `files`

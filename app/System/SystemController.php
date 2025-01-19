@@ -132,6 +132,12 @@ class SystemController extends Controller
 
     public function connection()
     {
+        if(Host::guest()) {
+            $hostname = Host::hostname(); 
+            echo "$hostname$>";
+            exit;
+        }
+        
         if(Host::auth()) {
             $hostname = Host::hostname(); 
             $username = User::username();
@@ -140,12 +146,6 @@ class SystemController extends Controller
             } else {  
                 echo "$username@$hostname$>";
             }
-            exit;
-        }
-
-        if(Host::guest()) {
-            $hostname = Host::hostname(); 
-            echo "$hostname$>";
             exit;
         }
 
@@ -159,12 +159,12 @@ class SystemController extends Controller
 
     public function welcome() 
     {
-        if(Host::guest()) {
-            return $this->termlink();
-        }
-
         if(Host::auth()) {
             return $this->host();
+        }
+
+        if(Host::guest()) {
+            return $this->termlink();
         }
 
         if(User::auth()) {
