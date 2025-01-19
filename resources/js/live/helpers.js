@@ -49,8 +49,10 @@ function handleRedirect(response) {
 }
 
 // Function to redirect to a specific query string
-function redirectTo(url) {
-      // window.location.href = url;
+function redirectTo(url, reload = false) {
+    if(reload) {
+        return window.location.href = url;
+    }
     clearTerminal();
     sendCommand('welcome', '');
     $('#connection').load('connection');

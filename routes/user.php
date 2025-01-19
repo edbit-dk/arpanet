@@ -37,3 +37,8 @@ if(User::auth() && !Host::auth() && !Host::guest()) {
      $app->get('/dc', [UserController::class, 'logout']);
      $app->get('/close', [UserController::class, 'logout']);
 }
+
+if(User::isUplinked() && !User::auth()) {
+     $app->get('/exit', [UserController::class, 'unlink']);
+     $app->get('/logout', [UserController::class, 'unlink']);
+}

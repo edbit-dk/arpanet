@@ -55,7 +55,7 @@ class UserController extends Controller
 
                 if(Auth::login($user_name, $password)) {
                     Host::attempt(0);
-                    echo 'Authentication successful.';
+                    echo 'Authentication Successful.';
                     sleep(1);
                     exit;         
                 } else {
@@ -149,12 +149,15 @@ class UserController extends Controller
 
     public function logout() 
     {
-        
         Auth::logout();
-
         sleep(1);
         echo "Goodbye.\n";
-    
+    }
+
+    public function unlink()
+    {
+        Auth::uplink(false);
+        echo 'Disconnecting...';
     }
 
     public function reset()

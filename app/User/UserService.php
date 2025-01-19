@@ -8,6 +8,7 @@ use Lib\Session;
 class UserService 
 {
     private static $auth = 'user';
+    private static $uplink = 'uplink';
 
     public static function data() 
     {
@@ -21,6 +22,29 @@ class UserService
     {
         if(self::data()) {
             return self::data()->user_name;
+        } else {
+            return false;
+        }
+    }
+
+    public static function uplink($action = true)
+    {
+        if($action) {
+            if(!Session::has(self::$uplink)) {
+                Session::set(self::$uplink, true);
+            }
+        } else {
+            if(Session::has(self::$uplink)) {
+                Session::remove(self::$uplink);
+            }
+        }
+
+    }
+
+    public static function isUplinked()
+    {
+        if(Session::has(self::$uplink)) {
+            return true;
         } else {
             return false;
         }

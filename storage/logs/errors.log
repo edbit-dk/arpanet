@@ -35,3 +35,23 @@ Stack trace:
 #6 C:\Ampps\www\terminal\public\index.php(21): Lib\Router->run()
 #7 {main}
   thrown in C:\Ampps\www\terminal\vendor\illuminate\support\Traits\ForwardsCalls.php on line 67
+[19-Jan-2025 09:39:30 Europe/Copenhagen] PHP Fatal error:  Uncaught Exception: Method unlink not found in controller App\User\UserController in C:\Ampps\www\terminal\src\Router.php:93
+Stack trace:
+#0 C:\Ampps\www\terminal\public\index.php(21): Lib\Router->run()
+#1 {main}
+  thrown in C:\Ampps\www\terminal\src\Router.php on line 93
+[19-Jan-2025 09:39:51 Europe/Copenhagen] PHP Fatal error:  Uncaught Exception: Method unlink not found in controller App\User\UserController in C:\Ampps\www\terminal\src\Router.php:93
+Stack trace:
+#0 C:\Ampps\www\terminal\public\index.php(21): Lib\Router->run()
+#1 {main}
+  thrown in C:\Ampps\www\terminal\src\Router.php on line 93
+[19-Jan-2025 09:39:56 Europe/Copenhagen] PHP Fatal error:  Uncaught Exception: Method unlink not found in controller App\User\UserController in C:\Ampps\www\terminal\src\Router.php:93
+Stack trace:
+#0 C:\Ampps\www\terminal\public\index.php(21): Lib\Router->run()
+#1 {main}
+  thrown in C:\Ampps\www\terminal\src\Router.php on line 93
+[19-Jan-2025 09:40:11 Europe/Copenhagen] PHP Fatal error:  Uncaught Exception: Method unlink not found in controller App\User\UserController in C:\Ampps\www\terminal\src\Router.php:93
+Stack trace:
+#0 C:\Ampps\www\terminal\public\index.php(21): Lib\Router->run()
+#1 {main}
+  thrown in C:\Ampps\www\terminal\src\Router.php on line 93

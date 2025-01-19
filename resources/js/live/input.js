@@ -131,10 +131,10 @@ function handleUserInput() {
             .then(response => {
                 if (!response.includes("ERROR")) {
                     setTimeout(function () {
-                        if(['reboot', 'halt', 'halt restart', 'restart'].includes(command)) {
+                        if(['boot', 'reboot', 'halt', 'halt restart', 'restart'].includes(command)) {
                             localStorage.removeItem('boot');
                         }
-                        redirectTo('');
+                        redirectTo('', true);
                     }, 1000);
                 }
             })

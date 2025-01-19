@@ -66,7 +66,7 @@ class SystemController extends Controller
 
         if(Session::get('access_code') == $data[0]) {
             sleep(1);
-            Session::set('uplink', true);
+            User::uplink(true);
             Session::remove('access_code');
 
             echo <<< EOT
@@ -105,7 +105,8 @@ class SystemController extends Controller
     
     public function boot() 
     {
-        echo bootup();
+        echo bootup() . "\n\n";
+        echo "System startup...\n";
         echo text('boot.txt');
     }
 
@@ -171,7 +172,7 @@ class SystemController extends Controller
             return $this->home();
         }
 
-        if(Session::has('uplink')) {
+        if(User::isUplinked()) {
             return $this->login();
         }
 
