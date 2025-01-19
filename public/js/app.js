@@ -294,7 +294,7 @@ function handleUserInput() {
             .then(response => {
                 if (!response.includes("ERROR")) {
                     setTimeout(function () {
-                        if(['reboot', 'halt', 'halt restart', 'restart'].includes(command)) {
+                        if(['boot', 'reboot', 'halt', 'halt restart', 'restart'].includes(command)) {
                             localStorage.removeItem('boot');
                         }
                         redirectTo('', true);
@@ -458,7 +458,7 @@ function handlePasswordPromptResponse(response) {
         loadText(response);
         isPasswordPrompt = false;
         $('#command-input').attr('type', 'text');
-    } else if (response.startsWith("Authentication successful") || response.startsWith("Password Verified")) {
+    } else if (response.startsWith("Authentication Successful") || response.startsWith("Password Verified")) {
         loadText(response);
         setTimeout(function() {
             sessionStorage.setItem('auth', true);
