@@ -18,8 +18,8 @@ return [
     ],
     'db' => [
         'driver' => 'mysql',
-        'host' => 'localhost',
-        'database' => 'terminal',
+        'host' => '127.0.0.1',
+        'database' => 'teleterm',
         'username' => 'root',
         'password' => 'mysql',
         'charset' => 'utf8',

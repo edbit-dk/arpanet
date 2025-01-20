@@ -106,7 +106,7 @@ class SystemController extends Controller
     public function boot() 
     {
         echo bootup() . "\n\n";
-        echo "System startup...\n";
+        echo "System startup...";
         echo text('boot.txt');
     }
 

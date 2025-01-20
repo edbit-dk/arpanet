@@ -9,5 +9,4 @@ Uppermem: 64 KB
 AT&T UNIX Operating System (TeleTerm) v.1.0
 Copyright 1975-1977 AT&T
 
-
 LOADING...

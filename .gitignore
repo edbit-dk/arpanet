@@ -1,2 +1,4 @@
 # don't commit all the dependencies fetched via Composer
 /vendor/
+/config/db.sync.json
+/storage/logs/errors.log
