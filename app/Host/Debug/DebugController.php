@@ -48,8 +48,9 @@ class DebugController
     
             // Format and output the memory dump with memory paths
             if (!Session::has('debug')) {
-                text('debug.txt');
+                echo text('debug.txt');
             }
+            
             $attempts = Session::get('debug_attempts');
             echo "{$attempts} ATTEMPT(S) LEFT: # # # # \n \n";
     
