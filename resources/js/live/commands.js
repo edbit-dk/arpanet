@@ -13,6 +13,11 @@ function sendCommand(command, data, queryString = '') {
             },
             success: function(response) {
                 loadSavedTheme();
+                
+                if(sessionStorage.getItem('host')) {
+                    $('#connection').load('connection');
+                }
+
                 if (isPasswordPrompt) {
                     handlePasswordPromptResponse(response); // Handle password prompt response
                 } else {
@@ -36,7 +41,7 @@ function appendCommand(command) {
 }
 
 // Fetch commands from the server based on the user's status
-function listCommands() {
+function autoHelp() {
     fetch('help?data=auto')
         .then(response => response.json())
         .then(data => {

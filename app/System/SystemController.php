@@ -6,8 +6,11 @@ use Lib\Controller;
 use Lib\Session;
 
 use App\User\UserService as User;
+
 use App\Host\HostService as Host;
 use App\Host\HostModel as Hosts;
+
+use App\Host\Folder\FolderService as Folder;
 use App\System\Email\EmailService as Mail;
 
 class SystemController extends Controller
@@ -15,7 +18,15 @@ class SystemController extends Controller
 
     public function index()
     {
+        Session::set('term', 'RIT-V300');
         view('app.php');
+    }
+
+    public function mode()
+    {
+        $data = parse_request('data');
+        Session::set('term', strtoupper($data[0]));
+        echo 'SET TERM=' . Session::get('term');
     }
 
     public function minify()
@@ -133,9 +144,12 @@ class SystemController extends Controller
 
     public function connection()
     {
+
+        $pwd = Folder::pwd();
+
         if(Host::guest()) {
             $hostname = Host::hostname(); 
-            echo "$hostname$>";
+            echo "[@$hostname]";
             exit;
         }
         
@@ -143,17 +157,17 @@ class SystemController extends Controller
             $hostname = Host::hostname(); 
             $username = User::username();
             if(Host::data()->user_id == User::id()) {
-                echo "$username@$hostname#>";
+                echo "[$username@$hostname$pwd]#";
             } else {  
-                echo "$username@$hostname$>";
+                echo "[$username@$hostname$pwd]$";
             }
             exit;
         }
 
         if(User::auth()) {
-            echo '@>';
+            echo '@';
         } else {
-            echo '.>';
+            echo '.';
         }
 
     }

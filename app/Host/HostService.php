@@ -34,7 +34,12 @@ class HostService
 
     public static function id()
     {
-        return self::data()->id;
+        if(self::data()) {
+            return self::data()->id;
+        }
+
+        return false;
+        
     }
 
     public static function hostname()

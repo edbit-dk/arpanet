@@ -89,7 +89,7 @@ class EmailService
             if($email->is_read) {
                 $unread = '';
             }
-            echo "> $email->id $email->sender [$email->subject | $date] $unread \n";
+            echo "> $email->id [$email->sender|$email->subject|$date] $unread \n";
         }
     }
 
@@ -154,7 +154,7 @@ class EmailService
 
             foreach ($emails->get() as $email) {
                 $id++;
-                echo "> $email->id $email->recipient [$email->subject | $email->created_at]\n";
+                echo "> $email->id [$email->recipient|$email->subject|$email->created_at]\n";
             }
 
             exit;

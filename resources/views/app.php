@@ -4,8 +4,7 @@
   <button style="display: none;" onclick="location.href='teleterm.txt'" target="_blank" type="button">HELP</button>
     <div id="terminal"></div>
     <div id="prompt">
-      <span id="connection">></span> 
-      <input type="text" id="command-input" autofocus spellcheck="false" autocomplete="off">
+    <span id="connection"></span>><input type="text" id="command-input" autofocus spellcheck="false" autocomplete="off">
   </div>
   </div>
     

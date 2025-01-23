@@ -6,24 +6,40 @@ use Lib\Controller;
 use Lib\Session;
 
 use App\Host\File\FileService as File;
+use App\Host\Folder\FolderService as Folder;
+
 use App\User\UserService as User;
 use App\Host\HostService as Host;
 
 class FileController extends Controller
 {
 
-    public function dir()
+    public function files()
     {
-        $files = Host::data()->files()->get();
-
-        if($files->isEmpty()) {
-            echo 'ERROR: Access Denied.';
-            exit;
-        }
+       $files = Host::data()->files()->where('folder_id', Folder::id())->get();
 
         // Loop through each top-level folder and format the structure
         foreach ($files as $file) {
-            echo "$file->id. [" . $file->file_name . "]\n";
+            echo "$file->file_name\n";
+        }
+    }
+
+    public function ls()
+    {
+        if(!Folder::root()) {
+            return $this->files();
+        } else {
+            return $this->dir();
+        } 
+    }
+
+    public function dir()
+    {
+        $folders = Folder::list();
+
+        // Loop through each top-level folder and format the structure
+        foreach ($folders as $folder) {
+            echo "[$folder->folder_name]\n";
         }
     }
 
@@ -31,7 +47,7 @@ class FileController extends Controller
     {
         $data = parse_request('data');
 
-        $file = Host::data()->file($data);
+        $file = Host::data()->file($data, Folder::id());
 
         if($file) {
             echo $file->content;

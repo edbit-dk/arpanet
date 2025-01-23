@@ -24,7 +24,7 @@ $(document).ready(function() {
     loadSavedTermMode();
 
     //Check commands available
-    listCommands();
+    autoHelp();
 
     // Check if 'boot' command has been sent during the current session
     if (!localStorage.getItem('boot')) {
@@ -86,7 +86,6 @@ function handleRedirect(response) {
     if (response.startsWith("Trying")) {
         setTimeout(function() {
             setTimeout(function() {
-                sessionStorage.setItem('host', true);
                 redirectTo('');
             }, 1000);
 
@@ -104,6 +103,7 @@ function handleRedirect(response) {
 
     if (response.startsWith("Password")) {
         setTimeout(function() {
+            sessionStorage.setItem('host', true);
             setTimeout(function() {
                 redirectTo('');
             }, 1000);
@@ -294,6 +294,10 @@ function handleUserInput() {
             .then(response => {
                 if (!response.includes("ERROR")) {
                     setTimeout(function () {
+                        if(sessionStorage.getItem('host')) {
+                            sessionStorage.removeItem('host');
+                        }
+
                         if(['boot', 'reboot', 'halt', 'halt restart', 'restart'].includes(command)) {
                             localStorage.removeItem('boot');
                         }
@@ -324,6 +328,11 @@ function sendCommand(command, data, queryString = '') {
             },
             success: function(response) {
                 loadSavedTheme();
+                
+                if(sessionStorage.getItem('host')) {
+                    $('#connection').load('connection');
+                }
+
                 if (isPasswordPrompt) {
                     handlePasswordPromptResponse(response); // Handle password prompt response
                 } else {
@@ -347,7 +356,7 @@ function appendCommand(command) {
 }
 
 // Fetch commands from the server based on the user's status
-function listCommands() {
+function autoHelp() {
     fetch('help?data=auto')
         .then(response => response.json())
         .then(data => {
@@ -619,6 +628,7 @@ function setTheme(color) {
 function setTermMode(mode) {
     $("#page").attr('class', mode);
     localStorage.setItem('term', mode);
+    sendCommand('term', mode);
 }
 
 // Function to load the saved theme from localStorage

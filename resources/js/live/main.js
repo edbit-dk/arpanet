@@ -24,7 +24,7 @@ $(document).ready(function() {
     loadSavedTermMode();
 
     //Check commands available
-    listCommands();
+    autoHelp();
 
     // Check if 'boot' command has been sent during the current session
     if (!localStorage.getItem('boot')) {

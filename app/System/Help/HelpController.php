@@ -21,7 +21,7 @@ class HelpController extends Controller
     {
         $this->data = parse_request('data');
 
-        $paginate = paginate($this->data[0], Help::where($type,1)->count());
+        $paginate = paginate($this->data[0], Help::where($type,1)->count(), 10);
         $page = $paginate['page'];
         $limit = $paginate['limit'];
         $offset = $paginate['offset'];

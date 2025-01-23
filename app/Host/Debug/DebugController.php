@@ -48,7 +48,7 @@ class DebugController
     
             // Format and output the memory dump with memory paths
             if (!Session::has('debug')) {
-                echo text('debug.txt');
+                echo $this->reset();
             }
             
             $attempts = Session::get('debug_attempts');
@@ -129,6 +129,39 @@ class DebugController
             }
     
         }
+    }
+
+    public function reset()
+    {
+        $term_mode = Session::get('term');
+
+        return <<< EOT
+        SECURITY RESET...
+
+        WELCOME TO TELETERM
+
+        >SET TERMINAL/INQUIRE
+        
+        $term_mode
+        
+        >SET FILE/PROTECTION=OWNER:RWED ACCOUNTS.F
+        >SET HALT RESTART/MAINT
+        
+        Initializing MF Boot Agent v2.3.0
+        RETROS BIOS
+        RBIOS-4.02.08.00 52EE5.E7.E8
+        Copyright 1975-1977
+        Uppermem: 64 KB
+        Root (5A8)
+        Maintenance Mode
+        
+        >RUN DEBUG/ACCOUNTS.F
+        
+        TELETERM PROTOCOL
+        ENTER PASSWORD NOW
+
+        
+        EOT;
     }
 
     public function set() 

@@ -36,9 +36,9 @@ class HostModel extends Model
         return $this->BelongsToMany(File::class, 'host_file', 'host_id', 'file_id');
     }
 
-    public function file($data)
+    public function file($name, $folder_id)
     {
-        return $this->files()->where('files.id', $data)->orWhere('file_name', $data)->first();
+        return $this->files()->where('folder_id', $folder_id)->where('file_name', $name)->first();
     }
 
     // A host can have many folders

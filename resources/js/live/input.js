@@ -131,6 +131,10 @@ function handleUserInput() {
             .then(response => {
                 if (!response.includes("ERROR")) {
                     setTimeout(function () {
+                        if(sessionStorage.getItem('host')) {
+                            sessionStorage.removeItem('host');
+                        }
+
                         if(['boot', 'reboot', 'halt', 'halt restart', 'restart'].includes(command)) {
                             localStorage.removeItem('boot');
                         }

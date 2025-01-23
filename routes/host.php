@@ -1,9 +1,13 @@
 <?php
 
 use App\Host\HostController;
+
 use App\Host\File\FileController;
+use App\Host\Folder\FolderController;
+
 use App\Host\Debug\DebugController;
 use App\System\Email\EmailController;
+
 use App\Host\HostService as Host;
 use App\User\UserService as User;
 
@@ -24,18 +28,24 @@ if(Host::guest() && User::auth()) {
 
 if(Host::auth() && User::username() != 'guest') {
 
-    $app->get('/dir', [FileController::class, 'dir']);
-    $app->get('/ls', [FileController::class, 'dir']);
+    $app->get('/cd', [FolderController::class, 'cd']);
+
+    $app->get('/dir', [FileController::class, 'ls']);
+    $app->get('/ls', [FileController::class, 'ls']);
+
     $app->get('/type', [FileController::class, 'cat']);
     $app->get('/cat', [FileController::class, 'cat']);
     $app->get('/more', [FileController::class, 'cat']);
     $app->get('/open', [FileController::class, 'cat']);
+
     $app->get('/echo', [FileController::class, 'echo']);
 
     $app->get('/scan', [HostController::class, 'scan']);
     $app->get('/netstat', [HostController::class, 'scan']);
+
     $app->get('/connect', [HostController::class, 'connect']);
     $app->get('/telnet', [HostController::class, 'connect']);
+
     $app->get('/mail', [EmailController::class, 'mail']);
     
 }

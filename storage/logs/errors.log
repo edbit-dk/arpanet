@@ -1,0 +1,10 @@
+[23-Jan-2025 00:05:27 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: Call to a member function isEmpty() on null in D:\Ampps\www\terminal\app\Host\File\FileController.php:26
+Stack trace:
+#0 [internal function]: App\Host\File\FileController->dir()
+#1 D:\Ampps\www\terminal\src\Router.php(91): call_user_func()
+#2 D:\Ampps\www\terminal\public\index.php(21): Lib\Router->run()
+#3 {main}
+  thrown in D:\Ampps\www\terminal\app\Host\File\FileController.php on line 26
+[23-Jan-2025 00:06:00 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, null given in D:\Ampps\www\terminal\app\Host\File\FileController.php on line 26
+[23-Jan-2025 00:06:06 Europe/Copenhagen] PHP Warning:  foreach() argument must be of type array|object, null given in D:\Ampps\www\terminal\app\Host\File\FileController.php on line 26
+[23-Jan-2025 00:44:10 Europe/Copenhagen] PHP Warning:  Undefined variable $options in D:\Ampps\www\terminal\app\System\Email\EmailService.php on line 42

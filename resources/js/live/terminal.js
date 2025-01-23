@@ -143,6 +143,7 @@ function setTheme(color) {
 function setTermMode(mode) {
     $("#page").attr('class', mode);
     localStorage.setItem('term', mode);
+    sendCommand('term', mode);
 }
 
 // Function to load the saved theme from localStorage

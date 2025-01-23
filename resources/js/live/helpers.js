@@ -4,7 +4,6 @@ function handleRedirect(response) {
     if (response.startsWith("Trying")) {
         setTimeout(function() {
             setTimeout(function() {
-                sessionStorage.setItem('host', true);
                 redirectTo('');
             }, 1000);
 
@@ -22,6 +21,7 @@ function handleRedirect(response) {
 
     if (response.startsWith("Password")) {
         setTimeout(function() {
+            sessionStorage.setItem('host', true);
             setTimeout(function() {
                 redirectTo('');
             }, 1000);
