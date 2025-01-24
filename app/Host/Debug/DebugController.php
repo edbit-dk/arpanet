@@ -114,7 +114,7 @@ class DebugController
 
                 $reset_root_pass = wordlist(config('database') . 'wordlist.txt', $min_level, 1)[0];
                 Host::debug($root_pass, Auth::data()->id);
-                Host::data()->update(['password' => $reset_root_pass]);
+                Host::data()->update(['password' => strtolower($reset_root_pass)]);
 
                 // Reset login attempts on successful login
                 Session::remove('debug_attempts');

@@ -58,7 +58,7 @@ class HostService
 
     public static function netstat() 
     {
-        return Host::where('id','<=',4)->with('users')->get();
+        return Host::find([1, 2, 3]);
     }
 
     public static function check() 
@@ -156,10 +156,6 @@ class HostService
             Session::set('user', $user->id);
         }
 
-         if(!Session::has('network')) {
-            Session::set('network', self::auth());
-        }
-
         self::attempt($host_id);
 
         return true;
@@ -174,7 +170,8 @@ class HostService
             if($host_id != 0) {
                 $host_user = self::data()->user(Auth::id());
                 if($host_user && empty($host_user->pivot->last_session)) {
-                    $host_user->update(['last_login' => \Carbon\Carbon::now()]);
+                    $host_user->pivot->last_session = \Carbon\Carbon::now();
+                    $host_user->pivot->save();
                 }
             }
 
@@ -234,16 +231,15 @@ class HostService
         if (self::auth()) {
 
             if($host_user = self::data()->user(Auth::id())) {
-                $host_user->update(['last_session' => \Carbon\Carbon::now()]);
+                $host_user->pivot->last_session = \Carbon\Carbon::now();
+                $host_user->pivot->save();
             }
 
             return Session::remove(self::$auth);
         }
 
         if(self::guest()) {
-            self::attempt(session::get('network'));
-            Session::remove('network');
-            return Session::remove(self::$guest);
+            self::attempt(0);
         }
 
     }

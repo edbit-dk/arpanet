@@ -26,7 +26,6 @@ class SystemController extends Controller
     {
         $data = parse_request('data');
         Session::set('term', strtoupper($data[0]));
-        echo 'SET TERM=' . Session::get('term');
     }
 
     public function minify()
@@ -144,7 +143,6 @@ class SystemController extends Controller
 
     public function connection()
     {
-
         $pwd = Folder::pwd();
 
         if(Host::guest()) {
@@ -165,7 +163,8 @@ class SystemController extends Controller
         }
 
         if(User::auth()) {
-            echo '@';
+            $username = User::username();
+            echo "$username@arpanet";
         } else {
             echo '.';
         }
@@ -196,10 +195,11 @@ class SystemController extends Controller
 
     public function home()
     {
-        $os = text('version.txt');
-        $ip = '0.0.0.0';
-        $org = 'Advanced Research Projects Agency Network';
-        $hostname = 'ARPANET';
+        $host = Hosts::where('host_name', 'arpanet')->first();
+        $os = $host->os;
+        $ip = $host->ip;
+        $org = $host->org;
+        $hostname = strtoupper($host->host_name);
         $last_login = timestamp(User::data()->last_login);
         $username = strtoupper(User::username());
 
@@ -211,7 +211,6 @@ class SystemController extends Controller
         $os ($hostname) ($ip)
         $org
 
-        Welcome to $hostname
         $mail
         EOT;
     }
@@ -262,6 +261,11 @@ class SystemController extends Controller
         $last_login = '';
 
         if($host_user = Host::data()->user(User::id())) {
+
+            if(empty($host_user->pivot->last_session)) {
+              $host_user->pivot->last_session = \Carbon\Carbon::now();
+              $host_user->pivot->save();
+            }
             $date = timestamp($host_user->pivot->last_session);
             $last_login = "$date as $username";
         }
@@ -280,7 +284,6 @@ class SystemController extends Controller
         $os ($host_name) ($host_ip)
         $org
 
-        Welcome $username!
         $mail       
         $motd
         $notes
