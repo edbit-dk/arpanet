@@ -13,8 +13,23 @@ use App\Host\HostModel as Hosts;
 use App\Host\Folder\FolderService as Folder;
 use App\System\Email\EmailService as Mail;
 
+use DB\LevelTable;
+
 class SystemController extends Controller
 {
+
+    public function setup()
+    {
+        $app_key = parse_request('key')[0];
+
+        if(config('key') == $app_key) {
+            echo 'SUCCESS: Correct Key!';
+            //LevelTable::up();
+        } else {
+            echo 'ERROR: Unknown Key!';
+        }
+
+    }
 
     public function index()
     {
@@ -121,13 +136,8 @@ class SystemController extends Controller
     }
 
     public function accesscode() 
-    {
-        $code_1 = random_str(6, 'AXYZ01234679');
-        $code_2 = random_str(6, 'AXYZ01234679');
-        $code_3 = random_str(6, 'AXYZ01234679');
-        $code_4 = random_str(6, 'AXYZ01234679');
-    
-        $access_code = "{$code_1}-{$code_2}-{$code_3}-{$code_4}"; 
+    {    
+        $access_code = access_code();
 
         Session::set('access_code', $access_code);
 

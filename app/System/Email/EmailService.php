@@ -75,13 +75,13 @@ class EmailService
     public static function list()
     {
         $id = 0;
-        $unread = '*';
+        $unread = 'N';
 
         $emails = Email::where('recipient', self::contact());
 
         $count = $emails->count();
         $new = Email::where('recipient', self::contact())->where('is_read', 0)->count();
-        echo "$count message(s) | $new new message(s) \n";
+        echo "$count message(s) | $new unread \n";
 
         foreach ($emails->get() as $email) {
             $id++;
@@ -89,7 +89,7 @@ class EmailService
             if($email->is_read) {
                 $unread = '';
             }
-            echo "> $email->id [$email->sender|$email->subject|$date] $unread \n";
+            echo ">$unread $email->id $email->sender   ($date) [$email->subject] \n";
         }
     }
 
@@ -128,8 +128,8 @@ class EmailService
             To: $to
             Date: $date
             Subject: $email->subject
-
-            $email->body
+            Message:
+            $email->message
             EOT;
 
             Email::where('id', $data)
@@ -154,7 +154,7 @@ class EmailService
 
             foreach ($emails->get() as $email) {
                 $id++;
-                echo "> $email->id [$email->recipient|$email->subject|$email->created_at]\n";
+                echo "> $email->id $email->recipient    ($email->created_at) [$email->subject] \n";
             }
 
             exit;
@@ -168,7 +168,7 @@ class EmailService
         } 
 
         // Send email
-        $body = trim($data[1]);
+        $message = trim($data[1]);
         $subject = $options[1];
         $sender = ($system_mail) ? $system_mail : self::contact();
 
@@ -194,7 +194,7 @@ class EmailService
                 'sender' => $sender,
                 'recipient' => $recipient,
                 'subject' => $subject,
-                'body' => $body
+                'message' => $message
             ]);
 
             if(!$system_mail) {

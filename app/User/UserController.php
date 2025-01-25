@@ -120,8 +120,8 @@ class UserController extends Controller
             
             $this->reset();
 
-            $firstname = ucfirst(strtolower(wordlist($this->config['database'] . 'namelist.txt', rand(5, 12) , 1)[0]));
-            $lastname = ucfirst(strtolower(wordlist($this->config['database']. 'namelist.txt', rand(5, 12) , 1)[0]));
+            $firstname = ucfirst(strtolower(wordlist(text('namelist.txt'), rand(5, 12) , 1)[0]));
+            $lastname = ucfirst(strtolower(wordlist(text('namelist.txt'), rand(5, 12) , 1)[0]));
         } else {
             echo 'ERROR: Wrong Input.';
             exit;

@@ -25,8 +25,8 @@ class UserModel extends Model
 		'lastname',
         'active',
         'level_id',
+        'ip',
         'xp',
-        'rep',
         'last_login'
     ];
 

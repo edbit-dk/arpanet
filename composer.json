@@ -6,7 +6,8 @@
     "autoload": {
         "psr-4": {
             "Lib\\":"src",
-            "App\\": "app"
+            "App\\": "app",
+            "DB\\": "database"
         },
 
         "files": [

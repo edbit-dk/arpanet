@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'key' => base64_encode('62A2AY-3297ZX-1Z6XX3-ZX4Y60'),
     'version' => 1.0,
     'path' => BASE_PATH,
     'date' => 'D M j H:i:s Y',

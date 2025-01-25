@@ -1,4 +1,0 @@
-CP/M
-MS DOS
-PC DOS
-UNIX

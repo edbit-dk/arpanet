@@ -1,0 +1,10 @@
+[25-Jan-2025 02:25:07 Europe/Copenhagen] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 4096 bytes) in D:\Ampps\www\terminal\app\functions.php on line 145
+[25-Jan-2025 02:31:26 Europe/Copenhagen] PHP Fatal error:  Uncaught TypeError: base64_encode(): Argument #1 ($string) must be of type string, array given in D:\Ampps\www\terminal\app\System\SystemController.php:23
+Stack trace:
+#0 D:\Ampps\www\terminal\app\System\SystemController.php(23): base64_encode()
+#1 [internal function]: App\System\SystemController->setup()
+#2 D:\Ampps\www\terminal\src\Router.php(91): call_user_func()
+#3 D:\Ampps\www\terminal\public\index.php(21): Lib\Router->run()
+#4 {main}
+  thrown in D:\Ampps\www\terminal\app\System\SystemController.php on line 23
+[25-Jan-2025 02:33:51 Europe/Copenhagen] PHP Warning:  Array to string conversion in D:\Ampps\www\terminal\app\System\SystemController.php on line 25

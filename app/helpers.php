@@ -71,6 +71,10 @@ function text($name) {
     return file_get_contents(config('public') . "text/$name");
 }
 
+function database($name) {
+    return config('database') . "/$name";
+}
+
 function base_url() {
 
     echo $_SERVER['REQUEST_URI'] . 'public';

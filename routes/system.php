@@ -13,6 +13,7 @@ $app->get('/', [SystemController::class, 'index']);
 $app->get('/connection', [SystemController::class, 'connection']);
 
 // Default
+$app->get('/setup', [SystemController::class, 'setup']);
 $app->get('/minify', [SystemController::class, 'minify']);
 $app->get('/ver', [SystemController::class, 'version']);
 $app->get('/termlink', [SystemController::class, 'termlink']);

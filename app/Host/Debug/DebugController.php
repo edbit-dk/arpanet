@@ -40,7 +40,7 @@ class DebugController
         }
     
         if (!Session::has('dump')) {
-            $word_list = wordlist(config('database') . 'wordlist.txt', $pass_length, $max_words);
+            $word_list = wordlist($pass_length, $max_words);
             $data = array_merge([$root_pass], $word_list);
     
             // Generate the memory dump
@@ -112,7 +112,7 @@ class DebugController
                     Auth::data()->hosts()->attach($server_id);
                 }
 
-                $reset_root_pass = wordlist(config('database') . 'wordlist.txt', $min_level, 1)[0];
+                $reset_root_pass = wordlist($min_level, 1)[0];
                 Host::debug($root_pass, Auth::data()->id);
                 Host::data()->update(['password' => strtolower($reset_root_pass)]);
 

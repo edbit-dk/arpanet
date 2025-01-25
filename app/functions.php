@@ -1,5 +1,14 @@
 <?php
 
+function access_code($length = 6, $chars = 'AXYZ01234679', $spaces = '-') {
+    $code_1 = random_str($length, $chars) . $spaces;
+    $code_2 = random_str($length, $chars) . $spaces;
+    $code_3 = random_str($length, $chars) . $spaces;
+    $code_4 = random_str($length, $chars);
+    
+    return "{$code_1}{$code_2}{$code_3}{$code_4}"; 
+}
+
 function paginate($page, $count = 0, $perPage = 5) {
     $page = isset($page) && is_numeric($page) ? intval($page) : 1;
 
@@ -107,8 +116,22 @@ function random_str(
     return implode('', $pieces);
 }
 
+function word_pass($length = false) {
 
-function random_username($string, $integer = '') {
+    if(!$length) {
+        $length = rand(4,15);
+    }
+
+    return wordlist($length, 1)[0];
+}
+
+
+function rand_username($string = '', $integer = '') {
+
+    if(empty($string)) {
+        $string = wordlist(rand(4,15), 1)[0];
+    }
+
     if(empty($integer)) {
        $integer = random_int(1, 99);
     }
@@ -116,8 +139,8 @@ function random_username($string, $integer = '') {
     return vsprintf('%s%s%d', [...sscanf(strtolower("$string-"), '%s %2s'), $integer]);
 }
 
-function wordlist($file, $word_length = 7, $max_count = 12) {
-    $words = file_get_contents($file);
+function wordlist($word_length = 7, $max_count = 12) {
+    $words = text('wordlist.txt');
     
     $words = explode(" ", $words);
     $retwords = [];
@@ -131,7 +154,7 @@ function wordlist($file, $word_length = 7, $max_count = 12) {
     do {
         $index = rand(0,count($words));
         if(!array_key_exists($index ,$words)) {
-            return wordlist($file, $word_length, $max_count);
+            return wordlist($word_length, $max_count);
         }
         $wordlen = strlen($words[$index]);
         if ($wordlen == $length) {
@@ -145,7 +168,7 @@ function wordlist($file, $word_length = 7, $max_count = 12) {
     
     //$retwords = substr($retwords,0,strlen($retwords)-1);
     if(empty($retwords)) {
-        return wordlist($file, $word_length, $max_count);
+        return wordlist($word_length, $max_count);
     }
     return $retwords;
 }
