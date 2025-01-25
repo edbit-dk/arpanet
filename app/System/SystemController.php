@@ -217,6 +217,8 @@ class SystemController extends Controller
         $os = $host->os;
         $ip = $host->ip;
         $org = $host->org;
+        $motd = $host->motd;
+        $notes = $host->notes;
         $hostname = strtoupper($host->host_name);
         $last_login = timestamp(User::data()->last_login);
         $username = strtoupper(User::username());
@@ -229,7 +231,9 @@ class SystemController extends Controller
         $os ($hostname) ($ip)
         $org
 
-        $mail
+        $motd
+        $notes
+        $mail 
         EOT;
     }
 
@@ -302,9 +306,9 @@ class SystemController extends Controller
         $os ($host_name) ($host_ip)
         $org
 
-        $mail       
         $motd
         $notes
+        $mail       
         EOT;
 
         return;

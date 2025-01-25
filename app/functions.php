@@ -122,7 +122,7 @@ function word_pass($length = false) {
         $length = rand(4,15);
     }
 
-    return wordlist($length, 1)[0];
+    return strtolower(wordlist($length, 1)[0]);
 }
 
 

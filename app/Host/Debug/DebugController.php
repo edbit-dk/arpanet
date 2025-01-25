@@ -147,10 +147,10 @@ class DebugController
         >SET FILE/PROTECTION=OWNER:RWED ACCOUNTS.F
         >SET HALT RESTART/MAINT
         
-        Initializing MF Boot Agent v2.3.0
+        Initializing AT&T MF Boot Agent v2.3.0
         RETROS BIOS
         RBIOS-4.02.08.00 52EE5.E7.E8
-        Copyright 1975-1977
+        Copyright 1975-1977 AT&T
         Uppermem: 64 KB
         Root (5A8)
         Maintenance Mode

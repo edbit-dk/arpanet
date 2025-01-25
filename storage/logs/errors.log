@@ -1,0 +1,36 @@
+[25-Jan-2025 22:42:36 Europe/Copenhagen] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'teleterm.host_file' doesn't exist in D:\Ampps\www\terminal\vendor\illuminate\database\Connection.php:407
+Stack trace:
+#0 D:\Ampps\www\terminal\vendor\illuminate\database\Connection.php(407): PDO->prepare()
+#1 D:\Ampps\www\terminal\vendor\illuminate\database\Connection.php(812): Illuminate\Database\Connection->Illuminate\Database\{closure}()
+#2 D:\Ampps\www\terminal\vendor\illuminate\database\Connection.php(779): Illuminate\Database\Connection->runQueryCallback()
+#3 D:\Ampps\www\terminal\vendor\illuminate\database\Connection.php(398): Illuminate\Database\Connection->run()
+#4 D:\Ampps\www\terminal\vendor\illuminate\database\Query\Builder.php(3133): Illuminate\Database\Connection->select()
+#5 D:\Ampps\www\terminal\vendor\illuminate\database\Query\Builder.php(3118): Illuminate\Database\Query\Builder->runSelect()
+#6 D:\Ampps\www\terminal\vendor\illuminate\database\Query\Builder.php(3706): Illuminate\Database\Query\Builder->Illuminate\Database\Query\{closure}()
+#7 D:\Ampps\www\terminal\vendor\illuminate\database\Query\Builder.php(3117): Illuminate\Database\Query\Builder->onceWithColumns()
+#8 D:\Ampps\www\terminal\vendor\illuminate\database\Eloquent\Builder.php(787): Illuminate\Database\Query\Builder->get()
+#9 D:\Ampps\www\terminal\vendor\illuminate\database\Eloquent\Relations\BelongsToMany.php(870): Illuminate\Database\Eloquent\Builder->getModels()
+#10 D:\Ampps\www\terminal\app\Host\File\FileController.php(19): Illuminate\Database\Eloquent\Relations\BelongsToMany->get()
+#11 D:\Ampps\www\terminal\app\Host\File\FileController.php(30): App\Host\File\FileController->files()
+#12 [internal function]: App\Host\File\FileController->ls()
+#13 D:\Ampps\www\terminal\src\Router.php(91): call_user_func()
+#14 D:\Ampps\www\terminal\public\index.php(21): Lib\Router->run()
+#15 {main}
+
+Next Illuminate\Database\QueryException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'teleterm.host_file' doesn't exist (Connection: default, SQL: select `files`.*, `host_file`.`host_id` as `pivot_host_id`, `host_file`.`file_id` as `pivot_file_id` from `files` inner join `host_file` on `files`.`id` = `host_file`.`file_id` where `host_file`.`host_id` = 9 and `folder_id` = 1) in D:\Ampps\www\terminal\vendor\illuminate\database\Connection.php:825
+Stack trace:
+#0 D:\Ampps\www\terminal\vendor\illuminate\database\Connection.php(779): Illuminate\Database\Connection->runQueryCallback()
+#1 D:\Ampps\www\terminal\vendor\illuminate\database\Connection.php(398): Illuminate\Database\Connection->run()
+#2 D:\Ampps\www\terminal\vendor\illuminate\database\Query\Builder.php(3133): Illuminate\Database\Connection->select()
+#3 D:\Ampps\www\terminal\vendor\illuminate\database\Query\Builder.php(3118): Illuminate\Database\Query\Builder->runSelect()
+#4 D:\Ampps\www\terminal\vendor\illuminate\database\Query\Builder.php(3706): Illuminate\Database\Query\Builder->Illuminate\Database\Query\{closure}()
+#5 D:\Ampps\www\terminal\vendor\illuminate\database\Query\Builder.php(3117): Illuminate\Database\Query\Builder->onceWithColumns()
+#6 D:\Ampps\www\terminal\vendor\illuminate\database\Eloquent\Builder.php(787): Illuminate\Database\Query\Builder->get()
+#7 D:\Ampps\www\terminal\vendor\illuminate\database\Eloquent\Relations\BelongsToMany.php(870): Illuminate\Database\Eloquent\Builder->getModels()
+#8 D:\Ampps\www\terminal\app\Host\File\FileController.php(19): Illuminate\Database\Eloquent\Relations\BelongsToMany->get()
+#9 D:\Ampps\www\terminal\app\Host\File\FileController.php(30): App\Host\File\FileController->files()
+#10 [internal function]: App\Host\File\FileController->ls()
+#11 D:\Ampps\www\terminal\src\Router.php(91): call_user_func()
+#12 D:\Ampps\www\terminal\public\index.php(21): Lib\Router->run()
+#13 {main}
+  thrown in D:\Ampps\www\terminal\vendor\illuminate\database\Connection.php on line 825

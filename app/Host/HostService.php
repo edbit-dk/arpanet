@@ -58,7 +58,7 @@ class HostService
 
     public static function netstat() 
     {
-        return Host::find([1, 2, 3]);
+        return Host::where('network', 1)->get();
     }
 
     public static function check() 

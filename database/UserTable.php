@@ -11,6 +11,7 @@ class UserTable extends User
 {
     public static function up()
     {
+        DB::schema()->disableForeignKeyConstraints();
         DB::schema()->dropIfExists((new self)->table);
 
         DB::schema()->create((new self)->table, function (Blueprint $table) {
@@ -19,7 +20,7 @@ class UserTable extends User
             $table->string('user_name')->unique();
             $table->string('email')->unique();
             $table->string('access_code')->unique();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->enum('role', ['standard', 'superuser', 'system', 'service'])->default('standard');
             $table->unsignedTinyInteger('level_id')->default(0);
             $table->boolean('active')->default(1);
@@ -32,46 +33,44 @@ class UserTable extends User
         DB::table((new self)->table)->insert([
             [
                 'user_name' => 'root', 
+                'email' => 'root@teleterm.net', 
+                'password' => null,
+                'access_code' => access_code(),
                 'fullname' => 'Superuser',
                 'role' => 'superuser',
-                'email' => 'root@teleterm.net', 
-                'access_code' => access_code(),
-                'password' => '',
                 'level_id' => 6,
-                'active' => 0,
                 'xp' => 100
             ],
             [
-                'user_name' => 'adm', 
+                'user_name' => 'admin', 
+                'email' => 'admin@teleterm.net',
+                'password' => 'root',
+                'access_code' => access_code(),
                 'fullname' => 'Administrator',
                 'role' => 'superuser',
-                'email' => 'admin@teleterm.net', 
-                'access_code' => access_code(),
-                'password' => 'root',
                 'level_id' => 6,
                 'xp' => 100
             ],
             [
                 'user_name' => 'system', 
+                'email' => 'system@teleterm.net', 
+                'password' => 'manager',
+                'access_code' => access_code(),
                 'fullname' => 'System Manager',
                 'role' => 'superuser',
-                'email' => 'system@teleterm.net', 
-                'access_code' => access_code(),
-                'password' => 'manager',
                 'level_id' => 6,
-                'active' => 0,
                 'xp' => 100
             ],
             [
                 'user_name' => 'guest', 
+                'email' => 'guest@teleterm.net', 
+                'password' => null,
+                'access_code' => access_code(),
                 'fullname' => 'Guest account',
                 'role' => 'standard',
-                'email' => 'guest@teleterm.net', 
-                'access_code' => access_code(),
-                'password' => '',
                 'level_id' => 1,
                 'xp' => 0
-            ],
+            ]
         ]);
     }
 
