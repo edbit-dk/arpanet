@@ -2,7 +2,7 @@
 
 namespace DB;
 
-use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Schema\Blueprint;
 
 use App\Host\File\FileModel as File;
@@ -11,9 +11,9 @@ class FileTable extends File
 {
     public static function up()
     {
-        Capsule::schema()->dropIfExists((new self)->table);
+        DB::schema()->dropIfExists((new self)->table);
 
-        Capsule::schema()->create((new self)->table, function (Blueprint $table) {
+        DB::schema()->create((new self)->table, function (Blueprint $table) {
             $table->increments('id');
             $table->string('file_name');
             $table->text('content');
@@ -26,7 +26,7 @@ class FileTable extends File
 
     public static function down()
     {
-        Capsule::schema()->drop((new self)->table);
+        DB::schema()->drop((new self)->table);
     }
 }
 

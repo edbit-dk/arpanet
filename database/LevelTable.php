@@ -2,7 +2,7 @@
 
 namespace DB;
 
-use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Schema\Blueprint;
 
 use App\System\Level\LevelModel as Level;
@@ -11,9 +11,9 @@ class LevelTable extends Level
 {
     public static function up()
     {
-        Capsule::schema()->dropIfExists((new self)->table);
+        DB::schema()->dropIfExists((new self)->table);
 
-        Capsule::schema()->create((new self)->table, function (Blueprint $table) {
+        DB::schema()->create((new self)->table, function (Blueprint $table) {
             $table->increments('id');
             $table->string('badge');
             $table->unsignedTinyInteger('level');
@@ -22,7 +22,7 @@ class LevelTable extends Level
             $table->unsignedTinyInteger('max');
         });
 
-        Capsule::table((new self)->table)->insert([
+        DB::table((new self)->table)->insert([
             ['badge' => 'BEGINNER', 'level' => 0,'reward' => 1,'min' => 2,'max' => 3],
             ['badge' => 'NOVICE', 'level' => 15,'reward' => 2,'min' => 4,'max' => 5],
             ['badge' => 'SKILLED', 'level' => 25,'reward' => 3,'min' => 6,'max' => 8],
@@ -34,7 +34,7 @@ class LevelTable extends Level
 
     public static function down()
     {
-        Capsule::schema()->drop((new self)->table);
+        DB::schema()->drop((new self)->table);
     }
 }
 

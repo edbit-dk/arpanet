@@ -14,21 +14,29 @@ use App\Host\Folder\FolderService as Folder;
 use App\System\Email\EmailService as Mail;
 
 use DB\LevelTable;
+use DB\UserTable;
+use DB\HostTable;
+use DB\HostUserTable;
+use DB\HostNodeTable;
+use DB\HelpTable;
+use DB\EmailTable;
+use DB\FileTable;
+use DB\FolderTable;
 
 class SystemController extends Controller
 {
 
     public function setup()
     {
-        $app_key = parse_request('key')[0];
-
-        if(config('key') == $app_key) {
-            echo 'SUCCESS: Correct Key!';
-            //LevelTable::up();
-        } else {
-            echo 'ERROR: Unknown Key!';
-        }
-
+        HelpTable::up();
+        UserTable::up();
+        HostTable::up();
+        HostUserTable::up();
+        HostNodeTable::up();
+        LevelTable::up();
+        EmailTable::up();
+        FileTable::up();
+        FolderTable::up();
     }
 
     public function index()
