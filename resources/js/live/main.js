@@ -11,6 +11,8 @@ let usernameForNewUser = ''; // Variable to store the username for new user
 let isUsernamePrompt = false;
 let currentCommand = '';
 let commands = [];
+let files = [];
+let folders = [];
 let cmd = '';
 let currentSongIndex = 0;
 let audio;

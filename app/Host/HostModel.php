@@ -33,7 +33,7 @@ class HostModel extends Model
     // A host can have many files
     public function files()
     {
-        return $this->BelongsToMany(File::class, 'host_file', 'host_id', 'file_id');
+        return $this->hasMany(File::class, 'host_id');
     }
 
     public function file($name, $folder_id)

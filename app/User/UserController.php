@@ -54,7 +54,7 @@ class UserController extends Controller
                 $this->reset();
 
                 if(Auth::login($user_name, $password)) {
-                    Host::attempt(0);
+                    Host::attempt(1);
                     echo "Authentication Successful.\n";
                     echo 'Please wait while system is accessed...';
                     sleep(1);

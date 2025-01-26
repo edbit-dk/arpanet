@@ -49,11 +49,11 @@ class HostController extends Controller
             exit;
         }
 
-        if(Host::auth() == 0) {
+        if(Host::auth() == 1) {
             $host = Host::connect($data);
         }
 
-        if(Host::auth() > 0) {
+        if(Host::auth() > 1) {
             if(Host::data()->node(Host::try($data)->id)) {
                 $host = Host::connect($data);
             }
@@ -73,11 +73,11 @@ class HostController extends Controller
     {
         $hosts = false;
 
-        if(Host::auth() == 0) {
+        if(Host::auth() == 1) {
             $hosts = Host::netstat(); 
         }
 
-        if(Host::auth()) {
+        if(Host::auth() > 1) {
             $hosts = Host::data()->nodes;
         } 
 

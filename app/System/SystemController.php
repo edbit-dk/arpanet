@@ -191,7 +191,7 @@ class SystemController extends Controller
 
     public function welcome() 
     {
-        if(Host::auth()) {
+        if(Host::auth() > 1) {
             return $this->host();
         }
 

@@ -31,6 +31,7 @@ function handleRedirect(response) {
 
     if (response.startsWith("Authentication")) {
         setTimeout(function() {
+            sessionStorage.setItem('host', true);
             setTimeout(function() {
                 redirectTo('');
             }, 1000);

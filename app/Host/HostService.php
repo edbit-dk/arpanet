@@ -167,7 +167,7 @@ class HostService
             Session::set(self::$guest, false);
             Session::set(self::$auth, $host_id);
 
-            if($host_id != 0) {
+            if($host_id != 1) {
                 $host_user = self::data()->user(Auth::id());
                 if($host_user && empty($host_user->pivot->last_session)) {
                     $host_user->pivot->last_session = \Carbon\Carbon::now();
@@ -227,7 +227,6 @@ class HostService
 
         self::reset();
 
-
         if (self::auth()) {
 
             if($host_user = self::data()->user(Auth::id())) {
@@ -235,11 +234,15 @@ class HostService
                 $host_user->pivot->save();
             }
 
-            return Session::remove(self::$auth);
+            Session::remove(self::$auth);
+
+            if(self::auth() == 1) {
+                return Session::remove(self::$guest);
+            }
         }
 
         if(self::guest()) {
-            self::attempt(0);
+            return Session::remove(self::$guest);
         }
 
     }
