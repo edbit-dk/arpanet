@@ -152,8 +152,6 @@ class UserController extends Controller
     public function logout() 
     {
         Auth::logout();
-        sleep(1);
-        echo "Goodbye.\n";
     }
 
     public function unlink()

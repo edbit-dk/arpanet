@@ -3,49 +3,34 @@ function handleRedirect(response) {
 
     if (response.startsWith("Trying")) {
         setTimeout(function() {
-            setTimeout(function() {
-                redirectTo('');
-            }, 1000);
-
-        }, 1000);
+            redirectTo('');
+        }, 2000);
     }
 
     if (response.startsWith("EXCACT")) {
         setTimeout(function() {
-            setTimeout(function() {
-                redirectTo('');
-            }, 1000);
-
-        }, 1000);
+            redirectTo('');
+        }, 2000);
     }
 
     if (response.startsWith("Password")) {
         setTimeout(function() {
             sessionStorage.setItem('host', true);
-            setTimeout(function() {
-                redirectTo('');
-            }, 1000);
-
-        }, 1000);
+            redirectTo('');
+        }, 2000);
     }
 
     if (response.startsWith("Authentication")) {
         setTimeout(function() {
             sessionStorage.setItem('host', true);
-            setTimeout(function() {
-                redirectTo('');
-            }, 1000);
-
-        }, 1000);
+            redirectTo('');
+        }, 2000);
     }
 
     if (response.startsWith("SUCCESS") || response.startsWith("Security")) {
         setTimeout(function() {
-            setTimeout(function() {
-                redirectTo('');
-            }, 1000);
-
-        }, 1000);
+            redirectTo('');
+        }, 2000);
     }
 }
 

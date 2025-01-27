@@ -54,14 +54,14 @@ class SystemController extends Controller
     public function minify()
     {
 
-        $js = file_get_contents(BASE_PATH . '/resources/js/live/main.js');
-        $js .= file_get_contents(BASE_PATH . '/resources/js/live/events.js');
-        $js .= file_get_contents(BASE_PATH . '/resources/js/live/helpers.js');
-        $js .= file_get_contents(BASE_PATH . '/resources/js/live/input.js');
-        $js .= file_get_contents(BASE_PATH . '/resources/js/live/commands.js');
-        $js .= file_get_contents(BASE_PATH . '/resources/js/live/prompts.js');
-        $js .= file_get_contents(BASE_PATH . '/resources/js/live/terminal.js');
-        $js .= file_get_contents(BASE_PATH . '/resources/js/live/music.js');
+        $js = file_get_contents(BASE_PATH . '/resources/js/main.js');
+        $js .= file_get_contents(BASE_PATH . '/resources/js/events.js');
+        $js .= file_get_contents(BASE_PATH . '/resources/js/helpers.js');
+        $js .= file_get_contents(BASE_PATH . '/resources/js/input.js');
+        $js .= file_get_contents(BASE_PATH . '/resources/js/commands.js');
+        $js .= file_get_contents(BASE_PATH . '/resources/js/prompts.js');
+        $js .= file_get_contents(BASE_PATH . '/resources/js/terminal.js');
+        $js .= file_get_contents(BASE_PATH . '/resources/js/music.js');
 
         $css = file_get_contents(BASE_PATH . '/resources/css/reset.css');
         $css .= file_get_contents(BASE_PATH . '/resources/css/main.css');
@@ -180,26 +180,21 @@ class SystemController extends Controller
             exit;
         }
 
-        if(User::auth()) {
-            $username = User::username();
-            echo "$username@arpanet";
-        } else {
-            echo '.';
-        }
+        echo '.';
 
     }
 
     public function welcome() 
     {
-        if(Host::auth() > 1) {
-            return $this->host();
-        }
-
         if(Host::guest()) {
             return $this->termlink();
         }
 
-        if(User::auth()) {
+        if(Host::auth() > 1) {
+            return $this->host();
+        }
+
+        if(Host::auth() == 1) {
             return $this->home();
         }
 

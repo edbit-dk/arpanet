@@ -32,15 +32,6 @@ class HelpController extends Controller
                         ->limit($limit)
                         ->offset($offset)->get();
 
-        if($this->data[0] == 'auto') {
-            foreach ($this->commands as $item) {
-                $this->response[] = $item->cmd;
-            }
-
-            echo json_encode($this->response);
-            exit;
-        }
-
         if(empty($this->data[0]) || is_numeric($this->data[0])) {
 
             foreach ($this->commands as $item) {

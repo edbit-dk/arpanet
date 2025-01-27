@@ -15,7 +15,7 @@ function handleLogon(username) {
     if (isPasswordPrompt) return; // Already prompting for password, do nothing
     isPasswordPrompt = true;
     usernameForLogon = username;
-    loadText("password:");
+    loadText("Password:");
     $('#command-input').attr('type', 'password'); // Change input to password
 }
 
@@ -37,7 +37,7 @@ function handleNewUser(username) {
 
     // Proceed to password prompt
     isPasswordPrompt = true;
-    loadText("password:");
+    loadText("Password:");
     $('#command-input').attr('type', 'password');
 }
 

@@ -14,7 +14,7 @@ function sendCommand(command, data, queryString = '') {
             success: function(response) {
                 loadSavedTheme();
                 
-                if(sessionStorage.getItem('host')) {
+                if(sessionStorage.getItem('host') && command == 'cd') {
                     $('#connection').load('connection');
                 }
 
@@ -42,7 +42,7 @@ function appendCommand(command) {
 
 // Fetch commands from the server based on the user's status
 function autoHelp() {
-    fetch('help?data=auto')
+    fetch('api?key=system&get=auto')
         .then(response => response.json())
         .then(data => {
             if (Array.isArray(data)) {
@@ -57,21 +57,25 @@ function autoHelp() {
 
 function autocomplete() {
     const inputField = $('#command-input');
-    const currentText = inputField.val().trim();
+    const currentText = inputField.val();
+    const lastWordMatch = currentText.match(/(^|\s)(\S*)$/); // Matches the last word or the beginning of the input
+
+    if (!lastWordMatch) return; // Exit if there's no match
+
+    const prefix = lastWordMatch[2]; // Extract the current word being typed
 
     // Find commands that match the current input
-    const matches = commands.filter(cmd => typeof cmd === 'string' && cmd.startsWith(currentText));
-
+    const matches = commands.filter(cmd => typeof cmd === 'string' && cmd.startsWith(prefix));
 
     if (matches.length === 1) {
         // If only one match, autocomplete the input
-        inputField.val(matches[0]);
+        inputField.val(currentText.slice(0, -prefix.length) + matches[0]);
     } else if (matches.length > 1) {
         // If multiple matches, find the common prefix
         const commonPrefix = findCommonPrefix(matches);
-        if (commonPrefix.length > currentText.length) {
+        if (commonPrefix.length > prefix.length) {
             // Autocomplete the input to the common prefix
-            inputField.val(commonPrefix);
+            inputField.val(currentText.slice(0, -prefix.length) + commonPrefix);
         } else {
             // Show all matches in the terminal as suggestions
             loadText(`${matches.join(' ')}`);
@@ -81,5 +85,6 @@ function autocomplete() {
         loadText('');
     }
 }
+
 
 

@@ -116,6 +116,9 @@ class HostService
             return false;
         } else {
             self::reset();
+            if(self::auth() == 1) {
+                Session::set('host', 1);
+            }
             Session::set(self::$auth, false);
             Session::set(self::$guest, $host->id);
             return true;
@@ -227,7 +230,16 @@ class HostService
 
         self::reset();
 
-        if (self::auth()) {
+        if(self::guest()) {
+            Session::remove(self::$guest);
+            exit;
+        }
+
+        if(Session::has('host')) {
+           return self::attempt(1);
+        }
+
+        if (self::auth() > 1) {
 
             if($host_user = self::data()->user(Auth::id())) {
                 $host_user->pivot->last_session = \Carbon\Carbon::now();
@@ -235,15 +247,15 @@ class HostService
             }
 
             Session::remove(self::$auth);
+            exit;
+        } 
 
-            if(self::auth() == 1) {
-                return Session::remove(self::$guest);
-            }
+        if(self::auth() == 1) {
+            Session::remove(self::$auth);
+            Auth::logout();
+            exit;
         }
-
-        if(self::guest()) {
-            return Session::remove(self::$guest);
-        }
+        
 
     }
 

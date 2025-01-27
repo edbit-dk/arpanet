@@ -44,7 +44,7 @@ class HostModel extends Model
     // A host can have many folders
     public function folders()
     {
-        return $this->hasMany(Folder::class);
+        return $this->hasMany(Folder::class, 'host_id');
     }
 
     public function users(): BelongsToMany

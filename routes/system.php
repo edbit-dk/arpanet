@@ -1,5 +1,6 @@
 <?php
 
+use App\API\APIController;
 use App\System\SystemController;
 use App\System\Email\EmailController;
 use App\System\Help\HelpController;
@@ -11,6 +12,7 @@ use App\User\UserService as User;
 // Home
 $app->get('/', [SystemController::class, 'index']);
 $app->get('/connection', [SystemController::class, 'connection']);
+$app->get('/api', [APIController::class, 'authorize']);
 
 // Default
 $app->get('/setup', [SystemController::class, 'setup']);
