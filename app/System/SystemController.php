@@ -190,12 +190,12 @@ class SystemController extends Controller
             return $this->termlink();
         }
 
-        if(Host::auth() > 1) {
-            return $this->host();
-        }
-
         if(Host::auth() == 1) {
             return $this->home();
+        }
+
+        if(Host::auth() > 1) {
+            return $this->host();
         }
 
         if(User::isUplinked()) {
@@ -212,8 +212,8 @@ class SystemController extends Controller
         $os = $host->os;
         $ip = $host->ip;
         $org = $host->org;
-        $motd = $host->motd;
-        $notes = $host->notes;
+        $motd = isset($host->motd) ? $host->motd : null;
+        $notes = isset($host->notes) ? $host->notes : null;
         $hostname = strtoupper($host->host_name);
         $last_login = timestamp(User::data()->last_login);
         $username = strtoupper(User::username());
