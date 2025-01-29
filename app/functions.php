@@ -122,7 +122,15 @@ function word_pass($length = false) {
         $length = rand(4,15);
     }
 
-    return strtolower(wordlist($length, 1)[0]);
+    return wordlist($length, 1)[0];
+}
+
+function random_pass($length = false) {
+    if(!$length) {
+        $length = rand(4,15);
+    }
+
+    return wordlist($length, 1, 'password-list.txt')[0];
 }
 
 
@@ -139,39 +147,48 @@ function rand_username($string = '', $integer = '') {
     return vsprintf('%s%s%d', [...sscanf(strtolower("$string-"), '%s %2s'), $integer]);
 }
 
-function wordlist($word_length = 7, $max_count = 12) {
-    $words = text('wordlist.txt');
-    
-    $words = explode(" ", $words);
+function wordlist($word_length = 7, $max_count = 12, $list = 'wordlist.txt') {
+    $file_path = config('public') . "/text/$list";
     $retwords = [];
-    $i=0;
-    $index=0;
-    $wordlen=0;
-    $length = $word_length;
-    $count =$max_count;
-    $failsafe=0;
-    
-    do {
-        $index = rand(0,count($words));
-        if(!array_key_exists($index ,$words)) {
-            return wordlist($word_length, $max_count);
-        }
-        $wordlen = strlen($words[$index]);
-        if ($wordlen == $length) {
-            $retwords[] = strtoupper($words[$index]);
-            $i++;
-        } else {
-            $failsafe++;
-        }
-        if ($failsafe > 1000) $i = $failsafe;
-    } while ($i < $count);
-    
-    //$retwords = substr($retwords,0,strlen($retwords)-1);
-    if(empty($retwords)) {
-        return wordlist($word_length, $max_count);
+    $total_attempts = 0;
+    $max_attempts = $max_count * 10;
+
+    if (!file_exists($file_path) || filesize($file_path) === 0) {
+        return []; // File must exist and have content
     }
+
+    $file_size = filesize($file_path);
+    $handle = fopen($file_path, 'r');
+    if (!$handle) {
+        return []; // Return empty if file cannot be opened
+    }
+
+    // Preload all words matching the desired length
+    $valid_words = [];
+    while (($line = fgets($handle)) !== false) {
+        $words = preg_split('/\s+/', trim($line));
+        foreach ($words as $word) {
+            if (strlen($word) === $word_length) {
+                $valid_words[] = $word;
+            }
+        }
+    }
+    fclose($handle);
+
+    // If no valid words were found, return an empty array
+    if (empty($valid_words)) {
+        return [];
+    }
+
+    // Fill the result with random valid words, allowing repeats if necessary
+    while (count($retwords) < $max_count) {
+        $retwords[] = $valid_words[array_rand($valid_words)];
+    }
+
     return $retwords;
 }
+
+
 
 
 function dot_replacer($input) {
@@ -205,7 +222,7 @@ function mem_dump($rows, $columns, $specialWords = [], $length = 7) {
     for ($i = 0; $i < count($specialWords); $i++) {
         $row = rand(0, $rows - 1);
         $col = rand(0, $columns - 1);
-        $specialPositions[] = [$row, $col, strtoupper($specialWords[$i])];
+        $specialPositions[] = [$row, $col, $specialWords[$i]];
     }
 
     // Generate random strings for each cell

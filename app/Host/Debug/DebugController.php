@@ -11,7 +11,7 @@ class DebugController
 
     public function dump()
     {
-        $data = strtoupper(parse_request('data')[0]);
+        $data = parse_request('data')[0];
 
         // Host vars
         $level = Host::data()->level;
@@ -28,7 +28,7 @@ class DebugController
         $max_attempts = 4;
     
         if (!Session::has('root_pass')) {
-            Session::set('root_pass', strtoupper($root_pass));
+            Session::set('root_pass', $root_pass);
         } 
         
         $pass_length = strlen($root_pass); 
@@ -40,7 +40,7 @@ class DebugController
         }
     
         if (!Session::has('dump')) {
-            $word_list = wordlist($pass_length, $max_words);
+            $word_list = wordlist($pass_length, $max_words, 'password-list.txt');
             $data = array_merge([$root_pass], $word_list);
     
             // Generate the memory dump
@@ -112,9 +112,9 @@ class DebugController
                     Auth::data()->hosts()->attach($server_id);
                 }
 
-                $reset_root_pass = wordlist($min_level, 1)[0];
+                $reset_root_pass = wordlist($min_level, 1, 'password-list.txt')[0];
                 Host::debug($root_pass, Auth::data()->id);
-                Host::data()->update(['password' => strtolower($reset_root_pass)]);
+                Host::data()->update(['password' => $reset_root_pass]);
 
                 // Reset login attempts on successful login
                 Session::remove('debug_attempts');

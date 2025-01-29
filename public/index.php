@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Crypt;
+use Lib\Crypt as LibCrypt;
+
 define('BASE_PATH', dirname(__DIR__));
 define('TIMESTAMP', time());
 

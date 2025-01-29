@@ -270,6 +270,7 @@ class HostService
         $contact = Mail::contact();
 
         $email = Email::where('sender', $contact)
+        ->where('subject', 'cron')
         ->where('recipient', "system@$host")
         ->where('is_read', 0);
 
@@ -291,7 +292,7 @@ class HostService
             } else {
                 $data = [
                     0=> "send ERROR $contact", 
-                    1=> "SYSTEM ERROR: Unknown Command. Please use valid system commands!"
+                    1=> "SYSTEM ERROR: Unknown Command."
                 ];
                 Mail::send($data, "system@$host");
             }

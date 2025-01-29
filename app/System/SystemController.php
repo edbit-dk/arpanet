@@ -222,13 +222,12 @@ class SystemController extends Controller
 
         echo <<< EOT
         Last login: {$last_login} as $username
-
         $os ($hostname) ($ip)
         $org
 
-        $motd
-        $notes
-        $mail 
+        {$motd}
+        {$notes}
+        {$mail} 
         EOT;
     }
 
