@@ -172,14 +172,10 @@ class HostService
     {
         if(!$new) {
             self::$sessions = Session::get(self::$session);
-            if(count(self::$sessions) > 1) {
-                $last_session = array_pop(self::$sessions); 
-                Session::set(self::$session, self::$sessions);
-                return $last_session;
-            } else {
-                return false;
-            }
-            
+            array_pop(self::$sessions); 
+            Session::set(self::$session, self::$sessions);
+            $last_session = self::$sessions[array_key_last(self::$sessions)];
+            return $last_session;
         }
 
         if($new) {
@@ -197,7 +193,7 @@ class HostService
         if(is_int($host_id)) {
             Session::set(self::$guest, false);
             Session::set(self::$auth, $host_id);
-            self::session(true, $host_id, $user_id);
+           // self::session(true, $host_id, $user_id);
 
             if($host_id != 1) {
                 $host_user = self::data()->user(Auth::id());
@@ -261,11 +257,12 @@ class HostService
         }
 
         self::$sessions = self::session(false);
-        Session::clear();
-        die;
+
+        Session::remove(self::$auth);
+
         if(!empty(self::$sessions)) {
-            self::attempt(self::$sessions[self::$auth], self::$sessions[self::$user]);
             Auth::attempt(self::$sessions[self::$user]);
+            self::attempt(self::$sessions[self::$auth], self::$sessions[self::$user]);
         } else {
             Session::remove(self::$auth);
             Auth::logout();
