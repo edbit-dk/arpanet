@@ -99,6 +99,7 @@ class EmailService
         if($emails->exists()) {
             return "\nYou have mail.";
         }
+        return false;
 
     }
 

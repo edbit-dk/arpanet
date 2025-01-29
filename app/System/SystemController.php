@@ -225,9 +225,9 @@ class SystemController extends Controller
         $os ($hostname) ($ip)
         $org
 
-        {$motd}
-        {$notes}
-        {$mail} 
+        $motd
+        $notes
+        $mail
         EOT;
     }
 
@@ -272,6 +272,8 @@ class SystemController extends Controller
         $os = $host->os;
         $host_name = strtoupper($host->host_name);
         $host_ip = $host->ip;
+        $motd = isset($host->motd) ? $host->motd : null;
+        $notes = isset($host->notes) ? $host->notes : null;
         $org = $host->org;
         $username = strtoupper(User::username());
         $last_login = '';
@@ -289,10 +291,7 @@ class SystemController extends Controller
         $emails = Mail::unread();
         $mail = $emails;
 
-        $motd = $host->motd;
-
         Host::root();
-        $notes = $host->notes;
 
         echo <<< EOT
         Last login: {$last_login}
