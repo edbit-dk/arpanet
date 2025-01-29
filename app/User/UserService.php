@@ -55,6 +55,11 @@ class UserService
         return self::auth();
     }
 
+    public static function attempt($id)
+    {
+        return Session::set(self::$auth, $id);
+    }
+
     public static function id()
     {
         return self::data()->id;
@@ -112,9 +117,11 @@ class UserService
 
     public static function logout() 
     {
-        sleep(1);
-        self::data()->update(['last_login' => \Carbon\Carbon::now()]);
-        Session::remove(self::$auth);
+        if(self::auth()) {
+            sleep(1);
+            self::data()->update(['last_login' => \Carbon\Carbon::now()]);
+            Session::remove(self::$auth);
+        }
         echo "Goodbye.\n";
     }
 

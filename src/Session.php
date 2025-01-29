@@ -34,7 +34,7 @@ class Session
             return $_SESSION[$key];
         }
 
-        return null;
+        return false;
     }
 
     /**
@@ -64,6 +64,15 @@ class Session
     public static function has(string $key): bool
     {
         return array_key_exists($key, $_SESSION);
+    }
+
+    public static function empty(string $key): bool
+    {
+        if(self::has($key)) {
+            return empty(self::get($key));
+        }
+
+        return true;
     }
 
 }

@@ -16,6 +16,9 @@ class HostService
 
     private static $auth = 'host_auth';
     private static $guest = 'host_guest';
+    private static $user = 'host_user';
+    private static $session = 'host_session';
+    private static $sessions = [];
     private static $max_attempts = 4; // Maximum number of allowed login attempts
 
     public static function data() 
@@ -117,7 +120,7 @@ class HostService
         } else {
             self::reset();
             if(self::auth() == 1) {
-                Session::set('host', 1);
+               
             }
             Session::set(self::$guest, $host->id);
             return true;
@@ -130,13 +133,14 @@ class HostService
         $host = false;
         $user = false;
         $host_id = self::data()->id;
+        $user_id = Auth::id();
 
         if(empty($password)) {
             $password = null;
         }
 
         $host = Host::where('id',  $host_id)
-            ->where('user_id', Session::get('user'))
+            ->where('user_id', Auth::check())
             ->where('password', $password)
             ->first();
 
@@ -153,21 +157,47 @@ class HostService
             if(!$user) {
                 return false;
             }
-            
-            Session::set('session', Session::get('user'));
-            Session::set('user', $user->id);
+
+            $user_id = $user->id;
+            Auth::attempt($user_id);
         }
 
+        self::session(true, $host_id, $user_id);
         self::attempt($host_id);
 
         return true;
     }
 
-    public static function attempt($host_id)
+    public static function session($new = true, $host_id = '', $user_id = '')
     {
-        if(isset($host_id)) {
+        if(!$new) {
+            self::$sessions = Session::get(self::$session);
+            if(count(self::$sessions) > 1) {
+                $last_session = array_pop(self::$sessions); 
+                Session::set(self::$session, self::$sessions);
+                return $last_session;
+            } else {
+                return false;
+            }
+            
+        }
+
+        if($new) {
+            self::$sessions = Session::get(self::$session);
+            self::$sessions[] = [self::$auth => $host_id, self::$user => $user_id];
+            Session::set(self::$session, self::$sessions);
+            return Session::get(self::$session);
+        }
+
+        return false;
+    }
+
+    public static function attempt($host_id, $user_id = '')
+    {
+        if(is_int($host_id)) {
             Session::set(self::$guest, false);
             Session::set(self::$auth, $host_id);
+            self::session(true, $host_id, $user_id);
 
             if($host_id != 1) {
                 $host_user = self::data()->user(Auth::id());
@@ -179,15 +209,14 @@ class HostService
 
             return self::data();
         }
-        return false;
     }
 
     public static function debug($pass, $user) 
     {
         $host_id = self::data()->id;
 
-        if(self::data()->user($user)) {
-            self::attempt($host_id);
+        if($user = self::data()->user($user)) {
+            self::attempt($host_id, $user);
             return true;
         }
 
@@ -221,12 +250,6 @@ class HostService
 
     public static function logoff() 
     {
-        if(Session::has('session')) {
-            $session = Session::get('session');
-            Session::set('user', $session);
-            Session::remove('session');
-        }
-
         self::reset();
 
         if (self::auth() > 1) {
@@ -235,26 +258,18 @@ class HostService
                 $host_user->pivot->last_session = \Carbon\Carbon::now();
                 $host_user->pivot->save();
             }
-
-            Session::remove(self::$auth);
-
-            if(Session::has('host')) {
-                Session::set(self::$auth, 1);
-             }
-
-             return;
         }
 
-        if(self::guest()) {
-            Session::remove(self::$guest);
-            return;
-        }
-
-        if(Session::has('host')) {
+        self::$sessions = self::session(false);
+        Session::clear();
+        die;
+        if(!empty(self::$sessions)) {
+            self::attempt(self::$sessions[self::$auth], self::$sessions[self::$user]);
+            Auth::attempt(self::$sessions[self::$user]);
+        } else {
             Session::remove(self::$auth);
             Auth::logout();
-         }
-
+        }
 
     }
 

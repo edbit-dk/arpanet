@@ -121,7 +121,6 @@ function loadSavedTheme() {
 
 // Function to set text and background color
 function setTheme(color) {
-  
     const colors = {
         green: "#0f0",
         white: "#EAF7F9",
@@ -130,13 +129,17 @@ function setTheme(color) {
     };
 
     const defaultColor = "green";
-
-    // Validate the color and apply it, defaulting to green if invalid
     const themeColor = colors[color] || colors[defaultColor];
 
-    $('*').css('color', themeColor);
+    // Remove any existing theme style tag
+    $('#theme-style').remove();
 
-    localStorage.setItem('theme', themeColor);
+    // Create a new <style> tag and append it to the <head>
+    const styleTag = `<style id="theme-style"> * { color: ${themeColor} !important; } </style>`;
+    $('head').append(styleTag);
+
+    // Store the color name (not the hex code) for persistence
+    localStorage.setItem('theme', color);
 }
 
 // Function to set terminal font

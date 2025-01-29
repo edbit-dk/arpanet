@@ -296,7 +296,6 @@ class SystemController extends Controller
 
         echo <<< EOT
         Last login: {$last_login}
-
         $os ($host_name) ($host_ip)
         $org
 

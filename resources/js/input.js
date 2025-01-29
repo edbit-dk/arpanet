@@ -138,7 +138,7 @@ function handleUserInput() {
                         if(['boot', 'reboot', 'halt', 'halt restart', 'restart'].includes(command)) {
                             localStorage.removeItem('boot');
                         }
-                        redirectTo('', true);
+                        redirectTo('', false);
                     }, 1000);
                 }
             })

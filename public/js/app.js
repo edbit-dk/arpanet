@@ -83,38 +83,38 @@ $('#command-input').keydown(function(e) {
 document.getElementById('play-button').addEventListener('click', toggleMusic);
 
 // Function to handle redirect
-function handleRedirect(response) {
+function handleRedirect(response, timeout = 1000) {
 
     if (response.startsWith("Trying")) {
         setTimeout(function() {
             redirectTo('');
-        }, 2000);
+        }, timeout);
     }
 
     if (response.startsWith("EXCACT")) {
         setTimeout(function() {
             redirectTo('');
-        }, 2000);
+        }, timeout);
     }
 
     if (response.startsWith("Password")) {
         setTimeout(function() {
             sessionStorage.setItem('host', true);
             redirectTo('');
-        }, 2000);
+        }, timeout);
     }
 
     if (response.startsWith("Authentication")) {
         setTimeout(function() {
             sessionStorage.setItem('host', true);
             redirectTo('');
-        }, 2000);
+        }, timeout);
     }
 
     if (response.startsWith("SUCCESS") || response.startsWith("Security")) {
         setTimeout(function() {
             redirectTo('');
-        }, 2000);
+        }, timeout);
     }
 }
 
@@ -123,9 +123,9 @@ function redirectTo(url, reload = false) {
     if(reload) {
         return window.location.href = url;
     }
-    clearTerminal();
+    //clearTerminal();
     sendCommand('welcome', '');
-    $('#connection').load('connection');
+    //$('#connection').load('connection');
 }
 
 // Function to validate the string pattern
@@ -289,7 +289,7 @@ function handleUserInput() {
                         if(['boot', 'reboot', 'halt', 'halt restart', 'restart'].includes(command)) {
                             localStorage.removeItem('boot');
                         }
-                        redirectTo('', true);
+                        redirectTo('', false);
                     }, 1000);
                 }
             })
@@ -317,10 +317,10 @@ function sendCommand(command, data, queryString = '') {
             success: function(response) {
                 loadSavedTheme();
                 
-                if(sessionStorage.getItem('host') && command == 'cd') {
+                setTimeout(function() {
                     $('#connection').load('connection');
-                }
-
+                }, 1000);
+                
                 if (isPasswordPrompt) {
                     handlePasswordPromptResponse(response); // Handle password prompt response
                 } else {
@@ -599,7 +599,6 @@ function loadSavedTheme() {
 
 // Function to set text and background color
 function setTheme(color) {
-  
     const colors = {
         green: "#0f0",
         white: "#EAF7F9",
@@ -608,13 +607,17 @@ function setTheme(color) {
     };
 
     const defaultColor = "green";
-
-    // Validate the color and apply it, defaulting to green if invalid
     const themeColor = colors[color] || colors[defaultColor];
 
-    $('*').css('color', themeColor);
+    // Remove any existing theme style tag
+    $('#theme-style').remove();
 
-    localStorage.setItem('theme', themeColor);
+    // Create a new <style> tag and append it to the <head>
+    const styleTag = `<style id="theme-style"> * { color: ${themeColor} !important; } </style>`;
+    $('head').append(styleTag);
+
+    // Store the color name (not the hex code) for persistence
+    localStorage.setItem('theme', color);
 }
 
 // Function to set terminal font

@@ -14,10 +14,10 @@ function sendCommand(command, data, queryString = '') {
             success: function(response) {
                 loadSavedTheme();
                 
-                if(sessionStorage.getItem('host') && command == 'cd') {
+                setTimeout(function() {
                     $('#connection').load('connection');
-                }
-
+                }, 1000);
+                
                 if (isPasswordPrompt) {
                     handlePasswordPromptResponse(response); // Handle password prompt response
                 } else {

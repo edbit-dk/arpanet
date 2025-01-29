@@ -1,36 +1,36 @@
 // Function to handle redirect
-function handleRedirect(response) {
+function handleRedirect(response, timeout = 1000) {
 
     if (response.startsWith("Trying")) {
         setTimeout(function() {
             redirectTo('');
-        }, 2000);
+        }, timeout);
     }
 
     if (response.startsWith("EXCACT")) {
         setTimeout(function() {
             redirectTo('');
-        }, 2000);
+        }, timeout);
     }
 
     if (response.startsWith("Password")) {
         setTimeout(function() {
             sessionStorage.setItem('host', true);
             redirectTo('');
-        }, 2000);
+        }, timeout);
     }
 
     if (response.startsWith("Authentication")) {
         setTimeout(function() {
             sessionStorage.setItem('host', true);
             redirectTo('');
-        }, 2000);
+        }, timeout);
     }
 
     if (response.startsWith("SUCCESS") || response.startsWith("Security")) {
         setTimeout(function() {
             redirectTo('');
-        }, 2000);
+        }, timeout);
     }
 }
 
@@ -39,9 +39,9 @@ function redirectTo(url, reload = false) {
     if(reload) {
         return window.location.href = url;
     }
-    clearTerminal();
+    //clearTerminal();
     sendCommand('welcome', '');
-    $('#connection').load('connection');
+    //$('#connection').load('connection');
 }
 
 // Function to validate the string pattern
