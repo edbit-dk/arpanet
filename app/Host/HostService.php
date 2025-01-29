@@ -123,6 +123,7 @@ class HostService
                
             }
             Session::set(self::$guest, $host->id);
+            self::session(true,$host->id, Auth::id());
             return true;
         }
 
@@ -173,20 +174,18 @@ class HostService
         if(!$new) {
             self::$sessions = Session::get(self::$session);
             array_pop(self::$sessions); 
-            if(!empty(self::$sessions)) {
-                Session::set(self::$session, self::$sessions);
-                $last_session = self::$sessions[array_key_last(self::$sessions)];
+            Session::set(self::$session, self::$sessions);
+            $last_session = end(self::$sessions);
+            if($last_session) {
                 return $last_session;
             }
         }
 
         if($new) {
             self::$sessions = Session::get(self::$session);
-            if(!empty(self::$sessions)) {
-                self::$sessions[] = [self::$auth => $host_id, self::$user => $user_id];
-                Session::set(self::$session, self::$sessions);
-                return Session::get(self::$session);
-            }
+            self::$sessions[] = [self::$auth => $host_id, self::$user => $user_id];
+            Session::set(self::$session, self::$sessions);
+            return Session::get(self::$session);
         }
 
         return false;
@@ -261,7 +260,6 @@ class HostService
         }
 
         self::$sessions = self::session(false);
-
         Session::remove(self::$auth);
 
         if(!empty(self::$sessions)) {
