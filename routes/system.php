@@ -22,8 +22,8 @@ $app->get('/termlink', [SystemController::class, 'termlink']);
 
 // Start
 $app->get('/uplink', [SystemController::class, 'uplink']);
-$app->get('/welcome', [SystemController::class, 'welcome']);
-$app->get('/reset', [SystemController::class, 'welcome']);
+$app->get('/welcome', [SystemController::class, 'main']);
+$app->get('/reset', [SystemController::class, 'main']);
 $app->get('/term', [SystemController::class, 'mode']);
 
 // Boot

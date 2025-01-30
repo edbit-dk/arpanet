@@ -184,7 +184,7 @@ class SystemController extends Controller
 
     }
 
-    public function welcome() 
+    public function main() 
     {
         if(Host::guest()) {
             return $this->termlink();

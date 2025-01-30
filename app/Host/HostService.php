@@ -129,6 +129,27 @@ class HostService
 
     }
 
+    public static function rlogin($data)
+    {
+        $user_id = Auth::id();
+
+        if(isset($data[1])) {
+            if($user = User::where('user_name', $data[1])->first()) {
+                $user_id = $user->id;
+            }
+        }
+
+        if($host = self::try($data[0])) {
+            if($host->user($user_id)) {
+                self::session(true, $host->id, $user_id);
+                self::attempt($host->id);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public static function logon($username, $password = '') {
 
         $host = false;
@@ -183,8 +204,10 @@ class HostService
 
         if($new) {
             self::$sessions = Session::get(self::$session);
-            self::$sessions[] = [self::$auth => $host_id, self::$user => $user_id];
-            Session::set(self::$session, self::$sessions);
+            if(!array_has(self::$sessions, self::$auth, $host_id)) {
+                self::$sessions[] = [self::$auth => $host_id, self::$user => $user_id];
+                Session::set(self::$session, self::$sessions);
+            }
             return Session::get(self::$session);
         }
 
@@ -196,7 +219,6 @@ class HostService
         if(is_int($host_id)) {
             Session::set(self::$guest, false);
             Session::set(self::$auth, $host_id);
-           // self::session(true, $host_id, $user_id);
 
             if($host_id != 1) {
                 $host_user = self::data()->user(Auth::id());
@@ -260,6 +282,7 @@ class HostService
         }
 
         self::$sessions = self::session(false);
+        Session::remove(self::$guest);
         Session::remove(self::$auth);
 
         if(!empty(self::$sessions)) {

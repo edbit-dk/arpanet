@@ -97,7 +97,7 @@ function handleRedirect(response, timeout = 1000) {
         }, timeout);
     }
 
-    if (response.startsWith("Password")) {
+    if (response.startsWith("Password") || response.startsWith("Account")) {
         setTimeout(function() {
             sessionStorage.setItem('host', true);
             redirectTo('');

@@ -1,5 +1,13 @@
 <?php
 
+function array_has($array, $key, $val) {
+    if (array_search($val, array_column($array, $key)) !== FALSE) {
+        return true;
+      } else {
+        return false;
+      }
+}
+
 function access_code($length = 6, $chars = 'AXYZ01234679', $spaces = '-') {
     $code_1 = random_str($length, $chars) . $spaces;
     $code_2 = random_str($length, $chars) . $spaces;

@@ -11,6 +11,8 @@ if(User::auth()) {
      // Auth
      $app->get('/password', [UserController::class, 'password']);
      $app->get('/user', [UserController::class, 'user']);
+
+     $app->get('/rlogin', [HostController::class, 'rlogin']);
 }
 
 if(!User::auth()) {

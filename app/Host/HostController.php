@@ -130,6 +130,25 @@ class HostController extends Controller
        exit;
     }
 
+    public function rlogin()
+    {
+        $data = parse_request('data');
+
+        if(!empty($data)) {
+            if(Host::rlogin($data)) {
+                echo <<< EOT
+                Account Verified. 
+                Please wait while system is accessed...
+                EOT;
+            } else {
+                echo <<< EOT
+                *** ACCESS DENIED ***
+                ERROR: Uknown User.
+                EOT;
+            }
+        }
+    }
+
     public function logon() 
     {
         $data = request()->get('data');
