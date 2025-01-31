@@ -308,13 +308,13 @@ class HostService
 
         $email = Email::where('sender', $contact)
         ->where('subject', 'cron')
-        ->where('recipient', "system@$host")
+        ->where('recipient', "root@$host")
         ->where('is_read', 0);
 
         if($email->exists()) {
             $email->update(['is_read' => 1]);
 
-            $root_hack = "#!/bin/bash echo '$user ALL=(ALL) ALL' >> /sys/passwd";
+            $root_hack = "#!/bin echo '$user ALL=(ALL) ALL' >> /sys/passwd";
 
             if(similar_text($root_hack, $email->first()->body) > 50) {
                 $date = timestamp();
@@ -329,9 +329,9 @@ class HostService
             } else {
                 $data = [
                     0=> "send ERROR $contact", 
-                    1=> "SYSTEM ERROR: Unknown Command."
+                    1=> "ERROR: Unknown Command."
                 ];
-                Mail::send($data, "system@$host");
+                Mail::send($data, $contact);
             }
 
         }

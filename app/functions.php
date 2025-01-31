@@ -1,5 +1,56 @@
 <?php
 
+// format "root:5d41402abc4b2a76b9719d911017c592:0:0:Superuser:/root:/bin/sh\n"
+function passwd($file, $action, $username, $newLine = null) {
+    // Split the content into lines
+    $lines = explode(PHP_EOL, $file);
+    
+    // Loop through the lines and process based on the action
+    foreach ($lines as $index => $line) {
+        // Split each line into parts (assuming ':' as separator)
+        $parts = explode(':', $line);
+        
+        // Check if the username matches
+        if ($parts[0] === $username) {
+            if ($action === 'edit' && $newLine !== null) {
+                // Edit the line by replacing it with the new line
+                $lines[$index] = $newLine;
+            } elseif ($action === 'delete') {
+                // Remove the line
+                unset($lines[$index]);
+            }
+            return implode(PHP_EOL, $lines);  // Return updated content after modification
+        }
+    }
+
+    // If action is 'add', add a new line
+    if ($action === 'add' && $newLine !== null) {
+        $lines[] = $newLine;
+        return implode(PHP_EOL, $lines);  // Return updated content after adding
+    }
+
+    return $file;  // Return original content if no action was performed
+}
+
+// Get the password (or other fields) for a specific username
+function passwd_info($file, $username, $field = 1) {
+    // Split the content into lines
+    $lines = explode(PHP_EOL, $file);
+    
+    foreach ($lines as $line) {
+        // Split each line into parts (assuming ':' as separator)
+        $parts = explode(':', $line);
+        
+        // Check if the username matches
+        if ($parts[0] === $username) {
+            return $parts[$field];  // Return the password (second field in the line)
+        }
+    }
+
+    return null;  // Return null if the username wasn't found
+}
+
+
 function array_has($array, $key, $val) {
     if (array_search($val, array_column($array, $key)) !== FALSE) {
         return true;
@@ -135,7 +186,11 @@ function word_pass($length = false) {
 
 function random_pass($length = false) {
     if(!$length) {
-        $length = rand(4,15);
+        $length = rand(1,15);
+    }
+
+    if($length) {
+        $length = rand($length,15);
     }
 
     return wordlist($length, 1, 'password-list.txt')[0];
@@ -155,7 +210,7 @@ function rand_username($string = '', $integer = '') {
     return vsprintf('%s%s%d', [...sscanf(strtolower("$string-"), '%s %2s'), $integer]);
 }
 
-function wordlist($word_length = 7, $max_count = 12, $list = 'wordlist.txt') {
+function wordlist($word_length = 4, $max_count = 12, $list = 'wordlist.txt') {
     $file_path = config('public') . "/text/$list";
     $retwords = [];
     $total_attempts = 0;
@@ -171,21 +226,23 @@ function wordlist($word_length = 7, $max_count = 12, $list = 'wordlist.txt') {
         return []; // Return empty if file cannot be opened
     }
 
-    // Preload all words matching the desired length
+    // Preload all words, matching the desired length first, then fallback to any word
     $valid_words = [];
+    $all_words = [];
     while (($line = fgets($handle)) !== false) {
         $words = preg_split('/\s+/', trim($line));
         foreach ($words as $word) {
             if (strlen($word) === $word_length) {
-                $valid_words[] = $word;
+                $valid_words[] = $word; // Match the word length
             }
+            $all_words[] = $word; // Collect all words
         }
     }
     fclose($handle);
 
-    // If no valid words were found, return an empty array
+    // If no valid words of the desired length are found, fallback to all words
     if (empty($valid_words)) {
-        return [];
+        $valid_words = $all_words;
     }
 
     // Fill the result with random valid words, allowing repeats if necessary
@@ -195,8 +252,6 @@ function wordlist($word_length = 7, $max_count = 12, $list = 'wordlist.txt') {
 
     return $retwords;
 }
-
-
 
 
 function dot_replacer($input) {

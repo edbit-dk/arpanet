@@ -36,7 +36,7 @@ class HostTable extends Host
             [
                 'user_id' => 1,
                 'host_name' => 'arpanet', 
-                'password' => word_pass(),
+                'password' => random_pass(),
                 'org' => 'Advanced Research Projects Agency Network',
                 'location' => 'USA, Virginia',
                 'os' => 'AT&T 4.3 BSD UNIX',
@@ -48,7 +48,7 @@ class HostTable extends Host
             [
                 'user_id' => 1,
                 'host_name' => 'nsfnet', 
-                'password' => word_pass(),
+                'password' => random_pass(),
                 'org' => 'Academic Research Network',
                 'location' => 'USA',
                 'os' => 'DEC Vax-8600 4.3BSD',
@@ -60,7 +60,7 @@ class HostTable extends Host
             [
                 'user_id' => 1,
                 'host_name' => 'ucla', 
-                'password' => word_pass(),
+                'password' => random_pass(),
                 'org' => 'University of California',
                 'location' => 'Los Angeles',
                 'os' => 'SDS Sigma 7',
@@ -72,7 +72,7 @@ class HostTable extends Host
             [
                 'user_id' => 1,
                 'host_name' => 'arc', 
-                'password' => word_pass(),
+                'password' => random_pass(),
                 'org' => 'Augmentation Research Center',
                 'location' => 'Menlo Park, California',
                 'os' => 'SDS 940 NLS "Genie" InterNIC',
@@ -84,7 +84,7 @@ class HostTable extends Host
             [
                 'user_id' => 1,
                 'host_name' => 'ucsb', 
-                'password' => word_pass(),
+                'password' => random_pass(),
                 'org' => 'University of California',
                 'location' => 'Santa Babara',
                 'os' => 'IBM 360/75 OS/MVT',
@@ -96,7 +96,7 @@ class HostTable extends Host
             [
                 'user_id' => 1,
                 'host_name' => 'uusc', 
-                'password' => word_pass(),
+                'password' => random_pass(),
                 'org' => 'University of Utah School of Computing',
                 'location' => 'Salt Lake City, Utah',
                 'os' => 'DEC PDP-10 TENEX',
@@ -108,7 +108,7 @@ class HostTable extends Host
             [
                 'user_id' => 1,
                 'host_name' => 'telenet', 
-                'password' => word_pass(),
+                'password' => random_pass(),
                 'org' => 'Telenet Inc. (BBN)',
                 'location' => 'Washington, D.C.',
                 'os' => 'Honeywell 316 IMP NCP/X.25',
@@ -120,7 +120,7 @@ class HostTable extends Host
             [
                 'user_id' => 1,
                 'host_name' => 'poseidonet', 
-                'password' => word_pass(),
+                'password' => random_pass(),
                 'org' => 'Poseidon Energy Network',
                 'location' => 'Boston, Massachusetts',
                 'os' => 'RobCo UOS v.84',
@@ -133,61 +133,65 @@ class HostTable extends Host
                 'user_id' => 1,
                 'host_name' => 'spsdd', 
                 'password' => 'pencil',
-                'org' => 'Seattle Public School District Datanet',
-                'location' => 'Seattle',
-                'os' => 'IBM PC DOS',
+                'org' => 'WELCOME TO THE SEATTLE PUBLIC SCHOOL DISTRICT DATANET',
+                'location' => 'Washington',
+                'os' => 'PDP 11/272 PRS TIP # 45',
                 'ip' => random_ip(),
                 'network' => 0,
                 'level_id' => 2,
-                'motd' => 'WARNING: All connections are monitored and logged. Any malicious and/or unauthorized activity is strictly prohibited!'
+                'motd' => 'PLEASE LOGON WITH USER PASSWORD:'
             ],
             [
                 'user_id' => 1,
                 'host_name' => 'milnet', 
-                'password' => word_pass(),
+                'password' => random_pass(8),
                 'org' => 'Military Defense Data Network (UNCLASSIFIED)',
                 'location' => 'USA',
                 'os' => '4.3 BSD UNIX 1986',
                 'ip' => random_ip(),
                 'network' => 1,
                 'level_id' => 3,
-                'motd' => 'WARNING: All connections are monitored and logged. Any malicious and/or unauthorized activity is strictly prohibited!'
+                'motd' => 'WARNING: Unauthorized access to this system is prohibited.
+All activity may be monitored and recorded.'
             ],
             [
                 'user_id' => 1,
                 'host_name' => 'dsnet1', 
-                'password' => word_pass(),
+                'password' => random_pass(8),
                 'org' => 'Defense Secure Network 1 (CONFIDENTIAL)',
                 'location' => 'USA',
                 'os' => '4.3 BSD UNIX 1986',
                 'ip' => random_ip(),
                 'network' => 0,
                 'level_id' => 4,
-                'motd' => 'WARNING: All connections are monitored and logged. Any malicious and/or unauthorized activity is strictly prohibited!'
+                'motd' => 'WARNING: Unauthorized access to this system is prohibited.
+All activity may be monitored and recorded.'
             ],
             [
                 'user_id' => 1,
                 'host_name' => 'dsnet2', 
-                'password' => word_pass(),
+                'password' => random_pass(8),
                 'org' => 'Defense Secure Network 2 (SECRET)',
                 'location' => 'USA',
                 'os' => '4.3 BSD UNIX 1986',
                 'ip' => random_ip(),
                 'network' => 0,
                 'level_id' => 5,
-                'motd' => 'WARNING: All connections are monitored and logged. Any malicious and/or unauthorized activity is strictly prohibited!'
+                'motd' => 'WARNING: Unauthorized access to this system is prohibited.
+All activity may be monitored and recorded.'
             ],
             [
                 'user_id' => 1,
                 'host_name' => 'dsnet3', 
-                'password' => word_pass(),
+                'password' => random_pass(8),
                 'org' => 'Defense Secure Network 3 (TOP SECRET)',
                 'location' => 'USA',
                 'os' => '4.3 BSD UNIX 1986',
                 'ip' => random_ip(),
                 'network' => 0,
                 'level_id' => 6,
-                'motd' => 'WARNING: All connections are monitored and logged. Any malicious and/or unauthorized activity is strictly prohibited!'
+                'motd' => 'WARNING: Unauthorized access to this system is prohibited.
+All activity may be monitored and recorded.'
             ],
         ]);
     }

@@ -14,7 +14,6 @@ class HelpTable extends Help
         DB::schema()->dropIfExists((new self)->table);
 
         DB::schema()->create((new self)->table, function (Blueprint $table) {
-            $table->increments('id');
             $table->string('cmd');
             $table->string('input')->nullable();
             $table->text('info');
@@ -145,7 +144,7 @@ class HelpTable extends Help
                 'is_user' => 0,
                 'is_host' => 1,
                 'is_visitor' => 0,
-                'is_guest' => 0
+                'is_guest' => 1
             ],
             [
                 'cmd' => 'ls', 
@@ -154,7 +153,7 @@ class HelpTable extends Help
                 'is_user' => 0,
                 'is_host' => 1,
                 'is_visitor' => 0,
-                'is_guest' => 0
+                'is_guest' => 1
             ],
             [
                 'cmd' => 'cat', 
@@ -163,7 +162,7 @@ class HelpTable extends Help
                 'is_user' => 0,
                 'is_host' => 1,
                 'is_visitor' => 0,
-                'is_guest' => 0
+                'is_guest' => 1
             ],
             [
                 'cmd' => 'set', 

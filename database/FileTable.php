@@ -26,6 +26,13 @@ class FileTable extends File
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
+
+        DB::table((new self)->table)->insert([
+            ['file_name' => 'passwd', 'host_id' => 1, 'folder_id' => 4],
+            ['folder_name' => 'log', 'host_id' => 1],
+            ['folder_name' => 'bin', 'host_id' => 1],
+            ['folder_name' => 'sys', 'host_id' => 1],
+        ]);
     }
 
     public static function down()

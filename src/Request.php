@@ -28,25 +28,31 @@ class Request
         $this->base = $this->root();
     }
 
-    /**
-     * Get the current URI, stripping the base path and query strings.
-     *
-     * @return string
-     */
+   /**
+    * Get the current URI, stripping the base path and query strings.
+    *
+    * @return string
+    */
     private function request(): string
     {
-        $cwd = basename(dirname(getcwd()));
-        $uri = basename($_SERVER['REQUEST_URI']);
-        $uri = rtrim($uri, '/');  // Remove trailing slashes for consistency
-        
-        if ($cwd == $uri) {
-            $uri = str_replace($cwd, '/', $uri);
-        } else {
-            $uri = '/' . $uri;
+        $cwd = basename(dirname(getcwd())); // Get the name of the subfolder (e.g., 'public')
+        $uri = $_SERVER['REQUEST_URI'];
+
+        // Remove query string (anything after ?)
+        $uri = strtok($uri, '?');
+
+        // If the URI starts with the subfolder (like /public), strip the base path
+        if(str_contains($uri, $cwd)) {
+            $uri = str_replace($cwd . '/', '', $uri);
         }
 
-        return $uri = strtok($uri, '?'); // Strip query string
+        // Remove any trailing slashes for consistency
+        $uri = rtrim($uri, '/');
+
+        // Ensure the URI starts with a forward slash
+        return '/' . ltrim($uri, '/');
     }
+
 
     /**
      * Get the base path (if the application is running in a subdirectory).

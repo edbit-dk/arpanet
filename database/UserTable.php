@@ -34,7 +34,7 @@ class UserTable extends User
             [
                 'user_name' => 'root', 
                 'email' => 'root@teleterm.net', 
-                'password' => null,
+                'password' => random_pass(),
                 'access_code' => access_code(),
                 'fullname' => 'Superuser',
                 'role' => 'superuser',
@@ -44,19 +44,9 @@ class UserTable extends User
             [
                 'user_name' => 'admin', 
                 'email' => 'admin@teleterm.net',
-                'password' => 'root',
+                'password' => random_pass(),
                 'access_code' => access_code(),
                 'fullname' => 'Administrator',
-                'role' => 'superuser',
-                'level_id' => 6,
-                'xp' => 100
-            ],
-            [
-                'user_name' => 'system', 
-                'email' => 'system@teleterm.net', 
-                'password' => 'manager',
-                'access_code' => access_code(),
-                'fullname' => 'System Manager',
                 'role' => 'superuser',
                 'level_id' => 6,
                 'xp' => 100

@@ -21,12 +21,6 @@ if(Host::guest() && User::auth()) {
     $app->get('/debug', [DebugController::class, 'dump']);
     $app->get('/set', [DebugController::class, 'set']);
     $app->get('/run', [DebugController::class, 'run']);  
-    
-    // sysadmin571_bypass /:
-    $app->get('/sysadmin571_bypass', [HostController::class, 'sysadmin']);
-}
-
-if(Host::auth() && User::username() != 'guest') {
 
     $app->get('/cd', [FolderController::class, 'cd']);
 
@@ -39,6 +33,12 @@ if(Host::auth() && User::username() != 'guest') {
     $app->get('/open', [FileController::class, 'cat']);
 
     $app->get('/echo', [FileController::class, 'echo']);
+    
+    // sysadmin571_bypass /:
+    $app->get('/sysadmin571_bypass', [HostController::class, 'sysadmin']);
+}
+
+if(Host::auth() && User::username() != 'guest') {
 
     $app->get('/scan', [HostController::class, 'scan']);
     $app->get('/netstat', [HostController::class, 'scan']);

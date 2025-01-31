@@ -15,7 +15,6 @@ $app->get('/connection', [SystemController::class, 'connection']);
 $app->get('/api', [APIController::class, 'authorize']);
 
 // Default
-$app->get('/setup', [SystemController::class, 'setup']);
 $app->get('/minify', [SystemController::class, 'minify']);
 $app->get('/ver', [SystemController::class, 'version']);
 $app->get('/termlink', [SystemController::class, 'termlink']);
