@@ -5,9 +5,9 @@ namespace App\Host;
 use App\Host\HostModel as Host;
 use App\User\UserModel as User;
 use App\User\UserService as Auth;
-use App\User\Level\LevelModel as Level;
-use App\System\Email\EmailModel as Email;
-use App\System\Email\EmailService as Mail;
+use App\Level\LevelModel as Level;
+use App\Email\EmailModel as Email;
+use App\Email\EmailService as Mail;
 
 use Lib\Session;
 

@@ -476,6 +476,7 @@ function handlePasswordPromptResponse(response) {
 }
 // Function to load text into terminal one letter at a time with 80-character line breaks
 function loadText(text) {
+    let delay = 0.5;
     let currentIndex = 0;
     let lineCharCount = 0; // Track character count per line
     const preContainer = $('<pre>').css({
@@ -519,59 +520,13 @@ function loadText(text) {
             }
 
             scrollToBottom();
-            setTimeout(displayNextLetter, 1);
+            setTimeout(displayNextLetter, delay);
         } else {
             $('#command-input').focus();
         }
     }
 
     displayNextLetter();
-}
-
-// Function to simulate CRT effect with 80-character line breaks
-function simulateCRT(text, container) {
-    const delay = 1;
-    const inputField = $('#command-input').val('');
-
-    let currentIndex = 0;
-    let lineCharCount = 0; // Track character count per line
-    let currentLine = $('<div>'); // Create a new line container
-
-    // Add the line container to the DOM
-    container.append(currentLine);
-
-    function displayNextWord() {
-        if (currentIndex < text.length) {
-            let word = '';
-
-            // Read the next word from the text
-            while (currentIndex < text.length && text[currentIndex] !== ' ') {
-                word += text[currentIndex];
-                currentIndex++;
-            }
-            currentIndex++; // Skip the space
-
-            // Check if adding the word exceeds 80 characters
-            if (lineCharCount + word.length > 80) {
-                currentLine = $('<div>'); // Create a new line container
-                container.append(currentLine);
-                lineCharCount = 0; // Reset character count for the new line
-            }
-
-            // Create a span for the word and add it to the current line
-            const wordElement = $('<span>').text(word + ' ');
-            currentLine.append(wordElement);
-
-            lineCharCount += word.length + 1; // Update character count (+1 for the space)
-
-            // Add delay for CRT effect
-            setTimeout(displayNextWord, delay);
-        } else {
-            scrollToBottom();
-        }
-    }
-
-    displayNextWord();
 }
 
 

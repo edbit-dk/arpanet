@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Host\File;
+namespace App\File;
 
 use Illuminate\Database\Eloquent\Model;
 
 use App\User\UserModel as User;
 use App\Host\HostModel as Host;
-use App\Host\Folder\FolderModel as Folder;
+use App\Folder\FolderModel as Folder;
 
 class FileModel extends Model
 {

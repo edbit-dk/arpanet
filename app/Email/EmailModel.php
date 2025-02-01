@@ -1,10 +1,10 @@
 <?php
 
-namespace App\System\Email;
+namespace App\Email;
 
 use Illuminate\Database\Eloquent\Model;
 
-use App\System\Mission\MissionModel as Mission;
+use App\Mission\MissionModel as Mission;
 use App\User\UserModel as User;
 
 class EmailModel extends Model 

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Host\Folder;
+namespace App\Folder;
 
 use Lib\Controller;
 use Lib\Session;
 
-use App\Host\File\FileService as File;
-use App\Host\Folder\FolderService as Folder;
+use App\File\FileService as File;
+use App\Folder\FolderService as Folder;
 
 use App\User\UserService as User;
 use App\Host\HostService as Host;

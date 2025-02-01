@@ -1,71 +1,15 @@
 <?php
 
-namespace App\Host\Folder;
+namespace App\File;
 
-use App\Host\File\FileModel as File;
-use App\Host\Folder\FolderModel as Folder;
-
+use App\File\FileModel as File;
+use App\Folder\FolderModel as Folder;
 use App\User\UserModel as User;
-use App\User\UserService as Auth;
-
-use App\Host\HostService as Server;
 use App\Host\HostModel as Host;
 
-use Lib\Session;
-
-class FolderService
+class FileService
 {
-    private static $folder = 'folder_id';
-    private static $pwd = 'user_pwd';
-    private static $root_dir = '/';
-
-    public static function pwd()
-    {
-        if(!Session::has(self::$pwd)) {
-            Session::set(self::$pwd, self::$root_dir);
-        }
-
-        return Session::get(self::$pwd);
-    }
-
-    public static function root()
-    {
-        if(self::pwd() == self::$root_dir){
-            return true;
-        }
-
-        return false;
-            
-    }
-
-    public static function id()
-    {
-        if(Session::has(self::$folder)) {
-            return Session::get(self::$folder);
-        }
-        return false;
-    }
-
-    public static function cd($dir = '')
-    {
-        if(str_contains($dir, '../')) {
-            $dir = str_replace('../', '', $dir);
-            return Session::set(self::$pwd, self::$root_dir . $dir);
-        }
-
-        if($dir == '..' || empty($dir)) {
-            return Session::set(self::$pwd, self::$root_dir);
-        }
-
-        if($folder = Folder::where('folder_name', $dir)->first()) {
-            Session::set(self::$folder, $folder->id);
-            return Session::set(self::$pwd, self::$root_dir . $dir);
-        }
-
-        return false;
-    }
-
-    public static function create($user_id, $host_id, $folder_id, $file_name, $content)  
+    public static function create($user_id, $host_id, $folder_id, $file_name, $content): FileModel  
     {
         // Fetch the current authenticated user
         $user = User::find($user_id);
@@ -107,13 +51,21 @@ class FolderService
     }
     
 
-    public static function list()
+    public static function list($host_id, $user_id = '')
     {
-        $host_id = Server::id();
-        $user_id = Auth::id();
+        $files = File::where('host_id', $host_id)
+        ->orWhere('user_id', $user_id)
+        ->get();
 
-        return Folder::get();
-        
+        if($files->isEmpty()) {
+            echo 'ERROR: Access Denied.';
+            exit;
+        }
+
+        // Loop through each top-level folder and format the structure
+        foreach ($files as $file) {
+            echo "$file->id. [" . $file->file_name . "]\n";
+        }
     }
 
     public static function open($file_name = '', $host_id = '')

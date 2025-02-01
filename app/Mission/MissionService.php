@@ -1,6 +1,6 @@
 <?php
 
-namespace App\System\Mission;
+namespace App\Mission;
 
 class MissionService
 {

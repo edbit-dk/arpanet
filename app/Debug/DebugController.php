@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Host\Debug;
+namespace App\Debug;
 
 use App\Host\HostService as Host;
 use App\User\UserService as Auth;

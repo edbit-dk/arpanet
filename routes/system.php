@@ -2,20 +2,21 @@
 
 use App\API\APIController;
 use App\System\SystemController;
-use App\System\Email\EmailController;
-use App\System\Help\HelpController;
+use App\System\CronController;
+use App\Email\EmailController;
+use App\Help\HelpController;
 
 use App\Host\HostService as Host;
 use App\User\UserService as User;
 
 
 // Home
-$app->get('/', [SystemController::class, 'index']);
-$app->get('/connection', [SystemController::class, 'connection']);
+$app->get('/', [SystemController::class, 'home']);
 $app->get('/api', [APIController::class, 'authorize']);
 
-// Default
-$app->get('/minify', [SystemController::class, 'minify']);
+// Cron
+$app->get('/minify', [CronController::class, 'minify']);
+
 $app->get('/ver', [SystemController::class, 'version']);
 $app->get('/termlink', [SystemController::class, 'termlink']);
 

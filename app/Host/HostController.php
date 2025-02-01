@@ -4,12 +4,13 @@ namespace App\Host;
 
 use Lib\Controller;
 
-use App\System\Level\LevelModel as Level;
+use App\Level\LevelModel as Level;
 use App\Host\HostModel;
 
 use App\User\UserService as User;
 use App\Host\HostService as Host;
-use App\Host\File\FileService as File;
+use App\File\FileService as File;
+use App\Folder\FolderService as Folder;
 
 class HostController extends Controller
 {
@@ -36,6 +37,31 @@ class HostController extends Controller
         ]);
 
         dd($host);
+    }
+
+    public function connection()
+    {
+        $pwd = Folder::pwd();
+
+        if(Host::guest()) {
+            $hostname = Host::hostname(); 
+            echo "[@$hostname]";
+            exit;
+        }
+        
+        if(Host::auth()) {
+            $hostname = Host::hostname(); 
+            $username = User::username();
+            if(Host::data()->user_id == User::id()) {
+                echo "[$username@$hostname$pwd]#";
+            } else {  
+                echo "[$username@$hostname$pwd]$";
+            }
+            exit;
+        }
+
+        echo '.';
+
     }
 
     public function connect() 
@@ -194,7 +220,7 @@ class HostController extends Controller
     public function logoff() 
     {
         Host::logoff();
-        echo "%connection closed.";
+        echo "Session terminated.";
     }
 
 }

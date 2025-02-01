@@ -1,6 +1,6 @@
 <?php
 
-namespace App\System\Help;
+namespace App\Help;
 
 use Lib\Controller;
 use Lib\Session;
@@ -8,7 +8,7 @@ use Lib\Session;
 use App\User\UserService as User;
 use App\Host\HostService as Host;
 
-use App\System\Help\HelpModel as Help;
+use App\Help\HelpModel as Help;
 
 class HelpController extends Controller
 {

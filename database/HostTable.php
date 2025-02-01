@@ -20,7 +20,7 @@ class HostTable extends Host
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('host_name')->unique();
             $table->string('password')->nullable();
-            $table->string('location')->nullable();
+            $table->string('welcome')->nullable();
             $table->string('org')->nullable();
             $table->string('os')->nullable();
             $table->ipAddress('ip')->unique();
@@ -35,31 +35,19 @@ class HostTable extends Host
         DB::table((new self)->table)->insert([
             [
                 'user_id' => 1,
-                'host_name' => 'arpanet', 
+                'host_name' => 'sri-nic.arpa', 
                 'password' => random_pass(),
-                'org' => 'Advanced Research Projects Agency Network',
-                'location' => 'USA, Virginia',
-                'os' => 'PDP-10',
-                'ip' => '0.0.0.0',
-                'network' => 0,
-                'level_id' => 1,
-                'motd' => 'Welcome to ARPANET'
-            ],
-            [
-                'user_id' => 1,
-                'host_name' => 'nsfnet', 
-                'password' => random_pass(),
-                'org' => 'Academic Research Network',
-                'location' => 'USA',
-                'os' => 'DEC Vax-8600 4.3BSD',
-                'ip' => random_ip(),
+                'org' => 'Stanford Research Institute - Network Information Center',
+                'welcome' => "ARPANET LOGIN SYSTEM\n Authorized users only.",
+                'os' => 'PDP-10 TOPS-20',
+                'ip' => '192.5.4.1',
                 'network' => 1,
                 'level_id' => 1,
-                'motd' => 'WARNING: All connections are monitored and logged. Any malicious and/or unauthorized activity is strictly prohibited!'
+                'motd' => ''
             ],
             [
                 'user_id' => 1,
-                'host_name' => 'ucla', 
+                'host_name' => 'ucla.edu', 
                 'password' => random_pass(),
                 'org' => 'University of California',
                 'location' => 'Los Angeles',
@@ -67,96 +55,52 @@ class HostTable extends Host
                 'ip' => random_ip(),
                 'network' => 0,
                 'level_id' => 1,
-                'motd' => 'WARNING: All connections are monitored and logged. Any malicious and/or unauthorized activity is strictly prohibited!'
+                'motd' => ''
             ],
             [
                 'user_id' => 1,
-                'host_name' => 'arc', 
-                'password' => random_pass(),
-                'org' => 'Augmentation Research Center',
-                'location' => 'Menlo Park, California',
-                'os' => 'SDS 940 NLS "Genie" InterNIC',
-                'ip' => random_ip(),
-                'network' => 0,
-                'level_id' => 1,
-                'motd' => 'WARNING: All connections are monitored and logged. Any malicious and/or unauthorized activity is strictly prohibited!'
-            ],
-            [
-                'user_id' => 1,
-                'host_name' => 'ucsb', 
+                'host_name' => 'ucsb.edu', 
                 'password' => random_pass(),
                 'org' => 'University of California',
-                'location' => 'Santa Babara',
+                'welcome' => '',
                 'os' => 'IBM 360/75 OS/MVT',
                 'ip' => random_ip(),
                 'network' => 0,
                 'level_id' => 1,
-                'motd' => 'WARNING: All connections are monitored and logged. Any malicious and/or unauthorized activity is strictly prohibited!'
+                'motd' => ''
             ],
             [
                 'user_id' => 1,
-                'host_name' => 'uusc', 
+                'host_name' => 'uusc.edu', 
                 'password' => random_pass(),
                 'org' => 'University of Utah School of Computing',
-                'location' => 'Salt Lake City, Utah',
+                'welcome' => '',
                 'os' => 'DEC PDP-10 TENEX',
                 'ip' => random_ip(),
                 'network' => 0,
                 'level_id' => 1,
-                'motd' => 'WARNING: All connections are monitored and logged. Any malicious and/or unauthorized activity is strictly prohibited!'
+                'motd' => ''
             ],
             [
                 'user_id' => 1,
-                'host_name' => 'telenet', 
-                'password' => random_pass(),
-                'org' => 'Telenet Inc. (BBN)',
-                'location' => 'Washington, D.C.',
-                'os' => 'Honeywell 316 IMP NCP/X.25',
-                'ip' => random_ip(),
-                'network' => 1,
-                'level_id' => 1,
-                'motd' => 'WARNING: All connections are monitored and logged. Any malicious and/or unauthorized activity is strictly prohibited!'
-            ],
-            [
-                'user_id' => 1,
-                'host_name' => 'poseidonet', 
-                'password' => random_pass(),
-                'org' => 'Poseidon Energy Network',
-                'location' => 'Boston, Massachusetts',
-                'os' => 'RobCo UOS v.84',
-                'ip' => random_ip(),
-                'network' => 0,
-                'level_id' => 2,
-                'motd' => 'WARNING: All connections are monitored and logged. Any malicious and/or unauthorized activity is strictly prohibited!'
-            ],
-            [
-                'user_id' => 1,
-                'host_name' => 'spsdd', 
-                'password' => 'pencil',
-                'org' => 'WELCOME TO THE SEATTLE PUBLIC SCHOOL DISTRICT DATANET',
-                'location' => 'Washington',
-                'os' => 'PDP 11/272 PRS TIP # 45',
-                'ip' => random_ip(),
-                'network' => 0,
-                'level_id' => 2,
-                'motd' => 'PLEASE LOGON WITH USER PASSWORD:'
-            ],
-            [
-                'user_id' => 1,
-                'host_name' => 'milnet', 
+                'host_name' => 'nic.ddn.mil', 
                 'password' => random_pass(8),
                 'org' => 'Military Defense Data Network (UNCLASSIFIED)',
-                'location' => 'USA',
+                'welcome' => '****************************************************************
+                            * WARNING: This is a U.S. Government Computer System.         *
+                            * Unauthorized access is prohibited.                          *
+                            * All activities may be monitored and recorded.               *
+                            ****************************************************************',
                 'os' => '4.3 BSD UNIX 1986',
-                'ip' => random_ip(),
+                'ip' => '192.67.67.20',
                 'network' => 1,
                 'level_id' => 3,
                 'motd' => 'WARNING: Unauthorized access to this system is prohibited.
-All activity may be monitored and recorded.'
+                All activity may be monitored and recorded.'
             ],
             [
                 'user_id' => 1,
-                'host_name' => 'dsnet1', 
+                'host_name' => 'dsnet1.mil', 
                 'password' => random_pass(8),
                 'org' => 'Defense Secure Network 1 (CONFIDENTIAL)',
                 'location' => 'USA',
@@ -165,11 +109,11 @@ All activity may be monitored and recorded.'
                 'network' => 0,
                 'level_id' => 4,
                 'motd' => 'WARNING: Unauthorized access to this system is prohibited.
-All activity may be monitored and recorded.'
+                All activity may be monitored and recorded.'
             ],
             [
                 'user_id' => 1,
-                'host_name' => 'dsnet2', 
+                'host_name' => 'dsnet2.mil', 
                 'password' => random_pass(8),
                 'org' => 'Defense Secure Network 2 (SECRET)',
                 'location' => 'USA',
@@ -178,11 +122,11 @@ All activity may be monitored and recorded.'
                 'network' => 0,
                 'level_id' => 5,
                 'motd' => 'WARNING: Unauthorized access to this system is prohibited.
-All activity may be monitored and recorded.'
+                All activity may be monitored and recorded.'
             ],
             [
                 'user_id' => 1,
-                'host_name' => 'dsnet3', 
+                'host_name' => 'dsnet3.mil', 
                 'password' => random_pass(8),
                 'org' => 'Defense Secure Network 3 (TOP SECRET)',
                 'location' => 'USA',
@@ -191,8 +135,44 @@ All activity may be monitored and recorded.'
                 'network' => 0,
                 'level_id' => 6,
                 'motd' => 'WARNING: Unauthorized access to this system is prohibited.
-All activity may be monitored and recorded.'
+                All activity may be monitored and recorded.'
             ],
+            [
+                'user_id' => 1,
+                'host_name' => 'telenet.com', 
+                'password' => random_pass(),
+                'org' => 'Telenet Inc. (BBN)',
+                'location' => 'Washington, D.C.',
+                'os' => 'Honeywell 316 IMP NCP/X.25',
+                'ip' => random_ip(),
+                'network' => 1,
+                'level_id' => 1,
+                'motd' => ''
+            ],
+            [
+                'user_id' => 1,
+                'host_name' => 'poseido.net', 
+                'password' => random_pass(),
+                'org' => 'Poseidon Energy Network',
+                'welcome' => '',
+                'os' => 'RobCo UOS v.84',
+                'ip' => random_ip(),
+                'network' => 0,
+                'level_id' => 2,
+                'motd' => ''
+            ],
+            [
+                'user_id' => 1,
+                'host_name' => 'spsdd.edu', 
+                'password' => 'pencil',
+                'org' => 'WELCOME TO THE SEATTLE PUBLIC SCHOOL DISTRICT DATANET',
+                'welcome' => 'PLEASE LOGON WITH USER PASSWORD:',
+                'os' => 'PDP 11/272 PRS TIP # 45',
+                'ip' => random_ip(),
+                'network' => 0,
+                'level_id' => 2,
+                'motd' => ''
+            ]
         ]);
     }
 

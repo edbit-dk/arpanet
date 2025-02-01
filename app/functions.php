@@ -328,6 +328,63 @@ function format_dump($memoryDump) {
     return $formattedDump;
 }
 
+function ftp_transfer($filename, $string, $mode = "get", $time = null) {
+    // Convert mode to lowercase
+    $mode = strtolower($mode);
+
+    // Validate mode
+    if ($mode !== "get" && $mode !== "put") {
+        return "500 Invalid mode.";
+    }
+
+    // Get string size in bytes
+    $byteSize = mb_strlen($string, '8bit');
+
+    // Generate random transfer time if not provided
+    if ($time === null) {
+        $time = rand(1, 10);
+    }
+
+    // Calculate speed in KB/s
+    $speed = $byteSize / $time / 1024; // Convert bytes to KB
+
+    // Construct FTP-style output
+    if ($mode === "get") {
+        // Download (GET)
+        return "Using BIN mode to transfer files.\n" .
+               "200 PORT command successful\n" .
+               "150 Opening ASCII mode data connection for ({$filename}) ({$byteSize} bytes)\n" .
+               "|===================================================>|\n" .
+               "226 Transfer complete\n" .
+               "{$byteSize} bytes received in {$time} secs (" . number_format($speed, 2) . " kB/s)";
+    } else {
+        // Upload (PUT)
+        return "Using BIN mode to transfer files.\n" .
+               "200 PORT command successful\n" .
+               "150 Ok to send data ({$filename}) ({$byteSize} bytes)\n" .
+               "|===================================================>|\n" .
+               "226 Transfer complete\n" .
+               "{$byteSize} bytes sent in {$time} secs (" . number_format($speed, 2) . " kB/s)";
+    }
+}
+
+function print_s($text, $delay = 100000) {
+    // Split the string into characters
+    $chars = str_split($text);
+    
+    // Loop through the characters and print each one with a delay
+    foreach ($chars as $char) {
+        echo $char;
+        usleep($delay); // Delay in microseconds (1 second = 1,000,000 microseconds)
+    }
+    echo "\n"; // Move to the next line after output
+}
+
+
+function str_bytes($string) {
+    return mb_strlen($string, '8bit');
+}
+
 
 function random_ip() {
     return long2ip(rand(0, 4294967295));

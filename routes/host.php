@@ -2,16 +2,18 @@
 
 use App\Host\HostController;
 
-use App\Host\File\FileController;
-use App\Host\Folder\FolderController;
+use App\File\FileController;
+use App\Folder\FolderController;
 
-use App\Host\Debug\DebugController;
-use App\System\Email\EmailController;
+use App\Debug\DebugController;
+use App\Email\EmailController;
 
 use App\Host\HostService as Host;
 use App\User\UserService as User;
 
 $app->get('/host-create', [HostController::class, 'create']);
+
+$app->get('/connection', [HostController::class, 'connection']);
 
 if(Host::guest() && User::auth()) {
     $app->get('/login', [HostController::class, 'logon']);
@@ -38,7 +40,7 @@ if(Host::guest() && User::auth()) {
     $app->get('/sysadmin571_bypass', [HostController::class, 'sysadmin']);
 }
 
-if(Host::auth() && User::username() != 'guest') {
+if(Host::auth()) {
 
     $app->get('/scan', [HostController::class, 'scan']);
     $app->get('/netstat', [HostController::class, 'scan']);

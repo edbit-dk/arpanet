@@ -1,7 +1,7 @@
 <?php
 
 use App\User\UserController;
-use App\System\Email\EmailController;
+use App\Email\EmailController;
 use App\Host\HostController;
 
 use App\User\UserService as User;
@@ -40,7 +40,7 @@ if(User::auth() && !Host::auth() && !Host::guest()) {
      $app->get('/close', [UserController::class, 'logout']);
 }
 
-if(User::isUplinked() && !User::auth()) {
+if(User::uplinked() && !User::auth()) {
      $app->get('/exit', [UserController::class, 'unlink']);
      $app->get('/logout', [UserController::class, 'unlink']);
 }

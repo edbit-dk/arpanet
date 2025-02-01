@@ -1,6 +1,6 @@
 <?php
 
-use App\System\SetupController;
+use App\Setup\SetupController;
 
 $app->get('/setup/install', [SetupController::class, 'install']);
 $app->get('/setup/system', [SetupController::class, 'system']);

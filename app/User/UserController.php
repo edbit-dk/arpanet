@@ -56,7 +56,7 @@ class UserController extends Controller
                 if(Auth::login($user_name, $password)) {
                     Host::attempt(1);
                     Host::session(true, 1, Auth::id());
-                    echo "Authentication Successful.\n";
+                    echo "Authentication Accepted.\n";
                     echo 'Please wait while system is accessed...';
                     sleep(1);
                     exit;         

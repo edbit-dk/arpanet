@@ -1,8 +1,8 @@
 <?php
 
-namespace App\System\Email;
+namespace App\Email;
 
-use App\System\Email\EmailModel as Email;
+use App\Email\EmailModel as Email;
 
 use App\User\UserService as User;
 use App\User\UserModel as Users;

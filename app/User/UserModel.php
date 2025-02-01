@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 use App\Host\HostModel as Host;
-use App\Host\File\FileModel as File;
-use App\Host\Folder\FolderModel as Folder;
-use App\System\Mission\MissionModel as Mission;
-use App\System\Email\EmailModel as Email;
+use App\File\FileModel as File;
+use App\Folder\FolderModel as Folder;
+use App\Mission\MissionModel as Mission;
+use App\Email\EmailModel as Email;
 
 class UserModel extends Model
 {

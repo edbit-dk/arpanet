@@ -41,7 +41,7 @@ class UserService
 
     }
 
-    public static function isUplinked()
+    public static function uplinked()
     {
         if(Session::has(self::$uplink)) {
             return true;

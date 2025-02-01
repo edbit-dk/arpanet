@@ -1,10 +1,10 @@
 <?php
 
-namespace App\System\Email;
+namespace App\Email;
 
 use Lib\Controller;
 
-use App\System\Email\EmailService as Mail;
+use App\Email\EmailService as Mail;
 
 class EmailController extends Controller
 {

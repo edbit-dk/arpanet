@@ -4,12 +4,10 @@ namespace App\API;
 
 use Lib\Controller;
 
-use Illuminate\Database\Eloquent\Collection;
-
 use App\Host\HostService as Host;
 use App\User\UserService as User;
-use App\Host\Folder\FolderService as Folder;
-use App\System\Help\HelpModel as Help;
+use App\Folder\FolderService as Folder;
+use App\Help\HelpModel as Help;
 
 class APIController extends Controller
 {
