@@ -333,6 +333,16 @@ function random_ip() {
     return long2ip(rand(0, 4294967295));
 }
 
+function remote_ip() {
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        return $_SERVER['HTTP_CLIENT_IP'];
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        return explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0]; // Get the first IP if there are multiple
+    } else {
+        return $_SERVER['REMOTE_ADDR'];
+    }
+}
+
 
 function bootup() {
     $keyphrases = [' start memory discovery', ' CPUO starting cell relocation', 

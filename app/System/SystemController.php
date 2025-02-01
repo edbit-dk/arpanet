@@ -188,22 +188,25 @@ class SystemController extends Controller
         $os = $host->os;
         $ip = $host->ip;
         $org = $host->org;
-        $motd = isset($host->motd) ? $host->motd : null;
-        $notes = isset($host->notes) ? $host->notes : null;
-        $hostname = strtoupper($host->host_name);
+        $hostname = $host->host_name;
         $last_login = timestamp(User::data()->last_login);
-        $username = strtoupper(User::username());
+        $last_ip = User::data()->ip;
 
+        $motd = $host->motd;
+        $notes = $host->notes;
         $mail = Mail::unread();
 
+        $system_info = isset($motd) ? "$motd\n" : null;
+        $system_info .= isset($notes) ? "$notes\n" : null;
+        $system_info .= isset($mail) ? "$mail" : null;
+
         echo <<< EOT
-        Last login: {$last_login} as $username
-        $os ($hostname) ($ip)
+        Last login: {$last_login} from $last_ip
+        
+        $os ($hostname/$ip)
         $org
 
-        $motd
-        $notes
-        $mail
+        $system_info
         EOT;
     }
 
@@ -219,11 +222,11 @@ class SystemController extends Controller
 
         Local time is {$date}.
         There are {$users} local users. There are {$hosts} hosts on the network.
-    
-        More commands available after LOGIN. 
-        Type HELP for detailed command list.
-        Type NEWUSER to create an account. 
-        Type EXIT/LOGOUT to interrupt connection.
+
+        ARPANET Login System
+        Authorized users only.
+
+        login:
         EOT;
     }
 

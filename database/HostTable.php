@@ -39,7 +39,7 @@ class HostTable extends Host
                 'password' => random_pass(),
                 'org' => 'Advanced Research Projects Agency Network',
                 'location' => 'USA, Virginia',
-                'os' => 'AT&T 4.3 BSD UNIX',
+                'os' => 'PDP-10',
                 'ip' => '0.0.0.0',
                 'network' => 0,
                 'level_id' => 1,

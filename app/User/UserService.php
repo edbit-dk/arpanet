@@ -109,6 +109,7 @@ class UserService
             if(empty(self::data()->last_login)) {
                 self::data()->update(['last_login' => \Carbon\Carbon::now()]);
             }
+            self::data()->update(['ip' => remote_ip()]);
             return true;
         }
 

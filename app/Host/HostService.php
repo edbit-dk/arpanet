@@ -192,6 +192,10 @@ class HostService
 
     public static function session($new = true, $host_id = '', $user_id = '')
     {
+        if(!Session::has(self::$session)) {
+            Session::set(self::$session, []);
+        }
+
         if(!$new) {
             self::$sessions = Session::get(self::$session);
             array_pop(self::$sessions); 
