@@ -92,6 +92,14 @@ class SystemService
         EOT;
     }
 
+    public static function level($host_level)
+    {
+        if($host_level == 1) {
+
+        }
+
+    }
+
     public static function user()
     {   
         $last_login = timestamp(User::data()->last_login);
@@ -102,23 +110,21 @@ class SystemService
         $ip = $host->ip;
         $welcome = $host->welcome;
         $org = $host->org;
-        $hostname = $host->host_name;
+        $location = $host->location;
 
         $motd = $host->motd;
         $notes = $host->notes;
         $mail = Mail::unread();
 
-        $system_info = "$welcome\n";
-        $system_info .= "$motd\n";
-        $system_info .= "$notes\n";
-        $system_info .= "$mail";
+        $system_info = isset($welcome) ? "$welcome\n" : null;
+        $system_info .= isset($motd) ? "$motd\n" : null;
+        $system_info .= isset($notes) ? "$notes\n" : null;
+        $system_info .= isset($mail) ? "$mail\n" : null;
 
         echo <<< EOT
         Last login: {$last_login} from $last_ip
         
-        $os [$hostname, $ip]
-        $org
-
+        Welcome to $org, $location ($os)
         $system_info
         EOT;
     }

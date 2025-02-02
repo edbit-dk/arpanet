@@ -23,6 +23,7 @@ class HostTable extends Host
             $table->text('welcome')->nullable();
             $table->string('org')->nullable();
             $table->string('os')->nullable();
+            $table->string('location')->nullable();
             $table->ipAddress('ip')->unique();
             $table->text('motd')->nullable();
             $table->text('notes')->nullable();
@@ -37,33 +38,36 @@ class HostTable extends Host
                 'user_id' => 1,
                 'host_name' => 'sri.nic.arpa', 
                 'password' => random_pass(),
-                'org' => 'Stanford Research Institute - Network Information Center',
-                'welcome' => "ARPANET LOGIN SYSTEM\n Authorized users only.",
-                'os' => 'PDP-10 TOPS-20',
+                'org' => 'SRI - NIC',
+                'location' => 'Menlo Park, CA',
+                'welcome' => "",
+                'os' => 'VAX-11/750 TOPS-20',
                 'ip' => '192.5.4.1',
                 'network' => 1,
                 'level_id' => 1,
-                'motd' => ''
+                'motd' => null
             ],
             [
                 'user_id' => 1,
                 'host_name' => 'ucla.edu', 
                 'password' => random_pass(),
                 'org' => 'University of California',
-                'welcome' => '',
-                'os' => 'SDS Sigma 7',
+                'location' => 'Los Angelos, CA',
+                'welcome' => 'Authorized users only.',
+                'os' => 'VAX-11/780 4.3BSD UNIX',
                 'ip' => random_ip(),
                 'network' => 0,
                 'level_id' => 1,
-                'motd' => ''
+                'motd' => null
             ],
             [
                 'user_id' => 1,
                 'host_name' => 'ucsb.edu', 
                 'password' => random_pass(),
                 'org' => 'University of California',
-                'welcome' => '',
-                'os' => 'IBM 360/75 OS/MVT',
+                'location' => 'Santa Barbara, CA',
+                'welcome' => 'Authorized users only.',
+                'os' => 'VAX-11/780 4.3BSD UNIX',
                 'ip' => random_ip(),
                 'network' => 0,
                 'level_id' => 1,
@@ -74,8 +78,9 @@ class HostTable extends Host
                 'host_name' => 'uusc.edu', 
                 'password' => random_pass(),
                 'org' => 'University of Utah School of Computing',
-                'welcome' => '',
-                'os' => 'DEC PDP-10 TENEX',
+                'location' => 'Salt Lake City, UT',
+                'welcome' => 'Authorized users only.',
+                'os' => 'VAX-11/750 4.3BSD UNIX',
                 'ip' => random_ip(),
                 'network' => 0,
                 'level_id' => 1,
@@ -86,51 +91,48 @@ class HostTable extends Host
                 'host_name' => 'nic.ddn.mil', 
                 'password' => random_pass(8),
                 'org' => 'Military Defense Data Network (UNCLASSIFIED)',
-                'welcome' => '****************************************************************
-                            * WARNING: This is a U.S. Government Computer System.         *
-                            * Unauthorized access is prohibited.                          *
-                            * All activities may be monitored and recorded.               *
-                            ****************************************************************',
-                'os' => '4.3 BSD UNIX 1986',
+                'location' => '',
+                'welcome' => '*** WARNING: UNAUTHORIZED USE PROHIBITED ***',
+                'os' => 'UNIX System V (AT&T)',
                 'ip' => '192.67.67.20',
                 'network' => 1,
                 'level_id' => 3,
-                'motd' => 'WARNING: Unauthorized access to this system is prohibited.
-                All activity may be monitored and recorded.'
+                'motd' => 'WARNING: All activity may be monitored and recorded.'
             ],
             [
                 'user_id' => 1,
                 'host_name' => 'dsnet1.mil', 
                 'password' => random_pass(8),
                 'org' => 'Defense Secure Network 1 (CONFIDENTIAL)',
-                'welcome' => '',
-                'os' => '4.3 BSD UNIX 1986',
+                'location' => '',
+                'welcome' => '*** WARNING: UNAUTHORIZED USE PROHIBITED ***',
+                'os' => 'VAX/VMS UNIX',
                 'ip' => random_ip(),
                 'network' => 0,
                 'level_id' => 4,
-                'motd' => 'WARNING: Unauthorized access to this system is prohibited.
-                All activity may be monitored and recorded.'
+                'motd' => 'WARNING: All activity may be monitored and recorded.'
             ],
             [
                 'user_id' => 1,
                 'host_name' => 'dsnet2.mil', 
                 'password' => random_pass(8),
                 'org' => 'Defense Secure Network 2 (SECRET)',
-                'welcome' => '',
-                'os' => '4.3 BSD UNIX 1986',
+                'location' => '',
+                'welcome' => '*** WARNING: UNAUTHORIZED USE PROHIBITED ***',
+                'os' => 'VAX/VMS UNIX',
                 'ip' => random_ip(),
                 'network' => 0,
                 'level_id' => 5,
-                'motd' => 'WARNING: Unauthorized access to this system is prohibited.
-                All activity may be monitored and recorded.'
+                'motd' => 'WARNING: All activity may be monitored and recorded.'
             ],
             [
                 'user_id' => 1,
                 'host_name' => 'dsnet3.mil', 
                 'password' => random_pass(8),
                 'org' => 'Defense Secure Network 3 (TOP SECRET)',
+                'location' => '',
                 'welcome' => '',
-                'os' => '4.3 BSD UNIX 1986',
+                'os' => 'VAX/VMS UNIX',
                 'ip' => random_ip(),
                 'network' => 0,
                 'level_id' => 6,
@@ -142,8 +144,9 @@ class HostTable extends Host
                 'host_name' => 'telenet.com', 
                 'password' => random_pass(),
                 'org' => 'Telenet Inc. (BBN)',
+                'location' => '',
                 'welcome' => '',
-                'os' => 'Honeywell 316 IMP NCP/X.25',
+                'os' => 'PDP-11/IMP 4.3BSD UNIX',
                 'ip' => random_ip(),
                 'network' => 1,
                 'level_id' => 1,
@@ -154,6 +157,7 @@ class HostTable extends Host
                 'host_name' => 'poseido.net', 
                 'password' => random_pass(),
                 'org' => 'Poseidon Energy Network',
+                'location' => 'Commonwealth, Boston',
                 'welcome' => '',
                 'os' => 'RobCo UOS v.84',
                 'ip' => random_ip(),
@@ -166,8 +170,9 @@ class HostTable extends Host
                 'host_name' => 'spsdd.edu', 
                 'password' => 'pencil',
                 'org' => 'WELCOME TO THE SEATTLE PUBLIC SCHOOL DISTRICT DATANET',
+                'location' => 'Seattle',
                 'welcome' => 'PLEASE LOGON WITH USER PASSWORD:',
-                'os' => 'PDP 11/272 PRS TIP # 45',
+                'os' => 'PDP-11/272 PRS TIP # 45',
                 'ip' => random_ip(),
                 'network' => 0,
                 'level_id' => 2,

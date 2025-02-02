@@ -5,8 +5,10 @@ namespace App\User;
 use Lib\Controller;
 
 use App\User\UserModel as User;
+
 use App\User\UserService as Auth;
 use App\Host\HostService as Host;
+use App\System\CronService as Cron;
 
 class UserController extends Controller
 {
@@ -56,11 +58,18 @@ class UserController extends Controller
                 if(Auth::login($user_name, $password)) {
                     Host::attempt(1);
                     Host::session(true, 1, Auth::id());
-                    echo 'Accessing system...';
-                    sleep(1);
+                    Cron::stats();
+
+                    $ip = Host::data()->ip;
+                    $host = Host::data()->host_name;
+                    echo <<< EOT
+                    Connecting...
+                    Trying $ip
+                    Connected to $host\n
+                    EOT;
                     exit;         
                 } else {
-                    echo '*** ACCESS DENIED ***';
+                    echo '? Login incorrect';
                     exit;
                 }
             }

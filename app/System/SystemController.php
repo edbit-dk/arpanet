@@ -8,6 +8,7 @@ use Lib\Session;
 use App\User\UserService as User;
 use App\Host\HostService as Host;
 use App\System\SystemService as System;
+use App\System\CronService as Cron;
 
 class SystemController extends Controller
 {
@@ -55,6 +56,16 @@ class SystemController extends Controller
         $data = parse_request('data');
         return System::uplink($data[0]);
 
+    }
+
+    public function minify()
+    {
+        return Cron::minify();
+    }
+
+    public function stats()
+    {
+        return Cron::stats();
     }
 
 }

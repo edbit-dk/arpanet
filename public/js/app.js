@@ -85,7 +85,7 @@ document.getElementById('play-button').addEventListener('click', toggleMusic);
 // Function to handle redirect
 function handleRedirect(response, timeout = 1000) {
 
-    if (response.startsWith("connecting")) {
+    if (response.startsWith("Connecting")) {
         setTimeout(function() {
             redirectTo('');
         }, timeout);

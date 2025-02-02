@@ -9,9 +9,9 @@ use App\Host\HostModel as Hosts;
 use App\User\UserService as User;
 use App\Host\HostService as Host;
 
-class CronController extends Controller
+class CronService extends Controller
 {
-    public function minify()
+    public static function minify()
     {
         $js = file_get_contents(BASE_PATH . '/resources/js/main.js');
         $js .= file_get_contents(BASE_PATH . '/resources/js/events.js');
@@ -36,7 +36,7 @@ class CronController extends Controller
         print_r(file_get_contents(BASE_PATH . '/public/css/app.min.css'));
     }
 
-    public function stats()
+    public static function stats()
     {
         $date = date('H:i l, F j, Y', time());
         $users = User::count();

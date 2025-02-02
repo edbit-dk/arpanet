@@ -52,11 +52,17 @@ class HostController extends Controller
         if(Host::auth()) {
             $hostname = Host::hostname(); 
             $username = User::username();
-            if(Host::data()->user_id == User::id()) {
-                echo "[$username@$hostname$pwd]#";
-            } else {  
-                echo "[$username@$hostname$pwd]$";
+
+            if(Host::data()->id = 1) {
+                echo '@';
+            } else {
+                if(Host::data()->user_id == User::id()) {
+                    echo "[$username@$hostname$pwd]#";
+                } else {  
+                    echo "[$username@$hostname$pwd]$";
+                }
             }
+            
             exit;
         }
 
@@ -90,7 +96,13 @@ class HostController extends Controller
             exit;
         } else {
             $host = Host::data()->host_name;
-            echo "connecting to $host...";
+            $ip = Host::data()->ip;
+
+            echo <<< EOT
+            Connecting...
+            Trying $ip
+            Connected to $host\n
+            EOT;
             exit;
         }
 
@@ -219,7 +231,7 @@ class HostController extends Controller
     public function logoff() 
     {
         Host::logoff();
-        echo "session terminated.";
+        echo "Connection closed.";
     }
 
 }

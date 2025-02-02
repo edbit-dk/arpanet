@@ -20,14 +20,14 @@ $app->get('/reboot', [SystemController::class, 'boot']);
 
 // Start
 $app->get('/main', [SystemController::class, 'main']);
-$app->get('/uplink', [SystemController::class, 'uplink']);
+$app->get('/uplink', [SystemController::class, 'main']);
 $app->get('/reset', [SystemController::class, 'main']);
 $app->get('/term', [SystemController::class, 'mode']);
 $app->get('/ver', [SystemController::class, 'version']);
 
 // Cron
-$app->get('/minify', [CronController::class, 'minify']);
-$app->get('/stats', [CronController::class, 'stats']);
+$app->get('/minify', [SystemController::class, 'minify']);
+$app->get('/stats', [SystemController::class, 'stats']);
 
 // Help
 if(!User::auth()) {
