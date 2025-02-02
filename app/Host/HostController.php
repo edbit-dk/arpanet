@@ -86,10 +86,11 @@ class HostController extends Controller
         } 
 
         if(!$host) {
-            echo 'ERROR: Access Denied.';
+            echo '*** ACCESS DENIED ***';
             exit;
         } else {
-            echo 'Trying...';
+            $host = Host::data()->host_name;
+            echo "connecting to $host...";
             exit;
         }
 
@@ -112,7 +113,7 @@ class HostController extends Controller
             echo "Searching ARPANET...\n";
             echo "Searching Hosts...\n\n";
         } else {
-            echo "ERROR: Access Denied.\n";
+            echo "*** ACCESS DENIED ***\n";
             exit;
         }
 
@@ -169,7 +170,6 @@ class HostController extends Controller
             } else {
                 echo <<< EOT
                 *** ACCESS DENIED ***
-                ERROR: Uknown User.
                 EOT;
             }
         }
@@ -209,7 +209,6 @@ class HostController extends Controller
              } else {
                 echo <<< EOT
                 *** ACCESS DENIED ***
-                Attempts Left: {$attempts_left}
                 EOT;
                 exit;
              }
@@ -220,7 +219,7 @@ class HostController extends Controller
     public function logoff() 
     {
         Host::logoff();
-        echo "Session terminated.";
+        echo "session terminated.";
     }
 
 }

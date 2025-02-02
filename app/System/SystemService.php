@@ -45,7 +45,7 @@ class SystemService
             $attempts_left = Host::attempts(true);
     
             if ($attempts_left == 1) {
-                echo "WARNING: LOCKOUT IMMINENT !\n";
+                echo "!!! LOCKOUT IMMINENT !!!\n";
             }
 
             // Block the user after 4 failed attempts
@@ -93,35 +93,31 @@ class SystemService
     }
 
     public static function user()
-    {        
-        $date = date('H:i l, F j, Y', time());
-        $users = User::count();
-        $hosts = Host::count();
+    {   
+        $last_login = timestamp(User::data()->last_login);
+        $last_ip = User::data()->ip;
 
-        $host = Hosts::where('host_name', 'arpanet')->first();
+        $host = Hosts::where('id', 1)->first();
         $os = $host->os;
         $ip = $host->ip;
         $welcome = $host->welcome;
         $org = $host->org;
         $hostname = $host->host_name;
-        $last_login = timestamp(User::data()->last_login);
-        $last_ip = User::data()->ip;
 
         $motd = $host->motd;
         $notes = $host->notes;
         $mail = Mail::unread();
 
-        $system_info = isset($motd) ? "$motd\n" : null;
-        $system_info .= isset($notes) ? "$notes\n" : null;
-        $system_info .= isset($mail) ? "$mail" : null;
+        $system_info = "$welcome\n";
+        $system_info .= "$motd\n";
+        $system_info .= "$notes\n";
+        $system_info .= "$mail";
 
         echo <<< EOT
         Last login: {$last_login} from $last_ip
-        $os ($hostname, $ip)
+        
+        $os [$hostname, $ip]
         $org
-
-        Local time is {$date}.
-        There are {$users} local users. There are {$hosts} hosts on the network.
 
         $system_info
         EOT;

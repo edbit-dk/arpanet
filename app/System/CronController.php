@@ -4,6 +4,11 @@ namespace App\System;
 
 use Lib\Controller;
 
+use App\Host\HostModel as Hosts;
+
+use App\User\UserService as User;
+use App\Host\HostService as Host;
+
 class CronController extends Controller
 {
     public function minify()
@@ -29,5 +34,20 @@ class CronController extends Controller
 
         print_r(file_get_contents(BASE_PATH . '/public/js/app.min.js'));
         print_r(file_get_contents(BASE_PATH . '/public/css/app.min.css'));
+    }
+
+    public function stats()
+    {
+        $date = date('H:i l, F j, Y', time());
+        $users = User::count();
+        $hosts = Host::count();
+
+        $welcome = <<< EOT
+        Local time is {$date}.
+        There are {$users} local users. There are {$hosts} hosts on the network.
+        EOT;
+
+        Hosts::where('id', 1)->update(['welcome' => $welcome]);
+
     }
 }

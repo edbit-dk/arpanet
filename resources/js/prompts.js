@@ -72,7 +72,7 @@ function handlePasswordPromptResponse(response) {
         setTimeout(function() {
             sessionStorage.setItem('auth', true);
             clearTerminal();
-            sendCommand('welcome', '');
+            sendCommand('main', '');
         }, 2500);
     } else {
         if (usernameForLogon) {

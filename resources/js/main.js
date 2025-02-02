@@ -38,12 +38,12 @@ $(document).ready(function() {
         setTimeout(function() {
             localStorage.setItem('boot', true); // Set 'boot' flag in sessionStorage
             clearTerminal();
-            sendCommand('welcome', '');
+            sendCommand('main', '');
         }, 10000);
     } else {
 
         setTimeout(function() {
-            sendCommand('welcome', ''); // Send 'welcome' command if boot has been set
+            sendCommand('main', ''); // Send 'welcome' command if boot has been set
             $('#connection').load('connection');
         }, 500);
     }

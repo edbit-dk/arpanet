@@ -14,21 +14,20 @@ use App\User\UserService as User;
 $app->get('/', [SystemController::class, 'home']);
 $app->get('/api', [APIController::class, 'authorize']);
 
-// Cron
-$app->get('/minify', [CronController::class, 'minify']);
-
-$app->get('/ver', [SystemController::class, 'version']);
-$app->get('/termlink', [SystemController::class, 'termlink']);
-
-// Start
-$app->get('/uplink', [SystemController::class, 'uplink']);
-$app->get('/welcome', [SystemController::class, 'main']);
-$app->get('/reset', [SystemController::class, 'main']);
-$app->get('/term', [SystemController::class, 'mode']);
-
 // Boot
 $app->get('/boot', [SystemController::class, 'boot']);
 $app->get('/reboot', [SystemController::class, 'boot']);
+
+// Start
+$app->get('/main', [SystemController::class, 'main']);
+$app->get('/uplink', [SystemController::class, 'uplink']);
+$app->get('/reset', [SystemController::class, 'main']);
+$app->get('/term', [SystemController::class, 'mode']);
+$app->get('/ver', [SystemController::class, 'version']);
+
+// Cron
+$app->get('/minify', [CronController::class, 'minify']);
+$app->get('/stats', [CronController::class, 'stats']);
 
 // Help
 if(!User::auth()) {

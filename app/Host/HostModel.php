@@ -19,7 +19,7 @@ class HostModel extends Model
 		'user_id',
 		'password',
         'host_name',
-        'location',
+        'welcome',
         'motd',
         'notes',
         'org',

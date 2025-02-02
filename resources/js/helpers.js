@@ -1,7 +1,7 @@
 // Function to handle redirect
 function handleRedirect(response, timeout = 1000) {
 
-    if (response.startsWith("Trying")) {
+    if (response.startsWith("connecting")) {
         setTimeout(function() {
             redirectTo('');
         }, timeout);
@@ -20,7 +20,7 @@ function handleRedirect(response, timeout = 1000) {
         }, timeout);
     }
 
-    if (response.startsWith("Authentication")) {
+    if (response.startsWith("Accessing")) {
         setTimeout(function() {
             sessionStorage.setItem('host', true);
             redirectTo('');
@@ -40,7 +40,7 @@ function redirectTo(url, reload = false) {
         return window.location.href = url;
     }
     //clearTerminal();
-    sendCommand('welcome', '');
+    sendCommand('main', '');
     //$('#connection').load('connection');
 }
 

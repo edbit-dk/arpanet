@@ -20,7 +20,7 @@ class HostTable extends Host
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('host_name')->unique();
             $table->string('password')->nullable();
-            $table->string('welcome')->nullable();
+            $table->text('welcome')->nullable();
             $table->string('org')->nullable();
             $table->string('os')->nullable();
             $table->ipAddress('ip')->unique();
@@ -35,7 +35,7 @@ class HostTable extends Host
         DB::table((new self)->table)->insert([
             [
                 'user_id' => 1,
-                'host_name' => 'sri-nic.arpa', 
+                'host_name' => 'sri.nic.arpa', 
                 'password' => random_pass(),
                 'org' => 'Stanford Research Institute - Network Information Center',
                 'welcome' => "ARPANET LOGIN SYSTEM\n Authorized users only.",
@@ -50,7 +50,7 @@ class HostTable extends Host
                 'host_name' => 'ucla.edu', 
                 'password' => random_pass(),
                 'org' => 'University of California',
-                'location' => 'Los Angeles',
+                'welcome' => '',
                 'os' => 'SDS Sigma 7',
                 'ip' => random_ip(),
                 'network' => 0,
@@ -103,7 +103,7 @@ class HostTable extends Host
                 'host_name' => 'dsnet1.mil', 
                 'password' => random_pass(8),
                 'org' => 'Defense Secure Network 1 (CONFIDENTIAL)',
-                'location' => 'USA',
+                'welcome' => '',
                 'os' => '4.3 BSD UNIX 1986',
                 'ip' => random_ip(),
                 'network' => 0,
@@ -116,7 +116,7 @@ class HostTable extends Host
                 'host_name' => 'dsnet2.mil', 
                 'password' => random_pass(8),
                 'org' => 'Defense Secure Network 2 (SECRET)',
-                'location' => 'USA',
+                'welcome' => '',
                 'os' => '4.3 BSD UNIX 1986',
                 'ip' => random_ip(),
                 'network' => 0,
@@ -129,7 +129,7 @@ class HostTable extends Host
                 'host_name' => 'dsnet3.mil', 
                 'password' => random_pass(8),
                 'org' => 'Defense Secure Network 3 (TOP SECRET)',
-                'location' => 'USA',
+                'welcome' => '',
                 'os' => '4.3 BSD UNIX 1986',
                 'ip' => random_ip(),
                 'network' => 0,
@@ -142,7 +142,7 @@ class HostTable extends Host
                 'host_name' => 'telenet.com', 
                 'password' => random_pass(),
                 'org' => 'Telenet Inc. (BBN)',
-                'location' => 'Washington, D.C.',
+                'welcome' => '',
                 'os' => 'Honeywell 316 IMP NCP/X.25',
                 'ip' => random_ip(),
                 'network' => 1,

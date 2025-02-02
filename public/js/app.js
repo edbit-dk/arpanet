@@ -38,12 +38,12 @@ $(document).ready(function() {
         setTimeout(function() {
             localStorage.setItem('boot', true); // Set 'boot' flag in sessionStorage
             clearTerminal();
-            sendCommand('welcome', '');
+            sendCommand('main', '');
         }, 10000);
     } else {
 
         setTimeout(function() {
-            sendCommand('welcome', ''); // Send 'welcome' command if boot has been set
+            sendCommand('main', ''); // Send 'welcome' command if boot has been set
             $('#connection').load('connection');
         }, 500);
     }
@@ -85,7 +85,7 @@ document.getElementById('play-button').addEventListener('click', toggleMusic);
 // Function to handle redirect
 function handleRedirect(response, timeout = 1000) {
 
-    if (response.startsWith("Trying")) {
+    if (response.startsWith("connecting")) {
         setTimeout(function() {
             redirectTo('');
         }, timeout);
@@ -104,7 +104,7 @@ function handleRedirect(response, timeout = 1000) {
         }, timeout);
     }
 
-    if (response.startsWith("Authentication")) {
+    if (response.startsWith("Accessing")) {
         setTimeout(function() {
             sessionStorage.setItem('host', true);
             redirectTo('');
@@ -124,7 +124,7 @@ function redirectTo(url, reload = false) {
         return window.location.href = url;
     }
     //clearTerminal();
-    sendCommand('welcome', '');
+    sendCommand('main', '');
     //$('#connection').load('connection');
 }
 
@@ -463,7 +463,7 @@ function handlePasswordPromptResponse(response) {
         setTimeout(function() {
             sessionStorage.setItem('auth', true);
             clearTerminal();
-            sendCommand('welcome', '');
+            sendCommand('main', '');
         }, 2500);
     } else {
         if (usernameForLogon) {
@@ -476,7 +476,7 @@ function handlePasswordPromptResponse(response) {
 }
 // Function to load text into terminal one letter at a time with 80-character line breaks
 function loadText(text) {
-    let delay = 0.5;
+    let delay = 1;
     let currentIndex = 0;
     let lineCharCount = 0; // Track character count per line
     const preContainer = $('<pre>').css({
