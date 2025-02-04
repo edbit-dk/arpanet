@@ -3,6 +3,7 @@
 namespace App\User;
 
 use Lib\Controller;
+use Lib\Session;
 
 use App\User\UserModel as User;
 
@@ -10,21 +11,20 @@ use App\User\UserService as Auth;
 use App\Host\HostService as Host;
 use App\System\CronService as Cron;
 
+
 class UserController extends Controller
 {
+    protected $user;
 
-    private $user_name = 'user_name';
-    private $password = 'password';
-    private $firstname = 'firstname';
-    private $lastname = 'lastname';
-    private $created = 'created_at';
-    private $access_code = 'access_code';
-
+    public function __construct()
+    {
+        $this->user = User::fields();
+    }
+ 
     private function validate($input) 
     {
-
         if (isset($input[0])) {
-            session()->set($this->user_name, $input[0]);
+            Session::set($this->user->username, $input[0]);
         } 
 
         if(empty($input[1])) {
@@ -33,7 +33,7 @@ class UserController extends Controller
             $password = $input[1];
         }
 
-        session()->set($this->password, $password);
+        Session::set($this->user->password, $password);
 
     }
 
@@ -48,20 +48,20 @@ class UserController extends Controller
 
             $this->validate($data);
 
-            if(session()->has($this->user_name) && session()->has($this->password)){
+            if(Session::has($this->user->username) && Session::has($this->user->password)){
 
-                $user_name = session()->get($this->user_name);
-                $password = session()->get($this->password);
+                $username = Session::get($this->user->username);
+                $password = Session::get($this->user->password);
 
                 $this->reset();
 
-                if(Auth::login($user_name, $password)) {
+                if(Auth::login($username, $password)) {
                     Host::attempt(1);
                     Host::session(true, 1, Auth::id());
                     Cron::stats();
 
                     $ip = Host::data()->ip;
-                    $host = Host::data()->host_name;
+                    $host = Host::data()->hostname;
                     echo <<< EOT
                     Connecting...
                     Trying $ip
@@ -79,13 +79,12 @@ class UserController extends Controller
     public function user() 
     {
         $user = auth();
+        $password = base64_encode($user->password);
 
-        echo "ACCESS CODE: {$user->access_code} \n";
+        echo "ACCESS CODE: {$user->code} \n";
         echo "SIGNUP: {$user->created_at} \n";
-        echo "USERNAME: {$user->user_name} \n";
-        echo "PASSWORD: {$user->password} \n";
-        echo "FIRSTNAME: {$user->firstname} \n";
-        echo "LASTNAME: {$user->lastname} \n";
+        echo "USERNAME: {$user->username} \n";
+        echo "PASSWORD: {$password} \n";
         echo "LEVEL: {$user->level_id} \n";
         echo "XP: {$user->xp} \n";
         echo "REP: {$user->rep} \n";
@@ -100,7 +99,7 @@ class UserController extends Controller
             exit;
         }
 
-        auth()->update([
+        Auth::data()->update([
             'password' => $input[0]
         ]);
 
@@ -122,40 +121,48 @@ class UserController extends Controller
 
         $this->validate($data);
         
-        if(session()->has($this->password) && session()->has($this->access_code))  {
-            $access_code = session()->get($this->access_code);
-            $user_name = session()->get($this->user_name);
-            $password = session()->get($this->password);
+        if(Session::has($this->user->password) && Session::has($this->user->password))  {
+            $code = Session::get($this->user->code);
+            $username = Session::get($this->user->username);
+            $password = Session::get($this->user->password);
             
             $this->reset();
-
-            $firstname = ucfirst(strtolower(wordlist(text('namelist.txt'), rand(5, 12) , 1)[0]));
-            $lastname = ucfirst(strtolower(wordlist(text('namelist.txt'), rand(5, 12) , 1)[0]));
         } else {
             echo 'ERROR: Wrong Input.';
             exit;
         }
 
-        if (User::where($this->user_name, '=', $user_name)->exists()) {
+        if (User::where($this->user->username, '=', $username)->exists()) {
             echo 'ERROR: Username Taken.';
             exit;
          }
 
         User::create([
-            $this->user_name => $user_name,
-            $this->password => $password,
-            $this->access_code => $access_code,
-            $this->firstname => $firstname,
-            $this->lastname => $lastname,
-            $this->created => \Carbon\Carbon::now()
+            $this->user->username => $username,
+            $this->user->email => "$username@teleterm.net",
+            $this->user->fullname = ucfirst($username),
+            $this->user->password => $password,
+            $this->user->code => $code,
+            $this->user->created => \Carbon\Carbon::now()
         ]);
 
-        sleep(1);
+        if(Auth::login($username, $password)) {
+            Host::attempt(1);
+            Host::session(true, 1, Auth::id());
+            Cron::stats();
 
-        Auth::login($user_name, $password);
-        
-        echo "Authentication Accepted.\n";
-        echo 'Please wait while system is accessed...';
+            $ip = Host::data()->ip;
+            $host = Host::data()->hostname;
+            echo <<< EOT
+            Connecting...
+            Trying $ip
+            Connected to $host\n
+            EOT;
+            exit;         
+        } else {
+            echo '? Login incorrect';
+            exit;
+        }
     }
 
     public function logout() 
@@ -171,7 +178,7 @@ class UserController extends Controller
 
     public function reset()
     {
-        unset($_SESSION[$this->user_name]);
-        unset($_SESSION[$this->password]);
+        unset($_SESSION[$this->user->username]);
+        unset($_SESSION[$this->user->password]);
     }
 }

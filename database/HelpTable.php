@@ -5,7 +5,7 @@ namespace DB;
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Schema\Blueprint;
 
-use App\System\Help\HelpModel as Help;
+use App\Help\HelpModel as Help;
 
 class HelpTable extends Help
 {

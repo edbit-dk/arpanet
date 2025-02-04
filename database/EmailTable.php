@@ -5,7 +5,7 @@ namespace DB;
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Schema\Blueprint;
 
-use App\System\Email\EmailModel as Email;
+use App\Email\EmailModel as Email;
 
 class EmailTable extends Email
 {

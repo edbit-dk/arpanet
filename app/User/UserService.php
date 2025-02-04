@@ -5,10 +5,13 @@ namespace App\User;
 use App\User\UserModel as User;
 use Lib\Session;
 
-class UserService 
+class UserService extends User
 {
     private static $auth = 'user';
-    private static $uplink = 'uplink';
+    private static $uplink = 'code';
+    private static $blocked = 'blocked';
+    private static $email = 'email';
+    private static $username = 'username';
 
     public static function data() 
     {
@@ -21,7 +24,7 @@ class UserService
     public static function username()
     {
         if(self::data()) {
-            return self::data()->user_name;
+            return self::data()->username;
         } else {
             return false;
         }
@@ -77,10 +80,10 @@ class UserService
     {
 
         if($block) {
-            Session::set('user_blocked', true);
+            Session::set(self::$blocked, true);
         }
 
-        if (Session::has('user_blocked')) {
+        if (Session::has(self::$blocked)) {
             echo <<< EOT
             ERROR: Terminal Locked.
             Please contact an Administrator.
@@ -89,15 +92,15 @@ class UserService
         }
 
         if(!$block) {
-            Session::remove('user_blocked');
+            Session::remove(self::$blocked);
         }
     }
 
     public static function login($emailOrUsername, $password) 
     {
 
-        $user = User::where('email', $emailOrUsername)
-                    ->orWhere('user_name', $emailOrUsername)
+        $user = User::where(self::$email, $emailOrUsername)
+                    ->orWhere(self::$username, $emailOrUsername)
                     ->first();
 
         if (!$user) {

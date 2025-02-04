@@ -2,8 +2,11 @@
 
 namespace App\User;
 
+use Lib\Traits\Mappable;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Capsule\Manager as DB;
 
 use App\Host\HostModel as Host;
 use App\File\FileModel as File;
@@ -13,22 +16,30 @@ use App\Email\EmailModel as Email;
 
 class UserModel extends Model
 {
+    use Mappable;
+
     protected $table = 'users';
+
     public $timestamps = true;
+
+    protected $guarded = [];
     
-    protected $fillable = [
-		'email',
-		'user_name',
-		'password',
-        'access_code',
-		'fullname',
-        'role',
-        'active',
-        'level_id',
-        'ip',
-        'xp',
-        'last_login'
+    protected $maps = [
+        'email' => 'email',
+        'username' => 'username',
+        'password' => 'password',
+        'code' => 'code',
+        'fullname' => 'fullname',
+        'role' => 'role',
+        'active' => 'active',
+        'level_id' => 'level_id',
+        'ip' => 'ip',
+        'xp' => 'xp',
+        'last_login' => 'last_login',
+        'created' => 'created_at'
     ];
+
+    
 
     // A user can have many files
     public function files()

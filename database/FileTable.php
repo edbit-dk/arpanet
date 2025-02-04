@@ -5,7 +5,7 @@ namespace DB;
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Schema\Blueprint;
 
-use App\Host\File\FileModel as File;
+use App\File\FileModel as File;
 
 class FileTable extends File
 {

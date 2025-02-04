@@ -5,7 +5,7 @@ namespace DB;
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Schema\Blueprint;
 
-use App\Host\Folder\FolderModel as Folder;
+use App\Folder\FolderModel as Folder;
 
 class FolderTable extends Folder
 {

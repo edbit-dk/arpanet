@@ -5,7 +5,7 @@ namespace DB;
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Schema\Blueprint;
 
-use App\System\Level\LevelModel as Level;
+use App\Level\LevelModel as Level;
 
 class LevelTable extends Level
 {
