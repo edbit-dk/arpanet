@@ -1,0 +1,24 @@
+[04-Feb-2025 12:00:04 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: Access to undeclared static property App\User\UserModel::$maps in D:\Ampps\www\terminal\app\User\UserService.php:36
+Stack trace:
+#0 D:\Ampps\www\terminal\app\User\UserController.php(175): App\User\UserService::uplink()
+#1 [internal function]: App\User\UserController->unlink()
+#2 D:\Ampps\www\terminal\src\Router.php(91): call_user_func()
+#3 D:\Ampps\www\terminal\public\index.php(24): Lib\Router->run()
+#4 {main}
+  thrown in D:\Ampps\www\terminal\app\User\UserService.php on line 36
+[04-Feb-2025 12:00:41 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: Non-static method App\User\UserModel::maps() cannot be called statically in D:\Ampps\www\terminal\app\User\UserService.php:36
+Stack trace:
+#0 D:\Ampps\www\terminal\app\User\UserController.php(175): App\User\UserService::uplink()
+#1 [internal function]: App\User\UserController->unlink()
+#2 D:\Ampps\www\terminal\src\Router.php(91): call_user_func()
+#3 D:\Ampps\www\terminal\public\index.php(24): Lib\Router->run()
+#4 {main}
+  thrown in D:\Ampps\www\terminal\app\User\UserService.php on line 36
+[04-Feb-2025 12:03:31 Europe/Copenhagen] PHP Fatal error:  Uncaught Error: Access to undeclared static property App\User\UserService::$maps in D:\Ampps\www\terminal\app\User\UserService.php:36
+Stack trace:
+#0 D:\Ampps\www\terminal\app\User\UserController.php(175): App\User\UserService::uplink()
+#1 [internal function]: App\User\UserController->unlink()
+#2 D:\Ampps\www\terminal\src\Router.php(91): call_user_func()
+#3 D:\Ampps\www\terminal\public\index.php(24): Lib\Router->run()
+#4 {main}
+  thrown in D:\Ampps\www\terminal\app\User\UserService.php on line 36

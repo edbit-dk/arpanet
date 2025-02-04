@@ -15,7 +15,7 @@ class UserTable extends User
         DB::schema()->dropIfExists((new self)->table);
 
         DB::schema()->create((new self)->table, function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('uid');
             $table->string('fullname')->nullable();
             $table->string('username')->unique();
             $table->string('email')->unique()->nullable();

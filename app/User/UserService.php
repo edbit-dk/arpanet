@@ -8,10 +8,7 @@ use Lib\Session;
 class UserService extends User
 {
     private static $auth = 'user';
-    private static $uplink = 'code';
     private static $blocked = 'blocked';
-    private static $email = 'email';
-    private static $username = 'username';
 
     public static function data() 
     {
@@ -22,7 +19,7 @@ class UserService extends User
     }
 
     public static function username()
-    {
+    {       
         if(self::data()) {
             return self::data()->username;
         } else {
@@ -32,13 +29,15 @@ class UserService extends User
 
     public static function uplink($action = true)
     {
+        $field_code = static::field('code');
+
         if($action) {
-            if(!Session::has(self::$uplink)) {
-                Session::set(self::$uplink, true);
+            if(!Session::has($field_code)) {
+                Session::set($field_code, true);
             }
         } else {
-            if(Session::has(self::$uplink)) {
-                Session::remove(self::$uplink);
+            if(Session::has($field_code)) {
+                Session::remove($field_code);
             }
         }
 
@@ -46,7 +45,7 @@ class UserService extends User
 
     public static function uplinked()
     {
-        if(Session::has(self::$uplink)) {
+        if(Session::has(static::field('code'))) {
             return true;
         } else {
             return false;
@@ -98,19 +97,18 @@ class UserService extends User
 
     public static function login($emailOrUsername, $password) 
     {
-
-        $user = User::where(self::$email, $emailOrUsername)
-                    ->orWhere(self::$username, $emailOrUsername)
+        $user = User::where('email', $emailOrUsername)
+                    ->orWhere('username', $emailOrUsername)
                     ->first();
 
         if (!$user) {
             return false;
         }
 
-        if ($user->password == $password OR $user->access_code == $password) {
+        if ($user->password == $password OR $user->code == $password) {
             Session::set(self::$auth, $user->id);
             if(empty(self::data()->last_login)) {
-                self::data()->update(['last_login' => \Carbon\Carbon::now()]);
+                self::data()->update(['last_login' => now()]);
             }
             self::data()->update(['ip' => remote_ip()]);
             return true;
@@ -123,7 +121,7 @@ class UserService extends User
     {
         if(self::auth()) {
             sleep(1);
-            self::data()->update(['last_login' => \Carbon\Carbon::now()]);
+            self::data()->update(['last_login' => now()]);
             Session::remove(self::$auth);
         }
         echo "Goodbye.\n";

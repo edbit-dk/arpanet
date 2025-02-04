@@ -34,6 +34,10 @@ function timestamp($date = false) {
     
 }
 
+function now() {
+    return \Carbon\Carbon::now();
+}
+
 function request() {
     return app('request');
 }

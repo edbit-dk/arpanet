@@ -10,7 +10,17 @@ use App\User\UserModel as User;
 class EmailModel extends Model 
 {
     protected $table = 'emails';
-    protected $fillable = ['user_id', 'sender', 'recipient', 'subject', 'message', 'is_read'];
+
+    protected $guarded = [];
+
+    protected $maps = [
+        'user_id' => 'user_id',
+        'sender' => 'sender',
+        'recipient' => 'recipient',
+        'subject' => 'subject',
+        'message' => 'message',
+        'is_read' => 'is_read',
+    ];
 
     public function missions() 
     {

@@ -12,6 +12,16 @@ class FileModel extends Model
 {
     protected $table = 'files';
 
+    protected $guarded = [];
+
+    protected $maps = [
+        'filename' => 'filename',
+        'content' => 'content',
+        'folder_id' => 'folder_id',
+        'host_id' => 'host_id',
+        'user_id' => 'user_id',
+    ];
+
     // A file belongs to a user (owner)
     public function user()
     {

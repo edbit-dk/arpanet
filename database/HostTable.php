@@ -18,7 +18,7 @@ class HostTable extends Host
             $table->increments('id');
             $table->unsignedInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->string('host_name')->unique();
+            $table->string('hostname')->unique();
             $table->string('password')->nullable();
             $table->text('welcome')->nullable();
             $table->string('org')->nullable();
@@ -36,7 +36,7 @@ class HostTable extends Host
         DB::table((new self)->table)->insert([
             [
                 'user_id' => 1,
-                'host_name' => 'sri.nic.arpa', 
+                'hostname' => 'sri.nic.arpa', 
                 'password' => random_pass(),
                 'org' => 'SRI - NIC',
                 'location' => 'Menlo Park, CA',
@@ -49,7 +49,7 @@ class HostTable extends Host
             ],
             [
                 'user_id' => 1,
-                'host_name' => 'ucla.edu', 
+                'hostname' => 'ucla.edu', 
                 'password' => random_pass(),
                 'org' => 'University of California',
                 'location' => 'Los Angelos, CA',
@@ -62,7 +62,7 @@ class HostTable extends Host
             ],
             [
                 'user_id' => 1,
-                'host_name' => 'ucsb.edu', 
+                'hostname' => 'ucsb.edu', 
                 'password' => random_pass(),
                 'org' => 'University of California',
                 'location' => 'Santa Barbara, CA',
@@ -75,7 +75,7 @@ class HostTable extends Host
             ],
             [
                 'user_id' => 1,
-                'host_name' => 'uusc.edu', 
+                'hostname' => 'uusc.edu', 
                 'password' => random_pass(),
                 'org' => 'University of Utah School of Computing',
                 'location' => 'Salt Lake City, UT',
@@ -88,7 +88,7 @@ class HostTable extends Host
             ],
             [
                 'user_id' => 1,
-                'host_name' => 'nic.ddn.mil', 
+                'hostname' => 'nic.ddn.mil', 
                 'password' => random_pass(8),
                 'org' => 'Military Defense Data Network (UNCLASSIFIED)',
                 'location' => '',
@@ -101,7 +101,7 @@ class HostTable extends Host
             ],
             [
                 'user_id' => 1,
-                'host_name' => 'dsnet1.mil', 
+                'hostname' => 'dsnet1.mil', 
                 'password' => random_pass(8),
                 'org' => 'Defense Secure Network 1 (CONFIDENTIAL)',
                 'location' => '',
@@ -114,7 +114,7 @@ class HostTable extends Host
             ],
             [
                 'user_id' => 1,
-                'host_name' => 'dsnet2.mil', 
+                'hostname' => 'dsnet2.mil', 
                 'password' => random_pass(8),
                 'org' => 'Defense Secure Network 2 (SECRET)',
                 'location' => '',
@@ -127,7 +127,7 @@ class HostTable extends Host
             ],
             [
                 'user_id' => 1,
-                'host_name' => 'dsnet3.mil', 
+                'hostname' => 'dsnet3.mil', 
                 'password' => random_pass(8),
                 'org' => 'Defense Secure Network 3 (TOP SECRET)',
                 'location' => '',
@@ -141,7 +141,7 @@ class HostTable extends Host
             ],
             [
                 'user_id' => 1,
-                'host_name' => 'telenet.com', 
+                'hostname' => 'telenet.com', 
                 'password' => random_pass(),
                 'org' => 'Telenet Inc. (BBN)',
                 'location' => '',
@@ -154,7 +154,7 @@ class HostTable extends Host
             ],
             [
                 'user_id' => 1,
-                'host_name' => 'poseido.net', 
+                'hostname' => 'poseido.net', 
                 'password' => random_pass(),
                 'org' => 'Poseidon Energy Network',
                 'location' => 'Commonwealth, Boston',
@@ -167,7 +167,7 @@ class HostTable extends Host
             ],
             [
                 'user_id' => 1,
-                'host_name' => 'spsdd.edu', 
+                'hostname' => 'spsdd.edu', 
                 'password' => 'pencil',
                 'org' => 'WELCOME TO THE SEATTLE PUBLIC SCHOOL DISTRICT DATANET',
                 'location' => 'Seattle',

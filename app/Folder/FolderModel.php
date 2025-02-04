@@ -12,6 +12,16 @@ class FolderModel extends Model
 {
     protected $table = 'folders';
 
+    protected $guarded = [];
+
+    protected $maps = [
+        'foldername' => 'foldername',
+        'content' => 'content',
+        'folder_id' => 'folder_id',
+        'host_id' => 'host_id',
+        'user_id' => 'user_id',
+    ];
+
     // A folder belongs to a user (owner)
     public function user()
     {

@@ -169,6 +169,7 @@ function handleUserInput() {
     }
 
     if (isUplinkCode(input)) {
+        localStorage.setItem('uplink', true);
         input = 'uplink ' + input;
     }
 

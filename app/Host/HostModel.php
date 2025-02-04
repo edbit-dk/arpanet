@@ -11,24 +11,31 @@ use App\Level\LevelModel as Level;
 use App\File\FileModel as File;
 use App\Folder\FolderModel as Folder;
 
+use Lib\Traits\Mappable;
+
 class HostModel extends Model
 {
+    use Mappable;
+
     protected $table = 'hosts';
 
-    protected $fillable = [
-		'user_id',
-		'password',
-        'host_name',
-        'welcome',
-        'motd',
-        'notes',
-        'org',
-		'ip',
-		'active',
-        'level_id'
-    ];
-
     public $timestamps = true;
+
+    protected $guarded = [];
+
+    protected $maps = [
+        'id' => 'id',
+		'user_id' => 'user_id',
+        'password' => 'password',
+        'hostname' => 'hostname',
+        'welcome' => 'welcome',
+        'motd' => 'motd',
+        'notes' => 'notes',
+        'org' => 'org',
+		'ip' => 'ip',
+		'active' => 'active',
+        'level_id' => 'level_id'
+    ];
 
     // A host can have many files
     public function files()

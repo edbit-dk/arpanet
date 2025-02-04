@@ -12,12 +12,11 @@ use App\Email\EmailService as Mail;
 
 class SystemService 
 {
-    public static $code = 'code';
-    public static $uplink = 'uplink';
-
     public static function uplink($input = '')
     {
-        if(empty($input) && !Session::has(self::$uplink)) {
+        $code = User::field('code');
+
+        if(empty($input) && !Session::has($code)) {
             User::blocked(false);
             return self::code();
         }
@@ -28,10 +27,10 @@ class SystemService
         // Check if the user is already blocked
         User::blocked();
 
-        if(Session::get(self::$code) == $input) {
+        if(Session::get($code) == $input) {
             sleep(1);
             User::uplink(true);
-            Session::remove(self::$code);
+            Session::remove($code);
 
             echo <<< EOT
             Security Access Code Sequence Accepted.
@@ -66,9 +65,10 @@ class SystemService
 
     public static function code()
     {
+        $code = User::field('code');
         $access_code = access_code();
 
-        Session::set(self::$code, $access_code);
+        Session::set($code, $access_code);
 
         echo <<< EOT
         Welcome to TELETERM

@@ -25,6 +25,7 @@ class UserModel extends Model
     protected $guarded = [];
     
     protected $maps = [
+        'id' => 'uid',
         'email' => 'email',
         'username' => 'username',
         'password' => 'password',

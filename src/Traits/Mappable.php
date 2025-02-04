@@ -69,10 +69,16 @@ trait Mappable
      * @param string $alias
      * @return string
      */
-    public function map($alias)
+    public static function map(array $attributes)
     {
-        return $this->maps()[$alias] ?? $alias;
+        $mappedAttributes = [];
+        foreach ($attributes as $key => $value) {
+            $mappedKey = static::field($key);
+            $mappedAttributes[$mappedKey] = $value;
+        }
+        return $mappedAttributes;
     }
+
 
     /**
      * Get the actual field name for a given alias (Static Access).
@@ -100,5 +106,34 @@ trait Mappable
         }
 
         return (object) self::$cachedMaps[static::class];
+    }
+
+     // **🔹 Handle property access dynamically**
+    public function getAttribute($key)
+    {
+        $mappedKey = static::field($key);
+        return parent::getAttribute($mappedKey);
+    }
+ 
+    public function setAttribute($key, $value)
+    {
+        $mappedKey = static::field($key);
+        return parent::setAttribute($mappedKey, $value);
+    }
+
+    // ** Handle relation method calls dynamically**
+    public function __call($method, $parameters)
+    {
+        // If the method is a relationship, apply alias mapping
+        if (in_array($method, ['hasOne', 'hasMany', 'belongsTo', 'belongsToMany'])) {
+            if (isset($parameters[1])) {
+                $parameters[1] = static::field($parameters[1]); // Map foreign key alias
+            }
+            if (isset($parameters[2])) {
+                $parameters[2] = static::field($parameters[2]); // Map local key alias
+            }
+        }
+
+        return parent::__call($method, $parameters);
     }
 }

@@ -15,7 +15,7 @@ class FolderTable extends Folder
 
         DB::schema()->create((new self)->table, function (Blueprint $table) {
             $table->increments('id');
-            $table->string('folder_name');
+            $table->string('foldername');
             $table->unsignedInteger('parent_id')->nullable();
             $table->unsignedInteger('host_id')->nullable();
             $table->foreign('host_id')->references('id')->on('hosts');
@@ -25,10 +25,10 @@ class FolderTable extends Folder
         });
 
         DB::table((new self)->table)->insert([
-            ['folder_name' => 'home', 'host_id' => 1],
-            ['folder_name' => 'log', 'host_id' => 1],
-            ['folder_name' => 'bin', 'host_id' => 1],
-            ['folder_name' => 'sys', 'host_id' => 1],
+            ['foldername' => 'home', 'host_id' => 1],
+            ['foldername' => 'log', 'host_id' => 1],
+            ['foldername' => 'bin', 'host_id' => 1],
+            ['foldername' => 'sys', 'host_id' => 1],
         ]);
     }
 
