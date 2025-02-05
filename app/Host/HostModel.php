@@ -2,7 +2,6 @@
 
 namespace App\Host;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -11,12 +10,10 @@ use App\Level\LevelModel as Level;
 use App\File\FileModel as File;
 use App\Folder\FolderModel as Folder;
 
-use Lib\Traits\Mappable;
+use App\BaseModel;
 
-class HostModel extends Model
+class HostModel extends BaseModel
 {
-    use Mappable;
-
     protected $table = 'hosts';
 
     public $timestamps = true;

@@ -27,6 +27,12 @@ return [
         'collation' => 'utf8_unicode_ci',
         'prefix' => ''
     ],
+    'cache' => [
+        'default' => 'file',
+        'driver' => 'file',
+        'duration' => 1800,
+        'path'   => BASE_PATH . '/storage/cache', // Make sure this directory exists
+    ],
     'whitelist' => [
         '194.45.79.27'
     ]

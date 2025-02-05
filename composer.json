@@ -11,8 +11,8 @@
         },
 
         "files": [
-            "app/helpers.php",
-            "app/functions.php"
+            "bootstrap/helpers.php",
+            "bootstrap/functions.php"
         ]
     }
 }

@@ -6,6 +6,7 @@ use Lib\Controller;
 use Lib\Session;
 
 use App\User\UserService as User;
+use App\User\UserModel as Users;
 use App\Host\HostService as Host;
 use App\System\SystemService as System;
 use App\System\CronService as Cron;
@@ -37,6 +38,10 @@ class SystemController extends Controller
 
     public function main() 
     {
+        $data = Users::where('username', 'guest')->first();
+        dd($data);
+        die;
+
         if(Host::guest()) {
             return System::connect();
         }

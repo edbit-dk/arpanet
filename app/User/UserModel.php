@@ -2,11 +2,8 @@
 
 namespace App\User;
 
-use Lib\Traits\Mappable;
-
-use Illuminate\Database\Eloquent\Model;
+use App\BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Capsule\Manager as DB;
 
 use App\Host\HostModel as Host;
 use App\File\FileModel as File;
@@ -14,10 +11,8 @@ use App\Folder\FolderModel as Folder;
 use App\Mission\MissionModel as Mission;
 use App\Email\EmailModel as Email;
 
-class UserModel extends Model
+class UserModel extends BaseModel
 {
-    use Mappable;
-
     protected $table = 'users';
 
     public $timestamps = true;
@@ -25,7 +20,6 @@ class UserModel extends Model
     protected $guarded = [];
     
     protected $maps = [
-        'id' => 'uid',
         'email' => 'email',
         'username' => 'username',
         'password' => 'password',
