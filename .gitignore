@@ -2,3 +2,4 @@
 /vendor/
 /config/db.sync.json
 /storage/logs/errors.log
+/storage/cache/*

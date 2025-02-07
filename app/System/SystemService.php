@@ -33,7 +33,6 @@ class SystemService
         if(Session::get($code) == $input) {
             sleep(1);
             User::uplink(true);
-            Session::remove($code);
 
             echo <<< EOT
             Security Access Code Sequence Accepted.
@@ -142,6 +141,7 @@ class SystemService
     public static function auth()
     {
         $host = Host::data();
+        $last_ip = User::data()->ip;
         $os = $host->os;
         $hostname = strtoupper($host->hostname);
         $host_ip = $host->ip;
@@ -171,9 +171,8 @@ class SystemService
         $motd
         $notes
         $mail 
-        Last login: {$last_login}
-        $os $hostname ($host_ip)
-        $org, $location      
+        Welcome to $org, $location ($os)
+        Last login: {$last_login} from $last_ip     
         EOT;
     }
 

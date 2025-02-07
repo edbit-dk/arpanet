@@ -108,7 +108,7 @@ trait Mappable
         return self::$cachedMaps[static::class];
     }
 
-     // **🔹 Handle property access dynamically**
+     // ** Handle property access dynamically**
     public function getAttribute($key)
     {
         $mappedKey = static::field($key);

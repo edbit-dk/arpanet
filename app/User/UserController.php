@@ -64,6 +64,9 @@ class UserController extends Controller
 
                     $ip = $host->ip;
                     $host = $host->hostname;
+
+                    sleep(1);
+
                     echo <<< EOT
                     Connecting...
                     Trying $ip
@@ -123,10 +126,10 @@ class UserController extends Controller
 
         $this->validate($data);
         
-        if(Session::has($this->user->password) && Session::has($this->user->password))  {
-            $code = Session::get($this->user->code);
-            $username = Session::get($this->user->username);
-            $password = Session::get($this->user->password);
+        if(Session::has($this->user['username']) && Session::has($this->user['password']))  {
+            $code = Session::get($this->user['code']);
+            $username = Session::get($this->user['username']);
+            $password = Session::get($this->user['password']);
             
             $this->reset();
         } else {
@@ -134,18 +137,18 @@ class UserController extends Controller
             exit;
         }
 
-        if (User::where($this->user->username, '=', $username)->exists()) {
-            echo 'ERROR: Username Taken.';
+        if (User::where($this->user['username'], '=', $username)->exists()) {
+            echo 'sUsername Taken.';
             exit;
          }
 
         User::create([
-            $this->user->username => $username,
-            $this->user->email => "$username@teleterm.net",
-            $this->user->fullname = ucfirst($username),
-            $this->user->password => $password,
-            $this->user->code => $code,
-            $this->user->created => \Carbon\Carbon::now()
+            $this->user['username'] => $username,
+            $this->user['email'] => "$username@teleterm.net",
+            $this->user['fullname'] => ucfirst($username),
+            $this->user['password'] => $password,
+            $this->user['code'] => $code,
+            $this->user['created'] => now()
         ]);
 
         if(Auth::login($username, $password)) {
@@ -153,20 +156,21 @@ class UserController extends Controller
             Host::session(true, 1, Auth::id());
             Cron::stats();
 
+           $host = Host::data();
+
+            $ip = $host->ip;
+            $host = $host->hostname;
+
             sleep(1);
-
-            $host = 
-
-            $ip = Host::data()->ip;
-            $host = Host::data()->hostname;
+            
             echo <<< EOT
             Connecting...
             Trying $ip
             Connected to $host\n
             EOT;
-            exit;         
+            exit;          
         } else {
-            echo '? Login incorrect';
+            echo 'IDENTIFICATION NOT RECOGNIZED BY SYSTEM';
             exit;
         }
     }
@@ -179,7 +183,7 @@ class UserController extends Controller
     public function unlink()
     {
         Auth::uplink(false);
-        echo 'Disconnecting...';
+        echo '--DISCONNECTING--';
     }
 
     public function reset()
