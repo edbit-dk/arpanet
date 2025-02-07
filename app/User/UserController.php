@@ -71,7 +71,7 @@ class UserController extends Controller
                     EOT;
                     exit;         
                 } else {
-                    echo '? Login incorrect';
+                    echo 'IDENTIFICATION NOT RECOGNIZED BY SYSTEM';
                     exit;
                 }
             }

@@ -12,11 +12,14 @@ use App\Email\EmailService as Mail;
 
 class SystemService 
 {
+
+    private static $uplink = 'uplink';
+
     public static function uplink($input = '')
     {
         $code = User::field('code');
 
-        if(empty($input) && !Session::has($code)) {
+        if(empty($input) && !Session::has(self::$uplink)) {
             User::blocked(false);
             return self::code();
         }
@@ -44,7 +47,7 @@ class SystemService
             $attempts_left = Host::attempts(true);
     
             if ($attempts_left == 1) {
-                echo "!!! LOCKOUT IMMINENT !!!\n";
+                echo "--LOCKOUT IMMINENT--\n\n";
             }
 
             // Block the user after 4 failed attempts
@@ -55,7 +58,7 @@ class SystemService
 
             } else {
                 echo <<< EOT
-                ERROR: Incorrect Security Access Code. 
+                *** ACCESS DENIED ***
                 Internal Security Procedures Activated.
                 EOT;
             }
@@ -82,6 +85,8 @@ class SystemService
 
     public static function login()
     {
+        sleep(1);
+
         $port = $_SERVER['SERVER_PORT'];
 
         echo <<< EOT
@@ -90,14 +95,6 @@ class SystemService
         ARPANET LOGIN SYSTEM
         Authorized users only.
         EOT;
-    }
-
-    public static function level($host_level)
-    {
-        if($host_level == 1) {
-
-        }
-
     }
 
     public static function user()
@@ -122,10 +119,9 @@ class SystemService
         $system_info .= isset($mail) ? "$mail\n" : null;
 
         echo <<< EOT
-        Last login: {$last_login} from $last_ip
-        Welcome to $org, $location ($os)
-        
         $system_info
+        Welcome to $org, $location ($os)
+        Last login: {$last_login} from $last_ip
         EOT;
     }
 
@@ -138,7 +134,7 @@ class SystemService
         $org = $host->org;
         
         echo <<< EOT
-        $os ($hostname) ($host_ip)
+        $hostname ($host_ip)
         $org
         EOT;
     }
@@ -149,6 +145,7 @@ class SystemService
         $os = $host->os;
         $hostname = strtoupper($host->hostname);
         $host_ip = $host->ip;
+        $location = $host->location;
         $motd = isset($host->motd) ? $host->motd : null;
         $notes = isset($host->notes) ? $host->notes : null;
         $org = $host->org;
@@ -158,7 +155,7 @@ class SystemService
         if($host_user = Host::data()->user(User::id())) {
 
             if(empty($host_user->pivot->last_session)) {
-              $host_user->pivot->last_session = \Carbon\Carbon::now();
+              $host_user->pivot->last_session = now();
               $host_user->pivot->save();
             }
             $date = timestamp($host_user->pivot->last_session);
@@ -171,13 +168,12 @@ class SystemService
         Host::root();
 
         echo <<< EOT
-        Last login: {$last_login}
-        $os ($hostname) ($host_ip)
-        $org
-
         $motd
         $notes
-        $mail       
+        $mail 
+        Last login: {$last_login}
+        $os $hostname ($host_ip)
+        $org, $location      
         EOT;
     }
 

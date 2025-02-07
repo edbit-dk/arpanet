@@ -77,7 +77,7 @@ class HostController extends Controller
         if(request()->get('data')) {
             $data = request()->get('data');
         } else {
-            echo 'ERROR: Host Missing.';
+            echo 'Please specify host.';
             exit;
         }
 
@@ -121,9 +121,7 @@ class HostController extends Controller
         } 
 
         if(!$hosts->isEmpty()) {
-            echo "Searching Comlinks...\n";
-            echo "Searching ARPANET...\n";
-            echo "Searching Hosts...\n\n";
+            echo "Active Connections:\n\n";
         } else {
             echo "*** ACCESS DENIED ***\n";
             exit;
@@ -175,7 +173,7 @@ class HostController extends Controller
         if(!empty($data)) {
             if(Host::rlogin($data)) {
                 echo <<< EOT
-                Account Verified. 
+                --IDENTIFICATION ACCEPTED--
                 Please wait while system is accessed...
                 EOT;
             } else {
@@ -200,7 +198,7 @@ class HostController extends Controller
 
         if(Host::logon($input[0],  $input[1])) {
             echo <<< EOT
-            Password Verified. 
+            --IDENTIFICATION ACCEPTED--
             Please wait while system is accessed...
             EOT;
         } else {
@@ -208,7 +206,7 @@ class HostController extends Controller
              $attempts_left = Host::attempts(true);
     
              if ($attempts_left == 1) {
-                 echo "!!! WARNING: LOCKOUT IMMINENT !!!\n\n";
+                 echo "--WARNING: LOCKOUT IMMINENT--\n\n";
              }
  
              // Block the user after 4 failed attempts
@@ -219,7 +217,7 @@ class HostController extends Controller
 
              } else {
                 echo <<< EOT
-                *** ACCESS DENIED ***
+                IDENTIFICATION NOT RECOGNIZED BY SYSTEM
                 EOT;
                 exit;
              }
@@ -230,7 +228,7 @@ class HostController extends Controller
     public function logoff() 
     {
         Host::logoff();
-        echo "Connection closed.";
+        echo "--CONNECTION CLOSED--";
     }
 
 }

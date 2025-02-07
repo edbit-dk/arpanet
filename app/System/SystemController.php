@@ -52,10 +52,10 @@ class SystemController extends Controller
 
         if(User::uplinked()) {
             return System::login();
+        } else {
+            $data = parse_request('data');
+            return System::uplink($data[0]);
         }
-
-        $data = parse_request('data');
-        return System::uplink($data[0]);
 
     }
 

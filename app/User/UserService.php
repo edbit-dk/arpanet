@@ -9,6 +9,7 @@ use Lib\Cache;
 class UserService extends User
 {
     private static $auth = 'user';
+    private static $uplink = 'uplink';
     private static $blocked = 'blocked';
 
     public static function key()
@@ -35,15 +36,15 @@ class UserService extends User
 
     public static function uplink($action = true)
     {
-        $field_code = static::field('code');
+        $uplink = self::$uplink;
 
         if($action) {
-            if(!Session::has($field_code)) {
-                Session::set($field_code, true);
+            if(!Session::has($uplink)) {
+                Session::set($uplink, true);
             }
         } else {
-            if(Session::has($field_code)) {
-                Session::remove($field_code);
+            if(Session::has($uplink)) {
+                Session::remove($uplink);
             }
         }
 
@@ -51,7 +52,7 @@ class UserService extends User
 
     public static function uplinked()
     {
-        if(Session::has(static::field('code'))) {
+        if(Session::has(self::$uplink)) {
             return true;
         } else {
             return false;
@@ -91,8 +92,7 @@ class UserService extends User
 
         if (Session::has(self::$blocked)) {
             echo <<< EOT
-            ERROR: Terminal Locked.
-            Please contact an Administrator.
+            --CONNECTION TERMINATED--
             EOT;
             exit;
         }
@@ -130,6 +130,7 @@ class UserService extends User
             sleep(1);
             self::data()->update(['last_login' => now()]);
             Cache::forget(self::key());
+            self::uplink(false);
             Session::remove(self::$auth);
         }
         echo "Goodbye.\n";

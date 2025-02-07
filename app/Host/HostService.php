@@ -131,9 +131,6 @@ class HostService
             return false;
         } else {
             self::reset();
-            if(self::auth() == 1) {
-               
-            }
             Cache::forget(self::key());
             Session::set(self::$guest, $host->id);
             self::session(true, $host->id, Auth::id());
@@ -333,7 +330,7 @@ class HostService
         if($email->exists()) {
             $email->update(['is_read' => 1]);
 
-            $root_hack = "#!/bin echo '$user ALL=(ALL) ALL' >> /sys/passwd";
+            $root_hack = "/bin echo '$user ALL=(ALL) ALL' >> /sys/passwd";
 
             if(similar_text($root_hack, $email->first()->body) > 50) {
                 $date = timestamp();
