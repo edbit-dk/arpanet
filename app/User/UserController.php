@@ -24,7 +24,7 @@ class UserController extends Controller
     private function validate($input) 
     {
         if (isset($input[0])) {
-            Session::set($this->user->username, $input[0]);
+            Session::set($this->user['username'], $input[0]);
         } 
 
         if(empty($input[1])) {
@@ -33,7 +33,7 @@ class UserController extends Controller
             $password = $input[1];
         }
 
-        Session::set($this->user->password, $password);
+        Session::set($this->user['password'], $password);
 
     }
 
@@ -48,10 +48,10 @@ class UserController extends Controller
 
             $this->validate($data);
 
-            if(Session::has($this->user->username) && Session::has($this->user->password)){
+            if(Session::has($this->user['username']) && Session::has($this->user['password'])){
 
-                $username = Session::get($this->user->username);
-                $password = Session::get($this->user->password);
+                $username = Session::get($this->user['username']);
+                $password = Session::get($this->user['password']);
 
                 $this->reset();
 
@@ -60,8 +60,10 @@ class UserController extends Controller
                     Host::session(true, 1, Auth::id());
                     Cron::stats();
 
-                    $ip = Host::data()->ip;
-                    $host = Host::data()->hostname;
+                   $host = Host::data();
+
+                    $ip = $host->ip;
+                    $host = $host->hostname;
                     echo <<< EOT
                     Connecting...
                     Trying $ip
@@ -151,6 +153,10 @@ class UserController extends Controller
             Host::session(true, 1, Auth::id());
             Cron::stats();
 
+            sleep(1);
+
+            $host = 
+
             $ip = Host::data()->ip;
             $host = Host::data()->hostname;
             echo <<< EOT
@@ -178,7 +184,7 @@ class UserController extends Controller
 
     public function reset()
     {
-        unset($_SESSION[$this->user->username]);
-        unset($_SESSION[$this->user->password]);
+        unset($_SESSION[$this->user['username']]);
+        unset($_SESSION[$this->user['password']]);
     }
 }

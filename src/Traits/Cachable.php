@@ -2,119 +2,147 @@
 
 namespace Lib\Traits;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 trait Cachable
 {
-    // Protected properties to be used by models and BaseModel
-    protected static string $cachePath = __DIR__ . '/cache'; // Default cache path
-    protected static int $cacheDuration = 3600; // Default cache duration (1 hour)
+    protected static $cacheDuration = 0; // Default duration (0 means forever)
+    protected static $cachePath = 'storage/cache/'; // Default cache directory
 
-    public static function bootCachable()
+    /**
+     * Set cache duration for the query.
+     * @param int $duration Duration in seconds (null for forever).
+     * @return $this
+     */
+    public function cache($duration = null)
     {
-        // Hook into the Eloquent query builder to intercept and cache all queries
-        static::addGlobalScope('cachable', function (Builder $builder) {
-            // Apply cache for any query executed
-            $builder->macro('applyCache', function (Builder $query) {
-                return self::cacheQuery($query, fn() => $query->get());
-            });
-        });
-
-        // Clear cache when model is created, updated, or deleted
-        static::created(fn ($model) => $model->clearAllCache());
-        static::updated(fn ($model) => $model->clearAllCache());
-        static::deleted(fn ($model) => $model->clearAllCache());
+        static::$cacheDuration = $duration ?? static::$cacheDuration;
+        return $this;
     }
 
-    // Cache query results
-    protected static function cacheQuery(Builder $query, callable $callback)
+    /**
+     * Set the cache path externally at the class level.
+     * @param string $path The cache path to be set.
+     * @return void
+     */
+    public static function setCachePath(string $path)
     {
-        $cacheKey = self::getCacheKey($query);
-        $cachedData = self::getFromCache($cacheKey);
-
-        // Return cached data if available
-        if ($cachedData !== null) {
-            return $cachedData;
-        }
-
-        // Cache the result
-        $result = $callback();
-        self::putInCache($cacheKey, $result);
-
-        return $result;
+        static::$cachePath = rtrim($path, '/') . '/'; // Ensure trailing slash
     }
 
-    // Getter & Setter for cachePath
-    public static function setCachePath(string $path): void
-    {
-        static::$cachePath = $path;
-    }
-
-    public static function getCachePath(): string
-    {
-        return static::$cachePath;
-    }
-
-    // Getter & Setter for cacheDuration
-    public static function setCacheDuration(int $duration): void
+    /**
+     * Set the default cache duration for all models that use this trait.
+     * @param int $duration Duration in seconds (0 for forever).
+     * @return void
+     */
+    public static function setCacheDuration(int $duration)
     {
         static::$cacheDuration = $duration;
     }
 
-    public static function getCacheDuration(): int
+    /**
+     * Get the cache key for the model.
+     * @return string Cache key.
+     */
+    public function getCacheKey(): string
     {
-        return static::$cacheDuration;
+        return $this->getTable() . '-' . md5(serialize($this->attributes));
     }
 
-    // Generate the cache file path for each model
-    protected static function getCacheFilePath(): string
+    /**
+     * Get the cache path for this model.
+     * @return string Cache file path.
+     */
+    public function getCacheFilePath(): string
     {
-        $modelName = strtolower(class_basename(get_called_class()));
-        $modelCachePath = self::getCachePath() . "/{$modelName}.cache";
+        return static::$cachePath . $this->getCacheKey() . '.cache';
+    }
 
-        // Create cache directory if it doesn't exist
-        if (!is_dir(self::getCachePath())) {
-            mkdir(self::getCachePath(), 0777, true);
+    /**
+     * Get the cache duration.
+     * @return int|null Duration in seconds or null for forever.
+     */
+    public function getCacheDuration()
+    {
+        return static::$cacheDuration ?? 0; // Default to forever (0)
+    }
+
+    /**
+     * Check if we have cache available.
+     * @return bool True if cache file exists.
+     */
+    public function hasCache(): bool
+    {
+        return file_exists($this->getCacheFilePath());
+    }
+
+    /**
+     * Retrieve the cached data from the cache file.
+     * @return mixed Cached data.
+     */
+    public function getCache()
+    {
+        if ($this->hasCache()) {
+            return unserialize(file_get_contents($this->getCacheFilePath()));
+        }
+        return null;
+    }
+
+    /**
+     * Set cache data for the model.
+     * @param mixed $data The data to be cached.
+     */
+    public function setCache($data)
+    {
+        file_put_contents($this->getCacheFilePath(), serialize($data));
+    }
+
+    /**
+     * Handle the model's saving event (create, update, delete).
+     * This will delete the cache when the model is updated.
+     */
+    public static function bootCachable()
+    {
+        static::saved(function ($model) {
+            // Delete the cache when the model is created or updated.
+            if ($model instanceof Model) {
+                $model->deleteCache();
+            }
+        });
+
+        static::deleted(function ($model) {
+            // Delete the cache when the model is deleted.
+            if ($model instanceof Model) {
+                $model->deleteCache();
+            }
+        });
+    }
+
+    /**
+     * Delete the model's cache.
+     */
+    public function deleteCache()
+    {
+        if ($this->hasCache()) {
+            unlink($this->getCacheFilePath());
+        }
+    }
+
+    /**
+     * Retrieve the model, either from the cache or the database.
+     * @param callable $query The query callback (e.g., User::find(1)).
+     * @return mixed The result of the query, either cached or from the database.
+     */
+    public function getFromCacheOrDb(callable $query)
+    {
+        if ($this->getCacheDuration() === 0 && $this->hasCache()) {
+            return $this->getCache(); // Return cached data if it exists.
         }
 
-        return $modelCachePath;
-    }
+        // Otherwise, perform the query and cache the result.
+        $data = $query();
+        $this->setCache($data);
 
-    // Get all cached data from the cache file
-    protected static function getAllFromCache(): array
-    {
-        $cacheFilePath = self::getCacheFilePath();
-        return file_exists($cacheFilePath) ? unserialize(file_get_contents($cacheFilePath)) ?? [] : [];
-    }
-
-    // Get specific cache data by key
-    protected static function getFromCache(string $cacheKey)
-    {
-        $allCacheData = self::getAllFromCache();
-        return $allCacheData[$cacheKey] ?? null;
-    }
-
-    // Store data in the cache
-    protected static function putInCache(string $cacheKey, $data): void
-    {
-        $allCacheData = self::getAllFromCache();
-        $allCacheData[$cacheKey] = $data;
-        file_put_contents(self::getCacheFilePath(), serialize($allCacheData));
-    }
-
-    // Generate a unique cache key based on the full query (including where() and bindings)
-    protected static function getCacheKey(Builder $query): string
-    {
-        $sql = $query->toSql(); // The raw SQL query
-        $bindings = json_encode($query->getBindings()); // The query bindings (parameters)
-
-        // Generate a unique cache key based on the SQL query and its bindings
-        return md5($sql . $bindings);
-    }
-
-    // Clear all cache for the model
-    public static function clearAllCache(): void
-    {
-        file_put_contents(self::getCacheFilePath(), serialize([]));
+        return $data;
     }
 }

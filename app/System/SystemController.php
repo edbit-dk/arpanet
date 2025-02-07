@@ -38,10 +38,6 @@ class SystemController extends Controller
 
     public function main() 
     {
-        $data = Users::where('username', 'guest')->first();
-        dd($data);
-        die;
-
         if(Host::guest()) {
             return System::connect();
         }

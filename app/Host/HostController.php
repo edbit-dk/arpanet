@@ -30,7 +30,7 @@ class HostController extends Controller
         $admin_pass = wordlist(config('database') . '/wordlist.txt', $pass_length , 1)[0];
         
         $host = HostModel::create([
-            'host_name' => $name,
+            'hostname' => $name,
             'password' =>  strtolower($admin_pass),
             'level_id' => $level->id,
             'ip' => random_ip()
@@ -95,7 +95,7 @@ class HostController extends Controller
             echo '*** ACCESS DENIED ***';
             exit;
         } else {
-            $host = Host::data()->host_name;
+            $host = Host::data()->hostname;
             $ip = Host::data()->ip;
 
             echo <<< EOT
@@ -140,10 +140,10 @@ class HostController extends Controller
             if($host->user_id == User::auth()) {
                 $access = '#';
             }
-            $host_name = $host->host_name;
+            $hostname = $host->hostname;
             
             echo <<<EOT
-            $access $host_name: $host->org, $host->location\n
+            $access $hostname: $host->org, $host->location\n
             EOT;
         }
         
@@ -163,8 +163,7 @@ class HostController extends Controller
             Host::logon(User::username(), User::data()->password);
        }
 
-       Host::data()->users()->updateExistingPivot(User::id(),['last_session' => \Carbon\Carbon::now()]);
-       echo "Authentication Accepted.\n";
+       Host::data()->users()->updateExistingPivot(User::id(),['last_session' => now()]);
        echo bootup();
        exit;
     }

@@ -123,8 +123,8 @@ class SystemService
 
         echo <<< EOT
         Last login: {$last_login} from $last_ip
-        
         Welcome to $org, $location ($os)
+        
         $system_info
         EOT;
     }
@@ -133,12 +133,12 @@ class SystemService
     {
         $host = Host::data();
         $os = $host->os;    
-        $host_name = strtoupper($host->host_name);
+        $hostname = strtoupper($host->hostname);
         $host_ip = $host->ip;
         $org = $host->org;
         
         echo <<< EOT
-        $os ($host_name) ($host_ip)
+        $os ($hostname) ($host_ip)
         $org
         EOT;
     }
@@ -147,7 +147,7 @@ class SystemService
     {
         $host = Host::data();
         $os = $host->os;
-        $host_name = strtoupper($host->host_name);
+        $hostname = strtoupper($host->hostname);
         $host_ip = $host->ip;
         $motd = isset($host->motd) ? $host->motd : null;
         $notes = isset($host->notes) ? $host->notes : null;
@@ -172,7 +172,7 @@ class SystemService
 
         echo <<< EOT
         Last login: {$last_login}
-        $os ($host_name) ($host_ip)
+        $os ($hostname) ($host_ip)
         $org
 
         $motd

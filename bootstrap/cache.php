@@ -1,6 +1,6 @@
 <?php
 
-use App\BaseModel;
+use Lib\Cache;
 
-BaseModel::setCachePath($c->config['cache']['path']); // Change for all models inheriting from BaseModel
-BaseModel::setCacheDuration($c->config['cache']['duration']); // Change for all models inheriting from BaseModel
+Cache::path($c->config['cache']['path']);
+Cache::ttl($c->config['cache']['ttl']);

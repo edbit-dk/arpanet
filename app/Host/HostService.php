@@ -48,7 +48,7 @@ class HostService
     public static function hostname()
     {
         if(self::data()) {
-            return self::data()->host_name;
+            return self::data()->hostname;
         } else {
             return '';
         }
@@ -99,7 +99,7 @@ class HostService
     {
         $host = Host::where('id', $data)
         ->orWhere('ip', $data)
-        ->orWhere('host_name', $data)
+        ->orWhere('hostname', $data)
         ->where('active', 1)
         ->first();
 
@@ -134,7 +134,7 @@ class HostService
         $user_id = Auth::id();
 
         if(isset($data[1])) {
-            if($user = User::where('user_name', $data[1])->first()) {
+            if($user = User::where('username', $data[1])->first()) {
                 $user_id = $user->id;
             }
         }
@@ -167,7 +167,7 @@ class HostService
             ->first();
 
         if(!$host) {
-            $user = User::where('user_name', $username)
+            $user = User::where('username', $username)
             ->where('password', $password)->first();
     
             if(!$user) {

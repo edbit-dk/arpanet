@@ -28,9 +28,7 @@ return [
         'prefix' => ''
     ],
     'cache' => [
-        'default' => 'file',
-        'driver' => 'file',
-        'duration' => 1800,
+        'ttl' => 30,
         'path'   => BASE_PATH . '/storage/cache', // Make sure this directory exists
     ],
     'whitelist' => [

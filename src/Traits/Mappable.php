@@ -105,7 +105,7 @@ trait Mappable
             self::$cachedMaps[static::class] = $instance->maps();
         }
 
-        return (object) self::$cachedMaps[static::class];
+        return self::$cachedMaps[static::class];
     }
 
      // **🔹 Handle property access dynamically**

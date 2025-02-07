@@ -34,7 +34,6 @@ class UserModel extends BaseModel
         'created' => 'created_at'
     ];
 
-    
 
     // A user can have many files
     public function files()
