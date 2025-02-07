@@ -93,7 +93,7 @@ class HostTable extends Host
                 'org' => 'Military Defense Data Network (UNCLASSIFIED)',
                 'location' => '',
                 'welcome' => '*** WARNING: UNAUTHORIZED USE PROHIBITED ***',
-                'os' => 'UNIX System V (AT&T)',
+                'os' => 'UNIX System V AT&T',
                 'ip' => '192.67.67.20',
                 'network' => 1,
                 'level_id' => 3,

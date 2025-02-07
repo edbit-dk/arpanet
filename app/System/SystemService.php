@@ -58,7 +58,6 @@ class SystemService
             } else {
                 echo <<< EOT
                 *** ACCESS DENIED ***
-                Internal Security Procedures Activated.
                 EOT;
             }
             
@@ -73,7 +72,7 @@ class SystemService
         Session::set($code, $access_code);
 
         echo <<< EOT
-        Welcome to TELETERM
+        Welcome to TELETERM - The Interactive Terminal
 
         Uplink with central ARPANET initiated.
         Enter Security Access Code Sequence: 

@@ -1,21 +1,21 @@
 >>> boot
 
-AT&T UNIX System V Release 2.0
+AT&T UNIX System V Release 1.0
 Copyright (C) 1984 AT&T Bell Laboratories
 
 mem = 64K
-root on dev hd00
-swap on dev hd01
-mounting /usr ...
+
+mounting /home ...
+mounting /bin ...
+mounting /log ...
+mounting /sys ...
+
 checking file systems ...
 
 INIT: SINGLE-USER MODE
-Enter root password to continue or ^D to start multi-user mode:
+Enter root password to continue:
 
-**************
-
-# fsck -y  
-# mount -a
+>>> ********
 
 INIT: ENTERING RUN LEVEL 2
 Starting system services...
@@ -23,4 +23,4 @@ Starting cron daemon: [OK]
 Starting network services: [OK]
 Starting login services: [OK]
 
-Welcome to UNIX System V Release 2.0 (tty01)
+Welcome to UNIX System V Release 1.0 (tty01)
