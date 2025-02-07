@@ -10,6 +10,7 @@ use App\Email\EmailModel as Email;
 use App\Email\EmailService as Mail;
 
 use Lib\Session;
+use Lib\Cache;
 
 class HostService 
 {
@@ -21,14 +22,25 @@ class HostService
     private static $sessions = [];
     private static $max_attempts = 4; // Maximum number of allowed login attempts
 
-    public static function data() 
+    public static function key()
     {
         if(self::guest()) {
-            return Host::find(self::guest());
+            return self::$guest . self::guest();
         }
 
         if(self::auth()) {
-            return Host::find(self::auth());
+            return self::$auth . self::auth();
+        }
+    }
+
+    public static function data() 
+    {
+        if(self::guest()) {
+            return Cache::remember(self::key(), fn() => Host::find(self::guest()));
+        }
+
+        if(self::auth()) {
+            return Cache::remember(self::key(), fn() => Host::find(self::auth()));
         }
 
         return false;
@@ -122,8 +134,9 @@ class HostService
             if(self::auth() == 1) {
                
             }
+            Cache::forget(self::key());
             Session::set(self::$guest, $host->id);
-            self::session(true,$host->id, Auth::id());
+            self::session(true, $host->id, Auth::id());
             return true;
         }
 
@@ -141,6 +154,7 @@ class HostService
 
         if($host = self::try($data[0])) {
             if($host->user($user_id)) {
+                Cache::forget(self::key());
                 self::session(true, $host->id, $user_id);
                 self::attempt($host->id);
                 return true;
@@ -280,12 +294,13 @@ class HostService
         if (self::auth() > 1) {
 
             if($host_user = self::data()->user(Auth::id())) {
-                $host_user->pivot->last_session = \Carbon\Carbon::now();
+                $host_user->pivot->last_session = now();
                 $host_user->pivot->save();
             }
         }
 
         self::$sessions = self::session(false);
+        Cache::forget(self::key());
         Session::remove(self::$guest);
         Session::remove(self::$auth);
 

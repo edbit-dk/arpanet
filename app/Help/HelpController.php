@@ -7,8 +7,7 @@ use Lib\Session;
 
 use App\User\UserService as User;
 use App\Host\HostService as Host;
-
-use App\Help\HelpModel as Help;
+use App\Help\HelpService as Help;
 
 class HelpController extends Controller
 {
@@ -21,16 +20,13 @@ class HelpController extends Controller
     {
         $this->data = parse_request('data');
 
-        $paginate = paginate($this->data[0], Help::where($type,1)->count(), 10);
+        $paginate = paginate($this->data[0], Help::count($type), 10);
         $page = $paginate['page'];
         $limit = $paginate['limit'];
         $offset = $paginate['offset'];
         $total = $paginate['total'];
 
-        $this->commands = Help::orderBy('id', 'asc')
-                        ->where($type,1)
-                        ->limit($limit)
-                        ->offset($offset)->get();
+        $this->commands = Help::paginate($type, $limit, $offset);
 
         if(empty($this->data[0]) || is_numeric($this->data[0])) {
 
@@ -50,7 +46,7 @@ class HelpController extends Controller
 
         if(!empty($this->data[0])) {
 
-            $help = Help::where($type,1)->where('cmd','LIKE', '%' . $this->data[0] . '%')->first();
+            $help = Help::search($this->data[0], $type);
 
             if(empty($help)) {
                 echo 'ERROR: Unknown Command.';
