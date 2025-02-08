@@ -1,13 +1,22 @@
 <?php
 
+use App\CronController;
 use App\API\APIController;
 use App\System\SystemController;
-use App\System\CronController;
 use App\Email\EmailController;
 use App\Help\HelpController;
 
 use App\Host\HostService as Host;
 use App\User\UserService as User;
+
+// Setup
+$app->get('/setup/install', [SystemController::class, 'install']);
+$app->get('/setup/system', [SystemController::class, 'system']);
+$app->get('/setup/users', [SystemController::class, 'users']);
+$app->get('/setup/hosts', [SystemController::class, 'hosts']);
+$app->get('/setup/relations', [SystemController::class, 'relations']);
+$app->get('/setup/folders', [SystemController::class, 'folders']);
+$app->get('/setup/files', [SystemController::class, 'files']);
 
 
 // Home

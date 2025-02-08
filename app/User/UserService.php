@@ -133,7 +133,7 @@ class UserService extends User
             self::uplink(false);
             Session::remove(self::$auth);
         }
-        echo "Goodbye.\n";
+        echo "Goodbye.\n\n";
     }
 
     public static function count()

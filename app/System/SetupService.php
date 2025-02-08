@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Setup;
-
-use Lib\Controller;
+namespace App\System;
 
 use DB\LevelTable;
 use DB\UserTable;
@@ -14,53 +12,53 @@ use DB\EmailTable;
 use DB\FileTable;
 use DB\FolderTable;
 
-class SetupController extends Controller
+class SetupService
 {
-    public function install()
+    public static function install()
     {
-        $this->system();
-        $this->users();
-        $this->hosts();
-        $this->relations();
-        $this->folders();
-        $this->files();
-        $this->help();
+        self::system();
+        self::users();
+        self::hosts();
+        self::relations();
+        self::folders();
+        self::files();
+        self::help();
     }
 
-    public function system()
+    public static function system()
     {
         LevelTable::up();
         EmailTable::up();
         HelpTable::up();
     }
 
-    public function relations()
+    public static function relations()
     {
         HostUserTable::up();
         HostNodeTable::up();
     }
 
-    public function users()
+    public static function users()
     {
         UserTable::up();
     }
 
-    public function hosts()
+    public static function hosts()
     {
         HostTable::up();
     }
 
-    public function folders()
+    public static function folders()
     {
         FolderTable::up();
     }
 
-    public function files()
+    public static function files()
     {
         FileTable::up();
     }
 
-    public function help()
+    public static function help()
     {
         HelpTable::up();
     }

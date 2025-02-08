@@ -38,7 +38,7 @@ class HostTable extends Host
                 'user_id' => 1,
                 'hostname' => 'sri.nic.arpa', 
                 'password' => random_pass(),
-                'org' => 'SRI - NIC',
+                'org' => 'Standford Research Institute (NIC)',
                 'location' => 'Menlo Park, CA',
                 'welcome' => "",
                 'os' => 'VAX-11/750 TOPS-20',

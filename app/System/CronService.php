@@ -2,14 +2,12 @@
 
 namespace App\System;
 
-use Lib\Controller;
-
 use App\Host\HostModel as Hosts;
 
 use App\User\UserService as User;
 use App\Host\HostService as Host;
 
-class CronService extends Controller
+class CronService
 {
     public static function minify()
     {
@@ -42,12 +40,13 @@ class CronService extends Controller
         $users = User::count();
         $hosts = Host::count();
 
-        $welcome = <<< EOT
-        Local time is {$date}.
-        There are {$users} local users. There are {$hosts} hosts on the network.
-        EOT;
+        $welcome = "Local time is {$date}.";
+        $motd = "There are {$users} local users. There are {$hosts} hosts on the network.";
 
-        Hosts::where('id', 1)->update(['welcome' => $welcome]);
+        Hosts::where('id', 1)->update([
+            'welcome' => $welcome,
+            'motd' => $motd
+        ]);
 
     }
 }
