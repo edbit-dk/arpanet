@@ -18,7 +18,7 @@ function handleUserInput() {
     }
 
     if (isUplinkCode(input)) {
-        localStorage.setItem('uplink', true);
+        sessionStorage.setItem('uplink', true);
         input = 'uplink ' + input;
     }
 
@@ -87,8 +87,8 @@ function handleUserInput() {
         return;
     }
 
-    if (['newuser', 'logon', 'login'].includes(command) && !localStorage.getItem('uplink')) {
-        loadText("ERROR: Uplink Required.");
+    if (['newuser', 'logon', 'login'].includes(command) && !sessionStorage.getItem('uplink')) {
+        loadText("UNLINK REQUIRED");
         return;
     }
 
@@ -100,7 +100,7 @@ function handleUserInput() {
     if (command === 'clear' || command === 'cls') {
         clearTerminal();
     } else if (command === 'uplink') {
-        localStorage.setItem('uplink', true);
+        sessionStorage.setItem('uplink', true);
         sendCommand(command, args);
     } else if (command === 'newuser') {
         if (args) {

@@ -130,6 +130,7 @@ class EmailService
             Date: $date
             Subject: $email->subject
             Message:
+            
             $email->message
             EOT;
 
@@ -182,9 +183,9 @@ class EmailService
             $username = $options[2];
         }
 
-        if(Users::where('user_name', $username)->exists()) {
+        if(Users::where('username', $username)->exists()) {
             
-            if(Hosts::where('host_name', $host)->exists()) {
+            if(Hosts::where('hostname', $host)->exists()) {
                 $recipient = "$username@$host";
             } else {
                 $recipient = $username;

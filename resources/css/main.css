@@ -1,13 +1,14 @@
 
-.rit-v300 * {
-  font-family: "RIT-V300", sans-serif;
+.DEC-VT100 * {
+  font-family: "DEC-VT100", sans-serif;
   font-size: 20px;
 }
 
-.rx-9000 * {
-  font-family: "RX-9000", monospace;
+.IBM-3270 * {
+  font-family: "IBM-3270", monospace;
   font-size: 15px;
 }
+
 
 body, input, pre, button {
   color:  #0f0;

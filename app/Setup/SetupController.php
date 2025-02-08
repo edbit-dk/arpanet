@@ -24,6 +24,7 @@ class SetupController extends Controller
         $this->relations();
         $this->folders();
         $this->files();
+        $this->help();
     }
 
     public function system()
@@ -57,6 +58,11 @@ class SetupController extends Controller
     public function files()
     {
         FileTable::up();
+    }
+
+    public function help()
+    {
+        HelpTable::up();
     }
 
     

@@ -99,9 +99,15 @@ function setTheme(color) {
 
 // Function to set terminal font
 function setTermMode(mode) {
-    $("#page").attr('class', mode);
-    localStorage.setItem('term', mode);
-    sendCommand('term', mode);
+    const terms = ['DEC-VT100', 'IBM-3270'];
+
+    if (terms.includes(mode)) {
+        $("#page").attr('class', mode);
+        localStorage.setItem('term', mode);
+        sendCommand('term', mode);
+    } else {
+        loadText('UNKNOWN TERMINAL TYPE');
+    }
 }
 
 // Function to load the saved theme from localStorage

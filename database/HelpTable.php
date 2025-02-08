@@ -14,6 +14,7 @@ class HelpTable extends Help
         DB::schema()->dropIfExists((new self)->table);
 
         DB::schema()->create((new self)->table, function (Blueprint $table) {
+            $table->increments('id');
             $table->string('cmd');
             $table->string('input')->nullable();
             $table->text('info');
@@ -98,7 +99,7 @@ class HelpTable extends Help
             ],
             [
                 'cmd' => 'term', 
-                'input' => '<rit-v300|rx-9000>', 
+                'input' => '<DEC-VT100|IBM-3270>', 
                 'info' => 'change terminal mode',
                 'is_user' => 1,
                 'is_host' => 1,

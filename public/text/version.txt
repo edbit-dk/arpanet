@@ -1,2 +1,2 @@
 AT&T UNIX System V Release 1.0
-Copyright (C) 1984 AT&T Bell Laboratories
+Copyright (C) 1984 AT&T Bell Labs

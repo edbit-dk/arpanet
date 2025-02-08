@@ -97,7 +97,7 @@ function handleRedirect(response, timeout = 1000) {
         }, timeout);
     }
 
-    if (response.startsWith("IDENTIFICATION")) {
+    if (response.startsWith("--IDENTIFICATION")) {
         setTimeout(function() {
             sessionStorage.setItem('host', true);
             redirectTo('');
@@ -169,7 +169,7 @@ function handleUserInput() {
     }
 
     if (isUplinkCode(input)) {
-        localStorage.setItem('uplink', true);
+        sessionStorage.setItem('uplink', true);
         input = 'uplink ' + input;
     }
 
@@ -238,8 +238,8 @@ function handleUserInput() {
         return;
     }
 
-    if (['newuser', 'logon', 'login'].includes(command) && !localStorage.getItem('uplink')) {
-        loadText("ERROR: Uplink Required.");
+    if (['newuser', 'logon', 'login'].includes(command) && !sessionStorage.getItem('uplink')) {
+        loadText("UNLINK REQUIRED");
         return;
     }
 
@@ -251,7 +251,7 @@ function handleUserInput() {
     if (command === 'clear' || command === 'cls') {
         clearTerminal();
     } else if (command === 'uplink') {
-        localStorage.setItem('uplink', true);
+        sessionStorage.setItem('uplink', true);
         sendCommand(command, args);
     } else if (command === 'newuser') {
         if (args) {
@@ -576,9 +576,15 @@ function setTheme(color) {
 
 // Function to set terminal font
 function setTermMode(mode) {
-    $("#page").attr('class', mode);
-    localStorage.setItem('term', mode);
-    sendCommand('term', mode);
+    const terms = ['DEC-VT100', 'IBM-3270'];
+
+    if (terms.includes(mode)) {
+        $("#page").attr('class', mode);
+        localStorage.setItem('term', mode);
+        sendCommand('term', mode);
+    } else {
+        loadText('UNKNOWN TERMINAL TYPE');
+    }
 }
 
 // Function to load the saved theme from localStorage
