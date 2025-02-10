@@ -20,6 +20,7 @@ class EmailService
     public static function handle($data)
     {
         $command = $data[0];
+        $options = [];
         
         if(is_numeric($command)) {
             return self::read($command);
@@ -75,7 +76,7 @@ class EmailService
     public static function list()
     {
         $id = 0;
-        $unread = 'N';
+        $unread = '';
 
         $emails = Email::where('recipient', self::contact());
 
@@ -86,8 +87,8 @@ class EmailService
         foreach ($emails->get() as $email) {
             $id++;
             $date = timestamp($email->created_at);
-            if($email->is_read) {
-                $unread = '';
+            if(!$email->is_read) {
+                $unread = 'N';
             }
             echo ">$unread $email->id $email->sender   ($date) [$email->subject] \n";
         }
@@ -204,19 +205,23 @@ class EmailService
             }
             
         } else {
-            echo 'ERROR: Unknown Recipient.';
+            echo 'Unknown Recipient.';
         }
     }
 
     public static function delete($data)
     {
         if(!empty($data[1])) {
-            Email::where('id', $data[1])
+            $email = Email::where('id', $data[1])
             ->where('user_id', User::auth())->delete();
-            
-            echo 'Email Deleted.';
+
+            if(!$email) {
+                echo 'Unknown Email.';
+            } else {
+                echo 'Email Deleted.';
+            }
         } else {
-            echo 'ERROR: Unknown Email.';
+            echo 'Unknown Email.';
         }
     }
 }

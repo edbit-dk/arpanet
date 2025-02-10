@@ -3,10 +3,7 @@ function loadText(text) {
     let delay = 1;
     let currentIndex = 0;
     let lineCharCount = 0; // Track character count per line
-    const preContainer = $('<pre>').css({
-        'white-space': 'pre-wrap',   // Preserve newlines and wrap long lines
-        'word-wrap': 'break-word'    // Break words if they are too long for the line
-    });
+    const preContainer = $('<pre>');
 
     $('#terminal').append(preContainer); // Append the container to the terminal
 

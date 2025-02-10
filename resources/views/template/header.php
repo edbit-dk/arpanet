@@ -19,4 +19,4 @@
     }
     </style>
     </head>
-        <body class="rit-v300" id="page">
+        <body class="DEC-VT100" id="page">

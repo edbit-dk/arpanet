@@ -130,7 +130,6 @@ class UserService extends User
             sleep(1);
             self::data()->update(['last_login' => now()]);
             Cache::forget(self::key());
-            self::uplink(false);
             Session::remove(self::$auth);
         }
         echo "Goodbye.\n\n";

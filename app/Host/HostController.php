@@ -53,20 +53,16 @@ class HostController extends Controller
             $hostname = Host::hostname(); 
             $username = User::username();
 
-            if(Host::data()->id == 1) {
-                echo '@';
-            } else {
-                if(Host::data()->user_id == User::id()) {
-                    echo "[$username@$hostname$pwd]#";
-                } else {  
-                    echo "[$username@$hostname$pwd]$";
-                }
+            if(Host::data()->user_id == User::id()) {
+                echo "[$username@$hostname$pwd]#";
+            } else {  
+                echo "[$username@$hostname$pwd]$";
             }
             
             exit;
         }
 
-        echo '.';
+        echo '@';
 
     }
 

@@ -11,6 +11,8 @@ class UserTable extends User
 {
     public static function up()
     {
+        DB::connection()->disableQueryLog();
+
         DB::schema()->disableForeignKeyConstraints();
         DB::schema()->dropIfExists((new self)->table);
 
@@ -30,38 +32,19 @@ class UserTable extends User
             $table->timestamps();
         });
 
-        DB::table((new self)->table)->insert([
-            [
-                'username' => 'root', 
-                'email' => 'root@teleterm.net', 
-                'password' => random_pass(),
-                'code' => access_code(),
-                'fullname' => 'Superuser',
-                'is_admin' => 0,
-                'level_id' => 6,
-                'xp' => 100
-            ],
-            [
-                'username' => 'admin', 
-                'email' => 'admin@teleterm.net',
-                'password' => random_pass(),
-                'code' => access_code(),
-                'fullname' => 'Administrator',
-                'is_admin' => 1,
-                'level_id' => 6,
-                'xp' => 100
-            ],
-            [
-                'username' => 'guest', 
-                'email' => 'guest@teleterm.net', 
-                'password' => null,
-                'code' => access_code(),
-                'fullname' => 'Guest account',
-                'is_admin' => 0,
-                'level_id' => 1,
-                'xp' => 0
-            ]
-        ]);
+        $users = require BASE_PATH . '/config/users.php';
+        $chunkSize = 500; // Adjust based on server capabilities
+
+        DB::beginTransaction();
+        try {
+            foreach (array_chunk($users, $chunkSize) as $chunk) {
+                DB::table((new self)->table)->insert($chunk);
+            }
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
     }
 
     public static function down()

@@ -72,9 +72,9 @@ class SystemService
         Session::set($code, $access_code);
 
         echo <<< EOT
-        =------------------------------------=
-        | WELCOME TO TELETERM TELETYPE (TTY) |
-        |------------------------------------|
+        =-------------------------------------=
+        | WELCOME TO TELETERM TELETYPER (TTY) |
+        |-------------------------------------|
 
         Uplink with central ARPANET initiated.
         Enter Security Access Code Sequence: 
@@ -92,7 +92,7 @@ class SystemService
         echo <<< EOT
         Connected to ARPANET port {$port}
 
-        ARPANET LOGIN SYSTEM
+        --ARPANET LOGIN SYSTEM--
         Authorized users only.
         EOT;
     }
@@ -115,13 +115,17 @@ class SystemService
 
         $system_info = isset($welcome) ? "$welcome\n" : null;
         $system_info .= isset($motd) ? "$motd\n" : null;
-        $system_info .= isset($notes) ? "$notes\n" : null;
-        $system_info .= isset($mail) ? "$mail\n" : null;
+        $system_info .= isset($notes) ? "\n$notes" : null;
+        $system_info .= isset($mail) ? "\n$mail" : null;
+
+        $current_date = date('H:i:s l, F j, Y', $host->created_at);
 
         echo <<< EOT
-        $system_info
-        Welcome to $org, $location ($os)
         Last login: {$last_login} from $last_ip
+        ($os): $current_date
+
+        Welcome to $org, $location
+        $system_info 
         EOT;
     }
 
