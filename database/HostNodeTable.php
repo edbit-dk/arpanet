@@ -20,17 +20,19 @@ class HostNodeTable
             $table->foreign('node_id')->references('id')->on('hosts');
         });
 
-        DB::table((new self)->table)->insert([
-            ['host_id' => 2, 'node_id' => 3],
-            ['host_id' => 2, 'node_id' => 4],
-            ['host_id' => 2, 'node_id' => 5],
-            ['host_id' => 2, 'node_id' => 6],
-            ['host_id' => 7, 'node_id' => 8],
-            ['host_id' => 7, 'node_id' => 9],
-            ['host_id' => 10, 'node_id' => 11],
-            ['host_id' => 10, 'node_id' => 12],
-            ['host_id' => 10, 'node_id' => 13],
-        ]);
+        $nodes = require BASE_PATH . '/config/nodes.php';
+        $chunkSize = 500; // Adjust based on server capabilities
+
+        DB::beginTransaction();
+        try {
+            foreach (array_chunk($nodes, $chunkSize) as $chunk) {
+                DB::table((new self)->table)->insert($chunk);
+            }
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
     }
 
     public static function down()

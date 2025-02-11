@@ -100,7 +100,7 @@ class UserController extends Controller
         $input = parse_request('data');
 
         if(empty($data)) {
-            echo 'ERROR: Missing Input.';
+            echo 'MISSING INPUT.';
             exit;
         }
 
@@ -108,7 +108,7 @@ class UserController extends Controller
             'password' => $input[0]
         ]);
 
-        echo 'Password Updated.';
+        echo 'PASSWORD UPDATED.';
         exit;
     }
 
@@ -120,7 +120,7 @@ class UserController extends Controller
         $data = parse_request('data');
 
         if(empty($data)) {
-            echo 'ERROR: Wrong Username.';
+            echo 'WRONG USERNAME.';
             exit;
         }
 
@@ -133,12 +133,12 @@ class UserController extends Controller
             
             $this->reset();
         } else {
-            echo 'ERROR: Wrong Input.';
+            echo 'WRONG INPUT.';
             exit;
         }
 
         if (User::where($this->user['username'], '=', $username)->exists()) {
-            echo 'sUsername Taken.';
+            echo 'USERNAME TAKEN.';
             exit;
          }
 

@@ -8,6 +8,7 @@ use App\User\UserService as Auth;
 use App\Level\LevelModel as Level;
 use App\Email\EmailModel as Email;
 use App\Email\EmailService as Mail;
+use App\Folder\FolderService as Folder;
 
 use Lib\Session;
 use Lib\Cache;
@@ -282,6 +283,8 @@ class HostService
         Session::remove('dump');
         Session::remove('root');
         Session::remove('maint'); 
+
+        Folder::reset();
     }
 
     public static function logoff() 

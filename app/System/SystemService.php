@@ -92,7 +92,7 @@ class SystemService
         echo <<< EOT
         Connected to ARPANET port {$port}
 
-        --ARPANET LOGIN SYSTEM--
+        ARPANET LOGIN SYSTEM
         Authorized users only.
         EOT;
     }
@@ -148,8 +148,7 @@ class SystemService
         $host = Host::data();
         $last_ip = User::data()->ip;
         $os = $host->os;
-        $hostname = strtoupper($host->hostname);
-        $host_ip = $host->ip;
+        $welcome = $host->welcome;
         $location = $host->location;
         $motd = isset($host->motd) ? $host->motd : null;
         $notes = isset($host->notes) ? $host->notes : null;
@@ -167,17 +166,25 @@ class SystemService
             $last_login = "$date as $username";
         }
 
+        
+        $current_date = date('H:i:s l, F j, Y', $host->created_at);
+
         $emails = Mail::unread();
         $mail = $emails;
+
+        $system_info = isset($welcome) ? "$welcome\n" : null;
+        $system_info .= isset($motd) ? "$motd\n" : null;
+        $system_info .= isset($notes) ? "\n$notes" : null;
+        $system_info .= isset($mail) ? "\n$mail" : null;
 
         Host::root();
 
         echo <<< EOT
-        $motd
-        $notes
-        $mail 
-        Welcome to $org, $location ($os)
-        Last login: {$last_login} from $last_ip     
+        Last login: {$last_login} from $last_ip
+        ($os): $current_date
+
+        Welcome to $org, $location
+        $system_info 
         EOT;
     }
 

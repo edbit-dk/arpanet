@@ -28,6 +28,13 @@ class FolderService
         return Session::get(self::$pwd);
     }
 
+    public static function reset()
+    {
+        if(Session::has(self::$pwd)) {
+            Session::remove(self::$pwd);
+        }
+    }
+
     public static function root()
     {
         if(self::pwd() == self::$root_dir){

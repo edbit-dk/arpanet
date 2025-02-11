@@ -12,6 +12,10 @@ function handleUserInput() {
     localStorage.setItem('index',historyIndex);
     $('#command-input').val('');
 
+    const parts = input.split(' ');
+    const command = parts[0].toLowerCase(); // Only the command is transformed to lowercase
+    const args = parts.slice(1).join(' ');
+
     // Check if the input is "?" and change it to "help"
     if (input === '?') {
         input = 'help';
@@ -50,6 +54,11 @@ function handleUserInput() {
         return;
     }
 
+    if(command === 'term') {
+        setTermMode(args);
+        return;
+    }
+
     if (isUsernamePrompt) {
         if (input) {
             if (currentCommand === 'newuser') {
@@ -67,7 +76,7 @@ function handleUserInput() {
             }
             return;
         } else {
-            loadText("ERROR: Wrong Username!");
+            loadText("WRONG USERNAME.");
             return;
         }
     }
@@ -78,22 +87,13 @@ function handleUserInput() {
         return;
     }
 
-    const parts = input.split(' ');
-    const command = parts[0].toLowerCase(); // Only the command is transformed to lowercase
-    const args = parts.slice(1).join(' ');
-
-    if(command === 'term') {
-        setTermMode(args);
-        return;
-    }
-
     if (['newuser', 'logon', 'login'].includes(command) && !sessionStorage.getItem('uplink')) {
         loadText("UNLINK REQUIRED");
         return;
     }
 
     if (['logon', 'login', 'newuser'].includes(command) && sessionStorage.getItem('auth') && !sessionStorage.getItem('host')) {
-        loadText("ERROR: Logout Required.");
+        loadText("LOGOUT REQUIRED.");
         return;
     }
 

@@ -73,7 +73,7 @@ class HostController extends Controller
         if(request()->get('data')) {
             $data = request()->get('data');
         } else {
-            echo 'Please specify host.';
+            echo 'PLEASE SPECIFY HOST.';
             exit;
         }
 
@@ -88,7 +88,7 @@ class HostController extends Controller
         } 
 
         if(!$host) {
-            echo '*** ACCESS DENIED ***';
+            echo '--CONNECTION REFUSED--';
             exit;
         } else {
             $host = Host::data()->hostname;
@@ -117,7 +117,7 @@ class HostController extends Controller
         } 
 
         if(!$hosts->isEmpty()) {
-            echo "Active Connections:\n\n";
+            echo "ACTIVE CONNECTIONS:\n\n";
         } else {
             echo "*** ACCESS DENIED ***\n";
             exit;
