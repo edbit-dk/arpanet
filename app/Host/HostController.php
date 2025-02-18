@@ -87,6 +87,8 @@ class HostController extends Controller
             }
         } 
 
+        sleep(1);
+
         if(!$host) {
             echo '--CONNECTION REFUSED--';
             exit;
@@ -169,8 +171,7 @@ class HostController extends Controller
         if(!empty($data)) {
             if(Host::rlogin($data)) {
                 echo <<< EOT
-                --IDENTIFICATION ACCEPTED--
-                Please wait while system is accessed...
+                IDENTIFICATION ACCEPTED
                 EOT;
             } else {
                 echo <<< EOT
@@ -190,25 +191,26 @@ class HostController extends Controller
         Host::attempts();
 
         // Check if the user is already blocked
-        User::blocked();
+        Host::blocked();
+
+        sleep(1);
 
         if(Host::logon($input[0],  $input[1])) {
             echo <<< EOT
-            --IDENTIFICATION ACCEPTED--
-            Please wait while system is accessed...
+            IDENTIFICATION ACCEPTED
             EOT;
         } else {
              // Calculate remaining attempts
              $attempts_left = Host::attempts(true);
     
              if ($attempts_left == 1) {
-                 echo "--WARNING: LOCKOUT IMMINENT--\n\n";
+                 echo "WARNING: LOCKOUT IMMINENT\n\n";
              }
  
              // Block the user after 4 failed attempts
              if ($attempts_left == 0) {
 
-                User::blocked(true);
+                Host::blocked(true);
                 exit;
 
              } else {

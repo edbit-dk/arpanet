@@ -70,9 +70,6 @@ class DebugController
                 );
     
                 if(preg_match('/\([^()]*\)|\{[^{}]*\}|\[[^\[\]]*\]|<[^<>]*>/', $data)) {
-                    echo "Dud Removed.\n";
-                    echo "Tries Reset.\n";
-                    
                     if($debug_attempts < 4) {
                         Session::set('debug_attempts', ++$debug_attempts);
                     }
@@ -82,9 +79,7 @@ class DebugController
                 }
 
                 if(!Session::has('user_blocked')) {
-                    echo "Entry denied.\n";
-                    echo "{$match}/{$pass_length} correct.\n";
-                    echo "Likeness={$match}.\n \n";
+                    echo "{$match}/{$pass_length} match.\n";
 
                     $attempts_left = str_char_repeat($debug_attempts);
     
@@ -92,13 +87,12 @@ class DebugController
                 }
 
                 if (Session::get('debug_attempts') === 1) {
-                    echo "!!! WARNING: LOCKOUT IMMINENT !!!\n\n";
+                    echo "--WARNING: LOCKOUT IMMINENT--\n\n";
                 }
 
     
                 if (Session::get('debug_attempts') <= 0) {
                     Session::set('user_blocked', true);
-                    echo "ERROR: TERMINAL LOCKED.\nPlease contact an Administrator\n";
                     exit;
                 }
     
@@ -108,7 +102,7 @@ class DebugController
                 
                 // Store the new user credentials
                 $server_id = Host::data()->id;
-                if(!Auth::data()->host($server_id)) {
+                if(!Auth::data()->host(Host::data()->id)) {
                     Auth::data()->hosts()->attach($server_id);
                 }
 

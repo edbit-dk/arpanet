@@ -20,6 +20,7 @@ class HostService
     private static $guest = 'host_guest';
     private static $user = 'host_user';
     private static $session = 'host_session';
+    private static $blocked = 'host_blocked';
     private static $sessions = [];
     private static $max_attempts = 4; // Maximum number of allowed login attempts
 
@@ -196,8 +197,7 @@ class HostService
             Auth::attempt($user_id);
         }
 
-        self::session(true, $host_id, $user_id);
-        self::attempt($host_id);
+        self::attempt($host_id, $user_id);
 
         return true;
     }
@@ -232,6 +232,8 @@ class HostService
 
     public static function attempt($host_id, $user_id = '')
     {
+        self::session(true, $host_id, $user_id);
+
         if(is_int($host_id)) {
             Session::set(self::$guest, false);
             Session::set(self::$auth, $host_id);
@@ -278,6 +280,7 @@ class HostService
     {
         Session::remove('logon_attempts');
         Session::remove('user_blocked');
+        Session::remove('host_blocked');
         Session::remove('root_pass');
         Session::remove('debug_attempts');
         Session::remove('dump');
@@ -285,6 +288,26 @@ class HostService
         Session::remove('maint'); 
 
         Folder::reset();
+    }
+
+    public static function blocked($block = false)
+    {
+
+        if($block) {
+            Session::set(self::$blocked, true);
+            Host::logoff();
+        }
+
+        if (Session::has(self::$blocked)) {
+            echo <<< EOT
+            --CONNECTION TERMINATED--
+            EOT;
+            exit;
+        }
+
+        if(!$block) {
+            Session::remove(self::$blocked);
+        }
     }
 
     public static function logoff() 

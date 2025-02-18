@@ -3,6 +3,8 @@
 namespace App\User;
 
 use App\User\UserModel as User;
+use App\Host\HostService as Host;
+
 use Lib\Session;
 use Lib\Cache;
 
@@ -10,7 +12,7 @@ class UserService extends User
 {
     private static $auth = 'user';
     private static $uplink = 'uplink';
-    private static $blocked = 'blocked';
+    private static $blocked = 'user_blocked';
 
     public static function key()
     {

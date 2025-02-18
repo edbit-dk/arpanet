@@ -163,10 +163,6 @@ function handleUserInput() {
     localStorage.setItem('index',historyIndex);
     $('#command-input').val('');
 
-    const parts = input.split(' ');
-    const command = parts[0].toLowerCase(); // Only the command is transformed to lowercase
-    const args = parts.slice(1).join(' ');
-
     // Check if the input is "?" and change it to "help"
     if (input === '?') {
         input = 'help';
@@ -204,6 +200,10 @@ function handleUserInput() {
         $('#command-input').val('');
         return;
     }
+
+    const parts = input.split(' ');
+    const command = parts[0].toLowerCase(); // Only the command is transformed to lowercase
+    const args = parts.slice(1).join(' ');
 
     if(command === 'term') {
         setTermMode(args);
