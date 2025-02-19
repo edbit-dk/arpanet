@@ -1,7 +1,7 @@
->>> boot
+> boot
 
 AT&T UNIX System V Release 1.0
-Copyright (C) 1984 AT&T Bell Laboratories
+Copyright (C) 1984 AT&T Bell Labs
 
 mem = 64K
 
@@ -11,16 +11,9 @@ mounting /log ...
 mounting /sys ...
 
 checking file systems ...
-
-INIT: SINGLE-USER MODE
-Enter root password to continue:
-
->>> ********
-
-INIT: ENTERING RUN LEVEL 2
 Starting system services...
 Starting cron daemon: [OK]
 Starting network services: [OK]
 Starting login services: [OK]
 
-Welcome to UNIX System V Release 1.0 (tty01)
+Hello.

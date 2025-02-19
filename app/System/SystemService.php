@@ -72,10 +72,8 @@ class SystemService
         Session::set($code, $access_code);
 
         echo <<< EOT
-        =-------------------------------------=
-        | WELCOME TO TELETERM TELETYPER (TTY) |
-        |-------------------------------------|
-
+        WELCOME TO TELETERM 1.0 (tty01)
+        
         Uplink with central ARPANET initiated.
         Enter Security Access Code Sequence: 
         
