@@ -422,7 +422,7 @@ function remote_ip() {
 }
 
 
-function bootup() {
+function bootup($loops = 70) {
     $keyphrases = [' start memory discovery', ' CPUO starting cell relocation', 
                    ' CPUO launch EFIO', ' CPUO starting EFIO'];
     $middle_pieces = [' 1', ' 0', ' 0x0000A4', ' 0x00000000000000000', 
@@ -432,7 +432,7 @@ function bootup() {
     $huge_string = '*';
 
     // Loop 70 times, similar to the Python code
-    for ($i = 0; $i < 7; $i++) {
+    for ($i = 0; $i < $loops; $i++) {
         // Randomly choose between 3 to 7 middle pieces
         $num_middle_pieces = rand(3, 7);
         

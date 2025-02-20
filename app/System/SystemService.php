@@ -72,7 +72,7 @@ class SystemService
         Session::set($code, $access_code);
 
         echo <<< EOT
-        WELCOME TO TELETERM 1.0 (tty01)
+        WELCOME TO TELETERM 1.0
         
         Uplink with central ARPANET initiated.
         Enter Security Access Code Sequence: 
@@ -116,7 +116,7 @@ class SystemService
         $system_info .= isset($notes) ? "\n$notes" : null;
         $system_info .= isset($mail) ? "\n$mail" : null;
 
-        $current_date = date('H:i:s l, F j, Y', $host->created_at);
+        $current_date = date('H:i:s l, F j', $host->created_at);
 
         echo <<< EOT
         Last login: {$last_login} from $last_ip

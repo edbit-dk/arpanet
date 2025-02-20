@@ -47,12 +47,14 @@ class DebugController
             $memoryDump = mem_dump($rows, $columns, $data, $pass_length);
     
             // Format and output the memory dump with memory paths
+            /*
             if (!Session::has('debug')) {
                 echo $this->reset();
             }
+            */
             
-            $attempts = Session::get('debug_attempts');
-            echo "{$attempts} ATTEMPT(S) LEFT: # # # # \n \n";
+            // $attempts = Session::get('debug_attempts');
+            // echo "{$attempts} ATTEMPT(S) LEFT: # # # # \n \n";
     
             Session::set('dump', format_dump($memoryDump));
             echo Session::get('dump');
@@ -79,15 +81,15 @@ class DebugController
                 }
 
                 if(!Session::has('user_blocked')) {
-                    echo "{$match}/{$pass_length} match.\n";
+                    // echo "{$match}/{$pass_length} match.\n";
 
                     $attempts_left = str_char_repeat($debug_attempts);
     
-                    echo "{$debug_attempts} ATTEMPT(S) LEFT: {$attempts_left} \n \n";
+                    // echo "{$debug_attempts} ATTEMPT(S) LEFT: {$attempts_left} \n \n";
                 }
 
                 if (Session::get('debug_attempts') === 1) {
-                    echo "--WARNING: LOCKOUT IMMINENT--\n\n";
+                    echo "--LOCKOUT IMMINENT--\n\n";
                 }
 
     

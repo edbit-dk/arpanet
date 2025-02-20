@@ -22,7 +22,7 @@ class UserService extends User
     public static function data() 
     {
         if(self::auth()) {
-            return Cache::remember(self::key(), fn() => User::find(self::auth()));
+            return User::find(self::auth());
         }
         return false;
     }
@@ -68,7 +68,7 @@ class UserService extends User
 
     public static function attempt($id)
     {
-        Cache::forget(self::key());
+       // Cache::forget(self::key());
         return Session::set(self::$auth, $id);
     }
 
@@ -131,7 +131,7 @@ class UserService extends User
         if(self::auth()) {
             sleep(1);
             self::data()->update(['last_login' => now()]);
-            Cache::forget(self::key());
+            // Cache::forget(self::key());
             Session::remove(self::$auth);
         }
         echo "Goodbye.\n\n";

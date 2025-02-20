@@ -17,8 +17,17 @@ class SystemController extends Controller
 {
     public function boot() 
     {
-        echo bootup() . "\n\n";
-        echo text('boot.txt');
+        echo bootup(loops: 10) . "\n\n";
+        echo <<< EOT
+        Initializing boot...
+        Loading TeleTerm OS...
+        64K RAM detected...
+        Launching Interfaces...
+
+        Boot Complete.
+
+        LOADING...
+        EOT;
     }
 
     public function version() 
@@ -40,6 +49,7 @@ class SystemController extends Controller
 
     public function main() 
     {
+        
         if(Host::guest()) {
             return System::connect();
         }

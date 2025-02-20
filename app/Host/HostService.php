@@ -38,11 +38,11 @@ class HostService
     public static function data() 
     {
         if(self::guest()) {
-            return Cache::remember(self::key(), fn() => Host::find(self::guest()));
+            return Host::find(self::guest());
         }
 
         if(self::auth()) {
-            return Cache::remember(self::key(), fn() => Host::find(self::auth()));
+            return Host::find(self::auth());
         }
 
         return false;
@@ -75,7 +75,7 @@ class HostService
 
     public static function netstat() 
     {
-        return Host::where('network', 1)->get();
+        return Host::where('network', 0)->get();
     }
 
     public static function check() 
@@ -133,7 +133,7 @@ class HostService
             return false;
         } else {
             self::reset();
-            Cache::forget(self::key());
+           // Cache::forget(self::key());
             Session::set(self::$guest, $host->id);
             self::session(true, $host->id, Auth::id());
             return true;
@@ -153,7 +153,7 @@ class HostService
 
         if($host = self::try($data[0])) {
             if($host->user($user_id)) {
-                Cache::forget(self::key());
+               // Cache::forget(self::key());
                 self::session(true, $host->id, $user_id);
                 self::attempt($host->id);
                 return true;
@@ -204,6 +204,7 @@ class HostService
 
     public static function session($new = true, $host_id = '', $user_id = '')
     {
+
         if(!Session::has(self::$session)) {
             Session::set(self::$session, []);
         }
@@ -323,7 +324,7 @@ class HostService
         }
 
         self::$sessions = self::session(false);
-        Cache::forget(self::key());
+        // Cache::forget(self::key());
         Session::remove(self::$guest);
         Session::remove(self::$auth);
 

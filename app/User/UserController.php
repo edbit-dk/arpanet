@@ -56,8 +56,7 @@ class UserController extends Controller
                 $this->reset();
 
                 if(Auth::login($username, $password)) {
-                    Host::attempt(1);
-                    Host::session(true, 1, Auth::id());
+                    Host::attempt(1, Auth::id());
                     Cron::stats();
 
                    $host = Host::data();

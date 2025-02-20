@@ -77,15 +77,9 @@ class HostController extends Controller
             exit;
         }
 
-        if(Host::auth() == 1) {
+        if(Host::data()->node(Host::try($data)->id)) {
             $host = Host::connect($data);
         }
-
-        if(Host::auth() > 1) {
-            if(Host::data()->node(Host::try($data)->id)) {
-                $host = Host::connect($data);
-            }
-        } 
 
         sleep(1);
 
@@ -110,20 +104,12 @@ class HostController extends Controller
     {
         $hosts = false;
 
-        if(Host::auth() == 1) {
-            $hosts = Host::netstat(); 
-        }
+        $hosts = Host::data()->nodes;
 
-        if(Host::auth() > 1) {
-            $hosts = Host::data()->nodes;
-        } 
-
-        if(!$hosts->isEmpty()) {
-            echo "ACTIVE CONNECTIONS:\n\n";
-        } else {
+        if($hosts->isEmpty()) {
             echo "*** ACCESS DENIED ***\n";
             exit;
-        }
+        } 
 
         foreach ($hosts as $host) {
 
