@@ -77,7 +77,9 @@ class HostController extends Controller
             exit;
         }
 
-        if(Host::data()->node(Host::try($data)->id)) {
+        $host_id = Host::try($data)->id;
+
+        if(Host::data()->node($host_id) || Host::data()->host($host_id)) {
             $host = Host::connect($data);
         }
 
@@ -104,7 +106,7 @@ class HostController extends Controller
     {
         $hosts = false;
 
-        $hosts = Host::data()->nodes;
+        $hosts = Host::data()->connections();
 
         if($hosts->isEmpty()) {
             echo "*** ACCESS DENIED ***\n";
@@ -157,7 +159,7 @@ class HostController extends Controller
         if(!empty($data)) {
             if(Host::rlogin($data)) {
                 echo <<< EOT
-                IDENTIFICATION ACCEPTED
+                IDENTIFICATION VERIFIED
                 EOT;
             } else {
                 echo <<< EOT
@@ -183,7 +185,7 @@ class HostController extends Controller
 
         if(Host::logon($input[0],  $input[1])) {
             echo <<< EOT
-            IDENTIFICATION ACCEPTED
+            IDENTIFICATION VERIFIED
             EOT;
         } else {
              // Calculate remaining attempts

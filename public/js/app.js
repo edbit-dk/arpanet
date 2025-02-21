@@ -97,7 +97,7 @@ function handleRedirect(response, timeout = 1000) {
         }, timeout);
     }
 
-    if (response.startsWith("--IDENTIFICATION")) {
+    if (response.startsWith("IDENTIFICATION")) {
         setTimeout(function() {
             sessionStorage.setItem('host', true);
             redirectTo('');
@@ -239,7 +239,7 @@ function handleUserInput() {
     }
 
     if (['newuser', 'logon', 'login'].includes(command) && !sessionStorage.getItem('uplink')) {
-        loadText("UNLINK REQUIRED");
+        loadText("UPLINK REQUIRED");
         return;
     }
 

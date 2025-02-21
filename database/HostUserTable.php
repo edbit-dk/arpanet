@@ -19,7 +19,7 @@ class HostUserTable
             $table->foreign('host_id')->references('id')->on('hosts');
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->timestamp('last_session')->nullable();
+            $table->datetime('last_session')->nullable();
         });
 
     }

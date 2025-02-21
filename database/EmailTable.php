@@ -23,7 +23,7 @@ class EmailTable extends Email
             $table->string('subject');
             $table->string('message');
             $table->boolean('is_read')->default(0);
-            $table->timestamps();
+            $table->datetimes();
         });
     }
 

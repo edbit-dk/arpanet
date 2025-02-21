@@ -18,7 +18,11 @@ function config($name) {
     return app('config')[$name];
 }
 
-function timestamp($date = false) {
+function timestamp($date = false, $db = false) {
+
+    if($db) {
+        return \Carbon\Carbon::parse($date, config('timezone'));
+    }
 
     if(is_string($date)) {
         return date(config('date'), strtotime($date));
@@ -28,14 +32,24 @@ function timestamp($date = false) {
         return date(config('date'), $date);
     }
 
-    if($date) {
+    if(!$date) {
         return date(config('date'), time());
     }
     
 }
 
+function datetime($date, $format = '') {
+
+    if(empty($format)) {
+        $format = config('timestamp');
+    }
+
+    return date($format, strtotime($date));
+
+}
+
 function now() {
-    return \Carbon\Carbon::now();
+    return \Carbon\Carbon::now(config('timezone'));
 }
 
 function request() {

@@ -13,12 +13,13 @@ return [
         'ip' => '192.5.4.1',
         'network' => 1,
         'level_id' => 1,
-        'motd' => null
+        'motd' => null,
+        'created_at' => timestamp("1969-10-30 06:30:00", true)
     ],
     [
         'id' => 2,
         'user_id' => 1,
-        'hostname' => 'ucla.edu', 
+        'hostname' => 'ucla.arpa', 
         'password' => random_pass(),
         'org' => 'University of California',
         'location' => 'Los Angelos, CA',
@@ -27,12 +28,13 @@ return [
         'ip' => random_ip(),
         'network' => 0,
         'level_id' => 1,
-        'motd' => null
+        'motd' => null,
+        'created_at' => timestamp("1969-10-30 06:30:00", true)
     ],
     [
         'id' => 3,
         'user_id' => 1,
-        'hostname' => 'ucsb.edu', 
+        'hostname' => 'ucsb.arpa', 
         'password' => random_pass(),
         'org' => 'University of California',
         'location' => 'Santa Barbara, CA',
@@ -41,12 +43,13 @@ return [
         'ip' => random_ip(),
         'network' => 0,
         'level_id' => 1,
-        'motd' => ''
+        'motd' => '',
+        'created_at' => timestamp("1969-10-30 06:30:00", true)
     ],
     [
         'id' => 4,
         'user_id' => 1,
-        'hostname' => 'uusc.edu', 
+        'hostname' => 'uusc.arpa', 
         'password' => random_pass(),
         'org' => 'University of Utah School of Computing',
         'location' => 'Salt Lake City, UT',
@@ -55,7 +58,8 @@ return [
         'ip' => random_ip(),
         'network' => 0,
         'level_id' => 1,
-        'motd' => ''
+        'motd' => '',
+        'created_at' => timestamp("1969-10-30 06:30:00", true)
     ],
     [
         'id' => 5,
@@ -69,7 +73,8 @@ return [
         'ip' => '192.67.67.20',
         'network' => 1,
         'level_id' => 3,
-        'motd' => 'WARNING: All activity may be monitored and recorded.'
+        'motd' => 'WARNING: All activity may be monitored and recorded.',
+        'created_at' => timestamp("1983-01-01 06:30:00", true)
     ],
     [
         'id' => 6,
@@ -83,7 +88,8 @@ return [
         'ip' => random_ip(),
         'network' => 0,
         'level_id' => 4,
-        'motd' => 'WARNING: All activity may be monitored and recorded.'
+        'motd' => 'WARNING: All activity may be monitored and recorded.',
+        'created_at' => timestamp("1983-01-01 06:30:00", true)
     ],
     [
         'id' => 7,
@@ -97,7 +103,8 @@ return [
         'ip' => random_ip(),
         'network' => 0,
         'level_id' => 5,
-        'motd' => 'WARNING: All activity may be monitored and recorded.'
+        'motd' => 'WARNING: All activity may be monitored and recorded.',
+        'created_at' => timestamp("1983-01-01 06:30:00", true)
     ],
     [
         'id' => 8,
@@ -111,8 +118,8 @@ return [
         'ip' => random_ip(),
         'network' => 0,
         'level_id' => 6,
-        'motd' => 'WARNING: Unauthorized access to this system is prohibited.
-        All activity may be monitored and recorded.'
+        'motd' => 'WARNING: All activity may be monitored and recorded.',
+        'created_at' => timestamp("1983-01-01 06:30:00", true)
     ],
     [
         'id' => 9,
@@ -126,7 +133,8 @@ return [
         'ip' => random_ip(),
         'network' => 1,
         'level_id' => 1,
-        'motd' => ''
+        'motd' => '',
+        'created_at' => timestamp("1975-01-01 06:30:00", true)
     ],
     [
         'id' => 10,
@@ -140,20 +148,47 @@ return [
         'ip' => random_ip(),
         'network' => 0,
         'level_id' => 2,
-        'motd' => ''
+        'motd' => '',
+        'created_at' => timestamp("1983-01-01 06:30:00", true)
     ],
     [
         'id' => 11,
         'user_id' => 1,
         'hostname' => 'spsdd.edu', 
         'password' => 'pencil',
-        'org' => 'WELCOME TO THE SEATTLE PUBLIC SCHOOL DISTRICT DATANET',
+        'org' => 'PUBLIC SCHOOL DISTRICT',
         'location' => 'Seattle',
-        'welcome' => 'PLEASE LOGON WITH USER PASSWORD:',
+        'welcome' => "WELCOME TO THE SEATTLE PUBLIC SCHOOL DISTRICT DATANET.\n\nPLEASE LOGON WITH USER PASSWORD:",
         'os' => 'PDP-11/272 PRS TIP # 45',
         'ip' => random_ip(),
         'network' => 0,
         'level_id' => 2,
-        'motd' => ''
+        'motd' => '',
+        'created_at' => timestamp("1983-01-01 06:30:00", true)
+    ],
+    [
+        'id' => 999,
+        'user_id' => 1,
+        'hostname' => 'wopr.mil', 
+        'password' => 'Joshua',
+        'org' => '',
+        'location' => '',
+        'welcome' => "",
+        'os' => '* 0x0000A4 0x0000A4 0x00000000000000000 0x000000000000E003D 0x000014 0x000009
+        CPUO launch EFIO 0x0000A4 0x000014 0x00000000000000000 1 CPUO starting cell
+        relocation 1 0x0000A4 1 1 CPUO starting EFIO 0x0000A4 0x00000000000000000 0
+        0x0000A4 CPUO starting EFIO 1 0 0x000009 CPUO starting cell relocation
+        0x00000000000000000 0x000000000000E003D 1 CPUO launch EFIO 0
+        0x000000000000E003D 0x000009 0x000014 0x00000000000000000 0 0x0000A4 CPUO
+        launch EFIO 0x00000000000000000 0x000000000000E003D 0x0000A4 0
+        0x000000000000E003D 0x000014 0x000009 CPUO starting cell relocation
+        0x000000000000E003D 0x000014 0x000009 0 0x000000000000E003D 0x000000000000E003D 
+        0 CPUO starting EFIO 0x000009 0x000000000000E003D 0x00000000000000000 0 0
+        0x000014 CPUO starting cell relocation',
+        'ip' => random_ip(),
+        'network' => 0,
+        'level_id' => 6,
+        'motd' => '',
+        'created_at' => timestamp("1983-01-01 06:30:00", true)
     ]
 ];

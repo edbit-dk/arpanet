@@ -88,7 +88,7 @@ function handleUserInput() {
     }
 
     if (['newuser', 'logon', 'login'].includes(command) && !sessionStorage.getItem('uplink')) {
-        loadText("UNLINK REQUIRED");
+        loadText("UPLINK REQUIRED");
         return;
     }
 

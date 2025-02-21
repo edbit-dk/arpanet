@@ -97,12 +97,13 @@ class SystemService
 
     public static function user()
     {   
-        $last_login = timestamp(User::data()->last_login);
+        $date = timestamp(User::data()->last_login);
+        $username = strtoupper(User::username());
+        $last_login = "$date as $username";
         $last_ip = User::data()->ip;
 
         $host = Hosts::where('id', 1)->first();
         $os = $host->os;
-        $ip = $host->ip;
         $welcome = $host->welcome;
         $org = $host->org;
         $location = $host->location;
@@ -116,7 +117,7 @@ class SystemService
         $system_info .= isset($notes) ? "\n$notes" : null;
         $system_info .= isset($mail) ? "\n$mail" : null;
 
-        $current_date = date('H:i:s l, F j', $host->created_at);
+        $current_date = datetime($host->created_at, config('unix_timestamp'));
 
         echo <<< EOT
         Last login: {$last_login} from $last_ip
@@ -130,14 +131,12 @@ class SystemService
     public static function connect()
     {
         $host = Host::data();
-        $os = $host->os;    
-        $hostname = strtoupper($host->hostname);
-        $host_ip = $host->ip;
-        $org = $host->org;
+        $os = $host->os;
+        $welcome = $host->welcome;
         
         echo <<< EOT
-        $hostname ($host_ip)
-        $org
+        $os
+        $welcome
         EOT;
     }
 
@@ -165,7 +164,7 @@ class SystemService
         }
 
         
-        $current_date = date('H:i:s l, F j, Y', $host->created_at);
+        $current_date = datetime($host->created_at, config('unix_timestamp'));
 
         $emails = Mail::unread();
         $mail = $emails;

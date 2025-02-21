@@ -58,7 +58,7 @@ class HostModel extends BaseModel
     
     public function host($host)
     {
-        return $this->users()->where('host_id', $host)->first();
+        return $this->where('id', $host)->first();
     }
 
     public function user($user)
@@ -69,6 +69,26 @@ class HostModel extends BaseModel
     public function nodes(): BelongsToMany
     {
         return $this->BelongsToMany(HostModel::class, 'host_node', 'host_id', 'node_id');
+    }
+
+    public function hosts()
+    {
+        return $this->BelongsToMany(HostModel::class, 'host_node', 'node_id', 'host_id');
+    }
+
+    public function connections()
+    {
+        $connections = $this->nodes;
+        
+        if(!$connections->isEmpty()) {
+            return $connections;
+        }
+
+        $connections = $this->hosts;
+
+        if(!$connections->isEmpty()) {
+            return $connections;
+        }
     }
 
     public function node($host)

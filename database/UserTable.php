@@ -29,7 +29,7 @@ class UserTable extends User
             $table->unsignedTinyInteger('xp')->default(0);
             $table->ipAddress('ip')->nullable();
             $table->timestamp('last_login')->nullable();
-            $table->timestamps();
+            $table->datetimes();
         });
 
         $users = require BASE_PATH . '/config/users.php';

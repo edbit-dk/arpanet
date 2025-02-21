@@ -83,7 +83,7 @@ class DebugController
                 if(!Session::has('user_blocked')) {
                     // echo "{$match}/{$pass_length} match.\n";
 
-                    $attempts_left = str_char_repeat($debug_attempts);
+                    // $attempts_left = str_char_repeat($debug_attempts);
     
                     // echo "{$debug_attempts} ATTEMPT(S) LEFT: {$attempts_left} \n \n";
                 }
@@ -109,7 +109,6 @@ class DebugController
                 }
 
                 $reset_root_pass = wordlist($min_level, 1, 'password-list.txt')[0];
-                Host::debug($root_pass, Auth::data()->id);
                 Host::data()->update(['password' => $reset_root_pass]);
 
                 // Reset login attempts on successful login
@@ -118,10 +117,7 @@ class DebugController
                 Session::remove('root_pass');
                 Session::remove('dump');
     
-                echo "EXCACT MATCH!\n";
-                echo "+0050 XP\n";
-                echo "Adding user to host accounts...\n";
-                echo "Please wait while system is accessed...\n";
+                echo bootup(5);
             }
     
         }

@@ -49,7 +49,6 @@ class SystemController extends Controller
 
     public function main() 
     {
-        
         if(Host::guest()) {
             return System::connect();
         }

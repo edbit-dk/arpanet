@@ -30,7 +30,7 @@ class HostTable extends Host
             $table->boolean('active')->default(1);
             $table->boolean('network')->default(0);
             $table->integer('level_id')->default(1);
-            $table->timestamps();
+            $table->datetimes();
         });
 
 

@@ -9,7 +9,6 @@ use App\User\UserModel as User;
 
 use App\User\UserService as Auth;
 use App\Host\HostService as Host;
-use App\System\CronService as Cron;
 
 
 class UserController extends Controller
@@ -57,7 +56,6 @@ class UserController extends Controller
 
                 if(Auth::login($username, $password)) {
                     Host::attempt(1, Auth::id());
-                    Cron::stats();
 
                    $host = Host::data();
 
@@ -151,11 +149,9 @@ class UserController extends Controller
         ]);
 
         if(Auth::login($username, $password)) {
-            Host::attempt(1);
-            Host::session(true, 1, Auth::id());
-            Cron::stats();
+            Host::attempt(1, Auth::id());
 
-           $host = Host::data();
+            $host = Host::data();
 
             $ip = $host->ip;
             $host = $host->hostname;

@@ -8,6 +8,11 @@ class Session
     public static $cacheExpire = null;
     public static $cacheLimiter = null;
 
+    public static function debug()
+    {
+        return var_dump($_SESSION);
+    }
+
     public static function start()
     {
         if (session_status() === PHP_SESSION_NONE) {

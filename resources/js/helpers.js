@@ -13,7 +13,7 @@ function handleRedirect(response, timeout = 1000) {
         }, timeout);
     }
 
-    if (response.startsWith("--IDENTIFICATION")) {
+    if (response.startsWith("IDENTIFICATION VERIFIED")) {
         setTimeout(function() {
             sessionStorage.setItem('host', true);
             redirectTo('');

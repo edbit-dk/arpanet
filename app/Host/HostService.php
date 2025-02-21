@@ -9,6 +9,7 @@ use App\Level\LevelModel as Level;
 use App\Email\EmailModel as Email;
 use App\Email\EmailService as Mail;
 use App\Folder\FolderService as Folder;
+use App\System\CronService as Cron;
 
 use Lib\Session;
 use Lib\Cache;
@@ -127,17 +128,16 @@ class HostService
 
     public static function connect($data)
     {
-        $host = self::try($data);
+        $user_id = Auth::id();
 
-        if (empty($host)) {
-            return false;
-        } else {
+        if($host = self::try($data)) {
             self::reset();
-           // Cache::forget(self::key());
+            self::session(true, $host->id, $user_id);
             Session::set(self::$guest, $host->id);
-            self::session(true, $host->id, Auth::id());
             return true;
         }
+
+        return false;
 
     }
 
@@ -152,10 +152,10 @@ class HostService
         }
 
         if($host = self::try($data[0])) {
-            if($host->user($user_id)) {
+            if($host->user($user_id) || $host->id == 1) {
                // Cache::forget(self::key());
-                self::session(true, $host->id, $user_id);
-                self::attempt($host->id);
+                self::reset();
+                self::attempt($host->id, $user_id);
                 return true;
             }
         }
@@ -245,6 +245,8 @@ class HostService
                     $host_user->pivot->last_session = now();
                     $host_user->pivot->save();
                 }
+            } else {
+                Cron::stats();
             }
 
             return self::data();
@@ -303,7 +305,6 @@ class HostService
             echo <<< EOT
             --CONNECTION TERMINATED--
             EOT;
-            exit;
         }
 
         if(!$block) {

@@ -24,7 +24,7 @@ class FileTable extends File
             $table->foreign('host_id')->references('id')->on('hosts');
             $table->unsignedInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->timestamps();
+            $table->datetimes();
         });
 
         DB::table((new self)->table)->insert([
