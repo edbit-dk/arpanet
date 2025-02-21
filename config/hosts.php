@@ -163,7 +163,7 @@ return [
         'ip' => random_ip(),
         'network' => 0,
         'level_id' => 2,
-        'motd' => '',
+        'motd' => 'Welcome to SEATTLE PUBLIC SCHOOL DISTRICT',
         'created_at' => timestamp("1983-01-01 06:30:00", true)
     ],
     [

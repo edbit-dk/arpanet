@@ -169,8 +169,7 @@ class SystemService
         $emails = Mail::unread();
         $mail = $emails;
 
-        $system_info = isset($welcome) ? "$welcome\n" : null;
-        $system_info .= isset($motd) ? "$motd\n" : null;
+        $system_info = isset($motd) ? "$motd\n" : null;
         $system_info .= isset($notes) ? "\n$notes" : null;
         $system_info .= isset($mail) ? "\n$mail" : null;
 
@@ -179,8 +178,7 @@ class SystemService
         echo <<< EOT
         Last login: {$last_login} from $last_ip
         ($os): $current_date
-
-        Welcome to $org, $location
+        
         $system_info 
         EOT;
     }

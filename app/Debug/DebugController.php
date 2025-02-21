@@ -94,6 +94,7 @@ class DebugController
 
     
                 if (Session::get('debug_attempts') <= 0) {
+                    echo 'Access Denied. This incident will be reported.';
                     Session::set('user_blocked', true);
                     exit;
                 }
@@ -117,7 +118,8 @@ class DebugController
                 Session::remove('root_pass');
                 Session::remove('dump');
     
-                echo bootup(5);
+                sleep(1);
+                echo strtoupper(Auth::username()) . ' added to system successfully';
             }
     
         }
