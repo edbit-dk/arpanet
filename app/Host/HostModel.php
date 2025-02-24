@@ -42,7 +42,7 @@ class HostModel extends BaseModel
 
     public function file($name, $folder_id)
     {
-        return $this->files()->where('folder_id', $folder_id)->where('file_name', $name)->first();
+        return $this->files()->where('folder_id', $folder_id)->where('filename', $name)->first();
     }
 
     // A host can have many folders

@@ -298,13 +298,13 @@ class HostService
 
         if($block) {
             Session::set(self::$blocked, true);
-            Host::logoff();
         }
 
         if (Session::has(self::$blocked)) {
             echo <<< EOT
             --CONNECTION TERMINATED--
             EOT;
+            exit;
         }
 
         if(!$block) {

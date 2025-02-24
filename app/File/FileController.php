@@ -20,7 +20,7 @@ class FileController extends Controller
 
         // Loop through each top-level folder and format the structure
         foreach ($files as $file) {
-            echo "$file->file_name\n";
+            echo "$file->filename\n";
         }
     }
 
@@ -39,7 +39,7 @@ class FileController extends Controller
 
         // Loop through each top-level folder and format the structure
         foreach ($folders as $folder) {
-            echo "$folder->folder_name ";
+            echo "$folder->foldername ";
         }
     }
 

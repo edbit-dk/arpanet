@@ -4,9 +4,9 @@ return [
     [
         'id' => 1,
         'user_id' => 1,
-        'hostname' => 'sri.nic.arpa', 
+        'hostname' => 'sri.edu', 
         'password' => random_pass(),
-        'org' => 'Standford Research Institute (NIC)',
+        'org' => 'Standford Research Institute',
         'location' => 'Menlo Park, CA',
         'welcome' => "",
         'os' => 'VAX-11/750 TOPS-20',
@@ -19,7 +19,7 @@ return [
     [
         'id' => 2,
         'user_id' => 1,
-        'hostname' => 'ucla.arpa', 
+        'hostname' => 'ucla.edu', 
         'password' => random_pass(),
         'org' => 'University of California',
         'location' => 'Los Angelos, CA',
@@ -34,7 +34,7 @@ return [
     [
         'id' => 3,
         'user_id' => 1,
-        'hostname' => 'ucsb.arpa', 
+        'hostname' => 'ucsb.edu', 
         'password' => random_pass(),
         'org' => 'University of California',
         'location' => 'Santa Barbara, CA',
@@ -49,7 +49,7 @@ return [
     [
         'id' => 4,
         'user_id' => 1,
-        'hostname' => 'uusc.arpa', 
+        'hostname' => 'uusc.edu', 
         'password' => random_pass(),
         'org' => 'University of Utah School of Computing',
         'location' => 'Salt Lake City, UT',
@@ -64,7 +64,7 @@ return [
     [
         'id' => 5,
         'user_id' => 1,
-        'hostname' => 'nic.ddn.mil', 
+        'hostname' => 'ddn.mil', 
         'password' => random_pass(8),
         'org' => 'Military Defense Data Network (UNCLASSIFIED)',
         'location' => '',

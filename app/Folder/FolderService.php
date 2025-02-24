@@ -64,7 +64,7 @@ class FolderService
             return Session::set(self::$pwd, self::$root_dir);
         }
 
-        if($folder = Folder::where('folder_name', $dir)->first()) {
+        if($folder = Folder::where('foldername', $dir)->first()) {
             Session::set(self::$folder, $folder->id);
             return Session::set(self::$pwd, self::$root_dir . $dir);
         }
@@ -122,66 +122,4 @@ class FolderService
         return Folder::get();
         
     }
-
-    public static function open($file_name = '', $host_id = '')
-    {
-
-        $file = File::where('file_name', $file_name)
-        ->orWhere('host_id', $host_id)
-        ->orWhere('id', $file_name)
-        ->first();
-
-        if(empty($file->content)) {
-            echo 'ERROR: File not Found.';
-        } else {
-            echo $file->content;
-        }
-    }
-
-    public static function files($host_id)
-    {
-        // Find the host
-        $host = Host::find($host_id);
-
-        if (!$host) {
-            echo 'ERROR: Host not found';
-            exit;
-        }
-
-        // Retrieve all top-level folders for the given host with subfolders and files
-        $folders = Folder::where('host_id', $host_id)
-                        ->whereNull('parent_id') // Only top-level folders
-                        ->with(['subfolders.files', 'files'])
-                        ->get();
-
-        // Initialize an empty string to hold the structure
-        $output = "Host ID: $host_id\n";
-
-        // Loop through each top-level folder and format the structure
-        foreach ($folders as $folder) {
-            $output .= self::format($folder);
-        }
-    }
-
-    // Helper function to recursively format folder structure with files
-    private static function format($folder, $indent = 0)
-    {
-         // Create indentation based on folder level
-         $indentation = str_repeat("  ", $indent);
-         $output = "{$indentation}Folder: {$folder->folder_name}\n";
- 
-         // Add files in the folder
-         foreach ($folder->files as $file) {
-             $output .= "{$indentation}  - File: {$file->file_name} (Content: {$file->content})\n";
-         }
- 
-         // Recursively add subfolders
-         foreach ($folder->subfolders as $subfolder) {
-             $output .= self::format($subfolder, $indent + 1);
-         }
- 
-         return $output;
-    }
-
-
 }
