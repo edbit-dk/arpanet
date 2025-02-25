@@ -4,8 +4,20 @@ namespace Lib;
 
 class Cache
 {
+    protected static $status = true;
     protected static $path = 'cache';
     protected static $ttl = 3600; // Default TTL in seconds (1 hour)
+
+    /**
+     * Set the status of the cache engine.
+     *
+     * @param  int  $ttl
+     * @return void
+     */
+    public static function status($status)
+    {
+        self::$status = $status;
+    }
 
     /**
      * Set the default TTL for the cache.
@@ -48,6 +60,11 @@ class Cache
         if ($callback === null && $ttl instanceof \Closure) {
             $callback = $ttl;
             $ttl = null; // Reset TTL to null
+        }
+
+        if(!self::$status) {
+            $result = $callback();
+            return $result;
         }
 
         // Use the default TTL if none is provided

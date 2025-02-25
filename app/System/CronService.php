@@ -34,17 +34,21 @@ class CronService
         print_r(file_get_contents(BASE_PATH . '/public/css/app.min.css'));
     }
 
-    public static function stats()
+    public static function stats($host_id)
     {
         $date = date('H:i l, F j, Y', time());
-        $users = User::count();
-        $hosts = Host::count();
 
-        $welcome = "Local time is {$date}.";
-        $motd = "There are {$users} local users. There are {$hosts} hosts on the network.";
+        if($host_id == 1) {
+            $users = User::count();
+            $hosts = Host::count();
+        } else {
+            $users = Host::users()->count();
+            $hosts = Host::nodes()->count();
+        }
 
-        Hosts::where('id', 1)->update([
-            'welcome' => $welcome,
+        $motd = "Local time is {$date}.\nThere are {$users} local users. There are {$hosts} hosts on the network.";
+
+        Hosts::where('id', $host_id)->update([
             'motd' => $motd
         ]);
 

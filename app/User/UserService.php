@@ -27,10 +27,17 @@ class UserService extends User
         return false;
     }
 
-    public static function username()
+    public static function username($name = '')
     {       
         if(self::data()) {
-            return self::data()->username;
+            if(empty($name)) {
+                return self::data()->username;
+            } else {
+                if(self::data()->username == $name) {
+                    return true;
+                }
+                return false;
+            }
         } else {
             return false;
         }

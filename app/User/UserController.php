@@ -57,7 +57,7 @@ class UserController extends Controller
                 if(Auth::login($username, $password)) {
                     Host::attempt(1, Auth::id());
 
-                   $host = Host::data();
+                    $host = Host::data();
 
                     $ip = $host->ip;
                     $host = $host->hostname;

@@ -73,11 +73,16 @@ class HostController extends Controller
         if(request()->get('data')) {
             $data = request()->get('data');
         } else {
-            echo 'PLEASE SPECIFY HOST.';
+            echo 'UNKNOWN HOST';
             exit;
         }
 
         $host_id = Host::try($data)->id;
+        
+        if($host_id == 1) {
+            echo '--CONNECTION REFUSED--';
+            exit;
+        }
 
         if(Host::data()->node($host_id) || Host::data()->host($host_id)) {
             $host = Host::connect($data);
@@ -192,7 +197,7 @@ class HostController extends Controller
              $attempts_left = Host::attempts(true);
     
              if ($attempts_left == 1) {
-                 echo "WARNING: LOCKOUT IMMINENT\n\n";
+                 echo "LOCKOUT IMMINENT\n";
              }
  
              // Block the user after 4 failed attempts

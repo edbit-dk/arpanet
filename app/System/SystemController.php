@@ -49,6 +49,7 @@ class SystemController extends Controller
 
     public function main() 
     {
+
         if(Host::guest()) {
             return System::connect();
         }
@@ -77,7 +78,7 @@ class SystemController extends Controller
 
     public function stats()
     {
-        return Cron::stats();
+        return Cron::stats(1);
     }
 
     public function install()

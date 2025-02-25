@@ -30,6 +30,7 @@ return [
         'prefix' => ''
     ],
     'cache' => [
+        'enable' => false,
         'ttl' => 30,
         'path'   => BASE_PATH . '/storage/cache', // Make sure this directory exists
     ],

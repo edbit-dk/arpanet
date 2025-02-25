@@ -245,9 +245,9 @@ class HostService
                     $host_user->pivot->last_session = now();
                     $host_user->pivot->save();
                 }
-            } else {
-                Cron::stats();
-            }
+            } 
+
+            Cron::stats($host_id);
 
             return self::data();
         }
@@ -337,6 +337,16 @@ class HostService
             Auth::logout();
         }
 
+    }
+
+    public static function nodes()
+    {
+        return self::data()->connections();
+    }
+
+    public static function users()
+    {
+        return self::data()->users();
     }
 
     public static function count()

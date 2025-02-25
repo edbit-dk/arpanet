@@ -104,7 +104,6 @@ class SystemService
 
         $host = Hosts::where('id', 1)->first();
         $os = $host->os;
-        $welcome = $host->welcome;
         $org = $host->org;
         $location = $host->location;
 
@@ -112,9 +111,9 @@ class SystemService
         $notes = $host->notes;
         $mail = Mail::unread();
 
-        $system_info = isset($welcome) ? "$welcome\n" : null;
-        $system_info .= isset($motd) ? "$motd\n" : null;
-        $system_info .= isset($notes) ? "\n$notes" : null;
+        $system_info = "Welcome to $org, $location\n";
+        $system_info .= isset($motd) ? "\n$motd\n" : null;
+        $system_info .= isset($notes) ? "\n$notes\n" : null;
         $system_info .= isset($mail) ? "\n$mail" : null;
 
         $current_date = datetime($host->created_at, config('unix_timestamp'));
@@ -123,7 +122,6 @@ class SystemService
         Last login: {$last_login} from $last_ip
         ($os): $current_date
 
-        Welcome to $org, $location
         $system_info 
         EOT;
     }
@@ -133,9 +131,11 @@ class SystemService
         $host = Host::data();
         $os = $host->os;
         $welcome = $host->welcome;
+        $org = $host->org;
         
         echo <<< EOT
         $os
+        $org
         $welcome
         EOT;
     }
@@ -145,10 +145,9 @@ class SystemService
         $host = Host::data();
         $last_ip = User::data()->ip;
         $os = $host->os;
-        $welcome = $host->welcome;
         $location = $host->location;
-        $motd = isset($host->motd) ? $host->motd : null;
-        $notes = isset($host->notes) ? $host->notes : null;
+        $motd = $host->motd;
+        $notes =  $host->notes;
         $org = $host->org;
         $username = strtoupper(User::username());
         $last_login = '';
@@ -169,8 +168,9 @@ class SystemService
         $emails = Mail::unread();
         $mail = $emails;
 
-        $system_info = isset($motd) ? "$motd\n" : null;
-        $system_info .= isset($notes) ? "\n$notes" : null;
+        $system_info = "Welcome to $org, $location\n";
+        $system_info .= isset($motd) ? "\n$motd\n" : null;
+        $system_info .= isset($notes) ? "\n$notes\n" : null;
         $system_info .= isset($mail) ? "\n$mail" : null;
 
         Host::root();

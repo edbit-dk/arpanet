@@ -98,9 +98,9 @@ class EmailService
     {
         $emails = Email::where('recipient', self::contact())->where('is_read', 0);
         if($emails->exists()) {
-            return "\nYou have mail.";
+            return "You have new mail.";
         }
-        return false;
+        return "You have no mail.";
 
     }
 

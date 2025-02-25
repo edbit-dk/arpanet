@@ -28,7 +28,7 @@ if(Host::guest() && User::auth()) {
     $app->get('/sysadmin571_bypass', [HostController::class, 'sysadmin']);
 }
 
-if(Host::auth()) {
+if(Host::auth() && !Host::guest()) {
 
     $app->get('/type', [FileController::class, 'cat']);
     $app->get('/cat', [FileController::class, 'cat']);
@@ -36,9 +36,7 @@ if(Host::auth()) {
     $app->get('/open', [FileController::class, 'cat']);
 
     $app->get('/echo', [FileController::class, 'echo']);
-
     $app->get('/cd', [FolderController::class, 'cd']);
-
     $app->get('/dir', [FileController::class, 'ls']);
     $app->get('/ls', [FileController::class, 'ls']);
 
