@@ -93,8 +93,9 @@ class Dump
 
             // Hide incorrect guesses in ASCII
             foreach (Session::get(self::$input) as $wrongWord) {
+                $wrongWordHex = strtoupper(bin2hex($wrongWord));
                 if (strpos($asciiRow, $wrongWord) !== false) {
-                    $asciiRow = str_replace($wrongWord, str_repeat('.', strlen($wrongWord)), $asciiRow);
+                    $asciiRow = preg_replace('/\b' . preg_quote($wrongWord, '/') . '\b/', str_repeat('.', strlen($wrongWord)), $asciiRow);
                 }
             }
 
@@ -102,7 +103,7 @@ class Dump
             $output .= "$address  " . implode(" ", str_split(implode("", $hexRow), 2)) . "  |$asciiRow|\n";
         }
         
-        return $output;
+        echo $output;
     }
 
     public static function input($word) 
@@ -116,7 +117,7 @@ class Dump
         } else {
             // Store incorrect guesses in session
             if (!in_array($input, Session::get(self::$input))) {
-                Session::set(self::$input, [$input]);
+                Session::set(self::$input, array_merge(Session::get(self::$input), [$input]));
             }
             return false;
         }
