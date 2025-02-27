@@ -4,7 +4,7 @@ namespace App\System;
 
 use Lib\Controller;
 use Lib\Session;
-use Lib\Input;
+
 
 use App\User\UserService as User;
 use App\User\UserModel as Users;
@@ -49,7 +49,6 @@ class SystemController extends Controller
 
     public function main() 
     {
-
         if(Host::guest()) {
             return System::connect();
         }
