@@ -56,13 +56,9 @@ class UserController extends AppController
                     $host = $host->hostname;
 
                     sleep(1);
+                    echo 'IDENTIFICATION VERIFIED';
+                    exit;  
 
-                    echo <<< EOT
-                    Connecting...
-                    Trying $ip
-                    Connected to $host\n
-                    EOT;
-                    exit;         
                 } else {
                     echo 'IDENTIFICATION NOT RECOGNIZED BY SYSTEM';
                     exit;

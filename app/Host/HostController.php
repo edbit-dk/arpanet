@@ -91,7 +91,9 @@ class HostController extends AppController
         if(!$host) {
             echo '--CONNECTION REFUSED--';
             exit;
-        } else {
+        } 
+
+        if($host_id > 1) {
             $host = Host::data()->hostname;
             $ip = Host::data()->ip;
 
