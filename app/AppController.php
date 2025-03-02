@@ -12,13 +12,16 @@ use App\System\SystemService as System;
 
 class AppController extends Controller
 {
-    public $request;
+    protected $request;
+    protected $user;
 
     public function __construct()
     {
         if($request = parse_request('data')) {
             $this->request = $request;
         }
+
+        $this->user = User::fields();
     }
 
     public function version()

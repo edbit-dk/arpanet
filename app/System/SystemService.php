@@ -56,6 +56,7 @@ class SystemService
 
             echo <<< EOT
             Security Access Code Sequence Accepted.
+            Trying...
             Accessing Mainframe...
             EOT;
             exit;
@@ -109,9 +110,11 @@ class SystemService
 
         echo <<< EOT
         Connected to ARPANET port {$port}
+        
+        Standford Research Institute
+        VAX-11/750 TOPS-20
 
-        ARPANET LOGIN SYSTEM
-        Authorized users only.
+        Authorized users only!
         EOT;
     }
 
@@ -154,8 +157,9 @@ class SystemService
         $org = $host->org;
         
         echo <<< EOT
-        $os
         $org
+        $os
+
         $welcome
         EOT;
     }

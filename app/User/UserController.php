@@ -13,13 +13,6 @@ use App\AppController;
 
 class UserController extends AppController
 {
-    protected $user;
-
-    public function __construct()
-    {
-        $this->user = User::fields();
-    }
- 
     private function validate($input) 
     {
         if (isset($input[0])) {
