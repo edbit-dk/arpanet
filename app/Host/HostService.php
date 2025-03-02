@@ -9,7 +9,7 @@ use App\Level\LevelModel as Level;
 use App\Email\EmailModel as Email;
 use App\Email\EmailService as Mail;
 use App\Folder\FolderService as Folder;
-use App\System\CronService as Cron;
+use App\Cron\CronService as Cron;
 
 use Lib\Session;
 use Lib\Cache;
@@ -91,7 +91,12 @@ class HostService
     public static function admin() 
     {
         $user = self::data()->user_id;
-        return self::data()->user($user);
+        return User::find($user)->username;
+    }
+
+    public static function password() 
+    {
+        return self::data()->password;
     }
 
     public static function auth()

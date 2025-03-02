@@ -2,9 +2,9 @@
 
 namespace App\Level;
 
-use Illuminate\Database\Eloquent\Model;
+use App\AppModel;
 
-class LevelModel extends Model
+class LevelModel extends AppModel
 {
     protected $table = 'levels';
 

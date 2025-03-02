@@ -15,6 +15,26 @@ class SystemService
 
     private static $uplink = 'uplink';
 
+    public static function boot()
+    {
+        echo bootup(loops: 10) . "\n\n";
+        echo <<< EOT
+        Initializing boot...
+        Loading TeleTerm OS...
+        64K RAM detected...
+        Launching Interfaces...
+
+        Boot Complete.
+
+        LOADING...
+        EOT;
+    }
+
+    public static function mode($mode)
+    {
+        Session::set('term', strtoupper($mode));
+    }
+
     public static function uplink($input = '')
     {
         $code = User::field('code');

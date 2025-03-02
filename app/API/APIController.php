@@ -2,14 +2,14 @@
 
 namespace App\API;
 
-use Lib\Controller;
+use App\AppController;
 
 use App\Host\HostService as Host;
 use App\User\UserService as User;
 use App\Folder\FolderService as Folder;
 use App\Help\HelpModel as Help;
 
-class APIController extends Controller
+class APIController extends AppController
 {
     protected $api_key;
     protected $get;

@@ -2,8 +2,7 @@
 
 namespace App\File;
 
-use Lib\Controller;
-use Lib\Session;
+use App\AppController;
 
 use App\File\FileService as File;
 use App\Folder\FolderService as Folder;
@@ -11,7 +10,7 @@ use App\Folder\FolderService as Folder;
 use App\User\UserService as User;
 use App\Host\HostService as Host;
 
-class FileController extends Controller
+class FileController extends AppController
 {
 
     public function files()
@@ -45,22 +44,18 @@ class FileController extends Controller
 
     public function cat()
     {
-        $data = parse_request('data');
-
-        $file = Host::data()->file($data, Folder::id());
+        $file = Host::data()->file($$this->request[0], Folder::id());
 
         if($file) {
             echo $file->content;
         } else {
-            echo 'ERROR: Unknown File.';
+            echo 'UNKNOWN FILE';
         }
     }
 
     public function open()
     {
-        $data = parse_request('data');
-
-        return File::open($data[0], Host::data()->id);
+        return File::open($this->request[0], Host::data()->id);
     }
 
     public function echo()
@@ -72,20 +67,18 @@ class FileController extends Controller
         $file_content = str_replace("'", '', trim($input[0]));
         $file_name = trim($input[1]);
 
-        $file = File::create(
+        File::create(
             User::data()->id, 
             Host::data()->id,
             0,
             $file_name,
             $file_content
         );
-
-        var_dump($file );
     }
 
     public function ftp()
     {
-        
+       echo ftp_transfer('test.txt', 'Hello World', 'put');
     }
 
 }

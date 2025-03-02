@@ -2,9 +2,9 @@
 
 namespace App\Log;
 
-use Illuminate\Database\Eloquent\Model;
+use App\AppModel;
 
-class LogModel extends Model
+class LogModel extends AppModel
 {
     protected $table = 'logs';
     public $timestamps = true;

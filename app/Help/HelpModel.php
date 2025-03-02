@@ -2,9 +2,9 @@
 
 namespace App\Help;
 
-use App\BaseModel;
+use App\AppModel;
 
-class HelpModel extends BaseModel
+class HelpModel extends AppModel
 {
     protected $table = 'help';
 

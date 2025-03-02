@@ -2,12 +2,12 @@
 
 namespace App\Email;
 
-use Illuminate\Database\Eloquent\Model;
+use App\AppModel;
 
 use App\Mission\MissionModel as Mission;
 use App\User\UserModel as User;
 
-class EmailModel extends Model 
+class EmailModel extends AppModel 
 {
     protected $table = 'emails';
 

@@ -2,7 +2,8 @@
 
 namespace App\User;
 
-use App\BaseModel;
+use App\AppModel;
+
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 use App\Host\HostModel as Host;
@@ -11,7 +12,7 @@ use App\Folder\FolderModel as Folder;
 use App\Mission\MissionModel as Mission;
 use App\Email\EmailModel as Email;
 
-class UserModel extends BaseModel
+class UserModel extends AppModel
 {
     protected $table = 'users';
 

@@ -10,9 +10,9 @@ use App\Level\LevelModel as Level;
 use App\File\FileModel as File;
 use App\Folder\FolderModel as Folder;
 
-use App\BaseModel;
+use App\AppModel;
 
-class HostModel extends BaseModel
+class HostModel extends AppModel
 {
     protected $table = 'hosts';
 

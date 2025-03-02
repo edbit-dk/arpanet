@@ -13,10 +13,22 @@ class Dump
     public static $dump = 'memory_dump';
     public static $input = 'memory_input';
 
+    public static function reset()
+    {
+        self::$reset = true;
+        Session::remove(self::$input);
+        Session::remove(self::$dump);
+    }
+
+    public static function correct($words = [])
+    {
+        self::$correct = $words;
+    }
+
     public static function memory($rows = 16, $cols = 8) 
     {
         // Setup
-        $words = self::$words;
+        $words = array_merge(self::$words, self::$correct);
         $randomize = self::$reset;
 
         $hexBase = 0x4000; // Base address for memory dump

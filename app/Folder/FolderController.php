@@ -2,16 +2,14 @@
 
 namespace App\Folder;
 
-use Lib\Controller;
-use Lib\Session;
+use App\AppController;
 
-use App\File\FileService as File;
 use App\Folder\FolderService as Folder;
 
 use App\User\UserService as User;
 use App\Host\HostService as Host;
 
-class FolderController extends Controller
+class FolderController extends AppController
 {
     public function pwd()
     {
@@ -19,11 +17,9 @@ class FolderController extends Controller
     }
 
     public function cd()
-    {
-        $data = parse_request('data');
-        
-        if(!Folder::cd($data[0])) {
-            echo 'ERROR: Unknown Directory.';
+    {   
+        if(!Folder::cd($this->request[0])) {
+            echo 'UNKNOWN DIRECTORY.';
         }
     }
 }

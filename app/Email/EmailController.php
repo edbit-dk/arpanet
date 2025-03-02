@@ -2,11 +2,11 @@
 
 namespace App\Email;
 
-use Lib\Controller;
+use App\AppController;
 
 use App\Email\EmailService as Mail;
 
-class EmailController extends Controller
+class EmailController extends AppController
 {
     public function mail()
     {

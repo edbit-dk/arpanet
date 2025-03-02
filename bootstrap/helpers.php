@@ -93,9 +93,9 @@ function database($name) {
     return config('database') . "/$name";
 }
 
-function base_url() {
+function base_url($path = '/') {
 
-    echo $_SERVER['REQUEST_URI'] . 'public';
+    echo strtok($_SERVER["REQUEST_URI"], '?') . 'public' . $path ;
 }
 
 function parse_request($data = '') {

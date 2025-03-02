@@ -2,19 +2,17 @@
 
 namespace App\Host;
 
-use Lib\Controller;
+use App\AppController;
 
 use App\Level\LevelModel as Level;
 use App\Host\HostModel;
 
 use App\User\UserService as User;
 use App\Host\HostService as Host;
-use App\File\FileService as File;
 use App\Folder\FolderService as Folder;
 
-class HostController extends Controller
+class HostController extends AppController
 {
-
     public static function create() 
     {
         $data = request()->get('data');

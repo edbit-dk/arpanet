@@ -2,13 +2,13 @@
 
 namespace App\File;
 
-use Illuminate\Database\Eloquent\Model;
+use App\AppModel;
 
 use App\User\UserModel as User;
 use App\Host\HostModel as Host;
 use App\Folder\FolderModel as Folder;
 
-class FileModel extends Model
+class FileModel extends AppModel
 {
     protected $table = 'files';
 

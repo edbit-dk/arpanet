@@ -2,16 +2,12 @@
 
 namespace App\Help;
 
-use Lib\Controller;
-use Lib\Session;
+use App\AppController;
 
-use App\User\UserService as User;
-use App\Host\HostService as Host;
 use App\Help\HelpService as Help;
 
-class HelpController extends Controller
+class HelpController extends AppController
 {
-
     private $commands;
     private $response;
     private $data;

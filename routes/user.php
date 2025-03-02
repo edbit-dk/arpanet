@@ -28,8 +28,8 @@ if(User::auth() && !Host::auth() && !Host::guest()) {
      $app->get('/netstat', [HostController::class, 'scan']);
      $app->get('/scan', [HostController::class, 'scan']);
      
-    $app->get('/connect', [HostController::class, 'connect']);
-    $app->get('/telnet', [HostController::class, 'connect']);
+     $app->get('/connect', [HostController::class, 'connect']);
+     $app->get('/telnet', [HostController::class, 'connect']);
 
      $app->get('/exit', [UserController::class, 'logout']);
      $app->get('/logout', [UserController::class, 'logout']);

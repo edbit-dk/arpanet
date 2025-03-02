@@ -389,19 +389,6 @@ function ftp_transfer($filename, $string, $mode = "get", $time = null) {
     }
 }
 
-function print_s($text, $delay = 100000) {
-    // Split the string into characters
-    $chars = str_split($text);
-    
-    // Loop through the characters and print each one with a delay
-    foreach ($chars as $char) {
-        echo $char;
-        usleep($delay); // Delay in microseconds (1 second = 1,000,000 microseconds)
-    }
-    echo "\n"; // Move to the next line after output
-}
-
-
 function str_bytes($string) {
     return mb_strlen($string, '8bit');
 }

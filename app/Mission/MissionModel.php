@@ -2,12 +2,13 @@
 
 namespace App\Mission;
 
-use Illuminate\Database\Eloquent\Model;
+use App\AppModel;
 
 use  App\Email\EmailModel as Email;
 use App\User\UserModel as User;
 
-class MissionModel extends Model {
+class MissionModel extends AppModel 
+{
     protected $table = 'missions';
     protected $fillable = ['title', 'description', 'trigger_event', 'conditions', 'rewards', 'status', 'email_id', 'next_mission_id'];
 

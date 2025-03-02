@@ -2,9 +2,6 @@
 
 use App\Host\HostController;
 
-use App\File\FileController;
-use App\Folder\FolderController;
-
 use App\Debug\DebugController;
 use App\Email\EmailController;
 
@@ -18,9 +15,6 @@ $app->get('/connection', [HostController::class, 'connection']);
 if(Host::guest() && User::auth()) {
     $app->get('/login', [HostController::class, 'logon']);
     $app->get('/logon', [HostController::class, 'logon']);
-    $app->get('/dump', [DebugController::class, 'dump']);
-    $app->get('/mem', [DebugController::class, 'dump']);
-    $app->get('/debug', [DebugController::class, 'dump']);
     $app->get('/set', [DebugController::class, 'set']);
     $app->get('/run', [DebugController::class, 'run']);  
     
@@ -29,25 +23,11 @@ if(Host::guest() && User::auth()) {
 }
 
 if(Host::auth() && !Host::guest()) {
-
-    $app->get('/type', [FileController::class, 'cat']);
-    $app->get('/cat', [FileController::class, 'cat']);
-    $app->get('/more', [FileController::class, 'cat']);
-    $app->get('/open', [FileController::class, 'cat']);
-
-    $app->get('/echo', [FileController::class, 'echo']);
-    $app->get('/cd', [FolderController::class, 'cd']);
-    $app->get('/dir', [FileController::class, 'ls']);
-    $app->get('/ls', [FileController::class, 'ls']);
-
     $app->get('/scan', [HostController::class, 'scan']);
     $app->get('/netstat', [HostController::class, 'scan']);
-
     $app->get('/connect', [HostController::class, 'connect']);
     $app->get('/telnet', [HostController::class, 'connect']);
-
     $app->get('/mail', [EmailController::class, 'mail']);
-    
 }
 
 if(Host::auth() OR Host::guest()) {

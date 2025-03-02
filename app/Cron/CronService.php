@@ -1,6 +1,6 @@
 <?php
 
-namespace App\System;
+namespace App\Cron;
 
 use App\Host\HostModel as Hosts;
 

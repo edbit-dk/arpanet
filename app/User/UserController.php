@@ -2,7 +2,6 @@
 
 namespace App\User;
 
-use Lib\Controller;
 use Lib\Session;
 
 use App\User\UserModel as User;
@@ -10,8 +9,9 @@ use App\User\UserModel as User;
 use App\User\UserService as Auth;
 use App\Host\HostService as Host;
 
+use App\AppController;
 
-class UserController extends Controller
+class UserController extends AppController
 {
     protected $user;
 
@@ -41,7 +41,7 @@ class UserController extends Controller
         // Check if the user is already blocked
         Auth::blocked();
         
-        $data = parse_request('data');
+        $data = $this->request;
 
         if(!Auth::check()) {
 
@@ -94,7 +94,7 @@ class UserController extends Controller
 
     public function password()
     {
-        $input = parse_request('data');
+        $input = $this->request;
 
         if(empty($data)) {
             echo 'MISSING INPUT.';
@@ -114,7 +114,7 @@ class UserController extends Controller
         // Check if the user is already blocked
         Auth::blocked();
 
-        $data = parse_request('data');
+        $data = $this->request;
 
         if(empty($data)) {
             echo 'WRONG USERNAME.';
@@ -183,7 +183,7 @@ class UserController extends Controller
 
     public function reset()
     {
-        unset($_SESSION[$this->user['username']]);
-        unset($_SESSION[$this->user['password']]);
+        Session::remove($this->user['username']);
+        Session::remove($this->user['password']);
     }
 }
