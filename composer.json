@@ -8,11 +8,6 @@
             "Lib\\":"src",
             "App\\": "app",
             "DB\\": "database"
-        },
-
-        "files": [
-            "bootstrap/helpers.php",
-            "bootstrap/functions.php"
-        ]
+        }
     }
 }

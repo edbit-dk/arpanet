@@ -4,7 +4,7 @@ namespace App\Setup;
 
 use App\AppController;
 
-use App\System\SetupService as Setup;
+use App\Setup\SetupService as Setup;
 
 class SetupController extends AppController
 {
