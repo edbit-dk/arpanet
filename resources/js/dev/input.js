@@ -1,11 +1,8 @@
 // Function to handle user input
 function handleUserInput() {
     let input = $('#command-input').val().trim();
-    if (input === '' && !(isPasswordPrompt || isUsernamePrompt)) return;
-    // Prevent empty commands unless it's a password prompt
 
     // Normal command handling
-    loadText("cmd: " + input);
     commandHistory.push(input);
     localStorage.setItem('history',commandHistory);
     historyIndex = commandHistory.length;
@@ -59,41 +56,13 @@ function handleUserInput() {
         return;
     }
 
-    if (isUsernamePrompt) {
-        if (input) {
-            if (currentCommand === 'newuser') {
-                usernameForNewUser = input;
-                loadText("Password:");
-                isUsernamePrompt = false;
-                isPasswordPrompt = true;
-                $('#command-input').attr('type', 'password');
-            } else if (currentCommand === 'login' || currentCommand === 'logon') {
-                usernameForLogon = input;
-                loadText("Password:");
-                isUsernamePrompt = false;
-                isPasswordPrompt = true;
-                $('#command-input').attr('type', 'password');
-            }
-            return;
-        } else {
-            loadText("WRONG USERNAME.");
-            return;
-        }
-    }
-
-    if (isPasswordPrompt) {
-        // Allow an empty password
-        handlePasswordPrompt();
-        return;
-    }
-
     if (['newuser', 'logon', 'login'].includes(command) && !sessionStorage.getItem('uplink')) {
         loadText("UPLINK REQUIRED");
         return;
     }
 
     if (['logon', 'login', 'newuser'].includes(command) && sessionStorage.getItem('auth') && !sessionStorage.getItem('host')) {
-        loadText("LOGOUT REQUIRED.");
+        loadText("LOGOUT REQUIRED");
         return;
     }
 
@@ -102,31 +71,6 @@ function handleUserInput() {
     } else if (command === 'uplink') {
         sessionStorage.setItem('uplink', true);
         sendCommand(command, args);
-    } else if (command === 'newuser') {
-        if (args) {
-            handleNewUser(args);
-        } else {
-            loadText("username:");
-            isUsernamePrompt = true;
-            currentCommand = 'newuser';
-            $('#command-input').attr('type', 'text');
-        }
-    } else if (command === 'logon' || command === 'login') {
-        if (args) {
-            usernameForLogon = args;
-            loadText("Password:");
-            isUsernamePrompt = false;
-            isPasswordPrompt = true;
-            currentCommand = command;
-            $('#command-input').attr('type', 'password');
-            return;
-        } else {
-            loadText("username?");
-            isUsernamePrompt = true;
-            currentCommand = command;
-            $('#command-input').attr('type', 'text');
-            return;
-        }
     } else if (['logout', 'close', 'logoff', 'quit', 'dc', 'restart', 'exit', 'reboot', 'halt', 'halt restart', 'restart'].includes(command)) {
         sendCommand(command, args)
             .then(response => {

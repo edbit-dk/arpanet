@@ -3,67 +3,37 @@
 namespace App\User;
 
 use Lib\Session;
+use Lib\Input;
 
 use App\User\UserModel as User;
 
 use App\User\UserService as Auth;
 use App\Host\HostService as Host;
+use App\AppService as App;
 
 use App\AppController;
 
 class UserController extends AppController
 {
-    private function validate($input) 
-    {
-        if (isset($input[0])) {
-            Session::set($this->user['username'], $input[0]);
-        } 
-
-        if(empty($input[1])) {
-            $password = '';
-        } else {
-            $password = $input[1];
-        }
-
-        Session::set($this->user['password'], $password);
-
-    }
-
     public function login() 
     {
         // Check if the user is already blocked
         Auth::blocked();
-        
-        $data = $this->request;
 
         if(!Auth::check()) {
 
-            $this->validate($data);
+            $input = App::auth($this->data);
 
-            if(Session::has($this->user['username']) && Session::has($this->user['password'])){
+            if(Auth::login($input['username'], $input['password'])) {
+                Host::attempt(1, Auth::id());
+                sleep(1);
+                echo 'IDENTIFICATION VERIFIED';
+                exit;  
 
-                $username = Session::get($this->user['username']);
-                $password = Session::get($this->user['password']);
-
-                $this->reset();
-
-                if(Auth::login($username, $password)) {
-                    Host::attempt(1, Auth::id());
-
-                    $host = Host::data();
-
-                    $ip = $host->ip;
-                    $host = $host->hostname;
-
-                    sleep(1);
-                    echo 'IDENTIFICATION VERIFIED';
-                    exit;  
-
-                } else {
-                    echo 'IDENTIFICATION NOT RECOGNIZED BY SYSTEM';
-                    exit;
-                }
-            }
+            } else {
+                echo 'IDENTIFICATION NOT RECOGNIZED BY SYSTEM';
+                exit;
+            }    
         }
     }
 
@@ -110,14 +80,13 @@ class UserController extends AppController
             exit;
         }
 
-        $this->validate($data);
+        $input = App::auth($this->data);
         
         if(Session::has($this->user['username']) && Session::has($this->user['password']))  {
             $code = Session::get($this->user['code']);
             $username = Session::get($this->user['username']);
             $password = Session::get($this->user['password']);
-            
-            $this->reset();
+
         } else {
             echo 'WRONG INPUT.';
             exit;
@@ -168,11 +137,5 @@ class UserController extends AppController
     {
         Auth::uplink(false);
         echo '--DISCONNECTING--';
-    }
-
-    public function reset()
-    {
-        Session::remove($this->user['username']);
-        Session::remove($this->user['password']);
     }
 }

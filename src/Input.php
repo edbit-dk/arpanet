@@ -11,9 +11,22 @@ class Input
      *
      * @param Request $request
      */
-    public static function request(Request $request)
+    public static function setup(Request $request)
     {
         self::$request = $request;
+    }
+
+    public static function request($key = false, $base = '/')
+    {
+        if($key) {
+            if($base) {
+                return str_replace($base, '', self::sanitize(self::$request->$key));
+            } else {
+                return self::sanitize(self::$request->$key);
+            }
+        }
+
+        return self::$request;
     }
 
     /**
@@ -22,7 +35,7 @@ class Input
      * @param mixed $data
      * @return mixed
      */
-    protected static function sanitize($data)
+    public static function sanitize($data)
     {
         if (is_array($data)) {
             return array_map([self::class, 'sanitize'], $data);
@@ -37,7 +50,7 @@ class Input
      * @param mixed $default
      * @return mixed
      */
-    public static function get(string $key, $default = null)
+    public static function get(string $key, $default = '')
     {
         return self::sanitize(self::$request->query[$key] ?? self::$request->input[$key] ?? $default);
     }
@@ -49,7 +62,7 @@ class Input
      * @param mixed $default
      * @return mixed
      */
-    public static function query(string $key, $default = null)
+    public static function query(string $key, $default = '')
     {
         return self::sanitize(self::$request->query[$key] ?? $default);
     }
@@ -61,7 +74,7 @@ class Input
      * @param mixed $default
      * @return mixed
      */
-    public static function post(string $key, $default = null)
+    public static function post(string $key, $default = '')
     {
         return self::sanitize(self::$request->input[$key] ?? $default);
     }

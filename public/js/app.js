@@ -83,7 +83,7 @@ $('#command-input').keydown(function(e) {
 document.getElementById('play-button').addEventListener('click', toggleMusic);
 
 // Function to handle redirect
-function handleRedirect(response, timeout = 1000) {
+function handleResponse(response, timeout = 1000) {
 
     if (response.startsWith("Connecting")) {
         setTimeout(function() {
@@ -272,7 +272,7 @@ function handleUserInput() {
             $('#command-input').attr('type', 'password');
             return;
         } else {
-            loadText("login:");
+            loadText("username?");
             isUsernamePrompt = true;
             currentCommand = command;
             $('#command-input').attr('type', 'text');
@@ -321,10 +321,10 @@ function sendCommand(command, data, queryString = '') {
                 $('#connection').load('connection');
                 
                 if (isPasswordPrompt) {
-                    handlePasswordPromptResponse(response); // Handle password prompt response
+                   handlePasswordPromptResponse(response); // Handle password prompt response
                 } else {
                     loadText(response); // Load response text into terminal
-                    handleRedirect(response); // Handle redirect if needed
+                    handleResponse(response); // Handle redirect if needed
                 }
                 resolve(response); // Resolve the promise with the response
             },

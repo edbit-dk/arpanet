@@ -3,6 +3,7 @@
 namespace App;
 
 use Lib\Controller;
+use Lib\Input;
 
 use App\User\UserService as User;
 use App\Host\HostService as Host;
@@ -13,15 +14,19 @@ use App\System\SystemService as System;
 class AppController extends Controller
 {
     protected $request;
+    protected $data;
     protected $user;
 
     public function __construct()
     {
-        if($request = parse_request('data')) {
-            $this->request = $request;
+        if($data = Input::get('data')) {
+            $this->data = $data;
         }
 
+        $this->request = Input::request();
+
         $this->user = User::fields();
+
     }
 
     public function version()
@@ -52,7 +57,7 @@ class AppController extends Controller
         if(User::uplinked()) {
             return System::login();
         } else {
-            return System::uplink($this->request[0]);
+            return System::uplink($this->data);
         }
 
     }

@@ -15,13 +15,10 @@ function sendCommand(command, data, queryString = '') {
                 loadSavedTheme();
                 
                 $('#connection').load('connection');
-                
-                if (isPasswordPrompt) {
-                   handlePasswordPromptResponse(response); // Handle password prompt response
-                } else {
-                    loadText(response); // Load response text into terminal
-                    handleResponse(response); // Handle redirect if needed
-                }
+
+                loadText(response); // Load response text into terminal
+                handleResponse(response); // Handle redirect if needed
+
                 resolve(response); // Resolve the promise with the response
             },
             error: function(err) {

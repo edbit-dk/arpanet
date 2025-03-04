@@ -1,5 +1,7 @@
 <?php
 
+use Lib\Input;
+
 use App\AppController;
 use App\Cron\CronController;
 use App\API\APIController;

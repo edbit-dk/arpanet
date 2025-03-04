@@ -1,6 +1,6 @@
 {
     "require": {
-        "illuminate/database": "^11.27",
+        "illuminate/database": "^11.44",
         "laravel/serializable-closure": "^1.3"
     },
     "autoload": {

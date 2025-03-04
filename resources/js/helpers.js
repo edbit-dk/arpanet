@@ -1,5 +1,5 @@
 // Function to handle redirect
-function handleRedirect(response, timeout = 1000) {
+function handleResponse(response, timeout = 1000) {
 
     if (response.startsWith("Connecting")) {
         setTimeout(function() {
