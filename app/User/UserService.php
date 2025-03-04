@@ -75,7 +75,6 @@ class UserService extends User
 
     public static function attempt($id)
     {
-       // Cache::forget(self::key());
         return Session::set(self::$auth, $id);
     }
 

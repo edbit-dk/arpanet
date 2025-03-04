@@ -179,8 +179,12 @@ class HostService
             $password = null;
         }
 
+        if($user = User::where('username', $username)->first()) {
+            $user_id = $user->id;
+        }
+
         $host = Host::where('id',  $host_id)
-            ->where('user_id', Auth::check())
+            ->where('user_id',  $user_id)
             ->where('password', $password)
             ->first();
 
@@ -199,6 +203,8 @@ class HostService
             }
 
             $user_id = $user->id;
+            Auth::attempt($user_id);
+        } else {
             Auth::attempt($user_id);
         }
 

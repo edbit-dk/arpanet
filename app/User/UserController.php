@@ -20,7 +20,7 @@ class UserController extends AppController
         // Check if the user is already blocked
         Auth::blocked();
 
-        if(!Auth::check()) {
+        if(!Auth::check() && $this->data) {
 
             $input = App::auth($this->data);
 
@@ -53,19 +53,13 @@ class UserController extends AppController
 
     public function password()
     {
-        $input = $this->request;
-
-        if(empty($data)) {
-            echo 'MISSING INPUT.';
-            exit;
+        if(!Auth::check() && $this->data) {
+            Auth::data()->update([
+                'password' => $this->data
+            ]);
+    
+            echo 'PASSWORD UPDATED';
         }
-
-        Auth::data()->update([
-            'password' => $input[0]
-        ]);
-
-        echo 'PASSWORD UPDATED.';
-        exit;
     }
 
     public function newuser() 
@@ -73,59 +67,39 @@ class UserController extends AppController
         // Check if the user is already blocked
         Auth::blocked();
 
-        $data = $this->request;
-
-        if(empty($data)) {
-            echo 'WRONG USERNAME.';
-            exit;
-        }
-
         $input = App::auth($this->data);
-        
-        if(Session::has($this->user['username']) && Session::has($this->user['password']))  {
+
+        if(!Auth::check() && $this->data) {
+
             $code = Session::get($this->user['code']);
-            $username = Session::get($this->user['username']);
-            $password = Session::get($this->user['password']);
+            $username = $input['username'];
+            $password = $input['password'];
 
-        } else {
-            echo 'WRONG INPUT.';
-            exit;
+            if (User::where($this->user['username'], '=', $username)->exists()) {
+                echo 'USERNAME TAKEN';
+                exit;
+             }
+
+             User::create([
+                $this->user['username'] => $username,
+                $this->user['email'] => "$username@teleterm.net",
+                $this->user['fullname'] => ucfirst($username),
+                $this->user['password'] => $password,
+                $this->user['code'] => $code,
+                $this->user['created'] => now()
+            ]);
         }
-
-        if (User::where($this->user['username'], '=', $username)->exists()) {
-            echo 'USERNAME TAKEN.';
-            exit;
-         }
-
-        User::create([
-            $this->user['username'] => $username,
-            $this->user['email'] => "$username@teleterm.net",
-            $this->user['fullname'] => ucfirst($username),
-            $this->user['password'] => $password,
-            $this->user['code'] => $code,
-            $this->user['created'] => now()
-        ]);
-
-        if(Auth::login($username, $password)) {
+        
+        if(Auth::login($input['username'], $input['password'])) {
             Host::attempt(1, Auth::id());
-
-            $host = Host::data();
-
-            $ip = $host->ip;
-            $host = $host->hostname;
-
             sleep(1);
-            
-            echo <<< EOT
-            Connecting...
-            Trying $ip
-            Connected to $host\n
-            EOT;
-            exit;          
+            echo 'IDENTIFICATION VERIFIED';
+            exit;  
+
         } else {
             echo 'IDENTIFICATION NOT RECOGNIZED BY SYSTEM';
             exit;
-        }
+        }   
     }
 
     public function logout() 

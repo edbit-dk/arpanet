@@ -89,6 +89,7 @@ class HostModel extends AppModel
         if(!$connections->isEmpty()) {
             return $connections;
         }
+        
     }
 
     public function node($host)

@@ -5,11 +5,12 @@ namespace App\Host;
 use App\AppController;
 
 use App\Level\LevelModel as Level;
-use App\Host\HostModel;
+use App\Host\HostModel as Hosts;
 
 use App\User\UserService as User;
 use App\Host\HostService as Host;
 use App\Folder\FolderService as Folder;
+use App\AppService as App;
 
 class HostController extends AppController
 {
@@ -68,8 +69,8 @@ class HostController extends AppController
     {
         $host = false;
 
-        if(request()->get('data')) {
-            $data = request()->get('data');
+        if($this->data) {
+            $data = $this->data;
         } else {
             echo 'UNKNOWN HOST';
             exit;
@@ -107,6 +108,17 @@ class HostController extends AppController
 
     }
 
+    public function hosts()
+    {
+        $hosts = Hosts::all();
+
+        foreach ($hosts as $host) {
+            echo <<<EOT
+            $host->hostname: $host->org - $host->location\n
+            EOT;
+        }
+    }
+
     public function scan() 
     {
         $hosts = false;
@@ -132,7 +144,7 @@ class HostController extends AppController
             $hostname = $host->hostname;
             
             echo <<<EOT
-            $access $hostname: $host->org, $host->location\n
+            $access $hostname: $host->org - $host->location\n
             EOT;
         }
         
@@ -176,9 +188,7 @@ class HostController extends AppController
 
     public function logon() 
     {
-        $data = request()->get('data');
-
-        $input = explode(' ', $data);
+        $input = App::auth($this->data);
 
         // Initialize login attempts if not set
         Host::attempts();
@@ -188,7 +198,7 @@ class HostController extends AppController
 
         sleep(1);
 
-        if(Host::logon($input[0],  $input[1])) {
+        if(Host::logon($input['username'],  $input['password'])) {
             echo <<< EOT
             IDENTIFICATION VERIFIED
             EOT;

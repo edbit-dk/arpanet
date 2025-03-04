@@ -20,7 +20,7 @@ class HackController extends AppController
     {
         Dump::correct([Host::admin(), Host::password()]);
 
-        if($input = $this->request[0]) {
+        if($input = $this->data) {
             Dump::input($input);
         }
         Dump::memory();

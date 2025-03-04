@@ -27,6 +27,8 @@ if(Host::auth() && !Host::guest()) {
     $app->get('/netstat', [HostController::class, 'scan']);
     $app->get('/connect', [HostController::class, 'connect']);
     $app->get('/telnet', [HostController::class, 'connect']);
+    $app->get('/hosts', [HostController::class, 'hosts']);
+    
     $app->get('/mail', [EmailController::class, 'mail']);
 }
 

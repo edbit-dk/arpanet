@@ -14,7 +14,7 @@ use App\System\SystemService as System;
 class AppController extends Controller
 {
     protected $request;
-    protected $data;
+    protected $data = false;
     protected $user;
 
     public function __construct()
