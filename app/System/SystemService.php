@@ -17,7 +17,7 @@ class SystemService
 
     public static function boot()
     {
-        echo bootup(loops: 10) . "\n\n";
+        echo bootup(loops: 5) . "\n\n";
         echo <<< EOT
         Initializing boot...
         Loading TeleTerm OS...

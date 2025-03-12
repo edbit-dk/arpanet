@@ -39,8 +39,8 @@ class UserController extends AppController
 
     public function user() 
     {
-        $user = auth();
-        $password = base64_encode($user->password);
+        $user = Auth::data();
+        $password = isset($user->password) ? base64_encode($user->password) : null;
 
         echo "ACCESS CODE: {$user->code} \n";
         echo "SIGNUP: {$user->created_at} \n";

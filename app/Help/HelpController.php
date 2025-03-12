@@ -8,15 +8,12 @@ use App\Help\HelpService as Help;
 
 class HelpController extends AppController
 {
-    private $commands;
-    private $response;
-    private $data;
+    protected $commands;
 
     private function cmd($type)
     {
-        $this->data = parse_request('data');
 
-        $paginate = paginate($this->data[0], Help::count($type), 10);
+        $paginate = paginate($this->data, Help::count($type), 10);
         $page = $paginate['page'];
         $limit = $paginate['limit'];
         $offset = $paginate['offset'];
@@ -24,7 +21,7 @@ class HelpController extends AppController
 
         $this->commands = Help::paginate($type, $limit, $offset);
 
-        if(empty($this->data[0]) || is_numeric($this->data[0])) {
+        if(empty($this->data) || is_numeric($this->data)) {
 
             foreach ($this->commands as $item) {
 
@@ -40,9 +37,9 @@ class HelpController extends AppController
 
         } 
 
-        if(!empty($this->data[0])) {
+        if(!empty($this->data)) {
 
-            $help = Help::search($this->data[0], $type);
+            $help = Help::search($this->data, $type);
 
             if(empty($help)) {
                 echo 'ERROR: Unknown Command.';

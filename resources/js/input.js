@@ -2,17 +2,14 @@
 function handleUserInput() {
     let input = $('#command-input').val().trim();
     if (input === '' && !(isPasswordPrompt || isUsernamePrompt)) return;
-    // Prevent empty commands unless it's a password prompt
 
-    // Normal command handling
     loadText("cmd: " + input);
     commandHistory.push(input);
-    localStorage.setItem('history',commandHistory);
+    localStorage.setItem('history', commandHistory);
     historyIndex = commandHistory.length;
-    localStorage.setItem('index',historyIndex);
+    localStorage.setItem('index', historyIndex);
     $('#command-input').val('');
 
-    // Check if the input is "?" and change it to "help"
     if (input === '?') {
         input = 'help';
     }
@@ -22,71 +19,82 @@ function handleUserInput() {
         input = 'uplink ' + input;
     }
 
-    // Handle "music start", "music stop", and "music next" commands
+    handleMusicCommands(input);
+    handleUserPrompts(input);
+
+    const parts = input.split(' ');
+    const command = parts[0].toLowerCase();
+    const args = parts.slice(1).join(' ');
+
+    handleCommands(command, args);
+}
+
+function handleMusicCommands(input) {
     if (input === 'music start') {
         console.log('music start');
-        document.getElementById('play-button').click(); // Simulate a button click to start music
+        document.getElementById('play-button').click();
         $('#command-input').val('');
-        return;
+        return true;
     }
 
     if (input === 'music stop') {
         console.log('music stop');
         if (audio && !audio.paused) {
-            document.getElementById('play-button').click(); // Simulate a button click to stop music
+            document.getElementById('play-button').click();
         }
         $('#command-input').val('');
-        return;
+        return true;
     }
 
     if (input === 'music next') {
         console.log('music next');
         if (audio) {
-            playNextSong(); // Call the function to skip to the next song
+            playNextSong();
         } else {
             console.log('Use "music start" first.');
         }
         $('#command-input').val('');
-        return;
+        return true;
     }
 
-    const parts = input.split(' ');
-    const command = parts[0].toLowerCase(); // Only the command is transformed to lowercase
-    const args = parts.slice(1).join(' ');
+    return false;
+}
 
-    if(command === 'term') {
-        setTermMode(args);
-        return;
-    }
-
+function handleUserPrompts(input) {
     if (isUsernamePrompt) {
-        if (input) {
-            if (currentCommand === 'newuser') {
-                usernameForNewUser = input;
-                loadText("Password:");
-                isUsernamePrompt = false;
-                isPasswordPrompt = true;
-                $('#command-input').attr('type', 'password');
-            } else if (currentCommand === 'login' || currentCommand === 'logon') {
-                usernameForLogon = input;
-                loadText("Password:");
-                isUsernamePrompt = false;
-                isPasswordPrompt = true;
-                $('#command-input').attr('type', 'password');
-            }
-            return;
-        } else {
-            loadText("WRONG USERNAME.");
-            return;
-        }
+        handleUsernamePrompt(input);
+        return true;
     }
 
     if (isPasswordPrompt) {
-        // Allow an empty password
         handlePasswordPrompt();
-        return;
+        return true;
     }
 
+    return false;
+}
+
+function handleUsernamePrompt(input) {
+    if (input) {
+        if (currentCommand === 'newuser') {
+            usernameForNewUser = input;
+            loadText("Password:");
+            isUsernamePrompt = false;
+            isPasswordPrompt = true;
+            $('#command-input').attr('type', 'password');
+        } else if (currentCommand === 'login' || currentCommand === 'logon') {
+            usernameForLogon = input;
+            loadText("Password:");
+            isUsernamePrompt = false;
+            isPasswordPrompt = true;
+            $('#command-input').attr('type', 'password');
+        }
+    } else {
+        loadText("WRONG USERNAME.");
+    }
+}
+
+function handleCommands(command, args) {
     if (['newuser', 'logon', 'login'].includes(command) && !sessionStorage.getItem('uplink')) {
         loadText("UPLINK REQUIRED");
         return;
@@ -97,58 +105,96 @@ function handleUserInput() {
         return;
     }
 
-    if (command === 'clear' || command === 'cls') {
-        clearTerminal();
-    } else if (command === 'uplink') {
-        sessionStorage.setItem('uplink', true);
-        sendCommand(command, args);
-    } else if (command === 'newuser') {
-        if (args) {
-            handleNewUser(args);
-        } else {
-            loadText("username:");
-            isUsernamePrompt = true;
-            currentCommand = 'newuser';
-            $('#command-input').attr('type', 'text');
-        }
-    } else if (command === 'logon' || command === 'login') {
-        if (args) {
-            usernameForLogon = args;
-            loadText("Password:");
-            isUsernamePrompt = false;
-            isPasswordPrompt = true;
-            currentCommand = command;
-            $('#command-input').attr('type', 'password');
-            return;
-        } else {
-            loadText("username?");
-            isUsernamePrompt = true;
-            currentCommand = command;
-            $('#command-input').attr('type', 'text');
-            return;
-        }
-    } else if (['logout', 'close', 'logoff', 'quit', 'dc', 'restart', 'exit', 'reboot', 'halt', 'halt restart', 'restart'].includes(command)) {
-        sendCommand(command, args)
-            .then(response => {
-                if (!response.includes("ERROR")) {
-                    setTimeout(function () {
-                        if(sessionStorage.getItem('host')) {
-                            sessionStorage.removeItem('host');
-                        }
-
-                        if(['boot', 'reboot', 'halt', 'halt restart', 'restart'].includes(command)) {
-                            localStorage.removeItem('boot');
-                        }
-                        redirectTo('', false);
-                    }, 1000);
-                }
-            })
-            .catch(err => {
-                console.error("Command failed", err);
-            });
-    } else if (command === 'color') {
-        setTheme(args);
-    } else {
-        sendCommand(command, args);
+    switch (command) {
+        case 'clear':
+        case 'cls':
+            clearTerminal();
+            break;
+        case 'uplink':
+            sessionStorage.setItem('uplink', true);
+            sendCommand(command, args);
+            break;
+        case 'newuser':
+            handleNewUserCommand(args);
+            break;
+        case 'logon':
+        case 'login':
+            handleLogonCommand(command, args);
+            break;
+        case 'logout':
+        case 'close':
+        case 'logoff':
+        case 'quit':
+        case 'dc':
+        case 'restart':
+        case 'exit':
+        case 'reboot':
+        case 'halt':
+        case 'halt restart':
+            handleExitCommands(command, args);
+            break;
+        case 'color':
+            setTheme(args);
+            break;
+        default:
+            sendCommand(command, args);
+            break;
     }
+}
+
+function handleNewUserCommand(args) {
+    if (args) {
+        handleNewUser(args);
+    } else {
+        promptForUsername('newuser');
+    }
+}
+
+function handleLogonCommand(command, args) {
+    if (args) {
+        promptForPassword(command, args);
+    } else {
+        promptForUsername(command);
+    }
+}
+
+function handleExitCommands(command, args) {
+    sendCommand(command, args)
+        .then(response => {
+            if (!response.includes("ERROR")) {
+                handleSuccessfulExit(command);
+            }
+        })
+        .catch(err => {
+            console.error("Command failed", err);
+        });
+}
+
+function promptForUsername(command) {
+    loadText("username:");
+    isUsernamePrompt = true;
+    currentCommand = command;
+    $('#command-input').attr('type', 'text');
+}
+
+function promptForPassword(command, username) {
+    usernameForLogon = username;
+    loadText("Password:");
+    isUsernamePrompt = false;
+    isPasswordPrompt = true;
+    currentCommand = command;
+    $('#command-input').attr('type', 'password');
+}
+
+function handleSuccessfulExit(command) {
+    setTimeout(() => {
+        if (sessionStorage.getItem('host')) {
+            sessionStorage.removeItem('host');
+        }
+
+        if (['boot', 'reboot', 'halt', 'halt restart', 'restart'].includes(command)) {
+            localStorage.removeItem('boot');
+        }
+        redirectTo('', false);
+    }, 1000);
 }

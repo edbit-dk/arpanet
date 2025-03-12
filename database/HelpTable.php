@@ -73,7 +73,7 @@ class HelpTable extends Help
             [
                 'cmd' => 'ver', 
                 'input' => NULL, 
-                'info' => 'OS version',
+                'info' => 'TeleTerm OS 1.0',
                 'is_user' => 1,
                 'is_host' => 1,
                 'is_visitor' => 1,

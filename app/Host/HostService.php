@@ -11,8 +11,10 @@ use App\Email\EmailService as Mail;
 use App\Folder\FolderService as Folder;
 use App\Cron\CronService as Cron;
 
+
 use Lib\Session;
 use Lib\Cache;
+use Lib\Dump;
 
 class HostService 
 {
@@ -301,6 +303,7 @@ class HostService
         Session::remove('root');
         Session::remove('maint'); 
 
+        Dump::reset();
         Folder::reset();
     }
 
