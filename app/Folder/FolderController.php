@@ -18,7 +18,7 @@ class FolderController extends AppController
 
     public function cd()
     {   
-        if(!Folder::cd($this->request[0])) {
+        if(!Folder::cd($this->data)) {
             echo 'UNKNOWN DIRECTORY.';
         }
     }

@@ -14,8 +14,8 @@ class SystemController extends AppController
 
     public function mode()
     {
-        if($type = parse_request('data')) {
-            System::mode($type[0]);
+        if($type = $this->data) {
+            System::mode($type);
         }
     }
 }
