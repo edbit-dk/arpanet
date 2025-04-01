@@ -1,14 +1,14 @@
 <?php
 
 return [
-    'setup' => false,
+    'setup' => true,
     'key' => base64_encode('62A2AY-3297ZX-1Z6XX3-ZX4Y60'),
     'version' => 1.0,
     'path' => BASE_PATH,
     'date' => 'D M j Y H:i:s',
     'timestamp' => 'Y-m-d H:i:s',
     'unix_timestamp' => 'D M j H:i:s Y',
-    'email' => 'root@teleterm.net',
+    'email' => 'root@arpanet.edbit.dk',
     'public' => BASE_PATH . '/public/',
     'views' =>  BASE_PATH . '/resources/views/',
     'database' => BASE_PATH . '/database/',
@@ -29,7 +29,7 @@ return [
     'db' => [
         'driver' => 'mysql',
         'host' => '127.0.0.1',
-        'database' => 'teleterm',
+        'database' => 'arpanet',
         'username' => 'root',
         'password' => 'mysql',
         'charset' => 'utf8',

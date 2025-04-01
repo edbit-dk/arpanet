@@ -20,13 +20,13 @@ class SystemService
         echo bootup(loops: 5) . "\n\n";
         echo <<< EOT
         Initializing boot...
-        Loading TeleTerm OS...
+        Loading OS...
         64K RAM detected...
         Launching Interfaces...
 
         Boot Complete.
 
-        LOADING...
+        PLEASE WAIT...
         EOT;
     }
 
@@ -95,11 +95,9 @@ class SystemService
         Session::set($code, $access_code);
 
         echo <<< EOT
-        WELCOME TO TELETERM 1.0
-        
-        Uplink with central ARPANET initiated.
+        Uplink with central ARPANET initiated...
+
         Enter Security Access Code Sequence: 
-        
         {$access_code}
         EOT;
     }
