@@ -24,175 +24,19 @@ class HelpTable extends Help
             $table->boolean('is_guest')->default(0);
         });
 
-        DB::table((new self)->table)->insert([
-            [
-                'cmd' => 'help', 
-                'input' => '[cmd|page]', 
-                'info' => 'shows info about command',
-                'is_user' => 1,
-                'is_host' => 1,
-                'is_visitor' => 1,
-                'is_guest' => 1
-            ],
-            [
-                'cmd' => 'uplink', 
-                'input' => '<access code>', 
-                'info' => 'uplink to ARPANET',
-                'is_user' => 0,
-                'is_host' => 0,
-                'is_visitor' => 1,
-                'is_guest' => 0
-            ],
-            [
-                'cmd' => 'newuser', 
-                'input' => '<username>', 
-                'info' => 'create ARPANET account',
-                'is_user' => 0,
-                'is_host' => 0,
-                'is_visitor' => 1,
-                'is_guest' => 0
-            ],
-            [
-                'cmd' => 'login', 
-                'input' => '<username>', 
-                'info' => 'login to ARPANET (alias: logon) ',
-                'is_user' => 0,
-                'is_host' => 0,
-                'is_visitor' => 1,
-                'is_guest' => 1
-            ],
-            [
-                'cmd' => 'logout', 
-                'input' => NULL, 
-                'info' => 'leave host/ARPANET (alias: exit, dc, quit, close) ',
-                'is_user' => 1,
-                'is_host' => 1,
-                'is_visitor' => 0,
-                'is_guest' => 1
-            ],
-            [
-                'cmd' => 'ver', 
-                'input' => NULL, 
-                'info' => 'TeleTerm OS 1.0',
-                'is_user' => 1,
-                'is_host' => 1,
-                'is_visitor' => 1,
-                'is_guest' => 1
-            ],
-            [
-                'cmd' => 'music', 
-                'input' => '<start|stop|next>', 
-                'info' => 'play 80s music',
-                'is_user' => 1,
-                'is_host' => 1,
-                'is_visitor' => 1,
-                'is_guest' => 1
-            ],
-            [
-                'cmd' => 'color', 
-                'input' => '<green|white|yellow|blue>', 
-                'info' => 'terminal color',
-                'is_user' => 1,
-                'is_host' => 1,
-                'is_visitor' => 1,
-                'is_guest' => 1
-            ],
-            [
-                'cmd' => 'term', 
-                'input' => '<DEC-VT100|IBM-3270>', 
-                'info' => 'change terminal mode',
-                'is_user' => 1,
-                'is_host' => 1,
-                'is_visitor' => 1,
-                'is_guest' => 1
-            ],
-            [
-                'cmd' => 'netstat', 
-                'input' => NULL, 
-                'info' => 'list connected nodes (alias: scan)',
-                'is_user' => 1,
-                'is_host' => 1,
-                'is_visitor' => 0,
-                'is_guest' => 0
-            ],
-            [
-                'cmd' => 'telnet', 
-                'input' => '<host>', 
-                'info' => 'connect to host (alias: connect)',
-                'is_user' => 1,
-                'is_host' => 1,
-                'is_visitor' => 0,
-                'is_guest' => 0
-            ],
-            [
-                'cmd' => 'mail', 
-                'input' => '[send|read|list|delete]', 
-                'info' => "email user: -s <subject> <user>[@host] < <body> \r\n
-                        list emails: [-l] \r\n
-                        read email: [-r] <ID> \r\n
-                        sent emails: -s \r\n
-                        sent email: -s <ID> \r\n
-                        delete email: -d <ID>",
-                'is_user' => 1,
-                'is_host' => 1,
-                'is_visitor' => 0,
-                'is_guest' => 0
-            ],
-            [
-                'cmd' => 'cd', 
-                'input' => '[folder]', 
-                'info' => 'change directory',
-                'is_user' => 0,
-                'is_host' => 1,
-                'is_visitor' => 0,
-                'is_guest' => 1
-            ],
-            [
-                'cmd' => 'ls', 
-                'input' => NULL, 
-                'info' => 'list files on host (alias: dir)',
-                'is_user' => 0,
-                'is_host' => 1,
-                'is_visitor' => 0,
-                'is_guest' => 1
-            ],
-            [
-                'cmd' => 'cat', 
-                'input' => '<filename>', 
-                'info' => 'print contents of file (alias: more, open)',
-                'is_user' => 0,
-                'is_host' => 1,
-                'is_visitor' => 0,
-                'is_guest' => 1
-            ],
-            [
-                'cmd' => 'set', 
-                'input' => '<command>', 
-                'info' => 'TERMINAL/INQUIRE, FILE/PROTECTION=OWNER:RWED /sys/passwd, HALT RESTART/MAINT',
-                'is_user' => 0,
-                'is_host' => 0,
-                'is_visitor' => 0,
-                'is_guest' => 1
-            ],
-            [
-                'cmd' => 'run', 
-                'input' => '<command>', 
-                'info' => 'DEBUG /sys/passwd',
-                'is_user' => 0,
-                'is_host' => 0,
-                'is_visitor' => 0,
-                'is_guest' => 1
-            ],
-            [
-                'cmd' => 'debug', 
-                'input' => '[dump]', 
-                'info' => 'run memory dump',
-                'is_user' => 0,
-                'is_host' => 0,
-                'is_visitor' => 0,
-                'is_guest' => 1
-            ],
-        ]);
+        $hosts = require BASE_PATH . '/config/help.php';
+        $chunkSize = 500; // Adjust based on server capabilities
+
+        DB::beginTransaction();
+        try {
+            foreach (array_chunk($hosts, $chunkSize) as $chunk) {
+                DB::table((new self)->table)->insert($chunk);
+            }
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
     }
 
     public static function down()

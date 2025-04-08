@@ -13,7 +13,7 @@ require BASE_PATH . '/routes/help.php';
 require BASE_PATH . '/routes/system.php';
 
 // Hack
-require BASE_PATH . '/routes/hack.php';
+require BASE_PATH . '/routes/debug.php';
 
 // User
 require BASE_PATH . '/routes/user.php';

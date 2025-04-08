@@ -20,7 +20,10 @@ function handleUserInput() {
     }
 
     handleMusicCommands(input);
-    handleUserPrompts(input);
+    
+    if (handleUserPrompts(input)) {
+        return;
+    }
 
     const parts = input.split(' ');
     const command = parts[0].toLowerCase();

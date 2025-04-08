@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>TeleTerm</title>
+        <title><?php echo config('name') ?></title>
         <link rel="icon" type="image/x-icon" href="<?php base_url() ?>/img/favicon.ico">
         <link rel="stylesheet" href="<?php base_url('/css/app.min.css?v=' . $_SESSION['hash']) ?>">
     <style>

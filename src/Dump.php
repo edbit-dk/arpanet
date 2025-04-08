@@ -8,7 +8,8 @@ class Dump
 {
 
     public static $reset = false;
-    public static $words = ["HACK", "PASSWORD", "SECURITY", "VAULT", "ACCESS", "DENIED", "TERMINAL", "ADMIN", "PASS"];
+    public static $default = ["HACK", "PASSWORD", "SECURITY", "VAULT", "ACCESS", "DENIED", "TERMINAL", "ADMIN", "PASS"];
+    public static $words = [];
     public static $correct = ["ADMIN", "PASS"];
     public static $dump = 'memory_dump';
     public static $input = 'memory_input';
@@ -20,6 +21,11 @@ class Dump
         Session::remove(self::$dump);
     }
 
+    public static function words($words = [])
+    {
+        self::$words = $words;
+    }
+
     public static function correct($words = [])
     {
         self::$correct = $words;
@@ -27,6 +33,10 @@ class Dump
 
     public static function memory($rows = 16, $cols = 8) 
     {
+        if(empty(self::$words)) {
+            self::$words = ["HACK", "PASSWORD", "SECURITY", "VAULT", "ACCESS", "DENIED", "TERMINAL", "ADMIN", "PASS"];
+        }
+        
         // Setup
         $words = array_merge(self::$words, self::$correct);
         $randomize = self::$reset;
@@ -35,7 +45,6 @@ class Dump
         $output = "";
         
         // Convert words to uppercase for consistency
-        $words = array_map('strtoupper', $words);
         $totalCells = $rows * $cols * 2; // Each hex cell is two characters
         
         // If randomize is true, shuffle special words
@@ -60,7 +69,7 @@ class Dump
             // Insert special words at predefined locations
             $usedPositions = [];
             foreach ($words as $word) {
-                $wordHex = strtoupper(bin2hex($word));
+                $wordHex = bin2hex($word);
                 $wordLength = strlen($wordHex) / 2;
 
                 // Find a non-overlapping position
@@ -105,7 +114,6 @@ class Dump
 
             // Hide incorrect guesses in ASCII
             foreach (Session::get(self::$input) as $wrongWord) {
-                $wrongWordHex = strtoupper(bin2hex($wrongWord));
                 if (strpos($asciiRow, $wrongWord) !== false) {
                     $asciiRow = preg_replace('/\b' . preg_quote($wrongWord, '/') . '\b/', str_repeat('.', strlen($wrongWord)), $asciiRow);
                 }
@@ -122,7 +130,7 @@ class Dump
     {
         $correct = self::$correct;
 
-        $input = strtoupper($word);
+        $input = $word;
         
         if (in_array($input, $correct)) {
             return true;
