@@ -23,16 +23,13 @@ class SystemService
         echo bootup(loops: 5) . "\n\n";
         echo <<< EOT
         Initializing boot ...
-
         Loading OS ...
-
         64K RAM detected ...
-
         Launching Interfaces ...
-
         Boot Complete.
 
         Welome to $app_name $app_version!
+
         Please stand by ...
         EOT;
     }
