@@ -12,7 +12,7 @@ function loadText(text) {
             const char = text[currentIndex];
 
             // Insert a line break if character count exceeds 80 and ensure it doesn’t break mid-word
-            if (lineCharCount >= 80 && char !== '\n') {
+            if (lineCharCount >= 100 && char !== '\n') {
                 const lastChar = preContainer.text().slice(-1);
                 if (lastChar !== ' ' && lastChar !== '\n') {
                     // Move back to the last space if possible

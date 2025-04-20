@@ -17,21 +17,7 @@ class SystemService
 
     public static function boot()
     {
-        $app_name = config('name');
-        $app_version = config('version');
-
-        echo bootup(loops: 5) . "\n\n";
-        echo <<< EOT
-        Initializing boot ...
-        Loading OS ...
-        64K RAM detected ...
-        Launching Interfaces ...
-        Boot Complete.
-
-        Welome to $app_name $app_version!
-
-        Please stand by ...
-        EOT;
+        echo text('hacknet_osboot.txt');
     }
 
     public static function mode($mode)
@@ -99,7 +85,7 @@ class SystemService
         Session::set($code, $access_code);
 
         echo <<< EOT
-        Uplink with central ARPANET initiated...
+        Uplink with central network initiated...
 
         Enter Security Access Code Sequence: 
         {$access_code}
@@ -113,7 +99,7 @@ class SystemService
         $port = $_SERVER['SERVER_PORT'];
 
         echo <<< EOT
-        Connected to ARPANET port {$port}
+        Connected to network port {$port}
         
         Standford Research Institute
         VAX-11/750 TOPS-20
