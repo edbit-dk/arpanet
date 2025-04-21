@@ -34,6 +34,11 @@ class AppController extends Controller
         App::version();
     }
 
+    public function music()
+    {
+        exit;
+    }
+
     public function home()
     {
         System::mode('DEC-VT100');

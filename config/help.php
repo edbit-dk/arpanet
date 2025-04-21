@@ -13,7 +13,7 @@ return [
     [
         'cmd' => 'uplink', 
         'input' => '<access code>', 
-        'info' => 'uplink to ARPANET',
+        'info' => 'uplink to network',
         'is_user' => 0,
         'is_host' => 0,
         'is_visitor' => 1,
@@ -22,7 +22,7 @@ return [
     [
         'cmd' => 'newuser', 
         'input' => '<username>', 
-        'info' => 'create ARPANET account',
+        'info' => 'create account',
         'is_user' => 0,
         'is_host' => 0,
         'is_visitor' => 1,
@@ -31,7 +31,7 @@ return [
     [
         'cmd' => 'login', 
         'input' => '<username>', 
-        'info' => 'login to ARPANET (alias: logon) ',
+        'info' => 'login (alias: logon) ',
         'is_user' => 0,
         'is_host' => 0,
         'is_visitor' => 1,
@@ -40,7 +40,7 @@ return [
     [
         'cmd' => 'logout', 
         'input' => NULL, 
-        'info' => 'leave host/ARPANET (alias: exit, dc, quit, close) ',
+        'info' => 'leave host/node (alias: exit, dc, quit, close) ',
         'is_user' => 1,
         'is_host' => 1,
         'is_visitor' => 0,
@@ -49,7 +49,7 @@ return [
     [
         'cmd' => 'ver', 
         'input' => NULL, 
-        'info' => 'TeleTerm OS 1.0',
+        'info' => 'HackNet OS version',
         'is_user' => 1,
         'is_host' => 1,
         'is_visitor' => 1,

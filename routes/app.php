@@ -11,6 +11,9 @@ $app->get('/', [AppController::class, 'home']);
 $app->get('/main', [AppController::class, 'main']);
 $app->get('/ver', [AppController::class, 'version']);
 
+// Music
+$app->get('/music', [AppController::class, 'music']);
+
 // API
 $app->get('/api', [APIController::class, 'authorize']);
 

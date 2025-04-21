@@ -39,7 +39,7 @@ $(document).ready(function() {
             localStorage.setItem('boot', true); // Set 'boot' flag in sessionStorage
             clearTerminal();
             sendCommand('main', '');
-        }, 60000);
+        }, 50000);
     } else {
 
         setTimeout(function() {
@@ -260,6 +260,10 @@ function handleCommands(command, args) {
     }
 
     switch (command) {
+        case 'reset':
+            clearTerminal();
+            sendCommand(command, args);
+            break;
         case 'clear':
         case 'cls':
             clearTerminal();
@@ -346,7 +350,7 @@ function handleSuccessfulExit(command) {
             sessionStorage.removeItem('host');
         }
 
-        if (['boot', 'reboot', 'halt', 'halt restart', 'restart'].includes(command)) {
+        if (['boot'].includes(command)) {
             localStorage.removeItem('boot');
         }
         redirectTo('', false);
