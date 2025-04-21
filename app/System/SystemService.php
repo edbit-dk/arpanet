@@ -85,9 +85,17 @@ class SystemService
         Session::set($code, $access_code);
 
         echo <<< EOT
-        Uplink with central network initiated...
+        Initializing ........
+        Loading modules....Complete
+        Loading nodes......Complete
+        Reticulating splines......Complete
+        --Initialization Complete--
 
-        Enter Security Access Code Sequence: 
+        Launching Uplink...
+
+        Uplink with central network initiated.
+        Enter Security Access Code Sequence:
+        
         {$access_code}
         EOT;
     }
