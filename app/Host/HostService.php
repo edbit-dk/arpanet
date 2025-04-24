@@ -252,7 +252,7 @@ class HostService
             Session::set(self::$guest, false);
             Session::set(self::$auth, $host_id);
 
-            if($host_id != 1) {
+            if($host_id > 1) {
                 $host_user = self::data()->user(Auth::id());
                 if($host_user && empty($host_user->pivot->last_session)) {
                     $host_user->pivot->last_session = now();
