@@ -28,7 +28,7 @@ return [
         'os' => 'VAX-11/780 4.3BSD UNIX',
         'ip' => random_ip(),
         'network' => 0,
-        'level_id' => 1,
+        'level_id' => 2,
         'created_at' => timestamp("1969-10-30 06:30:00", true)
     ],
     [
@@ -43,7 +43,7 @@ return [
         'os' => 'VAX-11/780 4.3BSD UNIX',
         'ip' => random_ip(),
         'network' => 0,
-        'level_id' => 1,
+        'level_id' => 3,
         'created_at' => timestamp("1969-10-30 06:30:00", true)
     ],
     [
@@ -58,7 +58,7 @@ return [
         'os' => 'VAX-11/750 4.3BSD UNIX',
         'ip' => random_ip(),
         'network' => 0,
-        'level_id' => 1,
+        'level_id' => 4,
         'created_at' => timestamp("1969-10-30 06:30:00", true)
     ],
     [
@@ -73,7 +73,7 @@ return [
         'os' => 'UNIX System V AT&T',
         'ip' => '192.67.67.20',
         'network' => 1,
-        'level_id' => 3,
+        'level_id' => 5,
         'created_at' => timestamp("1983-01-01 06:30:00", true)
     ],
     [
@@ -88,7 +88,7 @@ return [
         'os' => 'VAX/VMS UNIX',
         'ip' => random_ip(),
         'network' => 0,
-        'level_id' => 4,
+        'level_id' => 5,
         'created_at' => timestamp("1983-01-01 06:30:00", true)
     ],
     [
@@ -133,7 +133,7 @@ return [
         'os' => 'PDP-11/IMP 4.3BSD UNIX',
         'ip' => random_ip(),
         'network' => 1,
-        'level_id' => 1,
+        'level_id' => 2,
         'created_at' => timestamp("1975-01-01 06:30:00", true)
     ],
     [
@@ -148,7 +148,7 @@ return [
         'os' => 'RobCo UOS v.84',
         'ip' => random_ip(),
         'network' => 0,
-        'level_id' => 2,
+        'level_id' => 3,
         'created_at' => timestamp("1983-01-01 06:30:00", true)
     ],
     [
@@ -163,7 +163,7 @@ return [
         'os' => 'PDP-11/272',
         'ip' => random_ip(),
         'network' => 0,
-        'level_id' => 2,
+        'level_id' => 1,
         'created_at' => timestamp("1983-01-01 06:30:00", true)
     ],
     [

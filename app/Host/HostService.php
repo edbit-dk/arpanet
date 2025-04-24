@@ -62,6 +62,16 @@ class HostService
         
     }
 
+    public static function level()
+    {
+        if(self::data()) {
+            return self::data()->level_id;
+        }
+
+        return false;
+        
+    }
+
     public static function hostname()
     {
         if(self::data()) {
@@ -254,10 +264,18 @@ class HostService
 
             if($host_id > 1) {
                 $host_user = self::data()->user(Auth::id());
-                if($host_user && empty($host_user->pivot->last_session)) {
+
+                if(!$host_user) {
+                    Auth::data()->hosts()->attach($host_id);
+                    $host_user = self::data()->user(Auth::id());
+                }
+
+                if($host_user) {
                     $host_user->pivot->last_session = now();
                     $host_user->pivot->save();
                 }
+
+                Auth::data()->update(['ip' => remote_ip()]);
             } 
 
             Cron::stats($host_id);

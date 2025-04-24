@@ -18,7 +18,11 @@ class DebugController extends AppController
 
     public function dump()
     {
-        Dump::correct([Host::admin(), Host::password()]);
+        $host_password = Host::password();
+        $host_admin = Host::admin();
+        
+        Dump::words(wordlist(strlen( $host_password), Host::level(), 'password-list.txt'));
+        Dump::correct([$host_admin,  $host_password]);
 
         if($input = $this->data) {
             if($input == 'reset') {

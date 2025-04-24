@@ -22,6 +22,20 @@ class HostUserTable
             $table->datetime('last_session')->nullable();
         });
 
+        $accounts = require BASE_PATH . '/config/accounts.php';
+        $chunkSize = 500; // Adjust based on server capabilities
+
+        DB::beginTransaction();
+        try {
+            foreach (array_chunk($accounts, $chunkSize) as $chunk) {
+                DB::table((new self)->table)->insert($chunk);
+            }
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+
     }
 
     public static function down()

@@ -91,7 +91,7 @@ class SystemService
         Reticulating splines......Complete
         --Initialization Complete--
 
-        Launching Uplink...
+        Launching Uplink.exe ...
 
         Uplink with central network initiated.
         Enter Security Access Code Sequence:

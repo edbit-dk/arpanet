@@ -8,9 +8,9 @@ class Dump
 {
 
     public static $reset = false;
-    public static $default = ["HACK", "PASSWORD", "SECURITY", "VAULT", "ACCESS", "DENIED", "TERMINAL", "ADMIN", "PASS"];
+    public static $default = [];
     public static $words = [];
-    public static $correct = ["ADMIN", "PASS"];
+    public static $correct = [];
     public static $dump = 'memory_dump';
     public static $input = 'memory_input';
 
