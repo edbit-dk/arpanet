@@ -39,7 +39,7 @@ $(document).ready(function() {
             localStorage.setItem('boot', true); // Set 'boot' flag in sessionStorage
             clearTerminal();
             sendCommand('main', '');
-        }, 50000);
+        }, 30000);
     } else {
 
         setTimeout(function() {
