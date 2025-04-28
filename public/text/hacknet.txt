@@ -1,8 +1,8 @@
-                                TeleTerm
+                                HackNet
     This terminal allows access to ARPANET (1969-1990), the transcontinental network 
     operated by the US Military, stretching from US to UK and Norway by sattelite.
 
-    TeleTerm is a simulation of a stylized arpanet/usenet, circa 1985-1990.
+    HackNet is a simulation of a stylized arpanet/usenet, circa 1985-1990.
     It is a full multi-user simulation, including 100+ simulated hosts
     from the early net, many of files from the era and more.
 
@@ -10,7 +10,7 @@
 Connecting
 ----------
 
-On the web: https://teleterm.net/
+On the web: https://HackNet.net/
 
 (Telehack is not responsible for the availability, reliability or any costs
 associated with this service and receives no income of any kind from its use.)
@@ -19,7 +19,7 @@ associated with this service and receives no income of any kind from its use.)
 About this Document
 -------------------
 
-TeleTerm is case-insensitive.  Commands are often shown in uppercase to
+HackNet is case-insensitive.  Commands are often shown in uppercase to
 distinguish them from surrounding text.  Note that you do not need to type
 commands in all-caps.  For example:
 

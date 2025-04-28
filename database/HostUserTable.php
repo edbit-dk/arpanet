@@ -15,9 +15,10 @@ class HostUserTable
         DB::schema()->dropIfExists((new self)->table);
         
         DB::schema()->create((new self)->table, function (Blueprint $table) {
+            $table->id();
             $table->unsignedInteger('host_id');
-            $table->foreign('host_id')->references('id')->on('hosts');
             $table->unsignedInteger('user_id');
+            $table->foreign('host_id')->references('id')->on('hosts');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->datetime('last_session')->nullable();
         });

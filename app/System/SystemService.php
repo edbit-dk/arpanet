@@ -27,7 +27,7 @@ class SystemService
 
     public static function uplink($input = '')
     {
-        $code = User::field('code');
+        $code = 'code';
 
         if(empty($input) && !Session::has(self::$uplink)) {
             User::blocked(false);
@@ -79,7 +79,7 @@ class SystemService
 
     public static function code()
     {
-        $code = User::field('code');
+        $code = 'code';
         $access_code = access_code();
 
         Session::set($code, $access_code);

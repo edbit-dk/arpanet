@@ -217,6 +217,45 @@ function random_pass($length = false) {
     return wordlist($length, 1, 'password-list.txt')[0];
 }
 
+function random_os($length = false) {
+    if(!$length) {
+        $length = rand(3,16);
+    }
+
+    if($length) {
+        $length = rand($length,16);
+    }
+
+    return wordlist($length, 1, 'os-list.txt')[0];
+}
+
+function random_welcome() {
+    // Read file
+    $lines = file(config('public') . "/text/welcome-list.txt", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+    // Check lines
+    if ($lines) {
+        return $lines[array_rand($lines)];
+    } else {
+        return 0;
+    }
+}
+
+function random_date($start = false, $end = false) {
+    // Set the start and end timestamps
+    if(!$start) {
+        $start = strtotime('1969-01-01 00:00:00');
+    }
+    if(!$end) {
+        $end = strtotime('1983-12-31 23:59:59');
+    }    
+    // Generate a random timestamp within the range
+    $randomTimestamp = mt_rand($start, $end);
+    
+    // Format the timestamp into the desired date format
+    return date('Y-m-d H:i:s', $randomTimestamp);
+}
+
 
 function rand_username($string = '', $integer = '') {
 

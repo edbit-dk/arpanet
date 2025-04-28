@@ -34,7 +34,7 @@ class SetupService
 
     public static function relations()
     {
-        HostUserTable::up();
+        //HostUserTable::up();
         HostNodeTable::up();
     }
 

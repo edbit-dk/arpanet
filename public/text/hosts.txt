@@ -294,7 +294,7 @@
  amrc           Mission Research Corp., Albuquerque   Albuquerque, NM
  amsaix         AMS, Inc.                             Arlington, VA
  amsctg         AMS, Inc.                             Arlington, VA
-  amsifl         Applied Measurement Systems, Inc.     Hollywood, Florida       
+ amsifl         Applied Measurement Systems, Inc.     Hollywood, Florida       
  amt            Active Memory Technology              Irvine, California        
  amtfocus       Motorola, Inc. General Systems Secto  Arlington Heights         
  amtmpdl        Motorola Inc.                         Schaumburg, IL            
@@ -1449,7 +1449,7 @@
  connie         CONVEX Computer GmbH                  Germany
  conrad         Steven A. Conrad, MD, PhD             Shreveport, LA
  consci         Concurrent Sciences, inc.             Moscow, Idaho
- consec         ConSec Corporation
+ consec         ConSec Corporation                    JAPAN
  consltx        Consultix GmbH Computertechnologiese  Germany
  consult        Computer Consulting Service           Easton Maryland
  contact        loeffler & co.                        scarborough ont
@@ -2291,7 +2291,7 @@
  emtek          Emtek, Inc.                           Tempe, Arizona
  emucsc         Eastern Michigan University, Compute  Ypsilanti, MI
  emunix         Eastern Michigan University, Univers  Ypsilanti, MI
- encom          Encom Corporation
+ encom          Encom Corporation                     Los Angeles, CA
  encore         Encore Computer Corporation           Marlborough, MA
  endor          Harvard University, Computer Science  Cambridge, MA
  enea           Enea Data AB                          Sweden

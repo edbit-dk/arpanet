@@ -71,22 +71,22 @@ class UserController extends AppController
 
         if(!Auth::check() && $this->data) {
 
-            $code = Session::get($this->user['code']);
+            $code = Session::get('code');
             $username = $input['username'];
             $password = $input['password'];
 
-            if (User::where($this->user['username'], '=', $username)->exists()) {
+            if (User::where('username', '=', $username)->exists()) {
                 echo 'USERNAME TAKEN';
                 exit;
              }
 
              User::create([
-                $this->user['username'] => $username,
-                $this->user['email'] => "$username@teleterm.net",
-                $this->user['fullname'] => ucfirst($username),
-                $this->user['password'] => $password,
-                $this->user['code'] => $code,
-                $this->user['created'] => now()
+                'username' => $username,
+                'email' => "$username@teleterm.net",
+                'fullname' => ucfirst($username),
+                'password' => $password,
+                'code' => $code,
+                'created' => now()
             ]);
         }
         

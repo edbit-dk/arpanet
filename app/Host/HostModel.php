@@ -29,6 +29,7 @@ class HostModel extends AppModel
         'motd' => 'motd',
         'notes' => 'notes',
         'org' => 'org',
+        'os' => 'os',
 		'ip' => 'ip',
 		'active' => 'active',
         'level_id' => 'level_id'
@@ -101,6 +102,103 @@ class HostModel extends AppModel
     {
         return $this->hasOne(Level::class, 'id', 'level_id');
     }
+
+
+    public static function relations()
+    {
+
+        // Indlæs ALLE hosts i hukommelsen én gang
+        $hosts = self::all()->toArray();
+        $relations = [];
+
+        foreach ($hosts as $host) {
+            $relatedHosts = self::findBestRelatedHosts($host, $hosts);
+
+            foreach ($relatedHosts as $relatedHost) {
+                $relations[] = [
+                    'host_id' => $host['id'],
+                    'node_id' => $relatedHost['id'],
+                ];
+            }
+        }
+
+        $relations = self::removeDuplicateRelations($relations);
+
+        return $relations;
+    }
+
+    private static function findBestRelatedHosts(array $host, array $allHosts)
+    {
+        $related = [];
+
+        // 1. Name pattern
+        $pattern = self::buildNamePattern($host['hostname']);
+        if ($pattern) {
+            foreach ($allHosts as $candidate) {
+                if ($candidate['id'] !== $host['id'] && stripos($candidate['hostname'], $pattern) === 0) {
+                    $related[] = $candidate;
+                    if (count($related) >= 5) break;
+                }
+            }
+        }
+
+        // 2. Organization
+        if (empty($related)) {
+            foreach ($allHosts as $candidate) {
+                if ($candidate['id'] !== $host['id'] && $candidate['org'] === $host['org']) {
+                    $related[] = $candidate;
+                    if (count($related) >= 5) break;
+                }
+            }
+        }
+
+        /*
+        // 3. Location
+        if (empty($related)) {
+            foreach ($allHosts as $candidate) {
+                if ($candidate['id'] !== $host['id'] && $candidate['location'] === $host['location']) {
+                    $related[] = $candidate;
+                    if (count($related) >= 5) break;
+                }
+            }
+        }
+        */
+
+        return $related;
+    }
+
+    private static function buildNamePattern($hostname)
+    {
+        if (preg_match('/^(\D+)\d+$/', $hostname, $matches)) {
+            return $matches[1];
+        }
+        return null;
+    }
+
+    private static function removeDuplicateRelations(array $relations)
+    {
+        $unique = [];
+        foreach ($relations as $relation) {
+            if ($relation['host_id'] == $relation['node_id']) {
+                continue; // Ignore self-references
+            }
+
+            // Less Id first (fx 1-2 not 2-1)
+            $first = min($relation['host_id'], $relation['node_id']);
+            $second = max($relation['host_id'], $relation['node_id']);
+
+            $key = $first . '-' . $second;
+
+            if (!isset($unique[$key])) {
+                $unique[$key] = [
+                    'host_id' => $first,
+                    'node_id' => $second,
+                ];
+            }
+        }
+        return array_values($unique);
+    }
+
 
 
 }

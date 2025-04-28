@@ -15,7 +15,6 @@ class AppController extends Controller
 {
     protected $request;
     protected $data = false;
-    protected $user;
 
     public function __construct()
     {
@@ -24,8 +23,6 @@ class AppController extends Controller
         }
 
         $this->request = Input::request();
-
-        $this->user = User::fields();
 
     }
 
