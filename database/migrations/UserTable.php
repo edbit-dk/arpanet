@@ -1,6 +1,6 @@
 <?php
 
-namespace DB;
+namespace DB\Migrations;
 
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Schema\Blueprint;
@@ -11,8 +11,6 @@ class UserTable extends User
 {
     public static function up()
     {
-        DB::connection()->disableQueryLog();
-
         DB::schema()->disableForeignKeyConstraints();
         DB::schema()->dropIfExists((new self)->table);
 
@@ -22,6 +20,7 @@ class UserTable extends User
             $table->string('username')->unique();
             $table->string('email')->unique()->nullable();
             $table->string('code')->unique();
+            $table->enum('group', ['system', 'real', 'admin', 'anonymous', 'bot'])->default('real');
             $table->string('password')->nullable();
             $table->unsignedTinyInteger('level_id')->default(0);
             $table->boolean('is_admin')->default(0);
@@ -31,20 +30,6 @@ class UserTable extends User
             $table->timestamp('last_login')->nullable();
             $table->datetimes();
         });
-
-        $users = require BASE_PATH . '/config/users.php';
-        $chunkSize = 500; // Adjust based on server capabilities
-
-        DB::beginTransaction();
-        try {
-            foreach (array_chunk($users, $chunkSize) as $chunk) {
-                DB::table((new self)->table)->insert($chunk);
-            }
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollback();
-            throw $e;
-        }
     }
 
     public static function down()

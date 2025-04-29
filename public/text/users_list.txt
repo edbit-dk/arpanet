@@ -1,0 +1,95 @@
+acidBurn,Kate Libby,Hackers ,New York
+ai,Artificial Intelligence User,MIT AI Lab,Massachusetts
+aiadmin,AI Lab Admin,MIT AI Lab,Massachusetts
+aiuser,MIT AI Lab User,MIT AI Lab,Massachusetts
+arpanet,ARPANET System,ARPANET,USA
+bbn,BBN Admin,BBN,Massachusetts
+bbnuser,BBN User,BBN,Massachusetts
+bugtraq,Bug Reporting,Security Community,global
+bwk,Brian W. Kernighan,Bell Labs,New Jersey
+ccc,Chaos Club User,Chaos Computer Club,Germany
+cerealKiller,Emanuel Goldstein,Hackers ,New York
+cerf,Vint Cerf,UCLA / DARPA,California
+clarke,Arthur C. Clarke,Independent,Sri Lanka
+comrade,Adrian Lamo (Comrade),Greyhat Underground,USA
+cpm,CP/M User,Digital Research,California
+crashOverride,Dade Murphy,Hackers ,New York
+csc,Curtis Schofield,Bell Labs,New Jersey
+dec,Digital Equipment Corporation,DEC,Massachusetts
+dls,Douglas McIlroy,Bell Labs,New Jersey
+dmk,Dennis M. Kruse,Bell Labs,New Jersey
+doug,Doug McIlroy,Bell Labs,New Jersey
+draper,John Draper (Captain Crunch),Phone Phreaks,California
+ehg,Eric H. Grosse,AT&T,New Jersey
+englebart,Douglas Engelbart,SRI,California
+faulkner,Stephen Falken,Wargames ,Oregon
+fjl,Frank J. Leahy,DEC,Massachusetts
+flynn,Kevin Flynn,TRON ,Encom HQ
+gjs,Gerald Jay Sussman,MIT AI Lab,Massachusetts
+gonzalez,Albert Gonzalez,ShadowCrew,Florida
+gosper,Bill Gosper,MIT AI Lab,Massachusetts
+gp,Guy L. Steele Jr.,MIT AI Lab,Massachusetts
+greenblatt,Richard Greenblatt,MIT AI Lab,Massachusetts
+hagbard,Hans Heinrich Hübner (Hagbard),Chaos Computer Club,Germany
+hqm,Hans-Werner Gellersen,Lancaster University,UK
+jb,Jerry Burchfiel,DEC,Massachusetts
+jc,Jim Gettys,DEC,Massachusetts
+jnc,John Nagle,SRI,California
+joshua,WOPR AI,Wargames ,Colorado
+kahn,Robert Kahn,DARPA,Virginia
+karl,Peter Carl (alias),Chaos Computer Club,Germany
+klh,Ken L. Harrenstien,Stanford/SAIL,California
+l0pht,L0pht Member,L0pht Heavy Industries,Massachusetts
+lem,Lawrence E. Melling,Bell Labs,New Jersey
+lewicki,Mark Abene (Phiber Optik),Legion of Doom,New York
+lions,John Lions,University of New South Wales,Australia
+ljp,Larry J. Peterson,University of Arizona,Arizona
+llc,Lynn Landweber,UW Madison,Wisconsin
+lordNikon,Harold,Hackers ,New York
+margaret,Margaret Hamilton,MIT/NASA,Massachusetts
+maxfield,Eliot "Dr. Crash" Maxfield,Hacker Culture,USA
+mcclane,John McClane,Die Hard ,New York
+mcp,Master Control Program,TRON ,Encom Mainframe
+mcquillan,John McQuillan,BBN,Massachusetts
+mh,Mark Horton,AT&T,New Jersey
+mitnick,Kevin Mitnick,Social Engineering Ltd,USA
+morris,Robert Tappan Morris,Cornell,New York
+mtr,Michael T. Rose,BBN,Massachusetts
+mudge,Mudge,L0pht Heavy Industries,Massachusetts
+ncp,Network Control Protocol User,ARPANET,USA
+ned,Ned Freed,Innosoft,California
+neo,Neo (Matrix),The Matrix ,unknown
+nls,Nelson S. Minar,MIT,Massachusetts
+p0,p0 H4X0R,Underground,unknown
+paul,Pavel Curtis,Xerox PARC,California
+pdp,PDP Admin,DEC,Massachusetts
+pengo,Hans H. (Pengo),Chaos Computer Club,Germany
+pfhor,Markus Hess (Pfhor),Chaos Computer Club,Germany
+pjw,Peter J. Weinberger,Bell Labs,New Jersey
+postel,Jon Postel,USC/ISI,California
+poulsen,Kevin Poulsen (Dark Dante),2600 Magazine,California
+reed,David Reed,MIT,Massachusetts
+ritchie,Dennis Ritchie,Bell Labs,New Jersey
+rjd,Rob Pike,Bell Labs,New Jersey
+rms,Richard M. Stallman,MIT AI Lab,Massachusetts
+rtm,Robert T. Morris Sr.,NSA/Bell Labs,New Jersey
+schoch,Craig Schoch,Stanford,California
+shimomura,Tsutomu Shimomura,San Diego Supercomputer Center,California
+smb,Steven M. Bellovin,BBN,Massachusetts
+spaceRogue,Space Rogue,L0pht Heavy Industries,Massachusetts
+sriuser,SRI User,SRI,California
+stoll,Clifford Stoll,LBNL,California
+sussman,Gerald Sussman,MIT AI Lab,Massachusetts
+td,Tom Duff,Bell Labs,New Jersey
+thePlague,Eugene Belford,Hackers ,New York
+thompson,Ken Thompson,Bell Labs,New Jersey
+tracer,Unknown (Tracer),Chaos Computer Club,Germany
+travis,Travis Goodspeed,Embedded Hacker,Tennessee
+trinity,Trinity (Matrix),The Matrix ,unknown
+valerie,Valerie Thomas,NASA,Maryland
+vaxes,VAX Cluster User,DEC,Massachusetts
+warner,David Lightman,Wargames ,Washington State
+weizer,Victor Weizer,BBN,Massachusetts
+wender,Meredith L. Patterson,Formal Methods Underground,unknown
+zeroCool,Dade Murphy,Hackers ,New York
+zil,Julian Assange (Zil),Subversive Projects,Australia

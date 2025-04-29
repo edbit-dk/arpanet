@@ -1,0 +1,10 @@
+root,System Administrator,system
+daemon,System Daemon,system
+sys,System Operator,system
+games,Games User,system
+mail,Mail Daemon,system
+news,Netnews User,system
+nobody,Unprivileged User,system
+ftp,Anonymous FTP,system
+operator,System Operator,system
+cron,UNIX Cron Daemon,system

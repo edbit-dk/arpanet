@@ -1,41 +1,20 @@
 <?php
 
-namespace DB;
+namespace DB\Seeders;
 
 use Illuminate\Database\Capsule\Manager as DB;
-use Illuminate\Database\Schema\Blueprint;
+use DB\Migrations\HostTable;
 
 use App\Host\HostModel as Host;
 
-class HostTable extends Host
+class HostSeeder extends HostTable
 {
-    public static function up()
+    /**
+     * Seed the application's database.
+     */
+    public static function run(): void
     {
-        set_time_limit(0);
-
-        DB::schema()->disableForeignKeyConstraints();
-        DB::schema()->dropIfExists((new self)->table);
-        
-        DB::schema()->create((new self)->table, function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->string('hostname')->unique();
-            $table->string('password')->nullable();
-            $table->text('welcome')->nullable();
-            $table->string('org')->nullable();
-            $table->string('os')->nullable();
-            $table->string('location')->nullable();
-            $table->ipAddress('ip')->unique();
-            $table->text('motd')->nullable();
-            $table->text('notes')->nullable();
-            $table->boolean('active')->default(1);
-            $table->boolean('network')->default(0);
-            $table->integer('level_id')->default(1);
-            $table->datetimes();
-        });
-
-        $file = BASE_PATH . '/public/text/hosts.txt'; // Ret dette
+        $file = BASE_PATH . '/public/text/hosts_list.txt';
         if (!file_exists($file)) {
             die("File not found!");
         }
@@ -125,12 +104,6 @@ class HostTable extends Host
             throw $e;
         }
         */
-
     }
-
-    public static function down()
-    {
-        DB::schema()->drop((new self)->table);
-    }
+    
 }
-

@@ -1,35 +1,31 @@
 <?php
 
-namespace DB;
+namespace DB\Migrations;
 
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Schema\Blueprint;
 
-use App\Folder\FolderModel as Folder;
+use App\File\FileModel as File;
 
-class FolderTable extends Folder
+class FileTable extends File
 {
     public static function up()
     {
+        DB::schema()->disableForeignKeyConstraints();
         DB::schema()->dropIfExists((new self)->table);
 
         DB::schema()->create((new self)->table, function (Blueprint $table) {
             $table->increments('id');
-            $table->string('foldername');
-            $table->unsignedInteger('parent_id')->nullable();
+            $table->string('filename');
+            $table->longText('content')->nullable();
+            $table->unsignedInteger('folder_id');
+            $table->foreign('folder_id')->references('id')->on('folders')->onDelete('cascade');
             $table->unsignedInteger('host_id')->nullable();
             $table->foreign('host_id')->references('id')->on('hosts');
             $table->unsignedInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->datetimes();
         });
-
-        DB::table((new self)->table)->insert([
-            ['foldername' => 'home', 'host_id' => 1],
-            ['foldername' => 'log', 'host_id' => 1],
-            ['foldername' => 'bin', 'host_id' => 1],
-            ['foldername' => 'sys', 'host_id' => 1],
-        ]);
     }
 
     public static function down()

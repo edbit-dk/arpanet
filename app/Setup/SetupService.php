@@ -2,15 +2,25 @@
 
 namespace App\Setup;
 
-use DB\LevelTable;
-use DB\UserTable;
-use DB\HostTable;
-use DB\HostUserTable;
-use DB\HostNodeTable;
-use DB\HelpTable;
-use DB\EmailTable;
-use DB\FileTable;
-use DB\FolderTable;
+use DB\Migrations\LevelTable;
+use DB\Migrations\UserTable;
+use DB\Migrations\HostTable;
+use DB\Migrations\HostUserTable;
+use DB\Migrations\HostNodeTable;
+use DB\Migrations\HelpTable;
+use DB\Migrations\EmailTable;
+use DB\Migrations\FileTable;
+use DB\Migrations\FolderTable;
+
+use DB\Seeders\LevelSeeder;
+use DB\Seeders\UserSeeder;
+use DB\Seeders\HostSeeder;
+use DB\Seeders\HostUserSeeder;
+use DB\Seeders\HostUnixUserSeeder;
+use DB\Seeders\HostNodeSeeder;
+use DB\Seeders\HelpSeeder;
+use DB\Seeders\FileSeeder;
+use DB\Seeders\FolderSeeder;
 
 class SetupService
 {
@@ -28,39 +38,52 @@ class SetupService
     public static function system()
     {
         LevelTable::up();
+        LevelSeeder::run();
+
         EmailTable::up();
+
         HelpTable::up();
+        HelpSeeder::run();
     }
 
     public static function relations()
     {
-        //HostUserTable::up();
+        HostUserTable::up();
+        HostUnixUserSeeder::run();
+        HostUserSeeder::run();
+
         HostNodeTable::up();
+        HostNodeSeeder::run();
     }
 
     public static function users()
     {
         UserTable::up();
+        UserSeeder::run();
     }
 
     public static function hosts()
     {
         HostTable::up();
+        HostSeeder::run();
     }
 
     public static function folders()
     {
         FolderTable::up();
+        FolderSeeder::run();
     }
 
     public static function files()
     {
         FileTable::up();
+        FileSeeder::run();
     }
 
     public static function help()
     {
         HelpTable::up();
+        HelpSeeder::run();
     }
 
     

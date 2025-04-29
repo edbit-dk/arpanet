@@ -1,0 +1,58 @@
+postel,Jon Postel,USC/ISI,California
+cerf,Vint Cerf,UCLA / DARPA,California
+kahn,Robert Kahn,DARPA,Virginia
+englebart,Douglas Engelbart,SRI,California
+clarke,Arthur C. Clarke,Independent,Sri Lanka
+ritchie,Dennis Ritchie,Bell Labs,New Jersey
+thompson,Ken Thompson,Bell Labs,New Jersey
+bwk,Brian W. Kernighan,Bell Labs,New Jersey
+rjd,Rob Pike,Bell Labs,New Jersey
+dls,Douglas McIlroy,Bell Labs,New Jersey
+pjw,Peter J. Weinberger,Bell Labs,New Jersey
+td,Tom Duff,Bell Labs,New Jersey
+dmk,Dennis M. Kruse,Bell Labs,New Jersey
+lem,Lawrence E. Melling,Bell Labs,New Jersey
+ned,Ned Freed,Innosoft,California
+ehg,Eric H. Grosse,AT&T,New Jersey
+mh,Mark Horton,AT&T,New Jersey
+jc,Jim Gettys,DEC,Massachusetts
+jb,Jerry Burchfiel,DEC,Massachusetts
+fjl,Frank J. Leahy,DEC,Massachusetts
+nls,Nelson S. Minar,MIT,Massachusetts
+lions,John Lions,University of New South Wales,Australia
+doug,Doug McIlroy,Bell Labs,New Jersey
+reed,David Reed,MIT,Massachusetts
+llc,Lynn Landweber,UW Madison,Wisconsin
+smb,Steven M. Bellovin,BBN,Massachusetts
+schoch,Craig Schoch,Stanford,California
+rms,Richard M. Stallman,MIT AI Lab,Massachusetts
+gjs,Gerald Jay Sussman,MIT AI Lab,Massachusetts
+paul,Pavel Curtis,Xerox PARC,California
+hqm,Hans-Werner Gellersen,Lancaster University,UK
+aiuser,MIT AI Lab User,MIT AI Lab,Massachusetts
+weizer,Victor Weizer,BBN,Massachusetts
+greenblatt,Richard Greenblatt,MIT AI Lab,Massachusetts
+gosper,Bill Gosper,MIT AI Lab,Massachusetts
+sussman,Gerald Sussman,MIT AI Lab,Massachusetts
+margaret,Margaret Hamilton,MIT/NASA,Massachusetts
+valerie,Valerie Thomas,NASA,Maryland
+klh,Ken L. Harrenstien,Stanford/SAIL,California
+gp,Guy L. Steele Jr.,MIT AI Lab,Massachusetts
+mtr,Michael T. Rose,BBN,Massachusetts
+jnc,John Nagle,SRI,California
+ljp,Larry J. Peterson,University of Arizona,Arizona
+pdp,PDP Admin,DEC,Massachusetts
+sriuser,SRI User,SRI,California
+bbn,BBN Admin,BBN,Massachusetts
+mcquillan,John McQuillan,BBN,Massachusetts
+csc,Curtis Schofield,Bell Labs,New Jersey
+vaxes,VAX Cluster User,DEC,Massachusetts
+arpanet,ARPANET System,ARPANET,USA
+ncp,Network Control Protocol User,ARPANET,USA
+aiadmin,AI Lab Admin,MIT AI Lab,Massachusetts
+cpm,CP/M User,Digital Research,California
+dec,Digital Equipment Corporation,DEC,Massachusetts
+bbnuser,BBN User,BBN,Massachusetts
+bugtraq,Bug Reporting,Security Community,global
+p0,p0 H4X0R,Underground,unknown
+ai,Artificial Intelligence User,MIT AI Lab,Massachusetts

@@ -1,0 +1,37 @@
+stoll,Clifford Stoll,LBNL,California
+hagbard,Hans Heinrich Hübner (Hagbard),Chaos Computer Club,Germany
+pfhor,Markus Hess (Pfhor),Chaos Computer Club,Germany
+karl,Peter Carl (alias),Chaos Computer Club,Germany
+pengo,Hans H. (Pengo),Chaos Computer Club,Germany
+tracer,Unknown (Tracer),Chaos Computer Club,Germany
+ccc,Chaos Club User,Chaos Computer Club,Germany
+mitnick,Kevin Mitnick,Social Engineering Ltd,USA
+morris,Robert Tappan Morris,Cornell,New York
+shimomura,Tsutomu Shimomura,San Diego Supercomputer Center,California
+lewicki,Mark Abene (Phiber Optik),Legion of Doom,New York
+draper,John Draper (Captain Crunch),Phone Phreaks,California
+gonzalez,Albert Gonzalez,ShadowCrew,Florida
+maxfield,Eliot "Dr. Crash" Maxfield,Hacker Culture,USA
+poulsen,Kevin Poulsen (Dark Dante),2600 Magazine,California
+l0pht,L0pht Member,L0pht Heavy Industries,Massachusetts
+spaceRogue,Space Rogue,L0pht Heavy Industries,Massachusetts
+mudge,Mudge,L0pht Heavy Industries,Massachusetts
+zil,Julian Assange (Zil),Subversive Projects,Australia
+comrade,Adrian Lamo (Comrade),Greyhat Underground,USA
+travis,Travis Goodspeed,Embedded Hacker,Tennessee
+wender,Meredith L. Patterson,Formal Methods Underground,unknown
+rtm,Robert T. Morris Sr.,NSA/Bell Labs,New Jersey
+zeroCool,Dade Murphy,Hackers ,New York
+acidBurn,Kate Libby,Hackers ,New York
+crashOverride,Dade Murphy,Hackers ,New York
+cerealKiller,Emanuel Goldstein,Hackers ,New York
+lordNikon,Harold,Hackers ,New York
+thePlague,Eugene Belford,Hackers ,New York
+warner,David Lightman,Wargames ,Washington State
+joshua,WOPR AI,Wargames ,Colorado
+faulkner,Stephen Falken,Wargames ,Oregon
+mcclane,John McClane,Die Hard ,New York
+trinity,Trinity (Matrix),The Matrix ,unknown
+neo,Neo (Matrix),The Matrix ,unknown
+mcp,Master Control Program,TRON ,Encom Mainframe
+flynn,Kevin Flynn,TRON ,Encom HQ

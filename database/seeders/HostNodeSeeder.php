@@ -1,31 +1,19 @@
 <?php
 
-namespace DB;
+namespace DB\Seeders;
 
 use Illuminate\Database\Capsule\Manager as DB;
-use Illuminate\Database\Schema\Blueprint;
+use DB\Migrations\HostNodeTable;
 
 use App\Host\HostModel as Host;
 
-class HostNodeTable
+class HostNodeSeeder extends HostNodeTable
 {
-    protected $table = 'host_node';
-
-    public static function up()
+    /**
+     * Seed the application's database.
+     */
+    public static function run(): void
     {
-        set_time_limit(0);
-        
-        DB::schema()->dropIfExists((new self)->table);
-        
-        DB::schema()->create((new self)->table, function (Blueprint $table) {
-            $table->id();
-            $table->unsignedInteger('host_id');
-            $table->unsignedInteger('node_id');
-            $table->unique(['host_id', 'node_id']);
-            $table->foreign('host_id')->references('id')->on('hosts')->onDelete('cascade');
-            $table->foreign('node_id')->references('id')->on('hosts')->onDelete('cascade');
-        });
-
         // Batch insert
         $chunkSize = 500;
         $relations = Host::relations();
@@ -57,13 +45,6 @@ class HostNodeTable
             throw $e;
         }
         */
-
-        
     }
-
-    public static function down()
-    {
-        DB::schema()->drop((new self)->table);
-    }
+    
 }
-

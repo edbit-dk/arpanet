@@ -214,7 +214,7 @@ function random_pass($length = false) {
         $length = rand($length,15);
     }
 
-    return wordlist($length, 1, 'password-list.txt')[0];
+    return wordlist($length, 1, 'password_list.txt')[0];
 }
 
 function random_os($length = false) {
@@ -226,12 +226,34 @@ function random_os($length = false) {
         $length = rand($length,16);
     }
 
-    return wordlist($length, 1, 'os-list.txt')[0];
+    return wordlist($length, 1, 'os_list.txt')[0];
+}
+
+function merge_txt_files($files = [], $outputFile = 'merged.txt') {
+    $allLines = [];
+
+    foreach ($files as $file) {
+        if (!file_exists($file)) {
+            echo "File not found: $file\n";
+            continue;
+        }
+    
+        // Get lines, undgå tomme
+        $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        $allLines = array_merge($allLines, $lines);
+    }
+    
+    // Fjern dubletter og sortér (valgfrit)
+    $uniqueLines = array_unique($allLines);
+    sort($uniqueLines); // Kan fjernes, hvis sortering ikke ønskes
+    
+    // Gem til ny fil
+    file_put_contents($outputFile, implode(PHP_EOL, $uniqueLines));
 }
 
 function random_welcome() {
     // Read file
-    $lines = file(config('public') . "/text/welcome-list.txt", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    $lines = file(config('public') . "/text/welcome_list.txt", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
     // Check lines
     if ($lines) {
@@ -270,7 +292,7 @@ function rand_username($string = '', $integer = '') {
     return vsprintf('%s%s%d', [...sscanf(strtolower("$string-"), '%s %2s'), $integer]);
 }
 
-function wordlist($word_length = 4, $max_count = 12, $list = 'wordlist.txt') {
+function wordlist($word_length = 4, $max_count = 12, $list = 'word_list.txt') {
     $file_path = config('public') . "/text/$list";
     $retwords = [];
     $total_attempts = 0;
