@@ -30,18 +30,16 @@ class HostUserSeeder extends HostUserTable
         foreach ($userLines as $line) {
             [$username, $fullname, $org] = array_map('trim', explode(',', $line));
           
-            $created_at = random_date();
-            $password = random_pass();
             // Create or update user
             DB::table((new self)->users)->updateOrInsert(
                 ['username' => $username],
                 [
                 'fullname' => $fullname, 
                 'group' => 'admin', 
-                'password' => $password,
+                'password' => random_pass(),
                 'code' => access_code(),
                 'level_id' => rand(1, 6),
-                'created_at' =>  $created_at,
+                'created_at' =>  random_date(),
                 ]
             );        
             $userId = DB::table((new self)->users)->where('username', $username)->value('id');
@@ -49,7 +47,7 @@ class HostUserSeeder extends HostUserTable
         }
 
         // Match or add users to hosts i chunk
-        DB::table((new self)->hosts)->orderBy('id')->chunk(500, function ($hosts) use ($parsedUsers, $created_at, $password) {
+        DB::table((new self)->hosts)->orderBy('id')->chunk(500, function ($hosts) use ($parsedUsers) {
             foreach ($hosts as $host) {
                 $hostId = $host->id;
                 $hostOrg = $host->org;
@@ -65,18 +63,35 @@ class HostUserSeeder extends HostUserTable
                     $pairs = [[
                         'host_id' => $hostId,
                         'user_id' => $selectedUser['id'],
-                        'password'=> $password,
-                        'last_session' => $created_at,
+                        'password'=> random_pass(),
+                        'last_session' => random_date(),
                     ]];
                 } else {
                     $pairs = array_map(fn($u) => [
                         'host_id' => $hostId,
                         'user_id' => $u['id'],
-                        'password'=> $password,
-                        'last_session' => $created_at
+                        'password'=> random_pass(),
+                        'last_session' => random_date(),
                     ], $matchedUsers);
                 }
 
+                foreach ($pairs as $pair) {
+                    $userId = $pair['user_id'];
+                
+                    // Tjek om brugeren har en email allerede
+                    $hasEmail = DB::table((new self)->users)->where('id', $userId)->value('email');
+                
+                    if (empty($hasEmail)) {
+                        // Sæt email baseret på hostens hostname
+                        $username = DB::table((new self)->users)->where('id', $userId)->value('username');
+                        $email = strtolower($username . '@' . $host->hostname);
+                
+                        DB::table((new self)->users)->where('id', $userId)->update([
+                            'email' => $email
+                        ]);
+                    }
+                }
+                
                 // Insert relations, no duplicates
                 DB::table((new self)->table)->insertOrIgnore($pairs);
             }

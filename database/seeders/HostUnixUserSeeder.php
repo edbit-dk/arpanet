@@ -30,18 +30,16 @@ class HostUnixUserSeeder
                 foreach ($userChunk as $line) {
                     [$username, $fullname, $group] = array_map('trim', explode(',', $line));
 
-                    $password = random_pass();
-                    $created_at = random_date();
                     // Create or update user
                     DB::table((new self)->users)->updateOrInsert(
                         ['username' => $username],
                         [
                         'fullname' => $fullname, 
                         'group' => $group, 
-                        'password' => $password,
+                        'password' => random_pass(),
                         'code' => access_code(),
                         'level_id' => rand(1, 6),
-                        'created_at' =>  $created_at,
+                        'created_at' =>  random_date(),
                         ]
                     );
 
@@ -49,15 +47,15 @@ class HostUnixUserSeeder
                     $userId = DB::table((new self)->users)->where('username', $username)->value('id');
 
                     // Chunk hosts and add relations
-                    DB::table((new self)->hosts)->select('id', 'hostname')->orderBy('id')->chunk($hostChunkSize, function ($hostChunk) use ($userId, $username, $created_at, $password) {
+                    DB::table((new self)->hosts)->select('id', 'hostname')->orderBy('id')->chunk($hostChunkSize, function ($hostChunk) use ($userId, $username) {
                         $insertData = [];
 
                         foreach ($hostChunk as $host) {
                             $insertData[] = [
                                 'host_id' => $host->id,
                                 'user_id' => $userId,
-                                'password' => $password,
-                                'last_session' =>  $created_at,
+                                'password'=> random_pass(),
+                                'last_session' => random_date(),
                             ];
 
                             DB::table((new self)->users)->where('id', $userId)->update(['email' => $username . '@' . $host->hostname]);
