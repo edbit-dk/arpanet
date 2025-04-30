@@ -24,7 +24,7 @@ class HostService
     private static $user = 'host_user';
     private static $session = 'host_session';
     private static $blocked = 'host_blocked';
-    private static $sessions = [];
+    public static $sessions = [];
     private static $max_attempts = 4; // Maximum number of allowed login attempts
 
     public static function key()
@@ -348,12 +348,9 @@ class HostService
     {
         self::reset();
 
-        if (self::auth() > 1) {
-
-            if($host_user = self::data()->user(Auth::id())) {
-                $host_user->pivot->last_session = now();
-                $host_user->pivot->save();
-            }
+        if($host_user = self::data()->user(Auth::id())) {
+            $host_user->pivot->last_session = now();
+            $host_user->pivot->save();
         }
 
         self::$sessions = self::session(false);

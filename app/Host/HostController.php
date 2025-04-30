@@ -42,6 +42,12 @@ class HostController extends AppController
     {
         $pwd = Folder::pwd();
 
+        if(User::auth()) {
+            $hostname = User::username();
+            echo "[@$hostname]";
+            exit;
+        }
+
         if(Host::guest()) {
             $hostname = Host::hostname(); 
             echo "[@$hostname]";
@@ -68,6 +74,7 @@ class HostController extends AppController
     public function connect() 
     {
         $host = false;
+        $host_id = false;
 
         if($this->data) {
             $data = $this->data;
@@ -76,14 +83,16 @@ class HostController extends AppController
             exit;
         }
 
-        $host_id = Host::try($data)->id;
-        
-        if($host_id == 1) {
-            echo '--CONNECTION REFUSED--';
-            exit;
+        if($host = Host::try($data)) {
+            $host_id = $host->id;
         }
 
-        if(Host::data()->node($host_id) || Host::data()->host($host_id)) {
+        if(Host::check()) {
+            
+            if(Host::data()->node($host_id) || Host::data()->host($host_id)) {
+                $host = Host::connect($data);
+            }
+        } else {
             $host = Host::connect($data);
         }
 
@@ -123,7 +132,11 @@ class HostController extends AppController
     {
         $hosts = false;
 
-        $hosts = Host::data()->connections();
+        if(Host::check()) {
+            $hosts = Host::data()->connections();
+        } else {
+            $hosts = Host::random();
+        }
 
         if($hosts->isEmpty()) {
             echo "*** ACCESS DENIED ***\n";

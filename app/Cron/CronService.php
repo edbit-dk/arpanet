@@ -36,21 +36,18 @@ class CronService
 
     public static function stats($host_id)
     {
-        $date = date('H:i l, F j, Y', time());
+        if(Hosts::find($host_id)) {
+            $date = date('H:i l, F j, Y', time());
 
-        if($host_id == 1) {
-            $users = User::count();
-            $hosts = Host::count();
-        } else {
             $users = Host::users()->count();
             $hosts = Host::nodes()->count();
+    
+            $motd = "Local time is {$date}.\nThere are {$users} local users. There are {$hosts} hosts on the network.";
+    
+            Hosts::where('id', $host_id)->update([
+                'motd' => $motd
+            ]);
         }
-
-        $motd = "Local time is {$date}.\nThere are {$users} local users. There are {$hosts} hosts on the network.";
-
-        Hosts::where('id', $host_id)->update([
-            'motd' => $motd
-        ]);
 
     }
 }

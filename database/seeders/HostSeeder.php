@@ -54,6 +54,7 @@ class HostSeeder extends HostTable
                 }
         
                 $hostsToInsert[] = [
+                    'user_id' => 1,
                     'hostname' => trim($hostVal),
                     'org' => $orgVal,
                     'location' => $locVal,

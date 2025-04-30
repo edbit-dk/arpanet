@@ -25,7 +25,7 @@ class UserController extends AppController
             $input = App::auth($this->data);
 
             if(Auth::login($input['username'], $input['password'])) {
-                Host::attempt(1, Auth::id());
+                Host::attempt(0, Auth::id());
                 sleep(1);
                 echo 'IDENTIFICATION VERIFIED';
                 exit;  
@@ -91,7 +91,7 @@ class UserController extends AppController
         }
         
         if(Auth::login($input['username'], $input['password'])) {
-            Host::attempt(1, Auth::id());
+            Host::attempt(0, Auth::id());
             sleep(1);
             echo 'IDENTIFICATION VERIFIED';
             exit;  

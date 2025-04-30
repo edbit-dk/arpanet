@@ -44,11 +44,13 @@ class SystemService
             sleep(1);
             User::uplink(true);
 
+            $remote_ip = gethostbyaddr(remote_ip());
+
             echo <<< EOT
             Security Access Code Sequence Accepted.
 
             Connecting...
-            Trying 192.5.4.1...
+            Authenticating $remote_ip...
             Accessing Mainframe...
             EOT;
             exit;
@@ -93,7 +95,7 @@ class SystemService
 
         Launching Uplink.exe ...
 
-        Uplink with central network initiated.
+        Uplink with central HACKNET initiated.
         Enter Security Access Code Sequence:
         
         {$access_code}
@@ -105,15 +107,27 @@ class SystemService
         sleep(1);
 
         $port = $_SERVER['SERVER_PORT'];
+        $date = date('H:i l, F j, Y', time());
+        $users = User::count();
+        $hosts = Host::count();
 
         echo <<< EOT
-        Connected to network port {$port}
+        Connected to HACKNET port {$port}
         
-        Standford Research Institute
-        VAX-11/750 TOPS-20
+        Local time is {$date}.
+        There are {$users} local users. There are {$hosts} hosts on the network.
 
-        Authorized users only!
+        More commands available after LOGIN. Type HELP for a detailed command list.
+        Type NEWUSER to create an account. Type RESET to interrupt any command.
         EOT;
+    }
+
+    public static function home() 
+    {
+        $username = strtoupper(User::username());
+        $last_login = User::data()->last_login;
+
+        echo "Logged in as user $username. Last login was $last_login.";
     }
 
     public static function user()

@@ -43,7 +43,7 @@ class AppController extends Controller
     }
 
     public function main() 
-    {
+    {        
         if(Host::guest()) {
             return System::connect();
         }
@@ -56,10 +56,14 @@ class AppController extends Controller
             return System::auth();
         }
 
-        if(User::uplinked()) {
+        if(!User::uplinked()) {
+            return System::uplink($this->data);
+        }
+        
+        if(!User::auth()) {
             return System::login();
         } else {
-            return System::uplink($this->data);
+            return System::home();
         }
 
     }
