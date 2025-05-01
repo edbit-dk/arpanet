@@ -4,7 +4,7 @@ return [
     'setup' => true,
     'key' => base64_encode('62A2AY-3297ZX-1Z6XX3-ZX4Y60'),
     'name' => 'HackNet',
-    'version' => "v1.0",
+    'version' => "1.0",
     'path' => BASE_PATH,
     'date' => 'D M j Y H:i:s',
     'timestamp' => 'Y-m-d H:i:s',

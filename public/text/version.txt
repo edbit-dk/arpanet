@@ -1,3 +1,5 @@
-Hacknet Kernel Version 1.0.0: Tue Oct 11 20:56:35 PDT 1989; root:xnu-1699.22.73~1/RELEASE_X86_64
-Copyright (c) 1982, 1986, 1989
-The Regents of the University of Adelaide. All rights reserved.
+Hacknet Kernel Version 1.0.0: Tue Oct 11 20:56:35 PDT 1983; 
+root:xnu-1699.22.73~1/RELEASE_X86_64
+Copyright (c) 1983
+The Regents of the University of Adelaide. 
+All rights reserved.
