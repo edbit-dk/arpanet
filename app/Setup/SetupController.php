@@ -28,9 +28,14 @@ class SetupController extends AppController
        return Setup::hosts();
     }
 
-    public function relations()
+    public function accounts()
     {
-       return Setup::relations();
+       return Setup::accounts();
+    }
+
+    public function nodes()
+    {
+       return Setup::nodes();
     }
 
     public function folders()

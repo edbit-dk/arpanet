@@ -29,7 +29,8 @@ class SetupService
         self::system();
         self::users();
         self::hosts();
-        self::relations();
+        self::nodes();
+        self::accounts();
         self::folders();
         self::files();
         self::help();
@@ -46,14 +47,17 @@ class SetupService
         HelpSeeder::run();
     }
 
-    public static function relations()
+    public static function nodes()
+    {
+        HostNodeTable::up();
+        HostNodeSeeder::run();
+    }
+
+    public static function accounts()
     {
         HostUserTable::up();
         HostUnixUserSeeder::run();
         HostUserSeeder::run();
-
-        HostNodeTable::up();
-        HostNodeSeeder::run();
     }
 
     public static function users()
