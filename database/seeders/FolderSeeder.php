@@ -13,7 +13,10 @@ class FolderSeeder extends FolderTable
     public static function run(): void
     {
         DB::table((new self)->table)->insert([
-            ['filename' => 'passwd', 'host_id' => 1, 'folder_id' => 4]
+            ['foldername' => 'home', 'host_id' => 1],
+            ['foldername' => 'log', 'host_id' => 1],
+            ['foldername' => 'bin', 'host_id' => 1],
+            ['foldername' => 'sys', 'host_id' => 1],
         ]);
     }
     

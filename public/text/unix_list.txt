@@ -1,4 +1,5 @@
 root,System Administrator,system
+guest,Guest User,system
 daemon,System Daemon,system
 sys,System Operator,system
 games,Games User,system

@@ -13,10 +13,7 @@ class FileSeeder extends FileTable
     public static function run(): void
     {
         DB::table((new self)->table)->insert([
-            ['foldername' => 'home', 'host_id' => 1],
-            ['foldername' => 'log', 'host_id' => 1],
-            ['foldername' => 'bin', 'host_id' => 1],
-            ['foldername' => 'sys', 'host_id' => 1],
+            ['filename' => 'passwd', 'host_id' => 1, 'folder_id' => 4]
         ]);
     }
 
