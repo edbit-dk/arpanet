@@ -1,6 +1,6 @@
-# HackNet Web (Hacknet OS)
+# HackWeb
 
-HackNet (Hacknet OS) is a retro web-simulation of a stylized ARPANET/USENET, circa 1985-1990, a transcontinental network operated by the US Military, stretching 
+HackWeb is a retro web-simulation of a stylized ARPANET/USENET, circa 1985-1990, a transcontinental network operated by the US Military, stretching 
 from US to UK and Norway by sattelite. 
 
 It is a full multi-user simulation, including simulated hosts from the early net, many 
