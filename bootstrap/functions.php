@@ -470,9 +470,12 @@ function remote_ip() {
 }
 
 
-function bootup($loops = 70) {
-    $keyphrases = [' start memory discovery', ' CPUO starting cell relocation', 
-                   ' CPUO launch EFIO', ' CPUO starting EFIO'];
+function bootup($loops = 70, $keyphrases = []) {
+    if(empty($keyphrases)) {
+        $keyphrases = [' start memory discovery', ' CPUO starting cell relocation', 
+        ' CPUO launch EFIO', ' CPUO starting EFIO'];
+    }
+
     $middle_pieces = [' 1', ' 0', ' 0x0000A4', ' 0x00000000000000000', 
                       ' 0x000014', ' 0x000009', ' 0x000000000000E003D'];
     

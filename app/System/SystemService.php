@@ -17,7 +17,10 @@ class SystemService
 
     public static function boot()
     {
-        echo text('hacknet_osboot.txt');
+        echo bootup(20, [
+            ' '. str_bytes(rand_str(7))
+        ]);
+        echo text('osboot.txt');
     }
 
     public static function mode($mode)
@@ -44,7 +47,7 @@ class SystemService
             sleep(1);
             User::uplink(true);
 
-            $remote_ip = gethostbyaddr(remote_ip());
+            $remote_ip = remote_ip();
 
             echo <<< EOT
             Security Access Code Sequence Accepted.
@@ -87,15 +90,7 @@ class SystemService
         Session::set($code, $access_code);
 
         echo <<< EOT
-        Initializing ........
-        Loading modules....Complete
-        Loading nodes......Complete
-        Reticulating splines......Complete
-        --Initialization Complete--
-
-        Launching Uplink.exe ...
-
-        Uplink with central HACKNET initiated.
+        Uplink with central Mainframe initiated.
         Enter Security Access Code Sequence:
         
         {$access_code}
@@ -112,7 +107,7 @@ class SystemService
         $hosts = Host::count();
 
         echo <<< EOT
-        Connected to HACKNET port {$port}
+        Connected to Mainframe port {$port}
         
         Local time is {$date}.
         There are {$users} local users. There are {$hosts} hosts on the network.

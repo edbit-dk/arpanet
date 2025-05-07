@@ -10,6 +10,14 @@ the "TeleHack" and "Hacknet" game and other terminal-focused games.
 The main focus of the project is to educate about internet 
 history and technology.
 
+# Roadmap
+- [ ] Boot sequence
+- [x] Uplink validation
+- [x] Login/sinup
+- [x] Host list/scan/connect
+- [ ] Hacking tools
+- [x] Email system
+
 
 
 
