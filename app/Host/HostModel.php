@@ -93,6 +93,15 @@ class HostModel extends AppModel
         
     }
 
+    public function scopeNearestToIp(string $ip, int $limit = 5)
+    {
+        $numeric = ipToNum($ip);
+
+        return $this->selectRaw('*, ABS(ip_numeric - ?) AS distance', [$numeric])
+                     ->orderBy('distance', 'asc')
+                     ->limit($limit);
+    }
+
     public function node($host)
     {
         return $this->nodes()->where('node_id', $host)->first();

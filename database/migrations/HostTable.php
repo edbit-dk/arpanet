@@ -26,6 +26,7 @@ class HostTable extends Host
             $table->string('os')->nullable();
             $table->string('location')->nullable();
             $table->ipAddress('ip')->unique();
+            $table->decimal('ip_num', 39,0)->unsigned();
             $table->text('motd')->nullable();
             $table->text('notes')->nullable();
             $table->boolean('active')->default(1);

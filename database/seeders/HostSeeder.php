@@ -52,13 +52,16 @@ class HostSeeder extends HostTable
                 if (isset($existingHosts[$hostVal])) {
                     continue; // ignore
                 }
+
+                $host_ip = random_ip();
         
                 $hostsToInsert[] = [
                     'user_id' => 1,
                     'hostname' => trim($hostVal),
                     'org' => $orgVal,
                     'location' => $locVal,
-                    'ip' => random_ip(),
+                    'ip' => $host_ip,
+                    'ip_num' => ipToNum($host_ip),
                     'password' => random_pass(),
                     'os' => random_os(),
                     'welcome' => random_welcome(),

@@ -21,7 +21,7 @@ class DebugController extends AppController
         $host_password = Host::password();
         $host_admin = Host::admin();
         
-        Dump::words(wordlist(strlen( $host_password), Host::level(), 'password-list.txt'));
+        Dump::words(wordlist(strlen( $host_password), Host::level(), 'password_list.txt'));
         Dump::correct([$host_admin,  $host_password]);
 
         if($input = $this->data) {
