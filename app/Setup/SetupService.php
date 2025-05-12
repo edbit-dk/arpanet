@@ -7,6 +7,8 @@ use DB\Migrations\UserTable;
 use DB\Migrations\HostTable;
 use DB\Migrations\HostUserTable;
 use DB\Migrations\HostNodeTable;
+use DB\Migrations\HostFileTable;
+use DB\Migrations\HostFolderTable;
 use DB\Migrations\HelpTable;
 use DB\Migrations\EmailTable;
 use DB\Migrations\FileTable;
@@ -75,12 +77,14 @@ class SetupService
     public static function folders()
     {
         FolderTable::up();
+        HostFolderTable::up();
         FolderSeeder::run();
     }
 
     public static function files()
     {
         FileTable::up();
+        HostFileTable::up();
         FileSeeder::run();
     }
 

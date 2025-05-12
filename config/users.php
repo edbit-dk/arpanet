@@ -3,7 +3,7 @@
 return [
     [
         'username' => 'su', 
-        'email' => 'su@hacknet', 
+        'email' => 'su@hackweb', 
         'password' => random_pass(),
         'code' => access_code(),
         'fullname' => 'Super User',

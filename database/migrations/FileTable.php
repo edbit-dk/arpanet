@@ -20,8 +20,6 @@ class FileTable extends File
             $table->longText('content')->nullable();
             $table->unsignedInteger('folder_id');
             $table->foreign('folder_id')->references('id')->on('folders')->onDelete('cascade');
-            $table->unsignedInteger('host_id')->nullable();
-            $table->foreign('host_id')->references('id')->on('hosts');
             $table->unsignedInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->datetimes();

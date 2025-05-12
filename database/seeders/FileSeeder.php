@@ -13,7 +13,9 @@ class FileSeeder extends FileTable
     public static function run(): void
     {
         DB::table((new self)->table)->insert([
-            ['filename' => 'passwd', 'host_id' => 1, 'folder_id' => 4]
+            ['filename' => 'trace.log', 'folder_id' => 3],
+            ['filename' => 'config.sys', 'folder_id' => 4],
+            ['filename' => 'notes.txt', 'folder_id' => 5]
         ]);
     }
 

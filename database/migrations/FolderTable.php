@@ -18,8 +18,6 @@ class FolderTable extends Folder
             $table->increments('id');
             $table->string('foldername');
             $table->unsignedInteger('parent_id')->nullable();
-            $table->unsignedInteger('host_id')->nullable();
-            $table->foreign('host_id')->references('id')->on('hosts');
             $table->unsignedInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->datetimes();
