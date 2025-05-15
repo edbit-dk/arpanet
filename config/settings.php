@@ -13,7 +13,7 @@ return [
     'public' => BASE_PATH . '/public/',
     'views' =>  BASE_PATH . '/resources/views/',
     'database' => BASE_PATH . '/database/',
-    'timezone' => 'UTC',
+    'timezone' => 'America/Los_Angeles',
     'memory_limit' => '256M',
     'errors' => [
         'ignore_repeated_errors' => true,

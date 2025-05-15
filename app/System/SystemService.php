@@ -17,9 +17,6 @@ class SystemService
 
     public static function boot()
     {
-        echo bootup(20, [
-            ' '. str_bytes(rand_str(7))
-        ]);
         echo text('osboot.txt');
     }
 
@@ -54,7 +51,7 @@ class SystemService
 
             Connecting...
             Authenticating $remote_ip...
-            Accessing Mainframe...
+            Accessing mainframe...
             EOT;
             exit;
 
@@ -90,7 +87,11 @@ class SystemService
         Session::set($code, $access_code);
 
         echo <<< EOT
-        Uplink with central Mainframe initiated.
+        Launching Uplink...
+        
+        .......................................................................
+
+        Uplink with central mainframe initiated.
         Enter Security Access Code Sequence:
         
         {$access_code}
@@ -107,9 +108,10 @@ class SystemService
         $hosts = Host::count();
 
         echo <<< EOT
-        Connected to Mainframe port {$port}
+        Connected to SRI-NIC port {$port}
+        Stanford Research Institute – Network Information Center
         
-        Local time is {$date}.
+        Local time is {$date} in Menlo Park, California, USA.
         There are {$users} local users. There are {$hosts} hosts on the network.
 
         More commands available after LOGIN. Type HELP for a detailed command list.
