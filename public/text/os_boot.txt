@@ -1,0 +1,36 @@
+BOOT>
+BOOT> DSK:MONITR.EXE
+
+[Loading MONITOR image from DSK:MONITR.EXE]
+[Verifying system integrity...]
+
+TOPS-20 Monitor 5.1(1206)
+Copyright (C) 1983 Digital Equipment Corporation
+
+System ID: DEC KL10 Model B
+Memory: 2048K words
+Disks:
+  DSKA: RP07 - SYS$SYSTEM:
+  DSKB: RP06 - USER$AREA:
+Tapes:
+  MTA0: TU77
+Network Interfaces:
+  IMP0: ARPANET IMP #44, Port 10
+  ETH0: Ethernet (MAC AA-00-04-00-3B-44)
+  NIA0: DECnet enabled
+
+Initializing core systems...
+ [✓] Job scheduler
+ [✓] File system mount
+ [✓] Monitor services
+ [✓] TCP/IP services (TELNET, FTP, SMTP)
+ [✓] ARPANET IMP interface active
+
+System ready.
+
+BOOT> DSK:UPLINK.EXE
+
+[Loading UPLINK from DSK:UPLINK.EXE]
+[Verifying system uplink...]
+
+Initializing uplink to central mainframe...

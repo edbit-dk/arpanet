@@ -6,7 +6,7 @@ function handleLogon(username) {
     }
 
     if (!usernameForLogon && !username) {
-        loadText("username:");
+        loadText("Username:");
         isUsernamePrompt = true;
         $('#command-input').attr('type', 'text'); // Switch input to text for username
         return;

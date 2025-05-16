@@ -17,7 +17,7 @@ class SystemService
 
     public static function boot()
     {
-        echo text('osboot.txt');
+        echo text('os_boot.txt');
     }
 
     public static function mode($mode)
@@ -87,10 +87,6 @@ class SystemService
         Session::set($code, $access_code);
 
         echo <<< EOT
-        Launching Uplink...
-        
-        .......................................................................
-
         Uplink with central mainframe initiated.
         Enter Security Access Code Sequence:
         
@@ -108,7 +104,7 @@ class SystemService
         $hosts = Host::count();
 
         echo <<< EOT
-        Connected to SRI-NIC port {$port}
+        Connected to sri-nic port {$port}
         Stanford Research Institute – Network Information Center
         
         Local time is {$date} in Menlo Park, California, USA.

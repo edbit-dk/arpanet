@@ -39,7 +39,7 @@ $(document).ready(function() {
             localStorage.setItem('boot', true); // Set 'boot' flag in sessionStorage
             clearTerminal();
             sendCommand('main', '');
-        }, 5000);
+        }, 10000);
     } else {
 
         setTimeout(function() {
@@ -451,7 +451,7 @@ function handleLogon(username) {
     }
 
     if (!usernameForLogon && !username) {
-        loadText("username:");
+        loadText("Username:");
         isUsernamePrompt = true;
         $('#command-input').attr('type', 'text'); // Switch input to text for username
         return;

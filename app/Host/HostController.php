@@ -79,7 +79,7 @@ class HostController extends AppController
         if($this->data) {
             $data = $this->data;
         } else {
-            echo 'UNKNOWN HOST';
+            echo '--UNKNOWN HOST--';
             exit;
         }
 
