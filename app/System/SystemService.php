@@ -104,7 +104,7 @@ class SystemService
         $hosts = Host::count();
 
         echo <<< EOT
-        Connected to sri-nic port {$port}
+        Connected to mainframe port {$port}
         Stanford Research Institute – Network Information Center
         
         Local time is {$date} in Menlo Park, California, USA.
