@@ -59,10 +59,6 @@ class SystemService
 
             // Calculate remaining attempts
             $attempts_left = Host::attempts(true);
-    
-            if ($attempts_left == 1) {
-                echo "--LOCKOUT IMMINENT--\n\n";
-            }
 
             // Block the user after 4 failed attempts
             if ($attempts_left == 0) {
@@ -72,7 +68,7 @@ class SystemService
 
             } else {
                 echo <<< EOT
-                *** ACCESS DENIED ***
+                Access denied
                 EOT;
             }
             

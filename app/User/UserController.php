@@ -27,11 +27,13 @@ class UserController extends AppController
             if(Auth::login($input['username'], $input['password'])) {
                 Host::attempt(0, Auth::id());
                 sleep(1);
-                echo 'IDENTIFICATION VERIFIED';
+                echo 'Login accepted';
                 exit;  
 
             } else {
-                echo 'IDENTIFICATION NOT RECOGNIZED BY SYSTEM';
+                echo <<< EOT
+                Login failed - invalid credentials
+                EOT;
                 exit;
             }    
         }
@@ -58,7 +60,7 @@ class UserController extends AppController
                 'password' => $this->data
             ]);
     
-            echo 'PASSWORD UPDATED';
+            echo 'Password changed';
         }
     }
 
@@ -76,7 +78,7 @@ class UserController extends AppController
             $password = $input['password'];
 
             if (User::where('username', '=', $username)->exists()) {
-                echo 'USERNAME TAKEN';
+                echo 'Username not available';
                 exit;
              }
 
@@ -92,11 +94,11 @@ class UserController extends AppController
         if(Auth::login($input['username'], $input['password'])) {
             Host::attempt(0, Auth::id());
             sleep(1);
-            echo 'IDENTIFICATION VERIFIED';
+            echo 'Login accepted';
             exit;  
 
         } else {
-            echo 'IDENTIFICATION NOT RECOGNIZED BY SYSTEM';
+            echo 'Permission denied, please try again.';
             exit;
         }   
     }
@@ -109,6 +111,5 @@ class UserController extends AppController
     public function unlink()
     {
         Auth::uplink(false);
-        echo '--DISCONNECTING--';
     }
 }

@@ -3,11 +3,11 @@ function handleUserInput() {
     let input = $('#command-input').val().trim();
     if (input === '' && !(isPasswordPrompt || isUsernamePrompt)) return;
 
-    loadText("cmd: " + input);
+    loadText($('#connection').text() + '> ' + input);
     commandHistory.push(input);
     localStorage.setItem('history', commandHistory);
     historyIndex = commandHistory.length;
-    localStorage.setItem('index', historyIndex);
+    localStorage.setItem('index', historyIndex  );
     $('#command-input').val('');
 
     if (input === '?') {
@@ -93,18 +93,18 @@ function handleUsernamePrompt(input) {
             $('#command-input').attr('type', 'password');
         }
     } else {
-        loadText("WRONG USERNAME.");
+        loadText("Wrong username");
     }
 }
 
 function handleCommands(command, args) {
     if (['newuser', 'logon', 'login'].includes(command) && !sessionStorage.getItem('uplink')) {
-        loadText("UPLINK REQUIRED");
+        loadText("Uplink required");
         return;
     }
 
     if (['logon', 'login', 'newuser'].includes(command) && sessionStorage.getItem('auth') && !sessionStorage.getItem('host')) {
-        loadText("LOGOUT REQUIRED.");
+        loadText("Logout required.");
         return;
     }
 
@@ -178,7 +178,7 @@ function handleExitCommands(command, args) {
 }
 
 function promptForUsername(command) {
-    loadText("username:");
+    loadText("login as:");
     isUsernamePrompt = true;
     currentCommand = command;
     $('#command-input').attr('type', 'text');

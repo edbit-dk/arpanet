@@ -85,37 +85,25 @@ document.getElementById('play-button').addEventListener('click', toggleMusic);
 // Function to handle redirect
 function handleResponse(response, timeout = 1000) {
 
-    if (response.startsWith("Connecting")) {
+    if (response.startsWith("Trying")) {
         setTimeout(function() {
             redirectTo('');
         }, timeout);
     }
 
-    if (response.startsWith("EXCACT")) {
+    if (response.startsWith("Security")) {
         setTimeout(function() {
             redirectTo('');
         }, timeout);
     }
 
-    if (response.startsWith("IDENTIFICATION VERIFIED")) {
+    if (response.startsWith("Login accepted")) {
         setTimeout(function() {
             sessionStorage.setItem('host', true);
             redirectTo('');
         }, timeout);
     }
 
-    if (response.startsWith("Accessing")) {
-        setTimeout(function() {
-            sessionStorage.setItem('host', true);
-            redirectTo('');
-        }, timeout);
-    }
-
-    if (response.startsWith("SUCCESS") || response.startsWith("Security")) {
-        setTimeout(function() {
-            redirectTo('');
-        }, timeout);
-    }
 }
 
 // Function to redirect to a specific query string
@@ -154,11 +142,11 @@ function handleUserInput() {
     let input = $('#command-input').val().trim();
     if (input === '' && !(isPasswordPrompt || isUsernamePrompt)) return;
 
-    loadText("cmd: " + input);
+    loadText($('#connection').text() + '> ' + input);
     commandHistory.push(input);
     localStorage.setItem('history', commandHistory);
     historyIndex = commandHistory.length;
-    localStorage.setItem('index', historyIndex);
+    localStorage.setItem('index', historyIndex  );
     $('#command-input').val('');
 
     if (input === '?') {
@@ -244,18 +232,18 @@ function handleUsernamePrompt(input) {
             $('#command-input').attr('type', 'password');
         }
     } else {
-        loadText("WRONG USERNAME.");
+        loadText("Wrong username");
     }
 }
 
 function handleCommands(command, args) {
     if (['newuser', 'logon', 'login'].includes(command) && !sessionStorage.getItem('uplink')) {
-        loadText("UPLINK REQUIRED");
+        loadText("Uplink required");
         return;
     }
 
     if (['logon', 'login', 'newuser'].includes(command) && sessionStorage.getItem('auth') && !sessionStorage.getItem('host')) {
-        loadText("LOGOUT REQUIRED.");
+        loadText("Logout required.");
         return;
     }
 
@@ -329,7 +317,7 @@ function handleExitCommands(command, args) {
 }
 
 function promptForUsername(command) {
-    loadText("username:");
+    loadText("login as:");
     isUsernamePrompt = true;
     currentCommand = command;
     $('#command-input').attr('type', 'text');

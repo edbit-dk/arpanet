@@ -36,11 +36,11 @@ class CronService
 
     public static function stats($host_id)
     {
-        if(Hosts::find($host_id)) {
+        if($host = Hosts::find($host_id)) {
             $date = date('H:i l, F j, Y', time());
 
-            $users = Host::users()->count();
-            $hosts = Host::nodes()->count();
+            $users = $host->users()->count();
+            $hosts = $host->nodes()->count();
     
             $motd = "Local time is {$date}.\nThere are {$users} local users. There are {$hosts} hosts on the network.";
     

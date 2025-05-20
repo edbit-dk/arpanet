@@ -1,37 +1,25 @@
 // Function to handle redirect
 function handleResponse(response, timeout = 1000) {
 
-    if (response.startsWith("Connecting")) {
+    if (response.startsWith("Trying")) {
         setTimeout(function() {
             redirectTo('');
         }, timeout);
     }
 
-    if (response.startsWith("EXCACT")) {
+    if (response.startsWith("Security")) {
         setTimeout(function() {
             redirectTo('');
         }, timeout);
     }
 
-    if (response.startsWith("IDENTIFICATION VERIFIED")) {
+    if (response.startsWith("Login accepted")) {
         setTimeout(function() {
             sessionStorage.setItem('host', true);
             redirectTo('');
         }, timeout);
     }
 
-    if (response.startsWith("Accessing")) {
-        setTimeout(function() {
-            sessionStorage.setItem('host', true);
-            redirectTo('');
-        }, timeout);
-    }
-
-    if (response.startsWith("SUCCESS") || response.startsWith("Security")) {
-        setTimeout(function() {
-            redirectTo('');
-        }, timeout);
-    }
 }
 
 // Function to redirect to a specific query string

@@ -67,7 +67,11 @@ class HostController extends AppController
             exit;
         }
 
-        echo '@';
+        if(User::uplinked()){
+            echo '@'; 
+        }else {
+             echo '.';
+        }
 
     }
 
@@ -79,7 +83,7 @@ class HostController extends AppController
         if($this->data) {
             $data = $this->data;
         } else {
-            echo '--UNKNOWN HOST--';
+            echo 'Host not found';
             exit;
         }
 
@@ -99,7 +103,7 @@ class HostController extends AppController
         sleep(1);
 
         if(!$host) {
-            echo '--CONNECTION REFUSED--';
+            echo 'Connection refused';
             exit;
         } 
 
@@ -108,8 +112,7 @@ class HostController extends AppController
             $ip = Host::data()->ip;
 
             echo <<< EOT
-            Connecting...
-            Trying $ip
+            Trying $ip...
             Connected to $host\n
             EOT;
             exit;
@@ -138,8 +141,8 @@ class HostController extends AppController
             $hosts = Host::random();
         }
 
-        if($hosts->isEmpty()) {
-            echo "*** ACCESS DENIED ***\n";
+        if(!$hosts) {
+            echo "Host not found\n";
             exit;
         } 
 
@@ -189,11 +192,11 @@ class HostController extends AppController
         if(!empty($data)) {
             if(Host::rlogin($data)) {
                 echo <<< EOT
-                IDENTIFICATION VERIFIED
+                Access accepted
                 EOT;
             } else {
                 echo <<< EOT
-                *** ACCESS DENIED ***
+                Access denied
                 EOT;
             }
         }
@@ -213,15 +216,11 @@ class HostController extends AppController
 
         if(Host::logon($input['username'],  $input['password'])) {
             echo <<< EOT
-            IDENTIFICATION VERIFIED
+            Access accepted
             EOT;
         } else {
              // Calculate remaining attempts
              $attempts_left = Host::attempts(true);
-    
-             if ($attempts_left == 1) {
-                 echo "LOCKOUT IMMINENT\n";
-             }
  
              // Block the user after 4 failed attempts
              if ($attempts_left == 0) {
@@ -231,7 +230,7 @@ class HostController extends AppController
 
              } else {
                 echo <<< EOT
-                IDENTIFICATION NOT RECOGNIZED BY SYSTEM
+                Login failed - invalid credentials
                 EOT;
                 exit;
              }
@@ -242,7 +241,7 @@ class HostController extends AppController
     public function logoff() 
     {
         Host::logoff();
-        echo "--CONNECTION CLOSED--";
+        echo "Connection closed by foreign host";
     }
 
 }

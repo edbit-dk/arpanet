@@ -334,7 +334,7 @@ class HostService
 
         if (Session::has(self::$blocked)) {
             echo <<< EOT
-            --CONNECTION TERMINATED--
+            Connection terminated by remote host
             EOT;
             exit;
         }
