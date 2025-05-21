@@ -1,36 +1,39 @@
-BOOT>
-BOOT> DSK:MONITR.EXE
+>>> BOOT DUA0
 
-[Loading MONITOR image from DSK:MONITR.EXE]
-[Verifying system integrity...]
+loading vmunix...
+: hp(0,0)vmunix
+123456+789012+345678 start 0xF00
+mem = 204800
 
-TOPS-20 Monitor 5.1(1206)
-Copyright (C) 1983 Digital Equipment Corporation
+Berkeley UNIX 4.2 BSD Unix #1: Mon Aug 1 11:45:32 PDT 1983
+    root@vax:/usr/src/sys/vmunix
 
-System ID: DEC KL10 Model B
-Memory: 2048K words
-Disks:
-  DSKA: RP07 - SYS$SYSTEM:
-  DSKB: RP06 - USER$AREA:
-Tapes:
-  MTA0: TU77
-Network Interfaces:
-  IMP0: ARPANET IMP #44, Port 10
-  ETH0: Ethernet (MAC AA-00-04-00-3B-44)
-  NIA0: DECnet enabled
+real mem  = 2097152
+avail mem = 1863680
+using 256 buffers containing 131072 bytes of memory
+UNIBUS Adapter 0 at 772440
+uba0: Q22
+dz0 at uba0 csr 160100 vec 300, ipl 15
+dmf0 at uba0 csr 174400 vec 200, ipl 15
+mt0 at uba0 csr 172520 vec 774, ipl 15
+ht0 at uba0 csr 172440 vec 224, ipl 15
+ra0 at uba0 csr 172150 vec 270, ipl 15
+ra0: RA81
+root on ra0
 
-Initializing core systems...
- [✓] Job scheduler
- [✓] File system mount
- [✓] Monitor services
- [✓] TCP/IP services (TELNET, FTP, SMTP)
- [✓] ARPANET IMP interface active
+Automatic reboot in progress...
+Berkeley 4.2 UNIX (console)
+Mon Aug 1 11:45:32 PDT 1983
 
-System ready.
+Checking file systems...
+/dev/ra0a: 154 files, 722 blocks, 456 free
+/dev/ra0g: 1324 files, 8123 blocks, 7034 free
 
-BOOT> DSK:UPLINK.EXE
+Mounting root filesystem...
+Starting init: /etc/init
+Initializing network interfaces: de0
+Starting system daemons: update cron syslogd inetd
 
-[Loading UPLINK from DSK:UPLINK.EXE]
-[Verifying system uplink...]
+Starting uplink service: /usr/bin/uplink.bin
+Starting automated uplink...
 
-Initializing uplink to central mainframe...

@@ -83,7 +83,18 @@ class SystemService
         Session::set($code, $access_code);
 
         echo <<< EOT
-        Uplink with central mainframe initiated.
+        [ uplink v1.0.3 | SRI Comm Tools | Build 8401 ]
+
+        > Initializing uplink module...
+        > Reading config: /etc/uplink.conf
+        > Resolving host... [nic.ddn.mil] → 10.0.0.51
+        > Performing handshake... OK
+        > Remote link established at 9600 baud
+        > Establishing encrypted session... 
+
+        [■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■] SUCCESS
+
+        Uplink with central mainframe established.
         Enter Security Access Code Sequence:
         
         {$access_code}
@@ -100,8 +111,14 @@ class SystemService
         $hosts = Host::count();
 
         echo <<< EOT
-        Connected to mainframe port {$port}
-        Stanford Research Institute – Network Information Center
+        Connected to NIC Mainframe (DDN NODE 10.0.0.51) port {$port}
+
+        **********************************************************
+        *   UNAUTHORIZED ACCESS TO THIS SYSTEM IS PROHIBITED     *
+        *        ALL ACTIVITY IS MONITORED AND LOGGED            *
+        **********************************************************
+        
+        Welcome to NIC Mainframe, Stanford Research Institute
         
         Local time is {$date} in Menlo Park, California, USA.
         There are {$users} local users. There are {$hosts} hosts on the network.
