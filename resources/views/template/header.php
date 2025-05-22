@@ -19,4 +19,4 @@
     }
     </style>
     </head>
-        <body class="DEC-VT100" id="page">
+        <body class="IBM-3270" id="page">

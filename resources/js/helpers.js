@@ -13,7 +13,7 @@ function handleResponse(response, timeout = 1000) {
         }, timeout);
     }
 
-    if (response.startsWith("Login accepted")) {
+    if (['Login accepted', 'Access accepted'].includes(response)) {
         setTimeout(function() {
             sessionStorage.setItem('host', true);
             redirectTo('');

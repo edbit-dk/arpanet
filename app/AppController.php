@@ -38,7 +38,6 @@ class AppController extends Controller
 
     public function home()
     {
-        System::mode('DEC-VT100');
         view('app.php');
     }
 

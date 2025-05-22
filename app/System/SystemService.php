@@ -83,7 +83,7 @@ class SystemService
         Session::set($code, $access_code);
 
         echo <<< EOT
-        [ uplink v1.0.3 | SRI Comm Tools | Build 8401 ]
+        [uplink v1.0.3|SRI Comm Tools|Build 8401]
 
         > Initializing uplink module...
         > Reading config: /etc/uplink.conf
@@ -92,7 +92,7 @@ class SystemService
         > Remote link established at 9600 baud
         > Establishing encrypted session... 
 
-        [■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■] SUCCESS
+        [■■■■■■■■■■■■■■■■■■■■■■■■■■■] SUCCESS
 
         Uplink with central mainframe established.
         Enter Security Access Code Sequence:

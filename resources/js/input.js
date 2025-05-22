@@ -3,7 +3,7 @@ function handleUserInput() {
     let input = $('#command-input').val().trim();
     if (input === '' && !(isPasswordPrompt || isUsernamePrompt)) return;
 
-    loadText($('#connection').text() + '> ' + input);
+    loadText($('#connection').text() + ' ' + input);
     commandHistory.push(input);
     localStorage.setItem('history', commandHistory);
     historyIndex = commandHistory.length;
@@ -109,6 +109,9 @@ function handleCommands(command, args) {
     }
 
     switch (command) {
+        case 'term':
+            setTermMode(args);
+            break;
         case 'reset':
             clearTerminal();
             sendCommand(command, args);

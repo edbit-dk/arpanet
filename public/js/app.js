@@ -97,7 +97,7 @@ function handleResponse(response, timeout = 1000) {
         }, timeout);
     }
 
-    if (response.startsWith("Login accepted")) {
+    if (['Login accepted', 'Access accepted'].includes(response)) {
         setTimeout(function() {
             sessionStorage.setItem('host', true);
             redirectTo('');
@@ -142,7 +142,7 @@ function handleUserInput() {
     let input = $('#command-input').val().trim();
     if (input === '' && !(isPasswordPrompt || isUsernamePrompt)) return;
 
-    loadText($('#connection').text() + '> ' + input);
+    loadText($('#connection').text() + ' ' + input);
     commandHistory.push(input);
     localStorage.setItem('history', commandHistory);
     historyIndex = commandHistory.length;
@@ -248,6 +248,9 @@ function handleCommands(command, args) {
     }
 
     switch (command) {
+        case 'term':
+            setTermMode(args);
+            break;
         case 'reset':
             clearTerminal();
             sendCommand(command, args);

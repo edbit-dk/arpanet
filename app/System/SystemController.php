@@ -5,6 +5,8 @@ namespace App\System;
 use App\AppController;
 use App\System\SystemService as System;
 
+use Lib\Session;
+
 class SystemController extends AppController
 {
     public function boot() 

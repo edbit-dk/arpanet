@@ -42,12 +42,6 @@ class HostController extends AppController
     {
         $pwd = Folder::pwd();
 
-        if(User::auth()) {
-            $hostname = User::username();
-            echo "[@$hostname]$";
-            exit;
-        }
-
         if(Host::guest()) {
             $hostname = Host::hostname(); 
             echo "[@$hostname]$";
@@ -64,6 +58,12 @@ class HostController extends AppController
                 echo "[$username@$hostname$pwd]$";
             }
             
+            exit;
+        }
+
+        if(User::auth()) {
+            $hostname = User::username();
+            echo "[@$hostname]$";
             exit;
         }
 
@@ -142,7 +142,7 @@ class HostController extends AppController
         }
 
         if(!$hosts) {
-            echo "Host not found\n";
+            echo "No hosts found\n";
             exit;
         } 
 

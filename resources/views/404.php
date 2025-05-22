@@ -1,1 +1,1 @@
-command not found - type ? for help
+Command not found - type ? for help
