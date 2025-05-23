@@ -369,7 +369,7 @@ body, input, pre, button {
 
 #terminal-wrapper {
     width: 100%;
-    max-height: 80vh;
+    max-height: 85vh;
     padding: 5px;
     overflow-y: auto; /* Add vertical scrolling if the content exceeds the height */
     box-sizing: border-box; /* Ensure padding is included in the width/height */
