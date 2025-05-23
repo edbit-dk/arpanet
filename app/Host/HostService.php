@@ -334,7 +334,8 @@ class HostService
 
         if (Session::has(self::$blocked)) {
             echo <<< EOT
-            Connection terminated by remote host
+            *** Unauthorized activity detected ***
+            *** Connection terminated by remote host ***
             EOT;
             exit;
         }
@@ -397,7 +398,7 @@ class HostService
         if($email->exists()) {
             $email->update(['is_read' => 1]);
 
-            $root_hack = "/bin echo '$user ALL=(ALL) ALL' >> /sys/passwd";
+            $root_hack = "/bin echo '$user ALL=(ALL) ALL' >> /etc/passwd";
 
             if(similar_text($root_hack, $email->first()->body) > 50) {
                 $date = timestamp();
@@ -412,7 +413,7 @@ class HostService
             } else {
                 $data = [
                     0=> "send ERROR $contact", 
-                    1=> "ERROR: Unknown Command."
+                    1=> "Command not found"
                 ];
                 Mail::send($data, $contact);
             }

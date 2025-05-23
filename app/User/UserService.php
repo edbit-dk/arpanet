@@ -100,7 +100,8 @@ class UserService extends User
 
         if (Session::has(self::$blocked)) {
             echo <<< EOT
-            --CONNECTION TERMINATED--
+            *** Unauthorized activity detected ***
+            *** Connection terminated by remote host ***
             EOT;
             exit;
         }

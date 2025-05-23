@@ -1,0 +1,8 @@
+/
+├── bin/              → egne programmer (uplink, scan, crack)
+├── etc/              → configs (passwd, shadow, rc)
+├── home/             → brugerfiler (txt, mail, contracts)
+│   └── guest/
+├── log/              → system- og brugerspor (uplink.log, auth.log)
+├── sys/              → “core”-ting som kernel.bin, netdriver.sys
+└── tmp/              → mission midlertidige filer

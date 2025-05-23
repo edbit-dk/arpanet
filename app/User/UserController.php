@@ -32,7 +32,7 @@ class UserController extends AppController
 
             } else {
                 echo <<< EOT
-                Login failed - invalid credentials
+                Login incorrect
                 EOT;
                 exit;
             }    
@@ -98,7 +98,7 @@ class UserController extends AppController
             exit;  
 
         } else {
-            echo 'Permission denied, please try again.';
+            echo 'Access denied, please try again.';
             exit;
         }   
     }

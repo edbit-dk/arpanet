@@ -144,7 +144,7 @@ return [
     [
         'cmd' => 'debug', 
         'input' => '[dump]', 
-        'info' => 'run memory dump on /sys/passwd',
+        'info' => 'run memory dump on /etc/passwd',
         'is_user' => 1,
         'is_host' => 0,
         'is_visitor' => 0,
