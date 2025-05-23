@@ -51,7 +51,7 @@ class SystemService
 
             Connecting...
             Authenticating $remote_ip...
-            Accessing mainframe...
+            Accessing...
             EOT;
             exit;
 
@@ -87,17 +87,22 @@ class SystemService
 
         > Initializing uplink module...
         > Reading config: /etc/uplink.conf
-        > Resolving host... [nic.ddn.mil] → 10.0.0.51
+        > Resolving host... [sri-nic.arpa] → 10.0.0.51
         > Performing handshake... OK
-        > Remote link established at 9600 baud
-        > Establishing encrypted session... 
+        > Remote link established at 9600 baud... OK
+        > Establishing encrypted session... OK
+        > Uplink with central mainframe accepted!
 
-        [■■■■■■■■■■■■■■■■■■■■■■■■■■■] SUCCESS
+        **********************************************************
+        WARNING: Accessing this system without authorization 
+        violates DoD Directive 5200.27. Connection logs may be 
+        reviewed by system administrators. Proceed with caution!
 
-        Uplink with central mainframe established.
         Enter Security Access Code Sequence:
         
         {$access_code}
+
+        **********************************************************
         EOT;
     }
 
@@ -111,14 +116,14 @@ class SystemService
         $hosts = Host::count();
 
         echo <<< EOT
-        Connected to NIC Mainframe (DDN NODE 10.0.0.51) port {$port}
+        Connected to sri-nic.arpa port {$port}
 
         **********************************************************
         *   UNAUTHORIZED ACCESS TO THIS SYSTEM IS PROHIBITED     *
         *        ALL ACTIVITY IS MONITORED AND LOGGED            *
         **********************************************************
         
-        Welcome to NIC Mainframe, Stanford Research Institute
+        Welcome to Stanford Research Institute - Network Information Center
         
         Local time is {$date} in Menlo Park, California, USA.
         There are {$users} local users. There are {$hosts} hosts on the network.
